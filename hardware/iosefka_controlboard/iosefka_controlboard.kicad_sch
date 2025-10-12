@@ -1,0 +1,149 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "ff1b05d1-6753-42fc-a93a-1eac6141adc7")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 177.8 55.88)
+		(size 25.4 25.654)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "01777c4c-d964-4d5c-8c6a-0ce42c0ebc78")
+		(property "Sheetname" "midi_io"
+			(at 177.8 55.1684 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "midi_io.kicad_sch"
+			(at 177.8 82.1186 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(property "Field2" ""
+			(at 177.8 55.88 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "iosefka_controlboard"
+				(path "/ff1b05d1-6753-42fc-a93a-1eac6141adc7"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 131.318 56.642)
+		(size 28.448 19.558)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "73a92e9e-2634-4192-8f54-78e9a9f8aa20")
+		(property "Sheetname" "components_and_display"
+			(at 131.318 55.9304 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "components_and_display.kicad_sch"
+			(at 131.318 76.7846 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "iosefka_controlboard"
+				(path "/ff1b05d1-6753-42fc-a93a-1eac6141adc7"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 132.08 83.82)
+		(size 28.448 19.558)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "bef56b05-b4d0-4fd0-b19f-139052b14ce9")
+		(property "Sheetname" "ics_and_pin_headers"
+			(at 132.08 83.1084 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "ics_and_pin_headers.kicad_sch"
+			(at 132.08 103.9626 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "iosefka_controlboard"
+				(path "/ff1b05d1-6753-42fc-a93a-1eac6141adc7"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)

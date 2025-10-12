@@ -1,0 +1,618 @@
+#include "graphics.h"
+
+#include <stdio.h>
+#include "pico/stdlib.h"
+#include "../common/globals.h"
+#include "../controller/view.h"
+
+const char *hex_table[256] = {
+    "00", "01", "02", "03", "04", "05", "06", "07",
+    "08", "09", "0A", "0B", "0C", "0D", "0E", "0F",
+    "10", "11", "12", "13", "14", "15", "16", "17",
+    "18", "19", "1A", "1B", "1C", "1D", "1E", "1F",
+    "20", "21", "22", "23", "24", "25", "26", "27",
+    "28", "29", "2A", "2B", "2C", "2D", "2E", "2F",
+    "30", "31", "32", "33", "34", "35", "36", "37",
+    "38", "39", "3A", "3B", "3C", "3D", "3E", "3F",
+    "40", "41", "42", "43", "44", "45", "46", "47",
+    "48", "49", "4A", "4B", "4C", "4D", "4E", "4F",
+    "50", "51", "52", "53", "54", "55", "56", "57",
+    "58", "59", "5A", "5B", "5C", "5D", "5E", "5F",
+    "60", "61", "62", "63", "64", "65", "66", "67",
+    "68", "69", "6A", "6B", "6C", "6D", "6E", "6F",
+    "70", "71", "72", "73", "74", "75", "76", "77",
+    "78", "79", "7A", "7B", "7C", "7D", "7E", "7F",
+    "80", "81", "82", "83", "84", "85", "86", "87",
+    "88", "89", "8A", "8B", "8C", "8D", "8E", "8F",
+    "90", "91", "92", "93", "94", "95", "96", "97",
+    "98", "99", "9A", "9B", "9C", "9D", "9E", "9F",
+    "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7",
+    "A8", "A9", "AA", "AB", "AC", "AD", "AE", "AF",
+    "B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7",
+    "B8", "B9", "BA", "BB", "BC", "BD", "BE", "BF",
+    "C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7",
+    "C8", "C9", "CA", "CB", "CC", "CD", "CE", "CF",
+    "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7",
+    "D8", "D9", "DA", "DB", "DC", "DD", "DE", "DF",
+    "E0", "E1", "E2", "E3", "E4", "E5", "E6", "E7",
+    "E8", "E9", "EA", "EB", "EC", "ED", "EE", "EF",
+    "F0", "F1", "F2", "F3", "F4", "F5", "F6", "F7",
+    "F8", "F9", "FA", "FB", "FC", "FD", "FE", "FF"
+};
+
+const char* decimal_table[301] = {
+    "0", "1", "2", "3", "4", "5", "6", "7",
+    "8", "9", "10", "11", "12", "13", "14", "15",
+    "16", "17", "18", "19", "20", "21", "22", "23",
+    "24", "25", "26", "27", "28", "29", "30", "31",
+    "32", "33", "34", "35", "36", "37", "38", "39",
+    "40", "41", "42", "43", "44", "45", "46", "47",
+    "48", "49", "50", "51", "52", "53", "54", "55",
+    "56", "57", "58", "59", "60", "61", "62", "63",
+    "64", "65", "66", "67", "68", "69", "70", "71",
+    "72", "73", "74", "75", "76", "77", "78", "79",
+    "80", "81", "82", "83", "84", "85", "86", "87",
+    "88", "89", "90", "91", "92", "93", "94", "95",
+    "96", "97", "98", "99", "100", "101", "102", "103",
+    "104", "105", "106", "107", "108", "109", "110", "111",
+    "112", "113", "114", "115", "116", "117", "118", "119",
+    "120", "121", "122", "123", "124", "125", "126", "127",
+    "128", "129", "130", "131", "132", "133", "134", "135",
+    "136", "137", "138", "139", "140", "141", "142", "143",
+    "144", "145", "146", "147", "148", "149", "150", "151",
+    "152", "153", "154", "155", "156", "157", "158", "159",
+    "160", "161", "162", "163", "164", "165", "166", "167",
+    "168", "169", "170", "171", "172", "173", "174", "175",
+    "176", "177", "178", "179", "180", "181", "182", "183",
+    "184", "185", "186", "187", "188", "189", "190", "191",
+    "192", "193", "194", "195", "196", "197", "198", "199",
+    "200", "201", "202", "203", "204", "205", "206", "207",
+    "208", "209", "210", "211", "212", "213", "214", "215",
+    "216", "217", "218", "219", "220", "221", "222", "223",
+    "224", "225", "226", "227", "228", "229", "230", "231",
+    "232", "233", "234", "235", "236", "237", "238", "239",
+    "240", "241", "242", "243", "244", "245", "246", "247",
+    "248", "249", "250", "251", "252", "253", "254", "255",
+    "256", "257", "258", "259", "260", "261", "262", "263",
+    "264", "265", "266", "267", "268", "269", "270", "271",
+    "272", "273", "274", "275", "276", "277", "278", "279",
+    "280", "281", "282", "283", "284", "285", "286", "287",
+    "288", "289", "290", "291", "292", "293", "294", "295",
+    "296", "297", "298", "299", "300"
+};
+
+const char *graphic_seq_note[] = {
+
+    "C", "c", "D", "d", "E", "F", "f", "G", "g", "A", "a", "B"
+
+};
+
+// const char* midi_note_names[128] = {
+//     "C0", "c0", "D0", "d0", "E0", "F0", "f0", "G0", "g0", "A0", "a0", "B0",  // Octave 0
+//     "C1", "c1", "D1", "d1", "E1", "F1", "f1", "G1", "g1", "A1", "a1", "B1",  // Octave 1
+//     "C2", "c2", "D2", "d2", "E2", "F2", "f2", "G2", "g2", "A2", "a2", "B2",  // Octave 2
+//     "C3", "c3", "D3", "d3", "E3", "F3", "f3", "G3", "g3", "A3", "a3", "B3",  // Octave 3
+//     "C4", "c4", "D4", "d4", "E4", "F4", "f4", "G4", "g4", "A4", "a4", "B4",  // Octave 4
+//     "C5", "c5", "D5", "d5", "E5", "F5", "f5", "G5", "g5", "A5", "a5", "B5",  // Octave 5
+//     "C6", "c6", "D6", "d6", "E6", "F6", "f6", "G6", "g6", "A6", "a6", "B6",  // Octave 6
+//     "C7", "c7", "D7", "d7", "E7", "F7", "f7", "G7", "g7", "A7", "a7", "B7",  // Octave 7
+//     "C8", "c8", "D8", "d8", "E8", "F8", "f8", "G8", "g8", "A8", "a8", "B8",  // Octave 8
+//     "C9", "c9", "D9", "d9", "E9", "F9", "f9", "G9", "g9", "A9", "a9", "B9"   // Octave 9
+// };
+
+const char* midi_note_names[128] = {
+    "C0 ", "C#0", "D0 ", "D#0", "E0 ", "F0 ", "F#0", "G0 ", "G#0", "A0 ", "A#0", "B0 ",
+    "C1 ", "C#1", "D1 ", "D#1", "E1 ", "F1 ", "F#1", "G1 ", "G#1", "A1 ", "A#1", "B1 ",
+    "C2 ", "C#2", "D2 ", "D#2", "E2 ", "F2 ", "F#2", "G2 ", "G#2", "A2 ", "A#2", "B2 ",
+    "C3 ", "C#3", "D3 ", "D#3", "E3 ", "F3 ", "F#3", "G3 ", "G#3", "A3 ", "A#3", "B3 ",
+    "C4 ", "C#4", "D4 ", "D#4", "E4 ", "F4 ", "F#4", "G4 ", "G#4", "A4 ", "A#4", "B4 ",
+    "C5 ", "C#5", "D5 ", "D#5", "E5 ", "F5 ", "F#5", "G5 ", "G#5", "A5 ", "A#5", "B5 ",
+    "C6 ", "C#6", "D6 ", "D#6", "E6 ", "F6 ", "F#6", "G6 ", "G#6", "A6 ", "A#6", "B6 ",
+    "C7 ", "C#7", "D7 ", "D#7", "E7 ", "F7 ", "F#7", "G7 ", "G#7", "A7 ", "A#7", "B7 ",
+    "C8 ", "C#8", "D8 ", "D#8", "E8 ", "F8 ", "F#8", "G8 ", "G#8", "A8 ", "A#8", "B8 ",
+    "C9 ", "C#9", "D9 ", "D#9", "E9 ", "F9 ", "F#9", "G9 ", "G#9", "A9 ", "A#9", "B9 "
+};
+
+
+const char *graphic_seq_octave[] = {
+
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+    
+};
+
+const char *graphic_seq_transpose[] = {
+
+    "-C", "-B", "-A", "-9", "-8", "-7", "-6", "-5", "-4", "-3", "-2", "-1", "00", 
+    "+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9", "+A", "+B", "+C" 
+
+};
+
+const char *graphic_plus_sign_hex[] = {
+    "+0", "+1", "+2", "+3", "+4", "+5", "+6", "+7", "+8", "+9",
+    "+A", "+B", "+C", "+D", "+E", "+F"
+};
+
+
+const char *graphic_seq_direction[] = {
+
+    "fw", "bw", "p1", "p2"
+
+};
+
+const char *graphic_seq_scale[] = {
+
+    "ma", "mi"
+
+};
+
+const char *graphic_seq_repeat[] = {
+
+    "00", "02", "04", "08", "10", "20", "40", "80"
+
+};
+
+const char *graphic_seq_clk_div[] = {
+
+    "*8", "*4", "*2", "*d", "/1", "/2"
+
+};
+
+const char *param_header_s1[NUMBER_OF_PARAM_COLS] = {
+    "o1", "o2", "oe", "mx", "fl"
+};
+
+const char *param_header_s2[NUMBER_OF_PARAM_COLS] = {
+    "o1", "o2", "dl", "f>", "fl"
+};
+
+const char *param_header_s_env[NUMBER_OF_PARAM_COLS] = {
+    "o1", "o2", "oe", "mx", "fl"
+};
+
+const char *param_header_env[NUMBER_OF_PARAM_COLS] = {
+    "a", "d", "s", "r", "am"
+};
+
+const char *param_header_lfo[NUMBER_OF_PARAM_COLS] = {
+    "rt", "sh", "ph", "rs", "am"
+};
+
+const char *on_off[] = {
+    "off", "on "
+
+};
+
+const unsigned char play_icon[] = {
+    0b11000000,
+    0b11110000,
+    0b11111100,
+    0b11111111,
+    0b11111100,
+    0b11110000,
+    0b11000000,
+    0b00000000
+};
+
+const unsigned char active_step_icon[] = {
+    0b0000000,
+    0b00011000,
+    0b00100100,
+    0b01000010,
+    0b01000010,
+    0b00100100,
+    0b00011000,
+    0b00000000,
+};
+
+const unsigned char inactive_step_icon[] = {
+    0b0000000,
+    0b00000000,
+    0b00011000,
+    0b00100100,
+    0b00100100,
+    0b00011000,
+    0b00000000,
+    0b00000000,
+};
+
+const unsigned char unwritten_step_icon[] = {
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b00011000,
+    0b00000000,
+    0b00000000,
+    0b00000000,
+    0b00000000,
+};
+
+const char* graphicsGetHexString(uint8_t index) {
+
+    return hex_table[index];
+
+}
+
+const char* graphicsGetDecString(int index) {
+
+    return decimal_table[index];
+
+}
+
+const char* graphicsGetSeqNote(uint8_t index) {
+
+    return graphic_seq_note[index];
+
+}
+ 
+const char* graphicsGetSeqOctave(uint8_t index) {
+
+    return graphic_seq_octave[index];
+
+}
+
+
+const char* graphicsGetMidiNote(uint8_t index) {
+
+    return midi_note_names[index];
+
+}
+
+const char* graphicsPrintNothing(uint8_t index) {
+
+    return "";
+
+}
+
+const char* graphicsGetSeqTranspose(uint8_t index) {
+
+    return graphic_seq_transpose[index];
+
+}
+
+const char* graphicsGetSeqDirection(uint8_t index) {
+
+    return graphic_seq_direction[index];
+
+}
+
+
+const char* graphicsGetSeqScale(uint8_t index) {
+
+    return graphic_seq_scale[index];
+
+}
+
+const char* graphicsGetSeqClkDiv(uint8_t index) {
+
+    return graphic_seq_clk_div[index];
+
+}
+
+const char* graphicsGetSeqRepeat(uint8_t index) {
+
+    return graphic_seq_repeat[index];
+
+}
+
+const char* graphicsGetSettingsString(settings_string_t string) {
+
+    switch (string) {
+        case STRING_CHANNEL:
+            return "channel";
+            break;
+        case STRING_VELOCITY:
+            return "vel";
+            break;
+        case STRING_MOD_WHEEL:
+            return "m.w.";
+            break;
+        case STRING_AFTERTOUCH:
+            return "a.t.";
+            break;
+        case STRING_CLOCK:
+            return "clk";
+            break;
+        case STRING_TRANSPORT:
+            return "trns";
+            break;
+        case STRING_PROGRAM_CHANGE:
+            return "pchg";
+            break;
+        case STRING_OUT:
+            return "out";
+            break;
+        case STRING_THRU:
+            return "thru";
+        case STRING_PRESET:
+            return "preset";
+            break;
+        case STRING_PITCH_BEND_DEPTH:
+            return "pb dp";
+            break;
+        case STRING_LATCH:
+            return "latch";
+            break;
+        case STRING_JUMP:
+            return "jump";
+            break;
+        default:
+            // handle unknown setting
+            break;
+    }
+    
+
+}
+
+const char* graphicsGetFilterType(uint8_t index) {
+
+    switch(index){
+
+        case 0: return "L2"; break;
+        case 1: return "L4"; break;
+        case 2: return "HP"; break;
+        case 3: return "BP"; break;
+
+        default: break;
+
+    }
+
+}
+
+const char* graphicsGetLfoShape(uint8_t index) {
+
+    switch(index){
+
+        case 0: return "tr"; break;
+        case 1: return "sw"; break;
+        case 2: return "sq"; break;
+        case 3: return "sn"; break;
+        case 4: return "sh"; break;
+
+        default: break;
+
+    }
+
+}
+
+const char *graphicsGetVcaMode(uint8_t index) {
+
+    bool setting = index < 0x80? 0 : 1;
+
+    if(!setting) {
+
+        index >>= 2;
+
+    }
+
+    return graphicsGetHexString(index);
+
+    // if(setting){
+
+    //     return graphicsGetHexString(index);
+
+    // } else {
+
+    //     uint8_t scaled_index = index >> 3;
+    //     return graphic_plus_sign_hex[scaled_index];
+
+    // }
+
+
+}
+
+const char* graphicsGetResetSync(uint8_t index) {
+
+    switch(index) {
+
+        case 0:
+            return "--";
+            break;
+
+        case 1:
+            return "r-";
+            break;
+
+        case 2:
+            return "-s";
+            break;
+
+        case 3:
+            return "rs";
+            break;
+
+        default: break;
+
+    }
+
+}
+
+const char* graphicsGetParamHeader(view_layer_t l, uint8_t index) {
+
+    const char *p_h;
+
+    switch(l) {
+
+        case LAYER_SYNTH_1:
+            p_h = param_header_s1[index];
+            break;
+
+            case LAYER_SYNTH_2:
+            p_h = param_header_s2[index];
+            break;
+
+            case LAYER_ENV:
+            p_h = param_header_env[index];
+            break;
+
+            case LAYER_LFO:
+            p_h = param_header_lfo[index];
+            break;
+
+            case LAYER_SYNTH_ENV_SPLIT:
+            p_h = param_header_s_env[index];
+            break;
+
+            default:
+            break;
+
+    }
+
+    return p_h;
+
+
+}
+
+unsigned char* graphicsGetStepIcon(graphic_step_icon_t i) {
+
+    if(i == STEP_ICON_ACTIVE) {
+
+        return (unsigned char*)active_step_icon;
+
+    } else if (i == STEP_ICON_INACTIVE) {
+
+        return (unsigned char*)inactive_step_icon;
+
+    } else if (i == STEP_ICON_UNWRITTEN) {
+
+        return (unsigned char*)unwritten_step_icon;
+
+    }
+
+}
+
+unsigned char* graphicsGetPlayIcon() {
+
+    return (unsigned char*)play_icon;
+
+}
+
+const char* graphicsGetModDst(mod_destinations_t dst) {
+    switch (dst) {
+        case MOD_DST_NONE:                  return "none";
+        case MOD_DST_OSC_1_PITCH:           return "osc 1 pitch c";
+        case MOD_DST_OSC_1_OCTAVE:          return "osc 1 octave";
+        case MOD_DST_OSC_1_X_MORPH:         return "osc 1 x morph";
+        case MOD_DST_OSC_1_Y_MORPH:         return "osc 1 y morph";
+        case MOD_DST_OSC_2_PITCH:           return "osc 2 pitch c";
+        case MOD_DST_OSC_2_OCTAVE:          return "osc 2 octave";
+        case MOD_DST_OSC_2_X_MORPH:         return "osc 2 x morph";
+        case MOD_DST_OSC_2_Y_MORPH:         return "osc 2 y morph";
+        case MOD_DST_PORTAMENTO:            return "portamento";
+        case MOD_DST_PHASE_MOD:             return "phase mod";
+        case MOD_DST_SYNC:                  return "sync";
+        case MOD_DST_MIX_OSC_1_MIX:         return "mix osc 1 mix";
+        case MOD_DST_MIX_OSC_2_MIX:         return "mix osc 2 mix";
+        case MOD_DST_MIX_NOISE_MIX:         return "mix noise mix";
+        case MOD_DST_FILTER_CUTOFF:         return "filter cutoff";
+        case MOD_DST_FILTER_RESONANCE:      return "filter res";
+        case MOD_DST_FILTER_ENV_AMT:        return "filter env amt";
+        case MOD_DST_FILTER_TYPE:           return "filter type";
+        case MOD_DST_FILTER_FM:             return "filter fm";
+        case MOD_DST_FILTER_TRACKING:       return "filter tracking";
+        case MOD_DST_DELAY_RATE:            return "delay rate";
+        case MOD_DST_DELAY_FEEDBACK:        return "delay feedback";
+        case MOD_DST_DELAY_AMOUNT:          return "delay amount";
+        case MOD_DST_DELAY_DIFFUSION:       return "delay diffusion";
+        case MOD_DST_DELAY_FILTER:          return "delay filter";
+        case MOD_DST_DELAY_STEREO:          return "delay stereo";
+        case MOD_DST_ENV_1_ATTACK:          return "env 1 attack";
+        case MOD_DST_ENV_1_DECAY:           return "env 1 decay";
+        case MOD_DST_ENV_1_SUSTAIN:         return "env 1 sustain";
+        case MOD_DST_ENV_1_RELEASE:         return "env 1 release";
+        case MOD_DST_ENV_1_AMOUNT:          return "env 1 amount";
+        case MOD_DST_ENV_2_ATTACK:          return "env 2 attack";
+        case MOD_DST_ENV_2_DECAY:           return "env 2 decay";
+        case MOD_DST_ENV_2_SUSTAIN:         return "env 2 sustain";
+        case MOD_DST_ENV_2_RELEASE:         return "env 2 release";
+        case MOD_DST_ENV_2_AMOUNT:          return "env 2 amount";
+        case MOD_DST_ENV_3_ATTACK:          return "env 3 attack";
+        case MOD_DST_ENV_3_DECAY:           return "env 3 decay";
+        case MOD_DST_ENV_3_SUSTAIN:         return "env 3 sustain";
+        case MOD_DST_ENV_3_RELEASE:         return "env 3 release";
+        case MOD_DST_ENV_3_AMOUNT:          return "env 3 amount";
+        case MOD_DST_LFO_1_RATE:            return "lfo 1 rate";
+        case MOD_DST_LFO_1_SHAPE:           return "lfo 1 shape";
+        case MOD_DST_LFO_1_PHASE:           return "lfo 1 phase";
+        case MOD_DST_LFO_1_SYNC:            return "lfo 1 sync";
+        case MOD_DST_LFO_1_AMOUNT:          return "lfo 1 amount";
+        case MOD_DST_LFO_2_RATE:            return "lfo 2 rate";
+        case MOD_DST_LFO_2_SHAPE:           return "lfo 2 shape";
+        case MOD_DST_LFO_2_PHASE:           return "lfo 2 phase";
+        case MOD_DST_LFO_2_SYNC:            return "lfo 2 sync";
+        case MOD_DST_LFO_2_AMOUNT:          return "lfo 2 amount";
+        case MOD_DST_LFO_3_RATE:            return "lfo 3 rate";
+        case MOD_DST_LFO_3_SHAPE:           return "lfo 3 shape";
+        case MOD_DST_LFO_3_PHASE:           return "lfo 3 phase";
+        case MOD_DST_LFO_3_SYNC:            return "lfo 3 sync";
+        case MOD_DST_LFO_3_AMOUNT:          return "lfo 3 amount";
+        case MOD_DST_VCA:                   return "vca";
+        case MOD_DST_OSC_BOTH_PITCH_FINE:   return "oscs pitch f";
+        case MOD_DST_OSC_BOTH_PITCH:        return "oscs pitch c";
+        case MOD_DST_OSC_BOTH_OCTAVE:       return "oscs octave";
+        case MOD_DST_OSC_BOTH_X_MORPH:      return "oscs x morph";
+        case MOD_DST_OSC_BOTH_Y_MORPH:      return "oscs y morph";
+        case MOD_DST_OSC_1_PITCH_FINE:      return "osc 1 pitch f";
+        case MOD_DST_OSC_2_PITCH_FINE:      return "osc 2 pitch f";
+        default:                        return "unknown";
+    }
+}
+
+const char* graphicsGetEncoderMode(view_mode_t mode) {
+
+    switch (mode) {
+        case MODE_KBD_OCT:              return "kbd oct";
+        case MODE_MOD_DST_ENV_1:        return "env 1 dst";
+        case MODE_MOD_DST_ENV_2:        return "env 2 dst";
+        case MODE_MOD_DST_ENV_3:        return "env 3 dst";
+        case MODE_MOD_DST_LFO_1:        return "lfo 1 dst";
+        case MODE_MOD_DST_LFO_2:        return "lfo 2 dst";
+        case MODE_MOD_DST_LFO_3:        return "lfo 3 dst";
+        case MODE_SEQ_SET_BPM:          return "seq bpm";
+        case MODE_SEQ_STEP_NOTE:        return "seq step note";
+        case MODE_SEQ_STEP_LENGTH:      return "seq step length";
+        case MODE_SEQ_P_LOCK_DEST:      return "seq p lock dest";
+        case MODE_SAVE_PRESET_SEL:      return "preset";
+        case MODE_MIDI_CHANNEL:         return "channel";
+        case MODE_MIDI_VELOCITY_DST:    return "vel dst";
+        case MODE_MIDI_MOD_WHEEL_DST:   return "mod dst";
+        case MODE_MIDI_AFTERTOUCH_DST:  return "aft dst";
+        case MODE_MOD_LAYER_SEL:        return "mod layer sel";
+
+        default:                             return "unknown mode";
+    }
+
+}
+
+const char* graphicsGetOnOff(bool on) {
+
+    return on_off[on];
+
+}
+
+const char* graphicsGetStorageTypeString(storage_string_t string) {
+
+    switch(string) {
+        case STRING_SAVE: return "save"; break;
+
+        case STRING_LOAD: return "load"; break;
+
+        default: break;
+    }
+
+    return "";
+
+}
+
+const char* graphicsGetStorageActiveString(storage_string_t string) {
+
+    switch(string) {
+        case STRING_SAVE: return "saving..."; break;
+
+        case STRING_LOAD: return "loading..."; break;
+
+        default: break;
+    }
+
+    return "";
+
+}
