@@ -1,0 +1,392 @@
+#include "mod_matrix.h"
+
+bool ModMatrix::lfo_reset_sync[4][2] {
+    {false, false}, {true, false}, {false, true}, {true, true}
+};
+
+uint16_t ModMatrix::lfo_div_val[] = {256, 192, 128, 96, 64, 48, 32, 24, 16, 12, 8, 6, 4, 3, 2, 1};
+
+ModMatrix::ModMatrix(
+    synth_parameters_t      *synth_params,
+    external_modulation_t   *ext_mod, 
+    voice_inputs_t          *voice_inputs,
+    delay_inputs_t          *delay_inputs, 
+    cv_outputs_t            *cv_outputs,
+    uint16_t random_seed
+) {
+
+    v_i = voice_inputs;
+    d_i = delay_inputs;
+    c_o = cv_outputs;
+
+    patch_ = synth_params; 
+    ext_mod_ = ext_mod;
+    seed_ = random_seed;
+
+    for(int i = 0; i < NUMBER_OF_ENVS; i++) {
+
+        EnvInit(&env_[i]);
+
+    }
+
+    for(int i = 0; i < NUMBER_OF_LFOS; i++) {
+
+        LFOSetup(&lfo_[i], random_seed);
+
+    }
+
+}
+
+void ModMatrix::process() {
+
+    loadSources();
+    processModulation();
+    updateDestinations();
+
+}
+
+void ModMatrix::triggerNoteOn(uint8_t note, uint8_t velocity, bool trigger) {
+
+    v_i->pitch_target = note << 8;
+    uint8_t portamento = v_i->portamento;
+    int16_t delta = v_i->pitch_target - v_i->pitch_value;
+    int32_t increment = (res_env_portamento_increments[portamento >> 1]);
+    v_i->pitch_increment = (delta * increment) >> 16;
+
+    if (v_i->pitch_increment == 0) {
+
+        if (delta < 0) {
+            v_i->pitch_increment = -1;
+        }
+        else {
+            v_i->pitch_increment = 1;
+        }
+
+    }
+
+    if(trigger) {
+
+        for (int i = 0; i < NUMBER_OF_ENVS; i++) {
+
+            EnvTrigger(ATTACK, &env_[i]);
+    
+        }
+    
+        for (int i = 0; i < NUMBER_OF_LFOS; i++) {
+    
+            LFOReset(&lfo_[i]);
+            if(lfo_[i].reset_) lfo_tick_count[i] = 0;
+    
+        }
+
+    }
+
+    velocity_ = velocity;
+
+}
+
+void ModMatrix::triggerNoteOff(uint8_t note) {
+
+    for (int i = 0; i < NUMBER_OF_ENVS; i++) {
+        
+        EnvTrigger(RELEASE, &env_[i]);
+
+    }
+
+}
+
+void ModMatrix::loadSources() {
+
+    mod_source_[MOD_SRC_ENV_1] = EnvRender(&env_[0]) >> 4;
+    mod_source_[MOD_SRC_ENV_2] = EnvRender(&env_[1]) >> 4;
+    mod_source_[MOD_SRC_ENV_3] = EnvRender(&env_[2]) >> 4;
+    mod_source_[MOD_SRC_LFO_1] = LFORender(&lfo_[0]);
+    mod_source_[MOD_SRC_LFO_2] = LFORender(&lfo_[1]);
+    mod_source_[MOD_SRC_LFO_3] = LFORender(&lfo_[2]);
+ 
+    mod_source_[MOD_SRC_VELOCITY]   = velocity_ << 1;
+    mod_source_[MOD_SRC_MOD_WHEEL]  = ext_mod_->mod_wheel_amt << 1;
+    mod_source_[MOD_SRC_AFTERTOUCH] = ext_mod_->aftertouch_amt << 1;
+
+    // TEST_PRINT_ONE_NL(mod_source_[MOD_SRC_LFO_1])
+
+    vca_drone_mode_ = patch_->vca.level >> 7;
+
+    dst_[MOD_DST_VCA] = vca_drone_mode_ == false? 0 : patch_->vca.level << 4;
+
+    dst_[MOD_DST_FILTER_CUTOFF] = patch_->filter.cutoff << 4;
+    dst_[MOD_DST_FILTER_RESONANCE] = patch_->filter.resonance << 4;
+    dst_[MOD_DST_FILTER_ENV_AMT] = patch_->filter.env_amt << 4;
+    dst_[MOD_DST_FILTER_TYPE] = patch_->filter.type << 4;
+    dst_[MOD_DST_FILTER_FM] =  patch_->filter.fm << 4;
+    dst_[MOD_DST_FILTER_TRACKING] = patch_->filter.tracking << 4;
+
+    dst_[MOD_DST_OSC_1_PITCH] = 2048;
+    dst_[MOD_DST_OSC_2_PITCH] = 2048;
+    dst_[MOD_DST_OSC_BOTH_PITCH] = 2048;
+    dst_[MOD_DST_OSC_1_PITCH_FINE] = 0;
+    dst_[MOD_DST_OSC_2_PITCH_FINE] = 0;
+    dst_[MOD_DST_OSC_BOTH_PITCH_FINE] = 0;
+
+    dst_[MOD_DST_OSC_1_OCTAVE] = patch_->osc[0].octave << 4;
+    dst_[MOD_DST_OSC_2_OCTAVE] = patch_->osc[1].octave << 4;
+    dst_[MOD_DST_OSC_BOTH_OCTAVE] = 2048;
+
+    dst_[MOD_DST_OSC_1_X_MORPH] = patch_->osc[0].x_morph << 4;
+    dst_[MOD_DST_OSC_1_Y_MORPH] = patch_->osc[0].y_morph << 4;
+    dst_[MOD_DST_OSC_BOTH_X_MORPH] = 2048;
+
+    dst_[MOD_DST_OSC_2_X_MORPH] = patch_->osc[1].x_morph << 4;
+    dst_[MOD_DST_OSC_2_Y_MORPH] = patch_->osc[1].y_morph << 4;
+    dst_[MOD_DST_OSC_BOTH_Y_MORPH] = 2048;    
+
+    dst_[MOD_DST_PORTAMENTO] = patch_->shared.portamento << 4;
+    dst_[MOD_DST_PHASE_MOD] = PhaseModSmooth.getAverage(patch_->shared.phase_mod) << 4;
+    dst_[MOD_DST_SYNC] = patch_->shared.sync << 4;
+
+    dst_[MOD_DST_MIX_OSC_1_MIX] = patch_->mixer.osc_1_mix << 4;
+    dst_[MOD_DST_MIX_OSC_2_MIX] = patch_->mixer.osc_2_mix << 4;
+    dst_[MOD_DST_MIX_NOISE_MIX] = patch_->mixer.noise_mix << 4;
+
+    int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
+    for (uint8_t i = 0; i < NUMBER_OF_ENVS; ++i)
+    {
+        *envelope_parameters++ = patch_->env[i].attack << 4;
+        *envelope_parameters++ = patch_->env[i].decay << 4;
+        *envelope_parameters++ = patch_->env[i].sustain << 4;
+        *envelope_parameters++ = patch_->env[i].release << 4;
+        envelope_parameters += 1;
+    }
+
+
+    int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
+    for (uint8_t i = 0; i < NUMBER_OF_ENVS; ++i)
+    {
+        *lfo_parameters++ = patch_->lfo[i].rate << 4;
+        *lfo_parameters++ = patch_->lfo[i].shape << 4;
+        *lfo_parameters++ = patch_->lfo[i].phase << 4;
+        lfo_parameters += 2;
+    }
+
+    int16_t *mod_amount = &dst_[MOD_DST_ENV_1_AMOUNT];
+    for (uint8_t i = 0; i < NUMBER_OF_ENVS + NUMBER_OF_LFOS; i++)
+    {
+        *mod_amount = patch_->mod[i].amount << 4;
+        mod_amount += 5;
+    }
+
+    dst_[MOD_DST_DELAY_AMOUNT] = patch_->delay.amount << 4;
+    dst_[MOD_DST_DELAY_RATE] = patch_->delay.rate << 4;
+    dst_[MOD_DST_DELAY_FEEDBACK] = patch_->delay.feedback << 4;
+
+}
+
+void ModMatrix::processModulation() {
+
+    for (int i = 0; i < NUM_MOD_SOURCES; i++)
+    {
+
+        int16_t amount = bipolarParameter(mod_amount_[i]) << 1;
+        int16_t source = mod_source_[i];
+        uint8_t destination = U8CLIPMAX(NUM_MOD_DESTINATIONS, patch_->mod[i].destination);
+        int16_t modulation = dst_[destination];
+
+        if (i >= MOD_SRC_LFO_1 && i <= MOD_SRC_LFO_3)
+        {
+            modulation += S8S16MULSHIFT8(source - 2048, amount);
+        }
+        else
+        {
+            modulation += U8S16MULSHIFT8(source, amount);
+        }
+
+        dst_[destination] = U12CLIPMAXMIN(modulation);
+    }
+}
+
+void ModMatrix::updateDestinations()
+{
+    // VCA 1 CV output
+
+    // if(!vca_drone_mode_) dst_[MOD_DST_VCA] += mod_source_[MOD_SRC_ENV_3];
+    int16_t vca_output;
+
+    if(!vca_drone_mode_) {
+
+        uint8_t vca_base = 0xDF;
+        uint8_t overdrive = patch_->vca.level >> 2;
+
+        uint16_t velocity_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_ << 1);
+
+        // dst_[MOD_DST_VCA] += U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], vca_base + overdrive);
+
+        dst_[MOD_DST_VCA] += velocity_out;
+
+
+        // vca_output = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], dst_[MOD_DST_VCA] >> 4);
+        
+    }
+
+    c_o->vca1 = U12CLIPMAXMIN(dst_[MOD_DST_VCA]) >> 1;
+    // c_o->vca1 = U12CLIPMAXMIN(vca_output) >> 1;
+
+    // VCA 2 CV output
+    c_o->vca2 = U12CLIPMAXMIN(dst_[MOD_DST_FILTER_FM]) >> 1;
+
+    // filter cutoff CV output
+    int16_t tracking_amount = dst_[MOD_DST_FILTER_TRACKING] >> 4;
+    int16_t pitch_scaled = v_i->pitch_value >> 3;
+    int16_t tracking = U8S16MULSHIFT8(pitch_scaled , tracking_amount);
+
+    // TEST_PRINT_ONE_NL(pitch_scaled)
+
+    int16_t cutoffModulation = dst_[MOD_DST_FILTER_CUTOFF] + tracking;
+    int16_t cutoff_env= mod_source_[MOD_SRC_ENV_2];
+    int16_t cutoff_env_amount = bipolarParameter(dst_[MOD_DST_FILTER_ENV_AMT] >> 4) << 1;
+    
+    cutoffModulation += U8S16MULSHIFT8(cutoff_env, cutoff_env_amount);
+    dst_[MOD_DST_FILTER_CUTOFF] = U12CLIPMAXMIN(cutoffModulation);
+    c_o->cutoff = dst_[MOD_DST_FILTER_CUTOFF] >> 1;
+
+    // resonance CV output
+    c_o->resonance = U12CLIPMAXMIN(dst_[MOD_DST_FILTER_RESONANCE]) >> 1;
+
+    // filter type CV output (CV being binary output of two GPIO pins, that is)
+    c_o->filter_type = dst_[MOD_DST_FILTER_TYPE] >> 10;
+
+    int16_t pb = ext_mod_->pitch_bend_amt - 8192;
+    uint16_t pb_range = (ext_mod_->pitch_bend_depth_send + 1) << 8;
+    int16_t pitch_bend_scaled = linearScale(pb, 8192, pb_range);
+
+
+    v_i->osc_pitch_mod[0] = 
+        ((dst_[MOD_DST_OSC_1_PITCH] - 2048) + (dst_[MOD_DST_OSC_BOTH_PITCH] - 2048)) << 3;
+    v_i->osc_scale[0] = 
+        ((bipolarParameter(patch_->osc[0].scale) * 2) * 12) + 
+        bipolarParameter((dst_[MOD_DST_OSC_1_PITCH_FINE]) >> 4) * 2 + 
+        bipolarParameter((dst_[MOD_DST_OSC_BOTH_PITCH_FINE]) >> 4) * 4 + 
+        pitch_bend_scaled;
+    // v_i->osc_scale[0] += bipolarParameter((dst_[MOD_DST_OSC_1_PITCH_FINE]) >> 4) * 2;
+    // v_i->osc_scale[0] += pitch_bend_scaled;
+    v_i->osc_octave[0] = 
+        U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_OCTAVE] + (dst_[MOD_DST_OSC_BOTH_OCTAVE]) - 2048) >> 10; 
+
+    v_i->osc_pitch_mod[1] = 
+        ((dst_[MOD_DST_OSC_2_PITCH] - 2048) + (dst_[MOD_DST_OSC_BOTH_PITCH] - 2048)) << 3;
+    v_i->osc_scale[1] = 
+        ((bipolarParameter(patch_->osc[1].scale) * 2) * 12) + 
+        bipolarParameter((dst_[MOD_DST_OSC_2_PITCH_FINE]) >> 4) * 2 +
+        bipolarParameter((dst_[MOD_DST_OSC_BOTH_PITCH_FINE]) >> 4) * 4 +  
+        pitch_bend_scaled;
+    v_i->osc_octave[1] = 
+        U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_OCTAVE] + (dst_[MOD_DST_OSC_BOTH_OCTAVE] - 2048)) >> 10; 
+
+    // TEST_PRINT_TWO_NL(v_i->osc_octave[1], dst_[MOD_DST_OSC_BOTH_OCTAVE])
+
+        // v_i->osc_pitch_mod[1] = ((dst_[MOD_DST_OSC_2_PITCH] - 2048) + (dst_[MOD_DST_OSC_BOTH_PITCH] - 2048)) << 3;
+    // v_i->osc_scale[1] = (bipolarParameter(patch_->osc[1].scale) * 2) * 12;
+    // v_i->osc_scale[1] += bipolarParameter((dst_[MOD_DST_OSC_2_PITCH_FINE]) >> 4) * 2;
+    // v_i->osc_scale[1] += pitch_bend_scaled;
+    // v_i->osc_octave[1] = dst_[MOD_DST_OSC_2_OCTAVE] >> 10;
+
+    v_i->x_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_X_MORPH] + (dst_[MOD_DST_OSC_BOTH_X_MORPH] - 2048)) >> 4;
+    v_i->y_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_Y_MORPH] + (dst_[MOD_DST_OSC_BOTH_Y_MORPH] - 2048)) >> 4;
+    v_i->x_morph[1] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_X_MORPH] + (dst_[MOD_DST_OSC_BOTH_X_MORPH] - 2048)) >> 4;
+    v_i->y_morph[1] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_Y_MORPH] + (dst_[MOD_DST_OSC_BOTH_Y_MORPH] - 2048)) >> 4;
+
+    v_i->portamento = dst_[MOD_DST_PORTAMENTO] >> 5;
+    v_i->phase_mod = dst_[MOD_DST_PHASE_MOD] >> 4;
+    v_i->sync = dst_[MOD_DST_SYNC] >> 11;
+
+    v_i->osc_1_mix = dst_[MOD_DST_MIX_OSC_1_MIX] >> 4;
+    v_i->osc_2_mix = dst_[MOD_DST_MIX_OSC_2_MIX] >> 4;
+    v_i->noise_mix = dst_[MOD_DST_MIX_NOISE_MIX] >> 4;
+
+    int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
+    for (int i = 0; i < NUMBER_OF_ENVS; ++i)
+    {
+        EnvUpdate(
+            envelope_parameters[0] >> 4,
+            envelope_parameters[1] >> 4,
+            envelope_parameters[2] >> 4,
+            envelope_parameters[3] >> 4,
+            &env_[i]            
+        );
+        envelope_parameters += 5;
+    }
+
+    bool tick_occurred = ext_mod_->clock_tick_occurred;
+    ext_mod_->clock_tick_occurred = false;
+
+    bool start_occurred = ext_mod_->start_occurred;
+    ext_mod_->start_occurred = false;
+
+    int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
+    for (int i = 0; i < NUMBER_OF_LFOS; ++i)
+    {
+        uint8_t lfo_sync_reset_state = patch_->lfo[i].sync >> 6;
+        bool lfo_reset = lfo_reset_sync[lfo_sync_reset_state][0];
+        bool lfo_sync = lfo_reset_sync[lfo_sync_reset_state][1];
+        LFOSetSync(&lfo_[i], lfo_sync);
+        LFOSetReset(&lfo_[i], lfo_reset);
+
+        uint16_t sync_div_val = lfo_div_val[lfo_parameters[0] >> 8];
+        uint32_t lfo_sync_inc = 
+        ((klfo_sync_tick_dividend/(ext_mod_->clock_tick_period * sync_div_val)) << 16)/klfo_sync_divisor;
+
+            // (60 seconds in us / (tick period * division of period) << 16 bit) / update frequency in HZ
+            // It can be thought of like this:
+            // say the value being shifted by 16 bits is 1 (1 << 16)...
+            // at the update rate defined by the sync divisor, a total cycle will take 1 second
+            // anything greater than 1 << 16 is less than a second, where anything less is more than a second
+            // ... klfo_syn_tick_dividend should be called something more like kone_second_in_us_times_100 or sth
+        //if(i == 0) printf("%d, %d, %d\t", lfo_[0].getSync(), lfo_sync_inc, sync_div_val);
+
+        LFOUpdate(
+            &lfo_[i], 
+            LFOGetSync(&lfo_[i]) == false? lfo_parameters[0] + 16 : lfo_sync_inc,
+            param8Bits0To4(lfo_parameters[1] >> 4),
+            lfo_parameters[2] >> 4,
+            0,
+            0
+        );
+        lfo_parameters += 5;
+
+        bool tick_reset = false;
+
+        if(tick_occurred) {
+
+            lfo_tick_count[i]++;
+            
+            if(lfo_tick_count[i] >= sync_div_val) {
+                
+                tick_reset = true;
+
+            }
+        }
+
+        if((tick_reset || start_occurred) && lfo_[i].sync_) {
+            
+            LFOResetNow(&lfo_[i]);
+            lfo_tick_count[i] = 0;   
+
+        }
+    }
+
+    mod_amount_[MOD_SRC_ENV_1] = dst_[MOD_DST_ENV_1_AMOUNT] >> 4;
+    mod_amount_[MOD_SRC_ENV_2] = dst_[MOD_DST_ENV_2_AMOUNT] >> 4;
+    mod_amount_[MOD_SRC_ENV_3] = dst_[MOD_DST_ENV_3_AMOUNT] >> 4;
+    mod_amount_[MOD_SRC_LFO_1] = dst_[MOD_DST_LFO_1_AMOUNT] >> 4;
+    mod_amount_[MOD_SRC_LFO_2] = dst_[MOD_DST_LFO_2_AMOUNT] >> 4;
+    mod_amount_[MOD_SRC_LFO_3] = dst_[MOD_DST_LFO_3_AMOUNT] >> 4;
+    mod_amount_[MOD_SRC_VELOCITY] = MAX_PARAM_VALUE;
+    mod_amount_[MOD_SRC_MOD_WHEEL] = MAX_PARAM_VALUE;
+    mod_amount_[MOD_SRC_AFTERTOUCH] = MAX_PARAM_VALUE;
+
+    d_i->amount = dst_[MOD_DST_DELAY_AMOUNT] >> 4;
+    d_i->length = dst_[MOD_DST_DELAY_RATE] >> 4;
+    d_i->feedback = dst_[MOD_DST_DELAY_FEEDBACK] >> 4;
+
+
+}
+
