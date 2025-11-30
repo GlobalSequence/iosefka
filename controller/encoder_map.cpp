@@ -35,6 +35,15 @@ const mode_constants_t rules[NUM_VIEW_MODES] = {
     { MODE_MIDI_MOD_WHEEL_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
     { MODE_MIDI_AFTERTOUCH_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
     { MODE_MIDI_PITCHBEND_DEPTH, 0, MIDI_PITCH_BEND_DEPTH_MAX - 1, false, 1},
+    { MODE_MIDI_BREATH_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
+    { MODE_MIDI_NOTE_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
+    { MODE_SET_SCROLL, 0, NUM_SET_ROWS - 1, false, 1},
+    { MODE_SET_MOD_SRC_SEL, 0, NUM_SET_MOD_SRC - 1, true, 1},
+    { MODE_SET_MOD_DST_SEL, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
+    { MODE_SET_PRESET_NAME_SEL, 0, 0, true, 4},
+    { MODE_USER_PARAM_SEL, 0, NUMBER_OF_POTENTIOMETERS - 1, true, 1},
+    { MODE_USER_PARAM_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
+    { MODE_SEQ_WINDOW_SEL, 0, NUMBER_OF_SEQUENCER_WINDOWS - 1, true, 1},
 };
 
 static synth_state_t *synth;
@@ -59,92 +68,70 @@ mod_destinations_t getModDst(mod_sources_t src) {
 
 }
 
+mod_sources_t getSettingsModSource() {
+
+    // uint8_t a = viewGetSettingsModSource();
+
+    // switch(a) {
+
+    //     case SET_MOD_SRC_MOD_WHEEL: return MOD_SRC_MOD_WHEEL; break;
+    //     case SET_MOD_SRC_AFTERTOUCH: return MOD_SRC_AFTERTOUCH; break;
+    //     // case SET_MOD_SRC_NOTE: return MOD_SRC_NOTE; break;
+    //     // case SET_MOD_SRC_BR_CTRL: return MOD_SRC_BR_CTRL; break;
+    //     default: return MOD_SRC_VELOCITY; break;
+    // }
+
+    // return MOD_SRC_VELOCITY;
+
+    return (mod_sources_t) viewGetModSourceFromSettings();
+
+}
+
 int16_t getCount(view_mode_t mode) { 
 
     switch(mode) {
     
-        case MODE_KBD_OCT:
-
-            return viewGetKeyboardOctave();
-
-            break;
+        case MODE_KBD_OCT: return viewGetKeyboardOctave();
         
-        case MODE_MOD_DST_ENV_1:
+        case MODE_MOD_DST_ENV_1: return getModDst(MOD_SRC_ENV_1);
 
-            return getModDst(MOD_SRC_ENV_1);
+        case MODE_MOD_DST_ENV_2: return getModDst(MOD_SRC_ENV_2);
 
-            break;
+        case MODE_MOD_DST_ENV_3: return getModDst(MOD_SRC_ENV_3);
 
-        case MODE_MOD_DST_ENV_2:
+        case MODE_MOD_DST_LFO_1: return getModDst(MOD_SRC_LFO_1);
 
-            return getModDst(MOD_SRC_ENV_2);
+        case MODE_MOD_DST_LFO_2: return getModDst(MOD_SRC_LFO_2);
 
-            break;
+        case MODE_MOD_DST_LFO_3: return getModDst(MOD_SRC_LFO_3);
 
-        case MODE_MOD_DST_ENV_3:
+        case MODE_MIDI_CHANNEL: return synth->settings.channel;
 
-            return getModDst(MOD_SRC_ENV_3);
+        case MODE_MIDI_VELOCITY_DST: return getModDst(MOD_SRC_VELOCITY);
 
-            break;
+        case MODE_MIDI_MOD_WHEEL_DST: return getModDst(MOD_SRC_MOD_WHEEL);
 
-        case MODE_MOD_DST_LFO_1:
+        case MODE_MIDI_AFTERTOUCH_DST: return getModDst(MOD_SRC_AFTERTOUCH);
 
-            return getModDst(MOD_SRC_LFO_1);
+        case MODE_SAVE_PRESET_SEL: return viewGetPresetNumber();
 
-            break;
+        case MODE_SEQ_SET_BPM: return synth->seq.getBpm();
 
-        case MODE_MOD_DST_LFO_2:
+        case MODE_MIDI_PITCHBEND_DEPTH: return synth->settings.pitch_bend_depth;
 
-            return getModDst(MOD_SRC_LFO_2);
+        case MODE_SET_SCROLL: return viewGetSettingsRow();
 
-            break;
+        case MODE_SET_MOD_SRC_SEL: return viewGetSettingsModSource();
 
-        case MODE_MOD_DST_LFO_3:
+        case MODE_SET_MOD_DST_SEL: return getModDst(getSettingsModSource());
 
-            return getModDst(MOD_SRC_LFO_3);
+        case MODE_USER_PARAM_SEL: return viewGetCurrentUserParameter();
 
-            break;
+        case MODE_USER_PARAM_DST: return synth->user_param.destination[viewGetCurrentUserParameter()];
 
-        case MODE_MIDI_CHANNEL:
+        case MODE_SEQ_WINDOW_SEL: return viewGetSequencerWindow();
 
-            return synth->midi.channel;
-
-            break;
-
-        case MODE_MIDI_VELOCITY_DST:
-
-            return getModDst(MOD_SRC_VELOCITY);
-
-            break;
-
-        case MODE_MIDI_MOD_WHEEL_DST:
-
-            return getModDst(MOD_SRC_MOD_WHEEL);
-
-            break;
-
-        case MODE_MIDI_AFTERTOUCH_DST:
-
-            return getModDst(MOD_SRC_AFTERTOUCH);
-
-            break;
-
-        case MODE_SAVE_PRESET_SEL:
-
-            return viewGetPresetNumber();
-
-            break;
-
-        case MODE_SEQ_SET_BPM:
-
-            return synth->seq.getBpm();
-        
-            break;
-
-        case MODE_MIDI_PITCHBEND_DEPTH:
-
-            return synth->midi.pitch_bend_depth;
-
+        default:
             break;
     }
 
@@ -256,7 +243,7 @@ void encoderMapAssignValue(int8_t value, bool accel) {
     
         case MODE_MIDI_CHANNEL:
 
-            synth->midi.channel = count_value;
+            synth->settings.channel = count_value;
 
             break;
     
@@ -280,7 +267,43 @@ void encoderMapAssignValue(int8_t value, bool accel) {
     
         case MODE_MIDI_PITCHBEND_DEPTH:
 
-            synth->midi.pitch_bend_depth = count_value;
+            synth->settings.pitch_bend_depth = count_value;
+
+            break;
+
+        case MODE_SET_SCROLL:
+
+            viewSetSettingsRow(count_value);
+
+            break;
+
+        case MODE_SET_MOD_SRC_SEL:
+
+            viewSetSettingsModSource(count_value);
+
+            break;
+
+        case MODE_SET_MOD_DST_SEL:
+
+            setModDst(getSettingsModSource(), count_value);
+
+            break;
+
+        case MODE_USER_PARAM_SEL:
+
+            viewSetCurrentUserParameter(count_value);
+
+            break;
+
+        case MODE_USER_PARAM_DST:
+
+            synth->user_param.destination[viewGetCurrentUserParameter()] = count_value;
+
+            break;
+
+        case MODE_SEQ_WINDOW_SEL:
+
+            viewSetSequencerWindowByValue(count_value);
 
             break;
 

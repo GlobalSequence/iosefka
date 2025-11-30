@@ -21,6 +21,11 @@ void Voice2::renderOscillators()
     osc_[1].setXMorph(p.x_morph[1]);
     osc_[1].setYMorph(p.y_morph[1]);
 
+    if(p.osc_reset) {
+        osc_[0].reset();
+        osc_[1].reset();
+    }
+
     int16_t base_pitch = p.pitch_value + p.pitch_increment;
     if ((p.pitch_increment > 0) ^ (base_pitch < p.pitch_target))
     {

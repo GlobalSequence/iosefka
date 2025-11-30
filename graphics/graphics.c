@@ -177,6 +177,10 @@ const char *param_header_lfo[NUMBER_OF_PARAM_COLS] = {
     "rt", "sh", "ph", "rs", "am"
 };
 
+const char *param_header_user[NUMBER_OF_PARAM_COLS] = {
+    "user params", "", "", "", ""
+};
+
 const char *on_off[] = {
     "off", "on "
 
@@ -297,44 +301,26 @@ const char* graphicsGetSeqRepeat(uint8_t index) {
 const char* graphicsGetSettingsString(settings_string_t string) {
 
     switch (string) {
-        case STRING_CHANNEL:
-            return "channel";
-            break;
-        case STRING_VELOCITY:
-            return "vel";
-            break;
-        case STRING_MOD_WHEEL:
-            return "m.w.";
-            break;
-        case STRING_AFTERTOUCH:
-            return "a.t.";
-            break;
-        case STRING_CLOCK:
-            return "clk";
-            break;
-        case STRING_TRANSPORT:
-            return "trns";
-            break;
-        case STRING_PROGRAM_CHANGE:
-            return "pchg";
-            break;
-        case STRING_OUT:
-            return "out";
-            break;
-        case STRING_THRU:
-            return "thru";
-        case STRING_PRESET:
-            return "preset";
-            break;
-        case STRING_PITCH_BEND_DEPTH:
-            return "pb dp";
-            break;
-        case STRING_LATCH:
-            return "latch";
-            break;
-        case STRING_JUMP:
-            return "jump";
-            break;
+        case STRING_CHANNEL: return "channel"; break;
+        case STRING_VELOCITY: return "vel"; break;
+        case STRING_MOD_WHEEL: return "m.w."; break;
+        case STRING_AFTERTOUCH: return "a.t."; break;
+        case STRING_CLOCK: return "clk"; break;
+        case STRING_TRANSPORT: return "trns"; break;
+        case STRING_PROGRAM_CHANGE: return "pchg"; break;
+        case STRING_OUT: return "out"; break;
+        case STRING_THRU: return "thru"; break;
+        case STRING_PRESET: return "preset"; break;
+        case STRING_PITCH_BEND_DEPTH: return "pb dp"; break;
+        case STRING_LATCH: return "latch"; break;
+        case STRING_JUMP: return "jump"; break;
+        case STRING_NAME: return "name"; break;
+        case STRING_LEGATO: return "legato"; break;
+        case STRING_OSC_DUO: return "osc duo"; break;
+        case STRING_VCA_VELOCITY: return "vca velo"; break;
+        case STRING_MOD_SOURCE: return "src:"; break;
+        case STRING_INIT_PATCH: return "init (shift)"; break;
+        
         default:
             // handle unknown setting
             break;
@@ -452,6 +438,10 @@ const char* graphicsGetParamHeader(view_layer_t l, uint8_t index) {
             p_h = param_header_s_env[index];
             break;
 
+            case LAYER_USER_PARAM:
+            p_h = "user params";
+            break;
+
             default:
             break;
 
@@ -511,40 +501,43 @@ const char* graphicsGetModDst(mod_destinations_t dst) {
         case MOD_DST_FILTER_TRACKING:       return "filter tracking";
         case MOD_DST_DELAY_RATE:            return "delay rate";
         case MOD_DST_DELAY_FEEDBACK:        return "delay feedback";
-        case MOD_DST_DELAY_AMOUNT:          return "delay amount";
-        case MOD_DST_DELAY_DIFFUSION:       return "delay diffusion";
-        case MOD_DST_DELAY_FILTER:          return "delay filter";
-        case MOD_DST_DELAY_STEREO:          return "delay stereo";
+        case MOD_DST_DELAY_AMOUNT:          return "delay level";
+        // case MOD_DST_DELAY_DIFFUSION:       return "delay diffusion";
+        // case MOD_DST_DELAY_FILTER:          return "delay filter";
+        // case MOD_DST_DELAY_STEREO:          return "delay stereo";
         case MOD_DST_ENV_1_ATTACK:          return "env 1 attack";
         case MOD_DST_ENV_1_DECAY:           return "env 1 decay";
         case MOD_DST_ENV_1_SUSTAIN:         return "env 1 sustain";
         case MOD_DST_ENV_1_RELEASE:         return "env 1 release";
-        case MOD_DST_ENV_1_AMOUNT:          return "env 1 amount";
+        case MOD_DST_ENV_1_LOOP:            return "env 1 loop";
+        case MOD_DST_ENV_1_AMOUNT:          return "env 1 level";
         case MOD_DST_ENV_2_ATTACK:          return "env 2 attack";
         case MOD_DST_ENV_2_DECAY:           return "env 2 decay";
         case MOD_DST_ENV_2_SUSTAIN:         return "env 2 sustain";
         case MOD_DST_ENV_2_RELEASE:         return "env 2 release";
-        case MOD_DST_ENV_2_AMOUNT:          return "env 2 amount";
+        case MOD_DST_ENV_2_LOOP:            return "env 2 loop";
+        case MOD_DST_ENV_2_AMOUNT:          return "env 2 level";
         case MOD_DST_ENV_3_ATTACK:          return "env 3 attack";
         case MOD_DST_ENV_3_DECAY:           return "env 3 decay";
         case MOD_DST_ENV_3_SUSTAIN:         return "env 3 sustain";
         case MOD_DST_ENV_3_RELEASE:         return "env 3 release";
-        case MOD_DST_ENV_3_AMOUNT:          return "env 3 amount";
+        case MOD_DST_ENV_3_LOOP:            return "env 3 loop";
+        case MOD_DST_ENV_3_AMOUNT:          return "env 3 level";
         case MOD_DST_LFO_1_RATE:            return "lfo 1 rate";
         case MOD_DST_LFO_1_SHAPE:           return "lfo 1 shape";
         case MOD_DST_LFO_1_PHASE:           return "lfo 1 phase";
         case MOD_DST_LFO_1_SYNC:            return "lfo 1 sync";
-        case MOD_DST_LFO_1_AMOUNT:          return "lfo 1 amount";
+        case MOD_DST_LFO_1_AMOUNT:          return "lfo 1 level";
         case MOD_DST_LFO_2_RATE:            return "lfo 2 rate";
         case MOD_DST_LFO_2_SHAPE:           return "lfo 2 shape";
         case MOD_DST_LFO_2_PHASE:           return "lfo 2 phase";
         case MOD_DST_LFO_2_SYNC:            return "lfo 2 sync";
-        case MOD_DST_LFO_2_AMOUNT:          return "lfo 2 amount";
+        case MOD_DST_LFO_2_AMOUNT:          return "lfo 2 level";
         case MOD_DST_LFO_3_RATE:            return "lfo 3 rate";
         case MOD_DST_LFO_3_SHAPE:           return "lfo 3 shape";
         case MOD_DST_LFO_3_PHASE:           return "lfo 3 phase";
         case MOD_DST_LFO_3_SYNC:            return "lfo 3 sync";
-        case MOD_DST_LFO_3_AMOUNT:          return "lfo 3 amount";
+        case MOD_DST_LFO_3_AMOUNT:          return "lfo 3 level";
         case MOD_DST_VCA:                   return "vca";
         case MOD_DST_OSC_BOTH_PITCH_FINE:   return "oscs pitch f";
         case MOD_DST_OSC_BOTH_PITCH:        return "oscs pitch c";
@@ -553,7 +546,7 @@ const char* graphicsGetModDst(mod_destinations_t dst) {
         case MOD_DST_OSC_BOTH_Y_MORPH:      return "oscs y morph";
         case MOD_DST_OSC_1_PITCH_FINE:      return "osc 1 pitch f";
         case MOD_DST_OSC_2_PITCH_FINE:      return "osc 2 pitch f";
-        default:                        return "unknown";
+        default:                        return "unused";
     }
 }
 
@@ -577,6 +570,8 @@ const char* graphicsGetEncoderMode(view_mode_t mode) {
         case MODE_MIDI_MOD_WHEEL_DST:   return "mod dst";
         case MODE_MIDI_AFTERTOUCH_DST:  return "aft dst";
         case MODE_MOD_LAYER_SEL:        return "mod layer sel";
+        case MODE_USER_PARAM_SEL:       return "";
+        case MODE_USER_PARAM_DST:       return "user param #";
 
         default:                             return "unknown mode";
     }
@@ -616,3 +611,22 @@ const char* graphicsGetStorageActiveString(storage_string_t string) {
     return "";
 
 }
+
+const char* graphicsGetModSource(mod_sources_t src) {
+
+    switch(src) {
+
+        case MOD_SRC_VELOCITY: return "velo"; 
+        case MOD_SRC_MOD_WHEEL: return "mod whl";
+        case MOD_SRC_AFTERTOUCH: return "aft tch";
+        // case MOD_SRC_NOTE: return "note";
+        // case MOD_SRC_BREATH_CTRL: return "breath";
+        default: break;
+
+    }
+
+    return "";
+
+}
+
+const char* graphicsGetDoubleDash(uint8_t x) { return "--"; }

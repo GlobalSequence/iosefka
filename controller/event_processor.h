@@ -9,6 +9,7 @@ extern "C"
 {
 #endif
 
+bool eventProcessorCheckForActionsOnStartup();
 bool eventProcessorUpdate();
 
 #ifdef __cplusplus

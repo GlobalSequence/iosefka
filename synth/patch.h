@@ -49,6 +49,7 @@ typedef struct filter_params_t
 typedef struct vca_params_t 
 {
     uint8_t level;
+    bool velocity_on;
 
 } vca_params_t;
 
@@ -68,6 +69,7 @@ typedef struct envelope_params_t
     uint8_t decay;              // 0 - 255
     uint8_t sustain;            // 0 - 255
     uint8_t release;            // 0 - 255
+    uint8_t loop;               // 0 - 1
 
 } envelope_params_t;
 
@@ -119,6 +121,9 @@ typedef struct external_modulation_t {
     uint8_t aftertouch_amt;
     volatile bool clock_tick_occurred;
     volatile bool start_occurred;
+    volatile uint8_t p_lock_dst;
+    volatile uint8_t p_lock_amt;
+    volatile bool osc_reset;
 
 } external_modulation_t;
 

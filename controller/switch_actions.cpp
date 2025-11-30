@@ -27,6 +27,11 @@ bool view_changed = false;
 bool selected_window_direction;
 bool seq_window_change_pending = false;
 
+uint8_t last_switch_pressed;
+bool wait_for_sy1_release = false;
+bool wait_for_sy2_release = false;
+bool view_switch_pressed[NUM_VIEW_SWITCHES];
+
 // ################################
 // PRIVATE FUNCTIONS
 // ################################
@@ -37,7 +42,7 @@ void toggleSetting(bool *state) {
 
 }
 
-void pageKeyboard(switch_id_t sw, bool pressed) {
+void pageKeyboard(switch_id_t sw, bool pressed, bool shift) {
 
     uint8_t key;
 
@@ -61,20 +66,12 @@ void pageKeyboard(switch_id_t sw, bool pressed) {
 
     }
 
-    // uint8_t octave = viewGetKeyboardOctave();
-
-    // uint8_t note = (uint8_t) key + (octave * NUMBER_OF_NOTES_PER_OCTAVE);
-
-    // uint8_t velocity = pressed? MAX_PARAM_VALUE : 0;
-
-
-    // noteQueueSubmit(note, velocity, pressed);
-
-    // if(pressed) stored_pressed_note[key] = note;
-
     uint8_t note, velocity;
 
     if(pressed) {
+
+        // option to reset oscillator 
+        if(shift) synth->ext_mod.osc_reset = true;
 
         uint8_t octave = viewGetKeyboardOctave();
 
@@ -277,11 +274,11 @@ void setStorageState(storage_type_t type, bool shift) {
     // TEST_PRINT_TEXT("PATTERN GEN: ")
     // TEST_PRINT_ONE_NL(sizeof(synth->pattern_gen))
     // TEST_PRINT_TEXT("MIDI SIZE: ")
-    // TEST_PRINT_ONE_NL(sizeof(synth->midi))
+    // TEST_PRINT_ONE_NL(sizeof(synth->settings))
     // TEST_PRINT_TEXT("NEW STEP: ")
     // TEST_PRINT_ONE_NL(sizeof(synth->new_step))
 
-    uint save_data_size = sizeof(synth->patch) + sizeof(*synth->seq.getPatternDataPtr()) + sizeof(synth->pattern_gen) + sizeof(synth->midi) + sizeof(synth->new_step);
+    uint save_data_size = sizeof(synth->patch) + sizeof(*synth->seq.getPatternDataPtr()) + sizeof(synth->pattern_gen) + sizeof(synth->settings) + sizeof(synth->new_step);
 
     // TEST_PRINT_TEXT("SAVE SIZE: ")
     // TEST_PRINT_ONE_NL(save_data_size)
@@ -324,62 +321,95 @@ void checkForExitStorageState(switch_id_t sw) {
 
 void pageSettings(switch_id_t sw, bool pressed, bool shift) {
 
-
     switch (sw) {
 
         case SW_B0:
         
-            if(pressed) viewSetMode(MODE_MIDI_CHANNEL);
+            if(pressed) {
+                viewSetMode(MODE_MIDI_CHANNEL);
+                viewSetSettingsRow(SET_ROW_MIDI_CHAN);
+            }
         
             break;
         
         case SW_B1:
         
-            if(pressed) viewSetMode(MODE_MIDI_VELOCITY_DST);
+            if(pressed) {
+                
+                viewSetMode(MODE_MIDI_VELOCITY_DST);
+                viewSetSettingsModSource(SET_MOD_SRC_VELOCITY);
+                viewSetSettingsRow(SET_ROW_MOD_DST);
+
+                if(last_switch_pressed == SW_B1) {
+                    toggleSetting(&synth->patch.vca.velocity_on);
+                    viewSetSettingsRow(SET_ROW_VCA_VELOCITY);
+                }
+
+            }
 
             break;
         
         case SW_B2:
         
-            if(pressed) viewSetMode(MODE_MIDI_MOD_WHEEL_DST);
+            if(pressed) {
+                viewSetMode(MODE_MIDI_MOD_WHEEL_DST);
+                viewSetSettingsModSource(SET_MOD_SRC_MOD_WHEEL);
+                viewSetSettingsRow(SET_ROW_MOD_DST);
+            }
 
             break;
 
         case SW_B3:
         
-            if(pressed) viewSetMode(MODE_MIDI_AFTERTOUCH_DST);
+            if(pressed) {
+                viewSetMode(MODE_MIDI_AFTERTOUCH_DST);
+                viewSetSettingsModSource(SET_MOD_SRC_AFTERTOUCH);
+                viewSetSettingsRow(SET_ROW_MOD_DST);
+            }
 
             break;
 
         case SW_B4:
         
-            if(pressed) toggleSetting(&synth->midi.clock_rx);
+            if(pressed) {
+                toggleSetting(&synth->settings.clock_rx);
+                viewSetSettingsRow(SET_ROW_MIDI_CLOCK);
+            }
 
             break;
 
         case SW_B5:
         
-            if(pressed) toggleSetting(&synth->midi.transport_rx);
+            if(pressed) {
+                toggleSetting(&synth->settings.transport_rx);
+                viewSetSettingsRow(SET_ROW_MIDI_TRANS);
+            }
 
             break;
         
         case SW_B6:
-        
-            // if(pressed) toggleSetting(&synth->midi.program_change_rx);
-            if(pressed) viewSetMode(MODE_MIDI_PITCHBEND_DEPTH);
+
+            if(pressed){ 
+                viewSetMode(MODE_MIDI_PITCHBEND_DEPTH);
+                viewSetSettingsRow(SET_ROW_PB_DEPTH);
+            }
 
             break;
         
         case SW_B7:
         
-            if(pressed) toggleSetting(&synth->midi.out_thru);
-        
+            // if(pressed) toggleSetting(&synth->settings.out_thru);
+            if(pressed) {
+                toggleSetting(&synth->settings.latch);
+                viewSetSettingsRow(SET_ROW_POT_LATCH);
+            }        
+
             break;
                 
         case SW_T0:
         
             if(pressed) setStorageState(STORAGE_TYPE_SAVE, shift);
-        
+
             break;
         
         case SW_T1:
@@ -390,18 +420,48 @@ void pageSettings(switch_id_t sw, bool pressed, bool shift) {
         
         case SW_T2:
         
-            if(pressed) viewSetMode(MODE_SAVE_PRESET_SEL);
+            if(pressed) {
+                viewSetMode(MODE_SAVE_PRESET_SEL);
+                viewSetSettingsRow(SET_ROW_PRESET_NUM);
+            }
         
             break;
 
         case SW_T3:
         
-        
+            if(pressed) viewSetMode(MODE_SET_SCROLL);
         
             break;
         
         case SW_T4:
 
+            if(pressed) {
+
+                switch(viewGetSettingsRow()) {
+                    
+                    // SETTINGS VALUES SELECTED BY ENCODER MODE
+                    case SET_ROW_PRESET_NUM: viewSetMode(MODE_SAVE_PRESET_SEL); break;
+                    // case SET_ROW_PRESET_NAME: viewSetMode(MODE_SET_PRESET_NAME_SEL); break;
+                    case SET_ROW_MIDI_CHAN: viewSetMode(MODE_MIDI_CHANNEL); break;
+                    case SET_ROW_PB_DEPTH: viewSetMode(MODE_MIDI_PITCHBEND_DEPTH); break;
+                    case SET_ROW_MOD_SRC: viewSetMode(MODE_SET_MOD_SRC_SEL); break;
+                    case SET_ROW_MOD_DST: viewSetMode(MODE_SET_MOD_DST_SEL); break;
+
+                    // SETTINGS VALUES TOGGLED
+                    case SET_ROW_MIDI_CLOCK: toggleSetting(&synth->settings.clock_rx); break;
+                    case SET_ROW_MIDI_TRANS: toggleSetting(&synth->settings.transport_rx); break;
+                    case SET_ROW_MIDI_PGM: toggleSetting(&synth->settings.program_change_rx); break;
+                    case SET_ROW_LEGATO: break; // TODO: IMPLEMENT LEGATO
+                    case SET_ROW_OSC_DUO: break; // TODO: IMPLEMENT OSC DUO
+                    case SET_ROW_VCA_VELOCITY: toggleSetting(&synth->patch.vca.velocity_on); break;
+                    case SET_ROW_POT_LATCH: toggleSetting(&synth->settings.latch); break;
+                    default: break;
+                    // case SET_ROW_: viewSetMode(MODE_); break;
+                    // case SET_ROW_: toggleSetting(synth->); break;
+
+                }
+
+            }
 
             break;
     
@@ -425,7 +485,7 @@ void keyHandler(
 
         case PAGE_KEYS:
 
-            pageKeyboard(sw, pressed);
+            pageKeyboard(sw, pressed, shift);
 
             break;
 
@@ -508,6 +568,31 @@ void playPressed() {
 
 }
 
+bool checkViewSwitchesMinusCurrent(view_switch_t sw) {
+
+    for(int i = 0; i < NUM_VIEW_SWITCHES; i++) {
+
+        if(i != sw && view_switch_pressed[i]) {
+            
+            // TEST_PRINT_ONE_NL(i);   
+            return true;
+        }
+
+    }
+
+    return false;
+
+}
+
+void handleViewSwitch(view_switch_t sw, bool state) {
+
+    view_switch_pressed[sw] = state;
+
+    if(sw != VIEW_SWITCH_SY1) wait_for_sy1_release = false;
+    if(sw != VIEW_SWITCH_SY2) wait_for_sy2_release = false;
+
+}
+
 // ################################
 // PUBLIC FUNCTIONS
 // ################################
@@ -532,6 +617,8 @@ void switchActionsTakeInput(
     checkForExitStorageState(sw);
 
     view_page_t page = viewGetPage();
+    view_layer_t layer = viewGetLayer();
+    view_mode_t mode = viewGetMode();
 
     switch (sw) {
         case SW_B0:
@@ -562,21 +649,74 @@ void switchActionsTakeInput(
 
             break;
 
-        case SW_SYNTH_1_LAYER:
+        case SW_SYNTH_1_VIEW:
 
-            if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_SY1, VIEW_CHANGE_SEQ_SY1, shift);
+            // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_SY1, VIEW_CHANGE_SEQ_SY1, shift);
+
+            handleViewSwitch(VIEW_SWITCH_SY1, pressed);
+
+            if(pressed) {
+
+                if(checkViewSwitchesMinusCurrent(VIEW_SWITCH_SY1)) {
+
+                    viewSetPage(PAGE_KEYS);
+                    viewSetMachineStateMode(MODE_KBD_OCT);
+
+                } else if (layer == LAYER_SYNTH_1 || layer == LAYER_SYNTH_ENV_SPLIT) {
+
+                    wait_for_sy1_release = true;
+
+                } else {
+
+                    // viewChange(VIEW_CHANGE_KBD_SY1);
+                    setView(VIEW_CHANGE_KBD_SY1);
+                }
+
+            } else {
+
+                if(wait_for_sy1_release) {
+
+                    wait_for_sy1_release = false;
+                    // viewChange(VIEW_CHANGE_KBD_SY1);
+                    setView(VIEW_CHANGE_KBD_SY1);
+                }
+            
+            }
 
             break;
 
-        case SW_MOD_ENV_LAYER:
+        case SW_MOD_ENV_VIEW:
 
-            if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_ENV, VIEW_CHANGE_SEQ_ENV, shift);
+            // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_ENV, VIEW_CHANGE_SEQ_ENV, shift);
+            handleViewSwitch(VIEW_SWITCH_ENV, pressed);
+            if(pressed) setView(VIEW_CHANGE_KBD_ENV); /* viewChange(VIEW_CHANGE_KBD_ENV); */ 
 
             break;
 
-        case SW_SEQ:
+        case SW_SEQ_VIEW:
 
-            if(pressed)shift? setView(VIEW_CHANGE_SETTINGS) : setView(VIEW_CHANGE_SEQ_SEQ);
+            // if(pressed)shift? setView(VIEW_CHANGE_SETTINGS) : setView(VIEW_CHANGE_SEQ_SEQ);
+            handleViewSwitch(VIEW_SWITCH_SEQ, pressed);
+            if(pressed) {
+
+                if(checkViewSwitchesMinusCurrent(VIEW_SWITCH_SEQ)) {
+
+                    viewSetPage(PAGE_SEQ);
+                    viewSetMachineStateMode(MODE_SEQ_WINDOW_SEL);
+
+                } else if(shift) {
+
+                    // viewChange(VIEW_CHANGE_SETTINGS);
+                    setView(VIEW_CHANGE_SETTINGS);
+
+                } else {
+
+                    // viewChange(VIEW_CHANGE_SEQ_SEQ);
+                    setView(VIEW_CHANGE_SEQ_SEQ);
+                }
+
+            }
+
             
             break;
 
@@ -589,21 +729,106 @@ void switchActionsTakeInput(
 
         case SW_SHIFT:
 
+            // if(pressed && viewGetMode() == MODE_USER_PARAM_DST) viewSetMachineStateMode(MODE_USER_PARAM_SEL);
+            // else if(!pressed && viewGetMode() == MODE_USER_PARAM_SEL) viewSetMachineStateMode(MODE_USER_PARAM_DST);
+            if(layer == LAYER_USER_PARAM) {
+
+                if(pressed) viewSetMode(MODE_USER_PARAM_SEL);
+                else viewSetMachineStateMode(MODE_USER_PARAM_DST);
+
+            }
+
             break;
 
-        case SW_SYNTH_2_LAYER:
+        case SW_SYNTH_2_VIEW:
 
-            if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_SY2, VIEW_CHANGE_SEQ_SY2, shift);
+            // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_SY2, VIEW_CHANGE_SEQ_SY2, shift);
+            handleViewSwitch(VIEW_SWITCH_SY2, pressed);
+            if(pressed) {
+
+                if(layer == LAYER_USER_PARAM && !shift) { 
+                    
+                    wait_for_sy2_release = true;
+                
+                } else {
+
+                    // viewChange(VIEW_CHANGE_KBD_SY2);
+                    setView(VIEW_CHANGE_KBD_SY2);
+                    if(shift) {
+
+                        viewSetLayer(LAYER_USER_PARAM);
+                        viewSetMachineStateMode(MODE_USER_PARAM_DST);
+
+                    }
+
+                }
+
+            } else {
+
+                if(wait_for_sy2_release == true) {
+
+                    wait_for_sy2_release = false;
+                    // viewChange(VIEW_CHANGE_KBD_SY2);
+                    setView(VIEW_CHANGE_KBD_SY2);
+                }
+                
+
+            }
 
             break;
 
-        case SW_MOD_LFO_LAYER:
+        case SW_MOD_LFO_VIEW:
 
-            if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_LFO, VIEW_CHANGE_SEQ_LFO, shift);
+            // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_LFO, VIEW_CHANGE_SEQ_LFO, shift);
+            handleViewSwitch(VIEW_SWITCH_LFO, pressed);
+            if(pressed) setView(VIEW_CHANGE_KBD_LFO); /* viewChange(VIEW_CHANGE_KBD_LFO); */
 
             break;
 
         case SW_ENCODER:
+            
+            if(!pressed && !viewGetEncoderTurnedWhileHeld()) { // TODO: ADD ENCODER TURN EXCEPTION
+                    
+                if(page == PAGE_SETTINGS) {
+                
+                    if(mode == MODE_SET_SCROLL) {
+
+                        switch(viewGetSettingsRow()) {
+                            
+                            // SETTINGS VALUES SELECTED BY ENCODER MODE
+                            case SET_ROW_PRESET_NUM: viewSetMode(MODE_SAVE_PRESET_SEL); break;
+                            // case SET_ROW_PRESET_NAME: viewSetMode(MODE_SET_PRESET_NAME_SEL); break;
+                            case SET_ROW_MIDI_CHAN: viewSetMode(MODE_MIDI_CHANNEL); break;
+                            case SET_ROW_PB_DEPTH: viewSetMode(MODE_MIDI_PITCHBEND_DEPTH); break;
+                            case SET_ROW_MOD_SRC: viewSetMode(MODE_SET_MOD_SRC_SEL); break;
+                            case SET_ROW_MOD_DST: viewSetMode(MODE_SET_MOD_DST_SEL); break;
+
+                            // SETTINGS VALUES TOGGLED
+                            case SET_ROW_MIDI_CLOCK: toggleSetting(&synth->settings.clock_rx); break;
+                            case SET_ROW_MIDI_TRANS: toggleSetting(&synth->settings.transport_rx); break;
+                            case SET_ROW_MIDI_PGM: toggleSetting(&synth->settings.program_change_rx); break;
+                            case SET_ROW_LEGATO: break; // TODO: IMPLEMENT LEGATO
+                            case SET_ROW_OSC_DUO: break; // TODO: IMPLEMENT OSC DUO
+                            case SET_ROW_VCA_VELOCITY: toggleSetting(&synth->patch.vca.velocity_on); break;
+                            case SET_ROW_POT_LATCH: toggleSetting(&synth->settings.latch); break;
+                            case SET_ROW_INIT_PATCH: if(shift) settingsSetInitPatch(); break;
+
+                            default: break;
+                            // case SET_ROW_: viewSetMode(MODE_); break;
+                            // case SET_ROW_: toggleSetting(synth->); break;
+
+                        }
+
+                    } else {
+
+                        viewSetMode(MODE_SET_SCROLL);
+
+                    }
+
+
+                }
+            
+            }
 
             break;
 
@@ -611,54 +836,10 @@ void switchActionsTakeInput(
             break;
     }
 
+    // TODO: if page is changing, wait. If page is the same, keep truckin
     executeNewView(num_all_keys_pressed);
     
-        // TEST_PRINT_TEXT("PAGE: ")
-        // TEST_PRINT_ONE_TAB(viewGetPage())
-        // TEST_PRINT_TEXT("LAYER: ")
-        // TEST_PRINT_ONE_TAB(viewGetLayer())
-        // TEST_PRINT_TEXT("MODE: ")
-        // TEST_PRINT_ONE_TAB(viewGetMode())
-        // TEST_PRINT_TEXT("save: ")
-        // TEST_PRINT_ONE_TAB(viewInSaveState())
-        // TEST_PRINT_TEXT("load: ")
-        // TEST_PRINT_ONE_TAB(viewInLoadState())
-        // TEST_PRINT_TEXT("shift: ")
-        // TEST_PRINT_ONE_TAB(shift)
-        // TEST_PRINT_TEXT("switch: ")
-        // TEST_PRINT_ONE_TAB(sw)
-        // TEST_PRINT_TEXT("timeout: ")
-        // TEST_PRINT_ONE_TAB(timeout)
-        // TEST_PRINT_NL
-        // TEST_PRINT_TEXT("SEQ WINDOW: ")
-        // TEST_PRINT_ONE_TAB(viewGetSequencerWindow())
-        // TEST_PRINT_TEXT("MIDI CLK: ")
-        // TEST_PRINT_ONE_TAB(synth->midi.clock_rx)
-        // TEST_PRINT_TEXT("PAT GEN: ")
-        // TEST_PRINT_ONE_TAB(synth->pattern_gen.on)
-        // TEST_PRINT_NL
-
-    // TEST_PRINT_TEXT("ACTIVE:  ")
-    // for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
-
-    //     TEST_PRINT_ONE(synth->seq.isStepActive(i))
-
-    // }
-
-    // TEST_PRINT_NL
-
-    // TEST_PRINT_TEXT("WRITTEN: ")
-    // for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
-
-    //     TEST_PRINT_ONE(synth->seq.isStepWritten(i))
-
-    // }
-    // TEST_PRINT_NL
-    // TEST_PRINT_TEXT("P LOCK READY: ")
-    // TEST_PRINT_ONE_NL(viewIsSubLayerPLockReady())
-
-    // TEST_PRINT_TEXT("TIMEOUT: ")
-    // TEST_PRINT_ONE_NL(timeout)
+    if(pressed) last_switch_pressed = sw;
 
 }
 

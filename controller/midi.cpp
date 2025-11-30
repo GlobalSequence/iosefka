@@ -40,18 +40,18 @@ enum CCParamNames
     CC_ENV_1_ATTACK = 25,
     CC_ENV_1_DECAY = 26,
     CC_ENV_1_SUSTAIN = 27,
-    CC_ENV_1_AMOUNT = 28,
-    CC_ENV_1_RELEASE = 29,
+    CC_ENV_1_RELEASE = 28,
+    CC_ENV_1_AMOUNT = 29,
     CC_ENV_2_ATTACK = 30,
     CC_ENV_2_DECAY = 31,
     CC_ENV_2_SUSTAIN = 32,
-    CC_ENV_2_AMOUNT = 33,
-    CC_ENV_2_RELEASE = 34,
+    CC_ENV_2_RELEASE = 33,
+    CC_ENV_2_AMOUNT = 34,
     CC_ENV_3_ATTACK = 35,
     CC_ENV_3_DECAY = 36,
     CC_ENV_3_SUSTAIN = 37,
-    CC_ENV_3_AMOUNT = 38,
-    CC_ENV_3_RELEASE = 39,
+    CC_ENV_3_RELEASE = 38,
+    CC_ENV_3_AMOUNT = 39,
     CC_LFO_1_RATE = 40,
     CC_LFO_1_SHAPE = 41,
     CC_LFO_1_PHASE = 42,
@@ -124,6 +124,7 @@ void ccParser(uint8_t cc_number, uint8_t value) {
 
     // scale 7 bit MIDI values to 8 bit internal vals
     value <<= 1;
+    if(value == 254) value = 255;
 
     mod_destinations_t dst;
 
@@ -190,8 +191,8 @@ void ccParser(uint8_t cc_number, uint8_t value) {
         // case CC_DELAY_RATE: dst = MOD_DST_DELAY_RATE; break;
         case CC_DELAY_FEEDBACK: dst = MOD_DST_DELAY_FEEDBACK; break;
         case CC_DELAY_AMOUNT: dst = MOD_DST_DELAY_AMOUNT; break;
-        case CC_DELAY_DIFFUSION: dst = MOD_DST_DELAY_DIFFUSION; break;
-        case CC_DELAY_FILTER: dst = MOD_DST_DELAY_FILTER; break;
+        // case CC_DELAY_DIFFUSION: dst = MOD_DST_DELAY_DIFFUSION; break;
+        // case CC_DELAY_FILTER: dst = MOD_DST_DELAY_FILTER; break;
         default: break;
     }
 
@@ -203,7 +204,7 @@ void midiEnqueueTransfer(uint8_t type, uint8_t byte_1, uint8_t byte_2) {
 
     uint8_t out_length = midiMsgLengths[(type >> 4) & 0x7];
 
-    uint8_t status_byte = type | synth->midi.channel;
+    uint8_t status_byte = type | synth->settings.channel;
 
     if(type & 0xF8 == 0xF8) {
 
@@ -288,7 +289,7 @@ bool midiRxHandler() {
 
         uint8_t b = uart_getc(UART_MIDI);
 
-        // if(synth->midi.out_thru == MIDI_OUTPUT_THRU) {
+        // if(synth->settings.out_thru == MIDI_OUTPUT_THRU) {
 
         //     uart_putc(UART_MIDI, b);
         
@@ -303,7 +304,7 @@ bool midiRxHandler() {
             {
             case MIDI_TICK:
 
-                if(synth->midi.clock_rx) {
+                if(synth->settings.clock_rx) {
 
                     synth->special.ext_clock_active = true;
                     uint64_t tick_time = time_us_64();
@@ -320,7 +321,7 @@ bool midiRxHandler() {
 
             case MIDI_START:
 
-                if(synth->midi.transport_rx) {
+                if(synth->settings.transport_rx) {
                     
                     synth->seq.run();
                     allow_thru = true;
@@ -334,7 +335,7 @@ bool midiRxHandler() {
 
             case MIDI_STOP:
 
-                if(synth->midi.transport_rx) {
+                if(synth->settings.transport_rx) {
 
                     synth->seq.stop();
                     allow_thru = true;
@@ -382,7 +383,7 @@ bool midiRxHandler() {
             int status = midiBytes[0] & 0xF0;
             int channel = midiBytes[0] & 0x0F;  
 
-            if (channel != synth->midi.channel)
+            if (channel != synth->settings.channel)
                 continue;
 
             midi_event_t m;
@@ -436,7 +437,7 @@ void midiProcessEvent(midi_event_t m) {
             // there is no pointer to the midi struct in the voice library
             // so this is a band-aid because I didn't want to think about it :)
             // figure out later
-            synth->ext_mod.pitch_bend_depth_send = synth->midi.pitch_bend_depth;
+            synth->ext_mod.pitch_bend_depth_send = synth->settings.pitch_bend_depth;
 
             break;
 
@@ -456,7 +457,7 @@ void midiProcessEvent(midi_event_t m) {
 
 void midiTxHandler() {
 
-    // if(synth->midi.out_thru == MIDI_OUTPUT_OUT) {
+    // if(synth->settings.out_thru == MIDI_OUTPUT_OUT) {
 
     //     while(noteQueueAvailableMidiOut()) {
 

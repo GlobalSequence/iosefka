@@ -50,6 +50,12 @@ typedef enum settings_string_t {
     STRING_PITCH_BEND_DEPTH,
     STRING_LATCH,
     STRING_JUMP,
+    STRING_NAME,
+    STRING_LEGATO,
+    STRING_OSC_DUO,
+    STRING_VCA_VELOCITY,
+    STRING_MOD_SOURCE,
+    STRING_INIT_PATCH,
 
     NUM_SETTINGS_STRINGS
 
@@ -83,6 +89,7 @@ const char* graphicsGetVcaMode(uint8_t index);
 const char* graphicsGetResetSync(uint8_t index);
 const char* graphicsPrintNothing(uint8_t index);
 const char* graphicsGetSettingsString(settings_string_t string);
+const char* graphicsGetDoubleDash(uint8_t x);
 
 const char* graphicsGetParamHeader(view_layer_t l, uint8_t index);
 unsigned char* graphicsGetStepIcon(graphic_step_icon_t i);
@@ -92,6 +99,8 @@ const char* graphicsGetEncoderMode(view_mode_t mode);
 const char* graphicsGetOnOff(bool on);
 const char* graphicsGetStorageTypeString(storage_string_t string);
 const char* graphicsGetStorageActiveString(storage_string_t string);
+
+const char* graphicsGetModSource(mod_sources_t src);
 
 
 #ifdef __cplusplus

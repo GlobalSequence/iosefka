@@ -168,7 +168,7 @@ void Voice::loadSources() {
     dst_[MOD_DST_DELAY_AMOUNT] = patch_->delay.amount << 4;
     dst_[MOD_DST_DELAY_RATE] = patch_->delay.rate << 4;
     dst_[MOD_DST_DELAY_FEEDBACK] = patch_->delay.feedback << 4;
-    dst_[MOD_DST_DELAY_FILTER] = patch_->delay.filter << 4;
+    // dst_[MOD_DST_DELAY_FILTER] = patch_->delay.filter << 4;
     // dst_[MOD_DST_DELAY_STEREO] = patch_->delay.stereo << 4;
 
 }
@@ -294,8 +294,8 @@ void Voice::updateDestinations()
     d_amount_ = dst_[MOD_DST_DELAY_AMOUNT] >> 4;
     d_rate_ = dst_[MOD_DST_DELAY_RATE] >> 4;
     d_feedback_ = dst_[MOD_DST_DELAY_FEEDBACK] >> 4;
-    d_saturation_ = dst_[MOD_DST_DELAY_FILTER] >> 4;
-    d_stereo_ = dst_[MOD_DST_DELAY_STEREO] >> 4;
+    // d_saturation_ = dst_[MOD_DST_DELAY_FILTER] >> 4;
+    // d_stereo_ = dst_[MOD_DST_DELAY_STEREO] >> 4;
 
 }
 

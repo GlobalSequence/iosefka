@@ -4,8 +4,12 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "settings.h"
+#include "common/globals.h"
 
 #define STORAGE_LOAD_ADDRESS 0
+#define STORAGE_BLOCK_SIZE 512
+#define SETTINGS_BLOCK_SIZE 64
+#define SETTINGS_ADDRESS (STORAGE_BLOCK_SIZE * NUMBER_OF_PRESETS) - SETTINGS_BLOCK_SIZE
 
 // ################################
 // STORAGE ENUMS
@@ -13,6 +17,7 @@
 
 typedef void (*saveFunc)(void);
 typedef void (*loadFunc)(void);
+typedef void (*write_callback)(uint8_t);
 
 typedef enum storage_type_t {
 
@@ -44,8 +49,17 @@ void storageDisableTypeAndState();
 void storageExecuteTypeIfActive();
 void storageCheckForFinished();
 
+// big scary function
+void storageWriteAllMemory(write_callback func);
+
+void storageSave(uint block_num); // saves specified preset and machine settings
+void storageLoad(uint block_num); // loads specified preset and machine settings
+
 void storageSavePreset(synth_storable_t s, uint block_num);
 synth_storable_t storageLoadPreset(uint block_num);
+
+void storageSaveSettings(machine_settings_t s);
+machine_settings_t storageLoadSettings();
 
 void storageSaveVersion(version_t v);
 version_t storageLoadVersion();
@@ -55,9 +69,10 @@ storage_type_t storageGetLastType();
 storage_state_t storageGetState();
 bool storageStateChanged();
 
-void storageSave(uint block_num);
-void storageLoad(uint block_num);
+uint storageGetAddressFromBlockNum(uint block_num);
+void storageLoadToPointer(uint8_t* p, uint address, uint size);
 
+// void storageLoadSettingsWithPointer(uint8_t* r);
 // bool storageNeverWritten();
 
 #ifdef __cplusplus

@@ -2,13 +2,15 @@
 #define GLOBALS_H
 
 // #define PROTOTYPE_BOARD
+// #define VERSION_TEST
 
 // version 0.1.0 2025.10.03
 // version 0.1.1 2025.10.05
 // version 0.1.2 2025.10.06
-#define VERSION_MAJOR 0
-#define VERSION_MINOR 1
-#define VERSION_PATCH 2
+// version 1.0.0 2025.11.15
+#define VERSION_MAJOR 1
+#define VERSION_MINOR 0
+#define VERSION_PATCH 0
 
 // ################################################################
 // 
@@ -44,13 +46,13 @@ typedef enum switch_id_t {
     SW_T2,
     SW_T3,
     SW_T4,
-    SW_SYNTH_1_LAYER,
-    SW_MOD_ENV_LAYER,
-    SW_SEQ,
+    SW_SYNTH_1_VIEW,
+    SW_MOD_ENV_VIEW,
+    SW_SEQ_VIEW,
     SW_PLAY,
     SW_SHIFT,
-    SW_SYNTH_2_LAYER,
-    SW_MOD_LFO_LAYER,
+    SW_SYNTH_2_VIEW,
+    SW_MOD_LFO_VIEW,
     SW_ENCODER,
 
 #else
@@ -63,9 +65,9 @@ typedef enum switch_id_t {
     SW_B2,
     SW_B1,
     SW_B0,
-    SW_MOD_LFO_LAYER,
-    SW_MOD_ENV_LAYER,
-    SW_SEQ,
+    SW_MOD_LFO_VIEW,
+    SW_MOD_ENV_VIEW,
+    SW_SEQ_VIEW,
     SW_T0,
     SW_T1,
     SW_T2,
@@ -73,14 +75,26 @@ typedef enum switch_id_t {
     SW_T4,
     SW_SHIFT,
     SW_PLAY,
-    SW_SYNTH_2_LAYER,
-    SW_SYNTH_1_LAYER,
+    SW_SYNTH_2_VIEW,
+    SW_SYNTH_1_VIEW,
     SW_ENCODER,
 
 #endif
 
     NUMBER_OF_SWITCHES_TOTAL,
 } switch_id_t;
+
+typedef enum view_switch_t {
+
+    VIEW_SWITCH_SY1,
+    VIEW_SWITCH_SY2,
+    VIEW_SWITCH_ENV,
+    VIEW_SWITCH_LFO,
+    VIEW_SWITCH_SEQ,
+
+    NUM_VIEW_SWITCHES
+
+} view_switch_t;
 
 // typedef enum switch_to_key_t {
 
@@ -148,18 +162,7 @@ typedef enum {
     NUMBER_OF_POTENTIOMETERS
 } pot_index_t;
 
-// #define NUMBER_OF_POTENTIOMETERS 16
-
 typedef enum led_index_t {
-
-    // LED_0,
-    // LED_1,
-    // LED_2,
-    // LED_3,
-    // LED_4,
-    // LED_5,
-    // LED_6,
-    // LED_7,
 
     LED_LAYER_SYNTH_1,
     LED_LAYER_SYNTH_2,
@@ -287,6 +290,8 @@ typedef enum mod_destinations_t {
     MOD_DST_PORTAMENTO,
     MOD_DST_PHASE_MOD,
     MOD_DST_SYNC,
+    MOD_DST_BITRATE_REDUCE,          // NEW
+    MOD_DST_SAMPLERATE_REDUCE,       // NEW
     MOD_DST_MIX_OSC_1_MIX,
     MOD_DST_MIX_OSC_2_MIX,
     MOD_DST_MIX_NOISE_MIX,
@@ -299,24 +304,27 @@ typedef enum mod_destinations_t {
     MOD_DST_DELAY_RATE,
     MOD_DST_DELAY_FEEDBACK,
     MOD_DST_DELAY_AMOUNT,
-    MOD_DST_DELAY_DIFFUSION,
-    MOD_DST_DELAY_FILTER,
-    MOD_DST_DELAY_STEREO,
+    // MOD_DST_DELAY_DIFFUSION,
+    // MOD_DST_DELAY_FILTER,
+    // MOD_DST_DELAY_STEREO,
     MOD_DST_ENV_1_ATTACK,
     MOD_DST_ENV_1_DECAY,
     MOD_DST_ENV_1_SUSTAIN,
     MOD_DST_ENV_1_RELEASE,
     MOD_DST_ENV_1_AMOUNT,
+    MOD_DST_ENV_1_LOOP,              // NEW
     MOD_DST_ENV_2_ATTACK,
     MOD_DST_ENV_2_DECAY,
     MOD_DST_ENV_2_SUSTAIN,
     MOD_DST_ENV_2_RELEASE,
     MOD_DST_ENV_2_AMOUNT,
+    MOD_DST_ENV_2_LOOP,              // NEW
     MOD_DST_ENV_3_ATTACK,
     MOD_DST_ENV_3_DECAY,
     MOD_DST_ENV_3_SUSTAIN,
     MOD_DST_ENV_3_RELEASE,
     MOD_DST_ENV_3_AMOUNT,
+    MOD_DST_ENV_3_LOOP,              // NEW
     MOD_DST_LFO_1_RATE,
     MOD_DST_LFO_1_SHAPE,
     MOD_DST_LFO_1_PHASE,
@@ -385,5 +393,39 @@ typedef enum seq_params_t {
     NUM_SEQ_PARAMS
 } seq_params_t;
 
+// ################################
+// SETTINGS
+// ################################
+
+typedef enum settings_row_t {
+    SET_ROW_PRESET_NUM,
+    SET_ROW_PRESET_NAME,
+    SET_ROW_MIDI_CHAN,
+    SET_ROW_MIDI_CLOCK,
+    SET_ROW_MIDI_TRANS,
+    SET_ROW_MIDI_PGM,
+    SET_ROW_LEGATO,
+    SET_ROW_OSC_DUO,
+    SET_ROW_VCA_VELOCITY,
+    SET_ROW_POT_LATCH,
+    SET_ROW_PB_DEPTH,
+    SET_ROW_MOD_SRC,
+    SET_ROW_MOD_DST,
+    SET_ROW_INIT_PATCH,
+
+    NUM_SET_ROWS
+
+} settings_row_t;
+
+typedef enum settings_mod_sources_t {
+    SET_MOD_SRC_VELOCITY,
+    SET_MOD_SRC_MOD_WHEEL,
+    SET_MOD_SRC_AFTERTOUCH,
+    // SET_MOD_SRC_NOTE, // TODO: MAKE ADDITIONAL MODULATORS IN PATCH.H 
+    // SET_MOD_SRC_BR_CTRL,
+
+    NUM_SET_MOD_SRC
+
+} settings_mod_sources_t;
 
 #endif

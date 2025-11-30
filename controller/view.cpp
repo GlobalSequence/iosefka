@@ -9,6 +9,7 @@
 static const view_state_t k_view_state_seq = {PAGE_SEQ, LAYER_SEQ, MODE_SEQ_SET_BPM};
 static view_events_t view_events[NUM_VIEW_CHANGES];
 static view_change_t last_view_change;
+static view_change_t last_synth_2_view_change;
 static machine_state_t machine_state;
 
 // misc
@@ -22,6 +23,8 @@ static bool view_change_led = true;
 static bool save_state = false;
 static bool load_state = false;
 
+static bool encoder_turned_while_held = false;
+
 // page
 static view_page_event_t last_page_event;
 
@@ -29,8 +32,10 @@ static view_page_event_t last_page_event;
 static const uint8_t k_syn1_layers = 2;
 static view_layer_event_t last_layer_event;
 static view_layer_t last_synth_1_layer;
+static view_layer_t last_synth_2_layer;
 static bool sub_layer_p_lock_ready = false;
 static bool sub_layer_p_lock = false;
+static bool latch[NUMBER_OF_POTENTIOMETERS];
 
 // mode
 static view_mode_event_t last_mode_event;
@@ -58,42 +63,54 @@ void viewSetPageContext(view_page_event_t event) {
             page = PAGE_SETTINGS;
             break;
     }
-    machine_state.page = page;
+    // machine_state.page = page;
+    viewSetPage(page);
     last_page_event = event; 
 
 }
 
 void viewSetLayerContext(view_layer_event_t event) {
 
+    // set default value, in case layer is invalid
+    view_layer_t layer = NUM_VIEW_LAYERS;
+
     switch(event) {
         case EVT_LAYER_SYNTH_1:
             if(last_layer_event == event) {
-                machine_state.layer = machine_state.layer == LAYER_SYNTH_1 ? 
+                layer = machine_state.layer == LAYER_SYNTH_1 ? 
                     LAYER_SYNTH_ENV_SPLIT : LAYER_SYNTH_1;
             } else {
-                machine_state.layer = last_synth_1_layer;
+                layer = last_synth_1_layer;
             }
-            last_synth_1_layer = machine_state.layer;
+            last_synth_1_layer = layer;
             break;
         case EVT_LAYER_SYNTH_2:
-            machine_state.layer = LAYER_SYNTH_2;
+/*             if(last_layer_event == event) {
+                layer = machine_state.layer == LAYER_SYNTH_2 ?
+                    LAYER_USER_PARAM : LAYER_SYNTH_2;
+            } else {
+                layer = last_synth_2_layer;
+            }
+            last_synth_2_layer = layer; */
+            layer = LAYER_SYNTH_2;
             break;
         case EVT_LAYER_ENV:
-            machine_state.layer = LAYER_ENV;
+            layer = LAYER_ENV;
             break;
         case EVT_LAYER_LFO:
-            machine_state.layer = LAYER_LFO;
+            layer = LAYER_LFO;
             break;
         case EVT_LAYER_SEQ:
-            machine_state.layer = LAYER_SEQ;
+            layer = LAYER_SEQ;
             break;
         case EVT_LAYER_NULL:
         default:
             break;
     }
 
-    last_layer_event = event;
+    if(layer != NUM_VIEW_LAYERS) viewSetLayer(layer);
 
+    last_layer_event = event;
 
 }
 
@@ -132,10 +149,19 @@ void viewSetModeContext(view_mode_event_t event) {
 
         }
 
-    }
+    // this is hacky asf and also relies on the layer switching BEFORE mode switching. sorry not sorry.
+    } /* else if (last_layer_event == EVT_LAYER_SYNTH_2 && machine_state.layer == LAYER_USER_PARAM) {
+
+        last_mode_event = event;
+        machine_state.mode = MODE_USER_PARAM_DST;
+        return;
+
+    } */
 
     last_mode_event = event;
     machine_state.mode = mode_context[event];
+    viewSetMachineStateMode(mode_context[event]);
+    // viewSetMode(mode_context[event]);
 
 }
 
@@ -179,12 +205,15 @@ void viewSetup() {
         EVT_PAGE_SETTINGS, EVT_LAYER_NULL, EVT_MODE_SETTINGS
     };
 
+
     mode_context[EVT_MODE_KEYS] = MODE_KBD_OCT;
     mode_context[EVT_MODE_ENV] = MODE_MOD_DST_ENV_1;
     mode_context[EVT_MODE_LFO] = MODE_MOD_DST_LFO_1;
     mode_context[EVT_MODE_SEQ] = MODE_SEQ_SET_BPM;
     // mode_context[EVT_MODE_SETTINGS] = MODE_MIDI_CHANNEL;
-    mode_context[EVT_MODE_SETTINGS] = MODE_SAVE_PRESET_SEL;
+    // mode_context[EVT_MODE_SETTINGS] = MODE_SAVE_PRESET_SEL;
+    mode_context[EVT_MODE_SETTINGS] = MODE_SET_SCROLL;
+    mode_context[EVT_MODE_USER_PARAM] = MODE_USER_PARAM_DST;
 
     machine_state.keyboard_octave = kbd_oct_startup;
     machine_state.sequencer_window = seq_window_startup;
@@ -192,9 +221,10 @@ void viewSetup() {
     machine_state.seq_step_note = seq_step_note_startup;
     machine_state.seq_step_octave = seq_step_octave_startup;
 
+    last_synth_1_layer = LAYER_SYNTH_1;
+    last_synth_2_layer = LAYER_SYNTH_2;
+
 }
-
-
 
 // ################################
 // SET FUNCTIONS
@@ -206,24 +236,38 @@ void viewChange(view_change_t event) {
     viewSetLayerContext(view_events[event].l);
     viewSetModeContext(view_events[event].m);
 
-    view_change_led = true;
+    // view_change_led = true;
+    last_view_change = event;
 }
 
 void viewSetPage(view_page_t page) {
 
     machine_state.page = page;
+    view_change_led = true;
 
 }
 
 void viewSetLayer(view_layer_t layer) {
 
     machine_state.layer = layer;
+    view_change_led = true;
+    viewSetLatchAll();
 
 }
 
 void viewSetMode(view_mode_t mode) {
 
-    machine_state.mode = mode_context[last_mode_event] = mode;
+    // machine_state.mode = mode_context[last_mode_event] = mode;
+    
+    mode_context[last_mode_event] = mode;
+    viewSetMachineStateMode(mode);
+
+}
+
+void viewSetMachineStateMode(view_mode_t mode) {
+
+    machine_state.mode = mode;
+    view_change_led = true;
 
 }
 
@@ -237,7 +281,17 @@ void viewSetSequencerWindow(bool increment) {
 
     int8_t counter = increment? 1 : -1;
 
-    machine_state.sequencer_window = cycleIntAddOrSub(machine_state.sequencer_window, 0, NUMBER_OF_SEQUENCER_WINDOWS - 1, counter);
+    uint8_t val = cycleIntAddOrSub(machine_state.sequencer_window, 0, NUMBER_OF_SEQUENCER_WINDOWS - 1, counter);
+
+    viewSetSequencerWindowByValue(val);
+
+    // machine_state.sequencer_window = cycleIntAddOrSub(machine_state.sequencer_window, 0, NUMBER_OF_SEQUENCER_WINDOWS - 1, counter);
+
+}
+
+void viewSetSequencerWindowByValue(uint8_t value) {
+
+    machine_state.sequencer_window = value;
 
 }
 
@@ -271,21 +325,58 @@ void viewSetSeqParamStepOctave(uint8_t octave) {
 
 }
 
-// void viewSetSaveState(bool enter) {
+void viewSetLatchSingle(uint8_t index) {
 
-//     save_state = enter;
+    latch[index] = true;
 
-// }
+}
 
-// void viewSetLoadState(bool enter) {
+void viewResetLatchSingle(uint8_t index) {
 
-//     load_state = enter;
+    latch[index] = false;
 
-// }
+}
+
+void viewSetLatchAll() {
+
+
+    for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
+
+        viewSetLatchSingle(i);
+
+    }
+
+}
+
+void viewSetSettingsRow(uint8_t row) {
+
+    machine_state.settings_row = row;
+
+}
+
+void viewSetSettingsModSource(uint8_t index) {
+
+    machine_state.settings_mod_source = index;
+
+}
+
+void viewSetCurrentUserParameter(uint8_t index) {
+
+    machine_state.current_user_param = index;
+
+}
+
+void viewSetEncoderTurnedWhileHeld() {
+
+    encoder_turned_while_held = true;
+
+}
 
 // ################################
 // GET FUNCTIONS
 // ################################
+
+view_change_t viewGetLastViewChangeEvent() { return last_view_change; }
 
 view_page_t viewGetPage() { return machine_state.page; }
 
@@ -323,6 +414,44 @@ bool viewGetViewChangeFlagLed() {
 
 }
 
-// bool viewInSaveState() { return save_state; }
+bool viewGetLatchSingle(uint8_t index) {
 
-// bool viewInLoadState() { return load_state; }
+    return latch[index];
+
+}
+
+uint8_t viewGetSettingsRow() { return machine_state.settings_row; }
+
+uint8_t viewGetSettingsModSource() { return machine_state.settings_mod_source; }
+
+uint8_t viewGetModSourceFromSettings() {
+
+    uint8_t a = machine_state.settings_mod_source;
+
+    switch(a) {
+
+        case SET_MOD_SRC_MOD_WHEEL: return MOD_SRC_MOD_WHEEL; break;
+        case SET_MOD_SRC_AFTERTOUCH: return MOD_SRC_AFTERTOUCH; break;
+        // case SET_MOD_SRC_NOTE: return MOD_SRC_NOTE; break;
+        // case SET_MOD_SRC_BR_CTRL: return MOD_SRC_BR_CTRL; break;
+        default: return MOD_SRC_VELOCITY; break;
+    }
+
+    return MOD_SRC_VELOCITY;
+
+}
+
+uint8_t viewGetCurrentUserParameter() { return machine_state.current_user_param; }
+
+bool viewGetEncoderTurnedWhileHeld() { 
+
+    if(encoder_turned_while_held) {
+
+        encoder_turned_while_held = false;
+        return true;
+
+    }
+
+    return false;
+
+}

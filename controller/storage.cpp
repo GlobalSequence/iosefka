@@ -7,9 +7,9 @@
 #include "../common/test.h"
 
 static const uint k_storage_block_size = 512;
-static const uint k_settings_address_size = 64;
-static const uint k_settings_address = (k_storage_block_size * NUMBER_OF_PRESETS) - k_settings_address_size;
-static const uint k_first_written_address = (k_settings_address + k_settings_address_size - 1);
+static const uint k_settings_block_size = 64;
+static const uint k_settings_address = (k_storage_block_size * NUMBER_OF_PRESETS) - k_settings_block_size;
+static const uint k_first_written_address = (k_settings_address + k_settings_block_size - 1);
 
 static const uint8_t k_version_size = 3;
 static const uint k_version_address = (k_storage_block_size * NUMBER_OF_PRESETS) - k_version_size;
@@ -131,22 +131,45 @@ bool storageStateChanged() {
 
 }
 
+void storageWriteAllMemory(write_callback func) {
+
+    // synth_storable_t s = settingsGetInitPatch();
+    settingsSetInitPatch();
+
+    for(int i = 0; i < NUMBER_OF_PRESETS; i++) {
+
+        storageSave(i);
+
+        sleep_ms(10);
+
+        func(i);
+
+    }
+
+    machine_settings_t m = settingsGetInitMachineSettings();
+
+}
+
 void storageSave(uint block_num) {
 
-    uint address = calculateAddress(block_num);
+    // uint address = calculateAddress(block_num);
+
+    // synth_storable_t s = settingsGetStorableData();
+            
+    // uint8_t* s_ptr = (uint8_t*)&s;
+    
+    // devicesStoragePut(s_ptr, address, sizeof(s));
 
     synth_storable_t s = settingsGetStorableData();
-            
-    uint8_t* s_ptr = (uint8_t*)&s;
-    
-    devicesStoragePut(s_ptr, address, sizeof(s));
 
-    midi_settings_t m = settingsGetMidiSettingsAll();
+    storageSavePreset(s, block_num);
+
+    machine_settings_t m = settingsGetMachineSettingsAll();
 
     uint8_t* m_ptr = (uint8_t*)&m;
 
-    devicesStoragePut(m_ptr, k_settings_address, sizeof(m));
-
+    // devicesStoragePut(m_ptr, k_settings_address, sizeof(m));
+    devicesStoragePut(m_ptr, SETTINGS_ADDRESS, sizeof(m));
 }
 
 void storageSavePreset(synth_storable_t s, uint block_num) {
@@ -159,6 +182,12 @@ void storageSavePreset(synth_storable_t s, uint block_num) {
 
 }
 
+void storageSaveSettings(machine_settings_t s) {
+
+    devicesStoragePut((uint8_t*)&s, SETTINGS_ADDRESS, sizeof(s));
+
+}
+
 void storageSaveVersion(version_t v) {
 
     devicesStoragePut(&v.major, k_version_address, sizeof(version_t));
@@ -167,21 +196,24 @@ void storageSaveVersion(version_t v) {
 
 void storageLoad(uint block_num) {
 
-    uint address = calculateAddress(block_num);
+    // uint address = calculateAddress(block_num);
 
-    synth_storable_t s;
+    // synth_storable_t s;
 
-    size_t size = sizeof(s);
+    // size_t size = sizeof(s);
 
-    devicesStorageGet((uint8_t*)&s, address, size);
+    // devicesStorageGet((uint8_t*)&s, address, size);
+
+    synth_storable_t s = storageLoadPreset(block_num);
 
     settingsSetStoredData(s);
 
-    midi_settings_t m;
+    machine_settings_t m;
 
-    devicesStorageGet((uint8_t*)&m, k_settings_address, sizeof(m));
+    // devicesStorageGet((uint8_t*)&m, k_settings_address, sizeof(m));
+    devicesStorageGet((uint8_t*)&m, SETTINGS_ADDRESS, sizeof(m));
 
-    settingsSetMidiSettingsAll(m);
+    settingsSetMachineSettingsAll(m);
     
 }
 
@@ -199,6 +231,16 @@ synth_storable_t storageLoadPreset(uint block_num) {
 
 }
 
+machine_settings_t storageLoadSettings() {
+
+    machine_settings_t s;
+
+    devicesStorageGet((uint8_t*)&s, SETTINGS_ADDRESS, sizeof(s));
+
+    return s;
+
+}
+
 version_t storageLoadVersion() {
 
     version_t v;
@@ -207,6 +249,32 @@ version_t storageLoadVersion() {
     return v;
 
 }
+
+uint calculateAddress(uint8_t block_num) {
+
+    // return block_num * k_storage_block_size;
+    return block_num * STORAGE_BLOCK_SIZE;
+
+}
+
+uint storageGetAddressFromBlockNum(uint block_num) {
+
+    return calculateAddress(block_num);
+
+}
+
+void storageLoadToPointer(uint8_t* p, uint address, uint size) {
+
+    devicesStorageGet(p, address, size);
+
+}
+
+/* void storageLoadSettingsWithPointer(uint8_t* r) {
+
+    // devicesStorageGet(r, k_settings_address, sizeof(r));
+    devicesStorageGet(r, SETTINGS_ADDRESS, sizeof(r));
+
+} */
 
 // bool storageNeverWritten() {
 
@@ -244,8 +312,3 @@ version_t storageLoadVersion() {
 
 // private
 
-uint calculateAddress(uint8_t block_num) {
-
-    return block_num * k_storage_block_size;
-
-}

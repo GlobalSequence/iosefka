@@ -121,6 +121,33 @@ static inline uint16_t U8MixU16(uint8_t a, uint8_t b, uint8_t balance) {
   return a * (255 - balance) + b * balance;
 }
 
+inline int16_t Mix(int16_t a, int16_t b, uint16_t balance) {
+  return (a * (65535 - balance) + b * balance) >> 16;
+}
+
+inline uint16_t Mix(uint16_t a, uint16_t b, uint16_t balance) {
+  return (a * (65535 - balance) + b * balance) >> 16;
+}
+
+inline int16_t Interpolate824(const int16_t* table, uint32_t phase) {
+  int32_t a = table[phase >> 24];
+  int32_t b = table[(phase >> 24) + 1];
+  return a + ((b - a) * static_cast<int32_t>((phase >> 8) & 0xffff) >> 16);
+}
+
+inline uint16_t Interpolate824(const uint16_t* table, uint32_t phase) {
+  uint32_t a = table[phase >> 24];
+  uint32_t b = table[(phase >> 24) + 1];
+  return a + ((b - a) * static_cast<uint32_t>((phase >> 8) & 0xffff) >> 16);
+}
+
+inline int16_t Interpolate824(const uint8_t* table, uint32_t phase) {
+  int32_t a = table[phase >> 24];
+  int32_t b = table[(phase >> 24) + 1];
+  return (a << 8) + \
+      ((b - a) * static_cast<int32_t>(phase & 0xffffff) >> 16) - 32768;
+}
+
 static inline uint8_t InterpolateSample(
     const uint8_t *table,
     uint16_t phase) {
@@ -128,6 +155,18 @@ static inline uint8_t InterpolateSample(
   const uint8_t *tbl_ptr_2 = 1 + table + (phase >> 8);
 
   return U8MixConst(*tbl_ptr, *tbl_ptr_2, phase & 0xff);
+}
+
+static inline uint16_t InterpolateSample16(
+  const uint8_t *table,
+  uint16_t phase
+) {
+  const uint8_t *tbl_ptr = table + (phase >> 8);
+  const uint8_t *tbl_ptr_2 = 1 + table + (phase >> 8);
+  uint16_t tbl_16 = *tbl_ptr << 8;
+  uint16_t tbl_16_2 = *tbl_ptr_2 << 8;
+
+  return U16MixU32(tbl_16, tbl_16_2, 255, phase & 0xFF) >> 8;
 }
 
 static inline uint16_t U8U8Mul(uint8_t a, uint8_t b) {

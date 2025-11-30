@@ -48,6 +48,7 @@ public:
     }
     void setXMorph(uint8_t input);
     void setYMorph(uint8_t input);
+    void reset();
 
 private:
     const uint32_t kscale_osc_level_ = SEMITONES_PER_OCTAVE * WAVE_INTERPOLATE_DELTA_X * WAVE_INTERPOLATE_DELTA_Y;

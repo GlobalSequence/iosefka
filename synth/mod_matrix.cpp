@@ -23,9 +23,13 @@ ModMatrix::ModMatrix(
     ext_mod_ = ext_mod;
     seed_ = random_seed;
 
+    // EnvInit2(&et_); // ENV TEST
+    // et.Init();
+
     for(int i = 0; i < NUMBER_OF_ENVS; i++) {
 
-        EnvInit(&env_[i]);
+        // EnvInit(&env_[i]);
+        env_[i].Init();
 
     }
 
@@ -68,8 +72,9 @@ void ModMatrix::triggerNoteOn(uint8_t note, uint8_t velocity, bool trigger) {
 
         for (int i = 0; i < NUMBER_OF_ENVS; i++) {
 
-            EnvTrigger(ATTACK, &env_[i]);
-    
+            // EnvTrigger(ATTACK, &env_[i]);
+            env_[i].Trigger(ENV_SEGMENT_ATTACK);
+
         }
     
         for (int i = 0; i < NUMBER_OF_LFOS; i++) {
@@ -89,26 +94,39 @@ void ModMatrix::triggerNoteOff(uint8_t note) {
 
     for (int i = 0; i < NUMBER_OF_ENVS; i++) {
         
-        EnvTrigger(RELEASE, &env_[i]);
+        // EnvTrigger(RELEASE, &env_[i]);
+        env_[i].Trigger(ENV_SEGMENT_RELEASE);
 
     }
 
+    // EnvTrigger2(RELEASE, &et_); // ENV TEST
+    // et.Trigger(ENV_SEGMENT_RELEASE);
 }
 
 void ModMatrix::loadSources() {
 
-    mod_source_[MOD_SRC_ENV_1] = EnvRender(&env_[0]) >> 4;
-    mod_source_[MOD_SRC_ENV_2] = EnvRender(&env_[1]) >> 4;
-    mod_source_[MOD_SRC_ENV_3] = EnvRender(&env_[2]) >> 4;
+        // uint16_t r = et.Render();
+    // if(et.segment() != ENV_SEGMENT_DEAD) TEST_PRINT_ONE_NL(r >> 4)
+    // uint16_t r = EnvRender2(&et_); // ENV TEST
+    // if(et_.stage_ != DEAD) TEST_PRINT_TWO_NL(r >> 4, mod_source_[MOD_SRC_ENV_1])
+    
+    // mod_source_[MOD_SRC_ENV_3] = r >> 4;
+    // mod_source_[MOD_SRC_ENV_1] = EnvRender(&env_[0]) >> 4;
+    // mod_source_[MOD_SRC_ENV_2] = EnvRender(&env_[1]) >> 4;
+    // mod_source_[MOD_SRC_ENV_3] = EnvRender(&env_[2]) >> 4;
+
+    mod_source_[MOD_SRC_ENV_1] = env_[0].Render() >> 4;
+    mod_source_[MOD_SRC_ENV_2] = env_[1].Render() >> 4;
+    mod_source_[MOD_SRC_ENV_3] = env_[2].Render() >> 4;
     mod_source_[MOD_SRC_LFO_1] = LFORender(&lfo_[0]);
     mod_source_[MOD_SRC_LFO_2] = LFORender(&lfo_[1]);
     mod_source_[MOD_SRC_LFO_3] = LFORender(&lfo_[2]);
  
+
+
     mod_source_[MOD_SRC_VELOCITY]   = velocity_ << 1;
     mod_source_[MOD_SRC_MOD_WHEEL]  = ext_mod_->mod_wheel_amt << 1;
     mod_source_[MOD_SRC_AFTERTOUCH] = ext_mod_->aftertouch_amt << 1;
-
-    // TEST_PRINT_ONE_NL(mod_source_[MOD_SRC_LFO_1])
 
     vca_drone_mode_ = patch_->vca.level >> 7;
 
@@ -148,16 +166,42 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_MIX_OSC_2_MIX] = patch_->mixer.osc_2_mix << 4;
     dst_[MOD_DST_MIX_NOISE_MIX] = patch_->mixer.noise_mix << 4;
 
-    int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
-    for (uint8_t i = 0; i < NUMBER_OF_ENVS; ++i)
-    {
-        *envelope_parameters++ = patch_->env[i].attack << 4;
-        *envelope_parameters++ = patch_->env[i].decay << 4;
-        *envelope_parameters++ = patch_->env[i].sustain << 4;
-        *envelope_parameters++ = patch_->env[i].release << 4;
-        envelope_parameters += 1;
-    }
+    // int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
+    // for (uint8_t i = 0; i < NUMBER_OF_ENVS; ++i)
+    // {
+    //     *envelope_parameters++ = patch_->env[i].attack << 4;
+    //     *envelope_parameters++ = patch_->env[i].decay << 4;
+    //     *envelope_parameters++ = patch_->env[i].sustain << 4;
+    //     *envelope_parameters++ = patch_->env[i].release << 4;
+    //     *envelope_parameters++ = patch_->env[i].loop << 4;
+    //     envelope_parameters += 1;
+    // }
 
+    // TEST_PRINT_ONE_TAB(patch_->env[2].attack)
+    // TEST_PRINT_ONE_TAB(patch_->env[2].decay)
+    // TEST_PRINT_ONE_TAB(patch_->env[2].sustain)
+    // TEST_PRINT_ONE_TAB(patch_->env[2].release)
+    // TEST_PRINT_ONE_TAB(patch_->env[2].loop)
+    // TEST_PRINT_ONE_NL(patch_->mod[MOD_SRC_ENV_3].amount)
+
+
+    dst_[MOD_DST_ENV_1_ATTACK] =    patch_->env[0].attack << 4;
+    dst_[MOD_DST_ENV_1_DECAY] =     patch_->env[0].decay << 4;
+    dst_[MOD_DST_ENV_1_SUSTAIN] =   patch_->env[0].sustain << 4;
+    dst_[MOD_DST_ENV_1_RELEASE] =   patch_->env[0].release << 4;
+    dst_[MOD_DST_ENV_1_LOOP] =      patch_->env[0].loop << 4;
+
+    dst_[MOD_DST_ENV_2_ATTACK] =    patch_->env[1].attack << 4;
+    dst_[MOD_DST_ENV_2_DECAY] =     patch_->env[1].decay << 4;
+    dst_[MOD_DST_ENV_2_SUSTAIN] =   patch_->env[1].sustain << 4;
+    dst_[MOD_DST_ENV_2_RELEASE] =   patch_->env[1].release << 4;
+    dst_[MOD_DST_ENV_2_LOOP] =      patch_->env[1].loop << 4;
+
+    dst_[MOD_DST_ENV_3_ATTACK] =    patch_->env[2].attack << 4;
+    dst_[MOD_DST_ENV_3_DECAY] =     patch_->env[2].decay << 4;
+    dst_[MOD_DST_ENV_3_SUSTAIN] =   patch_->env[2].sustain << 4;
+    dst_[MOD_DST_ENV_3_RELEASE] =   patch_->env[2].release << 4;
+    dst_[MOD_DST_ENV_3_LOOP] =      patch_->env[2].loop << 4;
 
     int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
     for (uint8_t i = 0; i < NUMBER_OF_ENVS; ++i)
@@ -168,16 +212,29 @@ void ModMatrix::loadSources() {
         lfo_parameters += 2;
     }
 
-    int16_t *mod_amount = &dst_[MOD_DST_ENV_1_AMOUNT];
-    for (uint8_t i = 0; i < NUMBER_OF_ENVS + NUMBER_OF_LFOS; i++)
-    {
-        *mod_amount = patch_->mod[i].amount << 4;
-        mod_amount += 5;
-    }
+    // int16_t *mod_amount = &dst_[MOD_DST_ENV_1_AMOUNT];
+    // for (uint8_t i = 0; i < NUMBER_OF_ENVS + NUMBER_OF_LFOS; i++)
+    // {
+    //     *mod_amount = patch_->mod[i].amount << 4;
+    //     mod_amount += 5;
+    // }
+
+    dst_[MOD_DST_ENV_1_AMOUNT] = patch_->mod[MOD_SRC_ENV_1].amount << 4;
+    dst_[MOD_DST_ENV_2_AMOUNT] = patch_->mod[MOD_SRC_ENV_2].amount << 4;
+    dst_[MOD_DST_ENV_3_AMOUNT] = patch_->mod[MOD_SRC_ENV_3].amount << 4;
+    dst_[MOD_DST_LFO_1_AMOUNT] = patch_->mod[MOD_SRC_LFO_1].amount << 4;
+    dst_[MOD_DST_LFO_2_AMOUNT] = patch_->mod[MOD_SRC_LFO_2].amount << 4;
+    dst_[MOD_DST_LFO_3_AMOUNT] = patch_->mod[MOD_SRC_LFO_3].amount << 4;
 
     dst_[MOD_DST_DELAY_AMOUNT] = patch_->delay.amount << 4;
     dst_[MOD_DST_DELAY_RATE] = patch_->delay.rate << 4;
     dst_[MOD_DST_DELAY_FEEDBACK] = patch_->delay.feedback << 4;
+
+    // lastly, swap out any destination with the Parameter Lock value
+    mod_destinations_t p_lock_dst = (mod_destinations_t) ext_mod_->p_lock_dst;
+    uint8_t p_lock_amt = ext_mod_->p_lock_amt;
+
+    dst_[p_lock_dst] = p_lock_amt << 4;
 
 }
 
@@ -206,29 +263,35 @@ void ModMatrix::processModulation() {
 
 void ModMatrix::updateDestinations()
 {
+
+    // if oscillator reset is done, pass it along and flip the bool
+    v_i->osc_reset = ext_mod_->osc_reset;
+    ext_mod_->osc_reset = false;
+
     // VCA 1 CV output
 
-    // if(!vca_drone_mode_) dst_[MOD_DST_VCA] += mod_source_[MOD_SRC_ENV_3];
     int16_t vca_output;
 
     if(!vca_drone_mode_) {
 
-        uint8_t vca_base = 0xDF;
-        uint8_t overdrive = patch_->vca.level >> 2;
+        // uint8_t vca_base = 0xDF;
+        // uint8_t overdrive = patch_->vca.level >> 2;
 
-        uint16_t velocity_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_ << 1);
+        // uint16_t velocity_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_ << 1);
+        // dst_[MOD_DST_VCA] += velocity_out;
 
-        // dst_[MOD_DST_VCA] += U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], vca_base + overdrive);
+        int16_t vca_out = mod_source_[MOD_SRC_ENV_3];
 
-        dst_[MOD_DST_VCA] += velocity_out;
+        if(patch_->vca.velocity_on) {
 
+            vca_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_ << 1);
 
-        // vca_output = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], dst_[MOD_DST_VCA] >> 4);
-        
+        }
+
+        dst_[MOD_DST_VCA] += vca_out;
     }
 
     c_o->vca1 = U12CLIPMAXMIN(dst_[MOD_DST_VCA]) >> 1;
-    // c_o->vca1 = U12CLIPMAXMIN(vca_output) >> 1;
 
     // VCA 2 CV output
     c_o->vca2 = U12CLIPMAXMIN(dst_[MOD_DST_FILTER_FM]) >> 1;
@@ -266,8 +329,6 @@ void ModMatrix::updateDestinations()
         bipolarParameter((dst_[MOD_DST_OSC_1_PITCH_FINE]) >> 4) * 2 + 
         bipolarParameter((dst_[MOD_DST_OSC_BOTH_PITCH_FINE]) >> 4) * 4 + 
         pitch_bend_scaled;
-    // v_i->osc_scale[0] += bipolarParameter((dst_[MOD_DST_OSC_1_PITCH_FINE]) >> 4) * 2;
-    // v_i->osc_scale[0] += pitch_bend_scaled;
     v_i->osc_octave[0] = 
         U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_OCTAVE] + (dst_[MOD_DST_OSC_BOTH_OCTAVE]) - 2048) >> 10; 
 
@@ -280,14 +341,6 @@ void ModMatrix::updateDestinations()
         pitch_bend_scaled;
     v_i->osc_octave[1] = 
         U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_OCTAVE] + (dst_[MOD_DST_OSC_BOTH_OCTAVE] - 2048)) >> 10; 
-
-    // TEST_PRINT_TWO_NL(v_i->osc_octave[1], dst_[MOD_DST_OSC_BOTH_OCTAVE])
-
-        // v_i->osc_pitch_mod[1] = ((dst_[MOD_DST_OSC_2_PITCH] - 2048) + (dst_[MOD_DST_OSC_BOTH_PITCH] - 2048)) << 3;
-    // v_i->osc_scale[1] = (bipolarParameter(patch_->osc[1].scale) * 2) * 12;
-    // v_i->osc_scale[1] += bipolarParameter((dst_[MOD_DST_OSC_2_PITCH_FINE]) >> 4) * 2;
-    // v_i->osc_scale[1] += pitch_bend_scaled;
-    // v_i->osc_octave[1] = dst_[MOD_DST_OSC_2_OCTAVE] >> 10;
 
     v_i->x_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_X_MORPH] + (dst_[MOD_DST_OSC_BOTH_X_MORPH] - 2048)) >> 4;
     v_i->y_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_Y_MORPH] + (dst_[MOD_DST_OSC_BOTH_Y_MORPH] - 2048)) >> 4;
@@ -302,18 +355,59 @@ void ModMatrix::updateDestinations()
     v_i->osc_2_mix = dst_[MOD_DST_MIX_OSC_2_MIX] >> 4;
     v_i->noise_mix = dst_[MOD_DST_MIX_NOISE_MIX] >> 4;
 
-    int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
-    for (int i = 0; i < NUMBER_OF_ENVS; ++i)
-    {
-        EnvUpdate(
-            envelope_parameters[0] >> 4,
-            envelope_parameters[1] >> 4,
-            envelope_parameters[2] >> 4,
-            envelope_parameters[3] >> 4,
-            &env_[i]            
-        );
-        envelope_parameters += 5;
-    }
+    // int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
+    // for (int i = 0; i < NUMBER_OF_ENVS; ++i)
+    // {
+    //     // EnvUpdate(
+    //     //     envelope_parameters[0] >> 4,
+    //     //     envelope_parameters[1] >> 4,
+    //     //     envelope_parameters[2] >> 4,
+    //     //     envelope_parameters[3] >> 4,
+    //     //     &env_[i]            
+    //     // );
+    //     env_[i].Update(
+    //         envelope_parameters[0] >> 5,
+    //         envelope_parameters[1] >> 5,
+    //         envelope_parameters[2] >> 4,
+    //         envelope_parameters[3] >> 5, 
+    //         envelope_parameters[4] >> 11  
+    //     );
+    //     envelope_parameters += 6;
+    // }
+
+    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_1_SUSTAIN])
+    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_2_SUSTAIN])
+
+    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_3_ATTACK])
+    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_3_DECAY])
+    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_3_SUSTAIN])
+    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_3_RELEASE])
+    // TEST_PRINT_ONE_NL(dst_[MOD_DST_ENV_3_AMOUNT])
+    // TEST_PRINT_TWO_NL(dst_[MOD_DST_ENV_3_LOOP], dst_[MOD_DST_ENV_3_LOOP] >> 11)
+
+    env_[0].Update(
+        dst_[MOD_DST_ENV_1_ATTACK]      >> 5,
+        dst_[MOD_DST_ENV_1_DECAY]       >> 5,
+        dst_[MOD_DST_ENV_1_SUSTAIN]     >> 4,
+        dst_[MOD_DST_ENV_1_RELEASE]     >> 5,
+        dst_[MOD_DST_ENV_1_LOOP]        >> 11
+    );
+
+        env_[1].Update(
+        dst_[MOD_DST_ENV_2_ATTACK]      >> 5,
+        dst_[MOD_DST_ENV_2_DECAY]       >> 5,
+        dst_[MOD_DST_ENV_2_SUSTAIN]     >> 4,
+        dst_[MOD_DST_ENV_2_RELEASE]     >> 5,
+        dst_[MOD_DST_ENV_2_LOOP]        >> 11
+    );
+
+    env_[2].Update(
+        dst_[MOD_DST_ENV_3_ATTACK]      >> 5,
+        dst_[MOD_DST_ENV_3_DECAY]       >> 5,
+        dst_[MOD_DST_ENV_3_SUSTAIN]     >> 4,
+        dst_[MOD_DST_ENV_3_RELEASE]     >> 5,
+        dst_[MOD_DST_ENV_3_LOOP]        >> 11
+    );
 
     bool tick_occurred = ext_mod_->clock_tick_occurred;
     ext_mod_->clock_tick_occurred = false;
@@ -344,7 +438,7 @@ void ModMatrix::updateDestinations()
 
         LFOUpdate(
             &lfo_[i], 
-            LFOGetSync(&lfo_[i]) == false? lfo_parameters[0] + 16 : lfo_sync_inc,
+            LFOGetSync(&lfo_[i]) == false? lfo_parameters[0] + 1 : lfo_sync_inc,
             param8Bits0To4(lfo_parameters[1] >> 4),
             lfo_parameters[2] >> 4,
             0,

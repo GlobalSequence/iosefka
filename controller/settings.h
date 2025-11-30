@@ -18,17 +18,6 @@ typedef enum synth_special_params_t {
     NUM_SPECIAL_PARAMS
 } synth_special_params_t;
 
-typedef enum midi_settings_toggle_type_t {
-
-    MIDI_SETTING_CLOCK,
-    MIDI_SETTING_TRANSPORT,
-    MIDI_SETTING_PROGRAM_CHANGE,
-    MIDI_SETTING_OUT_THRU,
-
-    NUM_TOGGLEABLE_MIDI_SETTINGS
-
-} midi_settings_toggle_type_t;
-
 typedef struct version_t {
 
     uint8_t major;
@@ -43,25 +32,28 @@ typedef struct preset_name_t {
 
 } preset_name_t;
 
-typedef struct midi_settings_t {
+typedef struct machine_settings_t {
+    // MIDI settings
     uint8_t channel;
     uint8_t pitch_bend_depth;
     bool program_change_rx = true;
     bool clock_rx = true;
     bool transport_rx = true;
     bool out_thru = MIDI_OUTPUT_OUT;
-} midi_settings_t;
+    // view settings
+    bool latch = false;
+} machine_setting_t;
 
 typedef struct special_settings_t {
     uint8_t seq_octave_limit = 11;
     bool ext_clock_active;
 } special_settings_t;
 
-typedef struct assigned_pots_t {
+typedef struct user_param_t {
 
     uint8_t destination[15];
 
-} assigned_pots_t;
+} user_param_t;
 
 typedef struct synth_state_t {
     
@@ -69,10 +61,10 @@ typedef struct synth_state_t {
     Sequencer seq;
     step_data_t new_step;
     pattern_gen_t pattern_gen;
-    midi_settings_t midi;
+    machine_settings_t settings;
     special_settings_t special;
     external_modulation_t ext_mod;
-    assigned_pots_t assigned_pots;
+    user_param_t user_param;
 
 } synth_state_t;
 
@@ -83,7 +75,7 @@ typedef struct synth_storable_t {
     pattern_data_t seq_pattern_data;
     step_data_t step_data;
     pattern_gen_t pattern_gen;
-    assigned_pots_t assigned_pots;
+    user_param_t user_param;
 
 } synth_storable_t;
 
@@ -98,13 +90,13 @@ synth_storable_t settingsGetStorableData();
 
 void settingsSetStoredData(synth_storable_t data);
 
-void settingsSetMidiSettingsAll(midi_settings_t midi);
+void settingsSetMachineSettingsAll(machine_settings_t settings);
 
-void settingsToggleMidiSetting(midi_settings_toggle_type_t setting);
+// void settingsToggleMidiSetting(midi_settings_toggle_type_t setting);
 
-bool settingsGetMidiSetting(midi_settings_toggle_type_t setting);
+// bool settingsGetMidiSetting(midi_settings_toggle_type_t setting);
 
-midi_settings_t settingsGetMidiSettingsAll();
+machine_settings_t settingsGetMachineSettingsAll();
 
 external_modulation_t* settingsGetExternalModulation();
 
@@ -113,6 +105,14 @@ void settingsSetClockTickPeriod(uint32_t period);
 void settingsSetClockTickEvent();
 
 void settingsSetStartEvent();
+
+void settingsSetInitPatch();
+
+void settingsSetInitMachineSettings();
+
+synth_storable_t settingsGetInitPatch();
+
+machine_settings_t settingsGetInitMachineSettings(); 
 
 #ifdef __cplusplus
 }

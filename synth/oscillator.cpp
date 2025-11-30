@@ -6,6 +6,8 @@
 #include "../common/globals.h"
 #include "wavetable.h"
 
+#include "../common/test.h"
+
 void Oscillator::phaseAccumulator(void)
 {
 
@@ -73,5 +75,11 @@ void Oscillator::setYMorph(uint8_t input)
     {
         y_index_next_ = 0;
     }
+
+}
+
+void Oscillator::reset() {
+
+    phase_ = 0;
 
 }

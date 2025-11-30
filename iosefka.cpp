@@ -36,17 +36,20 @@ int main()
 
     bool clock_work = set_sys_clock_khz(192000, true);
 
+    // sleep_ms(4000);
+
     startupRun();
 
     multicore_launch_core1(core1_main);
-/* 
-    sleep_ms(2000);
+
+/*     sleep_ms(2000);
     extern char __flash_binary_start;  // defined in linker script
     extern char __flash_binary_end;    // defined in linker script
     uintptr_t start = (uintptr_t) &__flash_binary_start;
     uintptr_t end = (uintptr_t) &__flash_binary_end;
-    printf("Binary starts at %08x and ends at %08x, size is %08x\n", start, end, end-start);
- */
+    printf("Binary starts at %08x and ends at %08x, size is %08x\n", start, end, end-start); 
+*/
+
     while(1) {
 
         bool set_control = control_flag;

@@ -58,6 +58,7 @@ typedef enum view_layer_t {
 	LAYER_LFO,
     LAYER_SYNTH_ENV_SPLIT,
     LAYER_SEQ,
+    LAYER_USER_PARAM,
 
 	NUM_VIEW_LAYERS	
 } view_layer_t;
@@ -95,8 +96,16 @@ typedef enum view_mode_t{
     MODE_MIDI_MOD_WHEEL_DST,
     MODE_MIDI_AFTERTOUCH_DST,
     MODE_MIDI_PITCHBEND_DEPTH,
+    MODE_MIDI_BREATH_DST,
+    MODE_MIDI_NOTE_DST,
+    MODE_SET_SCROLL,
+    MODE_SET_MOD_SRC_SEL,
+    MODE_SET_MOD_DST_SEL,
+    MODE_SET_PRESET_NAME_SEL,
+    MODE_USER_PARAM_SEL,
+    MODE_USER_PARAM_DST,
+    MODE_SEQ_WINDOW_SEL,
     MODE_MOD_LAYER_SEL,
-    
 
     NUM_VIEW_MODES
 } view_mode_t;
@@ -107,6 +116,7 @@ typedef enum view_mode_event_t {
     EVT_MODE_LFO,
     EVT_MODE_SEQ,
     EVT_MODE_SETTINGS,
+    EVT_MODE_USER_PARAM,
 
     NUM_MODE_EVENTS
 } view_mode_event_t;
@@ -139,6 +149,9 @@ typedef struct machine_state_t {
     uint8_t seq_step_note;
     uint8_t seq_step_octave;
     uint8_t preset_number;
+    uint8_t settings_row;
+    uint8_t settings_mod_source;
+    uint8_t current_user_param;
 
 } machine_state_t;
 
@@ -152,12 +165,19 @@ void viewChange(view_change_t event);
 void viewSetPage(view_page_t page);
 void viewSetLayer(view_layer_t layer);
 void viewSetMode(view_mode_t mode);
+void viewSetMachineStateMode(view_mode_t mode);
 void viewSetKeyboardOctave(uint8_t octave);
 void viewSetSequencerWindow(bool increment);
+void viewSetSequencerWindowByValue(uint8_t value);
 void viewSetPresetNumber(uint8_t preset);
 void viewSetSeqParamStepNote(uint8_t note);
 void viewSetSeqParamStepOctave(uint8_t octave);
+void viewSetSettingsRow(uint8_t row);
+void viewSetSettingsModSource(uint8_t index);
+void viewSetCurrentUserParameter(uint8_t index);
+void viewSetEncoderTurnedWhileHeld();
 
+view_change_t viewGetLastViewChange();
 view_page_t viewGetPage();
 view_layer_t viewGetLayer();
 view_mode_t viewGetMode();
@@ -170,7 +190,16 @@ bool viewDidPLockHappen();
 uint8_t viewGetSeqParamStepNote();
 uint8_t viewGetSeqParamStepOctave();
 bool viewGetViewChangeFlagLed();
+uint8_t viewGetSettingsRow();
+uint8_t viewGetSettingsModSource();
+uint8_t viewGetModSourceFromSettings(); // convert settings specific mod sources to mod_sources_t
+uint8_t viewGetCurrentUserParameter();
+bool viewGetEncoderTurnedWhileHeld();
 
+void viewSetLatchSingle(uint8_t index);
+void viewResetLatchSingle(uint8_t index);
+void viewSetLatchAll();
+bool viewGetLatchSingle(uint8_t index);
 
 #ifdef __cplusplus
 }

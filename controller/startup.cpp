@@ -3,6 +3,7 @@
 #include "pico/stdlib.h"
 
 #include "ui.h"
+#include "event_processor.h"
 #include "encoder_map.h"
 #include "parameter.h"
 #include "switch_actions.h"
@@ -13,7 +14,7 @@
 #include "midi.h"
 #include "settings.h"
 #include "note_queue.h"
-#include "version.h"
+#include "version/version.h"
 #include "../sequencer/seq_poll.h"
 #include "../sequencer/pattern_generator.h"
 #include "../devices/audio.h"
@@ -28,6 +29,7 @@ bool temp_legato = true;
 
 // private
 void startupSetAllPresetsToDefault();
+void checkForRestoreMemoryRequest();
 
 // public
 void startupRun() {
@@ -58,6 +60,9 @@ void startupRun() {
     // TEST_PRINT_TWO_NL(v.minor, v.patch)
 
     versionUpdate();
+
+    // versionStorageTest();
+    // versionTest();
     
     storageLoad(STORAGE_LOAD_ADDRESS);
 
@@ -92,10 +97,7 @@ void startupRun() {
         seed
     );
 
-    // synth_storable_t s;
-    // midi_settings_t m;
-    // TEST_PRINT_TEXT("patch size: ")
-    // TEST_PRINT_ONE_NL(sizeof(s))
+    checkForRestoreMemoryRequest();
 
 }
 
@@ -117,7 +119,7 @@ void startupSetAllPresetsToDefault() {
 
     synth_storable_t st;
 
-    midi_settings_t ms;
+    machine_settings_t ms;
 
     p.osc[0].scale          = 0x80;
     p.osc[0].octave         = 0x80;
@@ -145,6 +147,7 @@ void startupSetAllPresetsToDefault() {
     p.filter.tracking       = 0xFF;
 
     p.vca.level             = 0x00;
+    p.vca.velocity_on       = 0x01;
     
     p.delay.amount          = 0x00;
     p.delay.rate            = 0x80;
@@ -156,16 +159,19 @@ void startupSetAllPresetsToDefault() {
     p.env[0].decay          = 0x80;
     p.env[0].sustain        = 0x80;
     p.env[0].release        = 0x80;
+    p.env[0].loop           = 0x00;
 
     p.env[1].attack         = 0x00;
     p.env[1].decay          = 0x80;
     p.env[1].sustain        = 0x80;
     p.env[1].release        = 0x80;
+    p.env[1].loop           = 0x00;
 
     p.env[2].attack         = 0x00;
     p.env[2].decay          = 0x80;
     p.env[2].sustain        = 0x80;
     p.env[2].release        = 0x80;
+    p.env[2].loop           = 0x00;
 
     p.lfo[0].rate           = 0x00;
     p.lfo[0].shape          = 0x00;
@@ -242,7 +248,7 @@ void startupSetAllPresetsToDefault() {
     pg.countdown            = 0x00;
     pg.on                   = true;
 
-    // MIDI settings
+    // machine settings
 
     ms.channel              = 0x0B;
     ms.pitch_bend_depth     = 0x01;
@@ -250,6 +256,7 @@ void startupSetAllPresetsToDefault() {
     ms.transport_rx         = true;
     ms.program_change_rx    = true;
     ms.out_thru             = false;
+    ms.latch                = false;
 
     // prepare storable data
 
@@ -259,13 +266,13 @@ void startupSetAllPresetsToDefault() {
     st.pattern_gen          = pg;
 
     // settingsSetStoredData(st);
-    // settingsSetMidiSettingsAll(ms);
+    // settingsSetMachineSettingsAll(ms);
 
     for(int i = 0; i < NUMBER_OF_PRESETS; i++) {
 
         settingsSetStoredData(st);
 
-        settingsSetMidiSettingsAll(ms);
+        settingsSetMachineSettingsAll(ms);
 
         displayShowWritingNewPresets(i);
 
@@ -275,4 +282,18 @@ void startupSetAllPresetsToDefault() {
 
     }
 
+}
+
+void checkForRestoreMemoryRequest() {
+
+    for(int i = 0; i < NUM_GPIO_EXP_PORTS; i++) {
+
+        uiUpdateGpioExpanders(i);
+
+    }
+
+    bool confirm = eventProcessorCheckForActionsOnStartup();
+
+    TEST_PRINT_TEXT("CONFIRM: ")
+    TEST_PRINT_ONE_NL(confirm)
 }

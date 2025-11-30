@@ -11,7 +11,8 @@ extern "C"
 
 bool versionWriteVersionToCleanStorage();
 void versionUpdate();
-// void versionMigratePresetv0_0_0_to_0_1_0();
+void versionTest();
+void versionStorageTest();
 
 #ifdef __cplusplus
 }

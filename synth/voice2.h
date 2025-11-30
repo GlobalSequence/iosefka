@@ -24,6 +24,7 @@ typedef struct voice_inputs_t {
     uint8_t osc_1_mix;
     uint8_t osc_2_mix;
     uint8_t noise_mix;
+    bool osc_reset;
 
 } voice_inputs_t;
 

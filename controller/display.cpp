@@ -18,11 +18,41 @@
 using namespace pico_ssd1306;
 
 // ################################
+// SETTINGS DEFINES
+// ################################
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+// #define NUMBER_OF_VISIBLE_SETTINGS_ROWS 8
+#define NUMBER_OF_VISIBLE_SETTINGS_ROWS 6
+
+// const uint8_t k_settings_row_y[NUMBER_OF_VISIBLE_SETTINGS_ROWS] = {0, 8, 16, 24, 32, 40, 48, 54};
+const uint8_t k_settings_row_x = 8;
+const uint8_t k_settings_row_y[NUMBER_OF_VISIBLE_SETTINGS_ROWS] = {2, 12, 22, 32, 42, 52};
+const uint8_t k_settings_value_x[] = {110, 102, 94};
+const uint8_t k_settings_mod_src_x = 56;
+const uint8_t k_settings_checkbox_x = 110;
+const uint8_t k_settings_preset_name_x = 54;
+const uint8_t k_settings_mode_focus_w = 121;
+
+const uint8_t k_scroll_bar_frame_x = 121;
+const uint8_t k_scroll_bar_frame_w = 5;
+const uint8_t k_scroll_bar_x = 123;
+const uint8_t k_scroll_bar_w = 1;
+
+static uint8_t set_row_top;
+static uint8_t set_row_bottom;
+static uint8_t settings_scroll_pos;
+static uint8_t settings_scroll_bar_height;
+static uint8_t settings_scroll_bar_increment;
+
+// ################################
 // PARAMETER DEFINES
 // ################################
 
 static const uint8_t k_char_width = 8;
 static const uint8_t k_char_height = 8;
+static const uint8_t k_param_width = 16;
 typedef const char* (*paramFuncGetGraphic)(uint8_t);
 typedef const char* (*settingsStringFunc)(settings_string_t);
 const uint8_t k_num_disp_parameters = NUMBER_OF_POTENTIOMETERS;
@@ -37,6 +67,7 @@ typedef struct display_param_t {
 
 const uint8_t seq_p_lock_length = 80;
 const uint8_t seq_p_lock_height = 9;
+const uint8_t k_seq_prob_index = 10;
 
 const uint8_t k_param_p_lock_length = 18;
 const uint8_t k_param_p_lock_height = 9;
@@ -47,7 +78,7 @@ const uint8_t k_settings_param_x = 109;
 const uint8_t k_settings_check_box_x[] = {55, 117};
 const uint8_t k_check_size_x = 8;
 const uint8_t k_check_size_y = 8;
-const uint8_t k_settings_midi_mod_x[] = {2, 42, 84};
+const uint8_t k_settings_midi_mod_x[] = {2, 46, 90};
 const uint8_t k_settings_midi_mod_y = 47;
 const uint8_t k_thru_length = 32;
 
@@ -63,6 +94,19 @@ const uint8_t k_gen_y = 0;
 const uint8_t k_storage_x = 7;
 const uint8_t k_storage_text_x[] = {71, 31};
 const uint8_t k_storage_y[] = {7, 15, 23, 31, 39, 47, 55};
+
+// indices of constrained value parameters on their respective layers
+const uint8_t k_param_sync_i = 12;
+const uint8_t k_param_oct_1_i = 0;
+const uint8_t k_param_oct_2_i = 1;
+const uint8_t k_param_fil_t_i = 3;
+const uint8_t k_param_lfo_1_sh_i = 1;
+const uint8_t k_param_lfo_2_sh_i = 6;
+const uint8_t k_param_lfo_3_sh_i = 11;
+const uint8_t k_param_lfo_1_rs_i = 3;
+const uint8_t k_param_lfo_2_rs_i = 8;
+const uint8_t k_param_lfo_3_rs_i = 13;
+
 // ################################
 // STEP SEQ DEFINES
 // ################################
@@ -122,9 +166,13 @@ typedef struct disp_encoder_mode_t {
 
 static bool display_trigger = false;
 
-static unsigned long display_timer_started;
-static const unsigned long k_display_timer_timeout = 1000000;
-static bool display_timer_active = false;
+static unsigned long display_hang_timer_started;
+static const unsigned long k_display_hang_timer_timeout = 1000000;
+
+static unsigned long display_off_timer_started;
+static const unsigned long k_display_off_timer_timeout = 300000000;
+
+static bool display_hang_timer_active = false;
 static bool encoder_mode_show = false;
 static bool seq_special_coords = false;
 
@@ -277,12 +325,35 @@ paramFuncGetGraphic param_func_seq[k_num_disp_parameters] = {
 
 };
 
+paramFuncGetGraphic param_func_user_param[k_num_disp_parameters] = {
+
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+    graphicsGetHexString, 
+
+};
+
 display_param_t display_param_s1[k_num_disp_parameters];
 display_param_t display_param_s2[k_num_disp_parameters];
 display_param_t display_param_s_env[k_num_disp_parameters];
 display_param_t display_param_env[k_num_disp_parameters];
 display_param_t display_param_lfo[k_num_disp_parameters];
 display_param_t display_param_seq[k_num_disp_parameters];
+display_param_t display_param_usr[k_num_disp_parameters];
 
 display_param_t *display_param[NUM_VIEW_LAYERS];
 
@@ -300,23 +371,26 @@ void displayEncoderModeNormal(view_mode_t mode);
 void displayEncoderModeModLayer(view_mode_t mode, view_layer_t layer);
 void showEncoderModeByEvent(display_encoder_mode_event_t event);
 void disableAdditionalTimerFlags();
-void displayTimerSet();
-void displayTimerCheck();
+void displayHangTimerSet();
+void displayHangTimerCheck();
+void displayOffTimer(bool reset);
 // void draw8x8Rectangle(uint8_t x, uint8_t y);
 void drawChars(const char* text, uint8_t x, uint8_t y, WriteMode write_mode);
 void drawRectangle(uint8_t x, uint8_t y, uint8_t x_len, uint8_t y_len, bool fill, WriteMode mode);
 uint8_t getSeqParamValue(uint8_t index, uint8_t step, bool p_lock);
 disp_encoder_mode_t getEncoderParamValue(view_mode_t mode);
 bool isModLayer(view_layer_t layer);
+void drawModLayer(view_layer_t layer, uint8_t index);
+uint8_t setValueXCoordIndexByTens(int value);
 
 // ################################
 // PRIVATE FUNCTION DEFINITIONS
 // ################################
 
-void displayTimerSet() {
+void displayHangTimerSet() {
 
-    display_timer_started = time_us_64();
-    display_timer_active = true;
+    display_hang_timer_started = time_us_64();
+    display_hang_timer_active = true;
 
 }
 
@@ -326,17 +400,35 @@ void disableAdditionalTimerFlags() {
 
 }
 
-void displayTimerCheck() {
+void displayHangTimerCheck() {
 
-    if(display_timer_active) {
+    if(display_hang_timer_active) {
 
-        if(time_us_64() - display_timer_started >= k_display_timer_timeout) {
+        if(time_us_64() - display_hang_timer_started >= k_display_hang_timer_timeout) {
 
-            display_timer_active = false;
+            display_hang_timer_active = false;
             display_trigger = true;
             disableAdditionalTimerFlags();
 
         }
+
+    }
+
+}
+
+void displayOffTimer(bool reset) {
+
+    unsigned long time = time_us_64();
+
+    if(reset) {
+        display_off_timer_started = time;
+        return;
+    }
+
+    if(time - display_off_timer_started >= k_display_off_timer_timeout) {
+
+        devicesDisplayClear();
+        devicesDisplayDisplay();
 
     }
 
@@ -549,7 +641,7 @@ disp_encoder_mode_t getEncoderParamValue(view_mode_t mode) {
         case MODE_MIDI_CHANNEL:
 
             graphic = GRAPHIC_ENCODER_DECIMAL;
-            val = synth->midi.channel;
+            val = synth->settings.channel;
 
             break;
     
@@ -576,7 +668,12 @@ disp_encoder_mode_t getEncoderParamValue(view_mode_t mode) {
     
         case MODE_MOD_LAYER_SEL:
             break;
-    
+
+        case MODE_USER_PARAM_DST:
+
+            graphic = GRAPHIC_ENCODER_MOD_DST;
+            val = synth->user_param.destination[viewGetCurrentUserParameter()];
+
         default:
             break;
     }
@@ -597,6 +694,51 @@ bool isModLayer(view_layer_t layer) {
     return false;
 
 }
+// this is basically the same as the encoder mode mod layer except with the loop and minus the mod dsts
+// TODO: merge them
+void drawModLayer(view_layer_t layer, uint8_t index) {
+
+        uint8_t y = param_coords_y[index];
+        const char* i = "0";
+
+        switch(index) {
+            case 0: i = "1"; break;
+            case 1: i = "2"; break;
+            case 2: i = "3"; break;
+            default: break;
+        }
+
+        uint8_t sel;
+        view_mode_t mode = viewGetMode();
+
+        if(layer == LAYER_ENV) {
+
+            switch(mode) {
+                case MODE_MOD_DST_ENV_1: sel = 0; break;
+                case MODE_MOD_DST_ENV_2: sel = 1; break;
+                case MODE_MOD_DST_ENV_3: sel = 2; break;
+                default: break;
+            }
+
+            const char* loop = " ";
+            if(patch->env[index].loop) loop = "L";
+
+            drawChars(loop, 120, y, WriteMode::ADD);
+
+        } else if(layer == LAYER_LFO) {
+
+            switch(mode) {
+                case MODE_MOD_DST_LFO_1: sel = 0; break;
+                case MODE_MOD_DST_LFO_2: sel = 1; break;
+                case MODE_MOD_DST_LFO_3: sel = 2; break;
+                default: break;
+            }
+
+        }
+        
+        if(index == sel) drawRectangle(0, y - 1, k_char_width, k_char_height, true, WriteMode::ADD);
+        drawChars(i, 0, y, WriteMode::INVERT);
+}
 
 uint8_t getPLockStep() {
 
@@ -609,6 +751,8 @@ uint8_t getPLockStep() {
 bool isThisAPLockedSynthVal(uint8_t step, uint8_t *p) {
 
     mod_destinations_t dst = (mod_destinations_t)synth->seq.getStepPLockParam(step);
+
+    if(dst == MOD_DST_NONE) return false;
 
     uint8_t *p_lock_param_ptr = parameterGetPointer(dst);
     
@@ -672,6 +816,14 @@ void displayUpdateLeds(view_layer_t layer, view_page_t page) {
                 layer_led    = LED_LAYER_SEQ;
                 layer_led_2  = LED_LAYER_SEQ;
                 break;  
+
+            case LAYER_USER_PARAM:
+                layer_led    = LED_LAYER_SYNTH_2;
+                layer_led_2  = LED_LAYER_SYNTH_1;
+                break;
+
+            default:
+                break;
         }
 
         // *led_bits = (0x80 >> page_led) | (0x80 >> layer_led) | (0x80 >> layer_led_2);
@@ -715,6 +867,10 @@ void displayLayerHeader(view_layer_t layer) {
 
             drawChars("e", 0, param_coords_y[2], WriteMode::INVERT);
 
+        } else if(layer == LAYER_USER_PARAM) {
+
+            return;
+
         }
 
     }
@@ -753,17 +909,12 @@ void displayPageSettings() {
                 storage_char = graphicsGetStorageActiveString(type_string);
                 drawChars(storage_char, k_storage_x, k_storage_y[0], WriteMode::INVERT);
 
-                TEST_PRINT_TEXT("STORAGE HAPPENING\n")
-
                 break;
 
             case STORAGE_STATE_FINISHED:
 
                 show_storage_complete = true;
-                displayTimerSet();
-
-
-                TEST_PRINT_TEXT("STORAGE COMPLETE\n")
+                displayHangTimerSet();
 
                 break;
 
@@ -777,27 +928,211 @@ void displayPageSettings() {
                 drawChars(storage_char, k_storage_x, k_storage_y[0], WriteMode::INVERT);
                 drawChars("complete!", k_storage_x, k_storage_y[1], WriteMode::INVERT);
 
-                TEST_PRINT_TEXT("STORAGE SCREEN HANGING\n")
-
                 break;
 
         }
 
-
     } else {
 
-        uint8_t preset = viewGetPresetNumber();
-        uint8_t channel = synth->midi.channel;
+        view_mode_t mode = viewGetMode();
+
+        uint8_t row_ref = viewGetSettingsRow();
+        bool outline = true;
+
+        if(row_ref > set_row_bottom) {
+
+            set_row_bottom = row_ref;
+            set_row_top = set_row_bottom - (NUMBER_OF_VISIBLE_SETTINGS_ROWS - 1);
+
+        }
+
+        if(row_ref < set_row_top) {
+
+            set_row_top = row_ref;
+            set_row_bottom = set_row_top + (NUMBER_OF_VISIBLE_SETTINGS_ROWS - 1);
+
+        }
+
+        settings_row_t row_type[NUMBER_OF_VISIBLE_SETTINGS_ROWS];
+        bool checkbox[NUMBER_OF_VISIBLE_SETTINGS_ROWS];
+        const char* str[NUMBER_OF_VISIBLE_SETTINGS_ROWS];
+        const char* val[NUMBER_OF_VISIBLE_SETTINGS_ROWS];
+
+        for(int i = 0; i < NUMBER_OF_VISIBLE_SETTINGS_ROWS; i++) {
+
+            checkbox[i] = false;
+            val[i] = "";
+
+            uint8_t row_vis = set_row_top + i;
+            row_type[i] = (settings_row_t) row_vis;
+            paramFuncGetGraphic h = graphicsGetHexString;
+            settingsStringFunc s = graphicsGetSettingsString;
+            mod_sources_t src = (mod_sources_t) viewGetModSourceFromSettings();
+
+            switch (row_vis)
+            {
+                case SET_ROW_PRESET_NUM:
+                    str[i] = s(STRING_PRESET);
+                    val[i] = graphicsGetDecString(viewGetPresetNumber() + 1);
+                    break;
+
+                case SET_ROW_PRESET_NAME:
+                    str[i] = /* s(STRING_NAME) */"";
+                    val[i] = /* graphicsGetDecString(viewGetPresetNumber()) */"xxx";
+                    break;
+
+                case SET_ROW_MIDI_CHAN:
+                    str[i] = s(STRING_CHANNEL);
+                    val[i] = graphicsGetDecString(synth->settings.channel + 1);
+                    break;
+
+                case SET_ROW_MIDI_CLOCK:
+                    str[i] = s(STRING_CLOCK);
+                    checkbox[i] = synth->settings.clock_rx;
+                    break;
+
+                case SET_ROW_MIDI_TRANS:
+                    str[i] = s(STRING_TRANSPORT);
+                    checkbox[i] = synth->settings.transport_rx;
+                    break;
+
+                case SET_ROW_MIDI_PGM:
+                    str[i] = s(STRING_PROGRAM_CHANGE);
+                    checkbox[i] = synth->settings.program_change_rx;
+                    break;
+
+                case SET_ROW_LEGATO:
+                    str[i] = s(STRING_LEGATO);
+                    // checkbox[i] = false;
+                    break;
+
+                case SET_ROW_OSC_DUO:
+                    str[i] = s(STRING_OSC_DUO);
+                    // checkbox[i] = false;
+                    break;
+
+                case SET_ROW_VCA_VELOCITY:
+                    str[i] = s(STRING_VCA_VELOCITY);
+                    checkbox[i] = synth->patch.vca.velocity_on;
+                    break;
+
+                case SET_ROW_POT_LATCH:
+                    str[i] = s(STRING_LATCH);
+                    checkbox[i] = synth->settings.latch;
+                    break;
+
+                case SET_ROW_PB_DEPTH:
+                    str[i] = s(STRING_PITCH_BEND_DEPTH);
+                    val[i] = graphicsGetDecString(synth->settings.pitch_bend_depth + 1);
+                    break;
+
+                case SET_ROW_MOD_SRC:
+                    str[i] = s(STRING_MOD_SOURCE);
+                    val[i] = graphicsGetModSource(src);
+                    break;
+
+                case SET_ROW_MOD_DST:
+                    str[i] = "";
+                    val[i] = graphicsGetModDst((mod_destinations_t)synth->patch.mod[src].destination);
+                    break;
+
+                case SET_ROW_INIT_PATCH:
+                    str[i] = s(STRING_INIT_PATCH);
+                    break;
+
+                case NUM_SET_ROWS:
+                default:
+                    str[i] = "";
+                    val[i] = "";
+                    // handle invalid row_vis
+                    break;
+            }
+
+            // drawChars(string, )
+
+        }
+
+        for(int i = 0; i < NUMBER_OF_VISIBLE_SETTINGS_ROWS; i++) {
+
+            WriteMode m_a = WriteMode::ADD;
+            WriteMode m_i = WriteMode::INVERT;
+
+            uint8_t y = k_settings_row_y[i];
+
+            drawChars(str[i], k_settings_row_x, y, m_a);
+
+            switch(row_type[i]) {
+
+                case SET_ROW_MIDI_CLOCK:
+                case SET_ROW_MIDI_TRANS:
+                case SET_ROW_MIDI_PGM:
+                case SET_ROW_LEGATO:
+                case SET_ROW_OSC_DUO:
+                case SET_ROW_VCA_VELOCITY:
+                case SET_ROW_POT_LATCH:
+                    if(row_ref == row_type[i]) outline = false;
+                    checkBox(k_settings_checkbox_x, y, checkbox[i]);
+                    break;
+
+                case SET_ROW_PRESET_NUM:
+                case SET_ROW_MIDI_CHAN:
+                case SET_ROW_PB_DEPTH:
+                    drawChars(val[i], k_settings_value_x[strlen(val[i]) - 1], y, m_a);
+                    break;
+                
+                case SET_ROW_MOD_SRC:
+                    drawChars(val[i], k_settings_mod_src_x, y, m_a);
+                    break;
+                
+                case SET_ROW_MOD_DST:
+                    drawChars(val[i], k_settings_row_x, y, m_a);
+                    break;
+
+                case SET_ROW_PRESET_NAME:
+                    drawChars("xxx", k_settings_row_x, y, m_a);
+
+                default: break;
+
+            }
+
+        }
+
+        uint8_t scroll_pos = row_ref - set_row_top;
+        uint8_t y_pos = k_settings_row_y[scroll_pos];
+
+        // drawChars(graphicsGetDecString(row_ref), 0, k_settings_row_y[scroll_pos], WriteMode::ADD);
+        devicesDisplayDrawBitmap(0, /* k_settings_row_y[scroll_pos] */y_pos, k_char_height, k_char_width, graphicsGetStepIcon(STEP_ICON_INACTIVE), WriteMode::ADD);
+
+        uint8_t scroll_bar_y_top = (settings_scroll_bar_increment * set_row_top) + 2; // the "+ 2" is a manual adjustment for visual purposes
+
+        drawRectangle(k_scroll_bar_frame_x, 0, k_scroll_bar_frame_w, SCREEN_HEIGHT - 1, false, WriteMode::ADD);
+        drawRectangle(k_scroll_bar_x, scroll_bar_y_top, k_scroll_bar_w, settings_scroll_bar_height, true, WriteMode::ADD);
+
+        if(mode != MODE_SET_SCROLL && outline) {
+
+            drawLine(0, y_pos - 2, k_settings_mode_focus_w, 1, WriteMode::ADD);
+            drawLine(0, y_pos + 10, k_settings_mode_focus_w, 1, WriteMode::ADD);
+
+        }
+/*         machine_setting_t m = synth->settings;
+
+        uint8_t channel = m.channel + 1;
+        uint8_t clock = m.clock_rx;
+        uint8_t transport = m.transport_rx;
+        uint8_t pb_depth = m.pitch_bend_depth + 1;
+        bool latch = m.latch;
+
+
+        uint8_t preset = viewGetPresetNumber() + 1;
+        // uint8_t channel = synth->settings.channel + 1;
+        bool vca_vel = patch->vca.velocity_on;
         uint8_t velocity = patch->mod[MOD_SRC_VELOCITY].destination;
         uint8_t mod_wheel = patch->mod[MOD_SRC_MOD_WHEEL].destination;
         uint8_t aftertouch = patch->mod[MOD_SRC_AFTERTOUCH].destination;
-        bool clock = synth->midi.clock_rx;
-        bool transport = synth->midi.transport_rx;
-        uint8_t pb_depth = synth->midi.pitch_bend_depth;
-        // bool program_change = synth->midi.program_change_rx;
-        // bool out_thru = synth->midi.out_thru;
-    
-        // settings_string_t d_out_through = out_thru ? STRING_THRU : STRING_OUT;
+        // bool clock = synth->settings.clock_rx;
+        // bool transport = synth->settings.transport_rx;
+        // uint8_t pb_depth = synth->settings.pitch_bend_depth;
+        // bool latch = synth->settings.latch;
     
         paramFuncGetGraphic g = graphicsGetHexString;
         settingsStringFunc s = graphicsGetSettingsString;
@@ -858,7 +1193,7 @@ void displayPageSettings() {
 
             case MODE_MIDI_PITCHBEND_DEPTH:
 
-            r_x_s = k_settings_text_x[0];
+            r_x_s = k_settings_text_x[1];
             r_y_s = k_settings_text_y[3];
             char_len = 5;
     
@@ -870,11 +1205,13 @@ void displayPageSettings() {
         drawChars(s(STRING_PRESET), k_settings_text_x[0], k_settings_text_y[0], WriteMode::INVERT);
         drawChars(graphicsGetDecString(preset), k_settings_param_x, k_settings_text_y[0], WriteMode::INVERT);
         drawChars(s(STRING_CHANNEL), k_settings_text_x[0], k_settings_text_y[1], WriteMode::INVERT);
-        drawChars(graphicsGetDecString(channel + 1), k_settings_param_x, k_settings_text_y[1], WriteMode::INVERT);
+        drawChars(graphicsGetDecString(channel), k_settings_param_x, k_settings_text_y[1], WriteMode::INVERT);
         drawChars(s(STRING_CLOCK), k_settings_text_x[0], k_settings_text_y[2], WriteMode::INVERT);
         drawChars(s(STRING_TRANSPORT), k_settings_text_x[1], k_settings_text_y[2], WriteMode::INVERT);
-        // drawChars(s(STRING_PROGRAM_CHANGE), k_settings_text_x[0], k_settings_text_y[3], WriteMode::INVERT);
-        drawChars(s(STRING_PITCH_BEND_DEPTH), k_settings_text_x[0], k_settings_text_y[3], WriteMode::INVERT);
+        drawChars(s(STRING_LATCH), k_settings_text_x[0], k_settings_text_y[3], WriteMode::INVERT);
+        drawChars(s(STRING_PITCH_BEND_DEPTH), k_settings_text_x[1], k_settings_text_y[3], WriteMode::INVERT);
+
+
     
         // if(out_thru) {
         //     drawRectangle(k_settings_text_x[1], k_settings_text_y[3], k_thru_length, k_char_height, true, m_a);
@@ -883,9 +1220,9 @@ void displayPageSettings() {
     
         checkBox(k_settings_check_box_x[0], k_settings_text_y[2], clock);
         checkBox(k_settings_check_box_x[1], k_settings_text_y[2], transport);
-        // checkBox(k_settings_check_box_x[0], k_settings_text_y[3], program_change);
+        checkBox(k_settings_check_box_x[0], k_settings_text_y[3], latch);
 
-        drawChars(graphicsGetDecString(pb_depth + 1), k_settings_text_x[1] - (k_char_width * 2), k_settings_text_y[3], WriteMode::ADD);
+        drawChars(graphicsGetDecString(pb_depth), k_settings_text_x[1] + (k_char_width * 6), k_settings_text_y[3], WriteMode::ADD);
     
         drawChars(s(STRING_VELOCITY), k_settings_midi_mod_x[0], k_settings_midi_mod_y, WriteMode::INVERT);
         drawChars(s(STRING_MOD_WHEEL), k_settings_midi_mod_x[1], k_settings_midi_mod_y, WriteMode::INVERT);
@@ -894,6 +1231,10 @@ void displayPageSettings() {
         // if(display_midi_mod_dst) drawText(disp, font_8x8, enc_val, 0, k_enc_val_y);
         drawChars(enc_val, 0, k_enc_val_y, WriteMode::INVERT);
 
+        const char* vca_indicator = " ";
+        if(vca_vel) vca_indicator = "*";
+        drawChars(vca_indicator, k_settings_midi_mod_x[0] + k_char_width * 3, k_settings_midi_mod_y, WriteMode::INVERT);
+ */
     }
 
 }
@@ -901,6 +1242,125 @@ void displayPageSettings() {
 void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
 
     uint8_t step = getPLockStep();
+    uint8_t k = 0;
+    bool mod_layer = isModLayer(layer);
+
+    for(int i = 0; i < NUMBER_OF_PARAM_ROWS; i++) {
+
+        for(int j = 0; j < NUMBER_OF_PARAM_COLS; j++) {
+
+            display_param_t p = display_param[layer][k];
+            paramFuncGetGraphic func = p.func;
+            uint8_t* ptr;
+            uint8_t val;
+            uint8_t x = param_coords_x[j];
+            uint8_t y = param_coords_y[i];
+
+            if(layer == LAYER_SEQ) {
+
+                if(p_lock) {
+                    if(k == 0) drawRectangle(x - 1, y - 1, seq_p_lock_length, seq_p_lock_height, true, WriteMode::ADD);
+                    if(k == k_seq_prob_index) drawRectangle(x - 1, y - 1, k_param_width + 1, k_char_height + 1, true, WriteMode::ADD);
+                }
+
+                val = getSeqParamValue(k, step, p_lock);
+
+            } else {
+
+                mod_destinations_t dst;
+
+                if(layer == LAYER_USER_PARAM) {
+
+                    dst = (mod_destinations_t)*p.val_p;
+                    ptr = parameterGetPointer(dst);
+
+                    if(dst == MOD_DST_NONE) func = graphicsGetDoubleDash;
+
+                    if(k == viewGetCurrentUserParameter()) {
+                        drawRectangle(x - 1, y - 1, k_param_p_lock_length, k_param_p_lock_height, false, WriteMode::ADD);
+                    }
+
+                } else {
+
+                    ptr = p.val_p;
+
+                }
+
+                if(p_lock && isThisAPLockedSynthVal(step, ptr)) {
+
+                    val = synth->seq.getStepPLockValue(step);
+                    drawRectangle(x - 1, y - 1, k_param_p_lock_length, k_param_p_lock_height, true, WriteMode::ADD);
+            
+                } else {
+
+                    val = *ptr;
+
+                }
+
+                switch(layer) {
+
+                    case LAYER_SYNTH_1:
+                        if(k == k_param_sync_i) val = param8Bits0To1(val);
+                        break;
+                    case LAYER_SYNTH_2:
+                        if (k == k_param_oct_1_i) val = param8Bits0To3(val);
+                        else if (k == k_param_oct_2_i) val = param8Bits0To3(val);
+                        else if (k == k_param_fil_t_i) val = param8Bits0To3(val);
+                        break;
+                    case LAYER_LFO:
+                        if (k == k_param_lfo_1_sh_i) val = param8Bits0To4(val);
+                        else if (k == k_param_lfo_2_sh_i) val = param8Bits0To4(val);
+                        else if (k == k_param_lfo_3_sh_i) val = param8Bits0To4(val);
+                        else if (k == k_param_lfo_1_rs_i) val = param8Bits0To3(val);
+                        else if (k == k_param_lfo_2_rs_i) val = param8Bits0To3(val);
+                        else if (k == k_param_lfo_3_rs_i) val = param8Bits0To3(val);
+                        break;    
+                    case LAYER_USER_PARAM:
+                        
+                        switch(dst) {
+                            case MOD_DST_SYNC: 
+                            case MOD_DST_ENV_1_LOOP:
+                            case MOD_DST_ENV_2_LOOP:
+                            case MOD_DST_ENV_3_LOOP:
+                                val = param8Bits0To1(val); 
+                                break;
+
+                            case MOD_DST_OSC_1_OCTAVE:
+                            case MOD_DST_OSC_2_OCTAVE:
+                            case MOD_DST_FILTER_TYPE:
+                            case MOD_DST_LFO_1_SYNC:
+                            case MOD_DST_LFO_2_SYNC:
+                            case MOD_DST_LFO_3_SYNC:
+                                val = param8Bits0To3(val);
+                                break;
+
+                            case MOD_DST_LFO_1_SHAPE:
+                            case MOD_DST_LFO_2_SHAPE:
+                            case MOD_DST_LFO_3_SHAPE:
+                                val = param8Bits0To4(val);
+                                break;
+                            
+                            default: break;
+                        }
+
+                        break;
+
+                    default: 
+                        break;
+                }
+
+            }
+            const char* param = func(val);
+            drawChars(param, x, y, WriteMode::INVERT);
+            k++;
+
+        }
+
+        if(mod_layer) drawModLayer(layer, i);
+
+    }
+
+/*     uint8_t step = getPLockStep();
 
     uint8_t k = 0;
 
@@ -957,7 +1417,40 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
 
         }
 
-    }
+        // WHEN YOU MOVE THIS, REPLACE THIS WITH THE 'ISMODLAYER' FUNCTION IN THIS FILE
+        if(layer == LAYER_ENV || layer == LAYER_LFO) {
+
+            uint8_t y = param_coords_y[i];
+            const char* index = "0";
+
+            switch(i) {
+                case 0:
+                    index = "1";
+                    break;
+                case 1:
+                    index = "2";
+                    break;
+                case 2:
+                    index = "3";
+                    break;
+                default:
+                    break;
+            }
+
+            drawChars(index, 0, y, WriteMode::INVERT);
+
+            if(layer == LAYER_ENV) {
+
+                const char* loop = " ";
+                if(patch->env[i].loop) loop = "L";
+
+                drawChars(loop, 120, y, WriteMode::ADD);
+
+            }
+
+        }
+
+    } */
 
 }
 
@@ -1018,7 +1511,11 @@ void displaySteps() {
 
         if(i == last) {
 
-            drawLine(x_end, y_start, 1, k_step_height, WriteMode::INVERT);
+            // pull back the vertical last step indicator by 1 px if on step 7 or 15
+            uint8_t x_place;
+            if(last == 0x0F || last == 0x1F) x_place = x_end -= 1;
+            else x_place = x_end;
+            drawLine(x_place, y_start, 1, k_step_height, WriteMode::INVERT);
 
         }
 
@@ -1088,6 +1585,8 @@ void displayEncoderMode(view_layer_t layer) {
 }
 
 void displayEncoderModeNormal(view_mode_t mode) {
+    // hack to make it so that you're always seeing the user param dst
+    if(mode == MODE_USER_PARAM_SEL) mode = MODE_USER_PARAM_DST; 
 
     disp_encoder_mode_t encoder = getEncoderParamValue(mode);
     const char *enc_source = graphicsGetEncoderMode(mode);
@@ -1132,14 +1631,18 @@ void displayEncoderModeModLayer(view_mode_t mode, view_layer_t layer) {
         uint8_t x = 0;
         uint8_t y = param_coords_y[i];
 
+        // put a rectangle around the selectable modulator
         if(mode == mod_mode[i]) {
             drawRectangle(x, y - 1, k_char_width, k_char_height, true, WriteMode::ADD);
             write_mode = WriteMode::INVERT;
         }
 
-        const char *index = graphicsGetDecString(i);
+        // list the modulator numbers, 1, 2, 3
+        uint8_t mod_number = i + 1;
+        const char *index = graphicsGetDecString(mod_number);
         drawChars(index, 0, y, WriteMode::INVERT);
 
+        // display the destinations
         x = k_enc_mod_layer_x;
         disp_encoder_mode_t encoder = getEncoderParamValue(mod_mode[i]);
         const char *dst_val = graphicsGetModDst((mod_destinations_t)encoder.value);
@@ -1147,8 +1650,6 @@ void displayEncoderModeModLayer(view_mode_t mode, view_layer_t layer) {
     }
 
 }
-
-
 
 void showEncoderModeByEvent(display_encoder_mode_event_t event) {
 
@@ -1160,7 +1661,7 @@ void showEncoderModeByEvent(display_encoder_mode_event_t event) {
 
         case DISP_MODE_EVENT_COUNTDOWN:
             
-            displayTimerSet();
+            displayHangTimerSet();
             
             break;
 
@@ -1194,6 +1695,14 @@ void displayPlayAndExtClk() {
 
     }
 
+}
+
+uint8_t setValueXCoordIndexByTens(int value) {
+
+    if(value < 10) return 0;
+    else if (value >= 10 && value < 100) return 1;
+    else if (value >= 100 && value < 1000) return 2;
+    return 0;
 }
 
 // ################################
@@ -1305,6 +1814,24 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
         NULL, NULL, NULL, NULL, NULL, 
     };
 
+    uint8_t *param_ptr_user_param[k_num_disp_parameters] = {
+        &synth->user_param.destination[0],
+        &synth->user_param.destination[1],
+        &synth->user_param.destination[2],
+        &synth->user_param.destination[3],
+        &synth->user_param.destination[4],
+        &synth->user_param.destination[5],
+        &synth->user_param.destination[6],
+        &synth->user_param.destination[7],
+        &synth->user_param.destination[8],
+        &synth->user_param.destination[9],
+        &synth->user_param.destination[10],
+        &synth->user_param.destination[11],
+        &synth->user_param.destination[12],
+        &synth->user_param.destination[13],
+        &synth->user_param.destination[14],
+    };
+
     for(int i = 0; i < k_num_disp_parameters; i++) {
 
         display_param_s1[i] = (display_param_t) { param_func_s1[i], param_ptr_s1[i] };
@@ -1313,7 +1840,7 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
         display_param_env[i] = (display_param_t) { param_func_env[i], param_ptr_env[i] };
         display_param_lfo[i] = (display_param_t) { param_func_lfo[i], param_ptr_lfo[i] };
         display_param_seq[i] = (display_param_t) { param_func_seq[i], param_ptr_seq[i] };
-
+        display_param_usr[i] = (display_param_t) { param_func_user_param[i], param_ptr_user_param[i]};
     }
 
     display_param[LAYER_SYNTH_1] = display_param_s1;
@@ -1322,8 +1849,27 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
     display_param[LAYER_ENV] = display_param_env;
     display_param[LAYER_LFO] = display_param_lfo;
     display_param[LAYER_SEQ] = display_param_seq;
+    display_param[LAYER_USER_PARAM] = display_param_usr;
 
     display_trigger = true;
+
+    set_row_top = 0;
+    set_row_bottom = NUMBER_OF_VISIBLE_SETTINGS_ROWS - 1;
+
+    // float scroll_bar_proportion = (float)(NUMBER_OF_VISIBLE_SETTINGS_ROWS) / (float)(NUM_SET_ROWS);
+    // // float scroll_bar_height_float = scroll_bar_proportion * (float)(SCREEN_HEIGHT);
+    // float scroll_bar_increment_float = scroll_bar_proportion * ((float)(SCREEN_HEIGHT) / (float)(NUMBER_OF_VISIBLE_SETTINGS_ROWS));
+    // float scroll_bar_height_float = scroll_bar_increment_float * ((float)(NUMBER_OF_VISIBLE_SETTINGS_ROWS));
+    // settings_scroll_bar_height = (uint8_t)(scroll_bar_height_float);
+    // settings_scroll_bar_increment = (uint8_t)(scroll_bar_increment_float);
+
+    float p = (float)NUMBER_OF_VISIBLE_SETTINGS_ROWS / (float)NUM_SET_ROWS;
+    float scroll_bar_height_float = p * (float)SCREEN_HEIGHT;
+    float scroll_bar_increment_float = ((float)SCREEN_HEIGHT - scroll_bar_height_float) / ((float)NUM_SET_ROWS - (float)NUMBER_OF_VISIBLE_SETTINGS_ROWS);
+
+    settings_scroll_bar_height    = (uint8_t)scroll_bar_height_float + 1;
+    settings_scroll_bar_increment = (uint8_t)scroll_bar_increment_float;
+
 
 }
 
@@ -1335,9 +1881,11 @@ void displayTrigger() {
 
 void displayDisplay() {
 
-    displayTimerCheck();
+    displayHangTimerCheck();
+    displayOffTimer(display_trigger);
 
     if(!display_trigger) {
+        
         return;
     } else {
         display_trigger = false;
@@ -1348,7 +1896,7 @@ void displayDisplay() {
     view_layer_t layer = viewGetLayer();
     view_page_t page = viewGetPage();
     bool p_lock = pLockIsEnabled();
-    bool showing_encoder_mode = encoder_mode_show || display_timer_active;
+    bool showing_encoder_mode = encoder_mode_show || display_hang_timer_active;
 
     if(page == PAGE_SETTINGS) {
 
@@ -1356,7 +1904,7 @@ void displayDisplay() {
 
     } else {
 
-        if(page == PAGE_SEQ) {
+        if(layer == LAYER_SEQ) {
 
             displaySeqGenHeader();
 
@@ -1374,8 +1922,10 @@ void displayDisplay() {
             case LAYER_SYNTH_2:
             case LAYER_SYNTH_ENV_SPLIT:
             case LAYER_SEQ:
+            case LAYER_USER_PARAM:
     
                 displayParams(layer, page, p_lock);
+                if(viewGetMode() == MODE_SEQ_WINDOW_SEL) showing_encoder_mode = false;
                 if(!showing_encoder_mode) displaySteps();
                 else displayEncoderMode(layer);
     

@@ -28,6 +28,10 @@ synth_parameters_t* parameterGetRenderedPatchPointer();
 uint8_t* parameterGetPointer(mod_destinations_t dst);
 uint8_t parameterGetParamFromCurrentLayer(uint8_t index);
 
+void parameterSetUserParameter(uint8_t index, mod_destinations_t dst);
+void parameterSetUserParameterAllPointers();
+uint8_t parameterGetUserParameter(uint8_t index);
+
 // uint8_t* parameterGetLayerPtr();
 
 #ifdef __cplusplus

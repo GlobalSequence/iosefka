@@ -18,6 +18,7 @@ static synth_parameters_t render_patch;
 
 static uint8_t *param_ptr[NUM_MOD_DESTINATIONS];
 static uint8_t *render_patch_ptr[NUM_MOD_DESTINATIONS];
+static uint8_t *user_param[NUMBER_OF_POTENTIOMETERS];
 
 static const uint8_t ktranspose_snap_low = 85; 
 static const uint8_t ktranspose_snap_high = 170; 
@@ -28,15 +29,14 @@ static const uint8_t k_osc_scale_vals[NOTE_SCALE_RANGE] = {
     0x56, 0x60, 0x6B, 0x75, 0x80, 0x8B, 0x95, 0xA0,
     0xAB, 0xB5, 0xC0, 0xCB, 0xD5, 0xE0, 0xEB, 0xF5, 0xFF
 
-
 };
 
-
 static uint8_t current_p_lock_note[NUMBER_OF_BOTTOM_SWITCHES], current_p_lock_octave[NUMBER_OF_BOTTOM_SWITCHES];
-
 static bool p_lock_param_override[NUMBER_OF_SEQUENCER_STEPS];
 static mod_destinations_t p_lock_active_dst[NUMBER_OF_SEQUENCER_STEPS];
 static uint8_t p_lock_active_value[NUMBER_OF_SEQUENCER_STEPS];
+
+static const uint8_t k_latch_threshold = 8;
 
 // ################################
 // PRIVATE FUNCTIONS
@@ -336,6 +336,10 @@ uint8_t modifyParamValueModDst(mod_destinations_t *dst, uint8_t value, bool shif
         case MOD_DST_LFO_2_RATE: mod_index = 4; change_dst = true; break;
         case MOD_DST_LFO_3_RATE: mod_index = 5; change_dst = true; break;
 
+        case MOD_DST_ENV_1_DECAY: if(shift) *dst = MOD_DST_ENV_1_LOOP; break;
+        case MOD_DST_ENV_2_DECAY: if(shift) *dst = MOD_DST_ENV_2_LOOP; break;
+        case MOD_DST_ENV_3_DECAY: if(shift) *dst = MOD_DST_ENV_3_LOOP; break;
+
         case MOD_DST_OSC_1_X_MORPH:
         case MOD_DST_OSC_1_Y_MORPH:
         case MOD_DST_OSC_2_X_MORPH:
@@ -385,6 +389,51 @@ seq_params_t layerLookupSeqParam(pot_index_t pot) {
             return NUM_SEQ_PARAMS; // Invalid or unmapped pot
     }
     return NUM_SEQ_PARAMS;
+}
+
+mod_destinations_t getUserParameterModDestination(pot_index_t pot) {
+
+    mod_destinations_t mod;
+
+    switch (pot) {
+        case POT_0: mod = (mod_destinations_t) synth->user_param.destination[0]; 
+        case POT_1: mod = (mod_destinations_t) synth->user_param.destination[1]; 
+        case POT_2: mod = (mod_destinations_t) synth->user_param.destination[2]; 
+        case POT_3: mod = (mod_destinations_t) synth->user_param.destination[3]; 
+        case POT_4: mod = (mod_destinations_t) synth->user_param.destination[4]; 
+
+        case POT_5: mod = (mod_destinations_t) synth->user_param.destination[5]; 
+        case POT_6: mod = (mod_destinations_t) synth->user_param.destination[6]; 
+        case POT_7: mod = (mod_destinations_t) synth->user_param.destination[7]; 
+        case POT_8: mod = (mod_destinations_t) synth->user_param.destination[8]; 
+        case POT_9: mod = (mod_destinations_t) synth->user_param.destination[9]; 
+
+        case POT_10: mod = (mod_destinations_t) synth->user_param.destination[10]; 
+        case POT_11: mod = (mod_destinations_t) synth->user_param.destination[11]; 
+        case POT_12: mod = (mod_destinations_t) synth->user_param.destination[12]; 
+        case POT_13: mod = (mod_destinations_t) synth->user_param.destination[13]; 
+        case POT_14: mod = (mod_destinations_t) synth->user_param.destination[14]; // for drone mode off/on
+
+        default:     break;
+    }
+
+    switch(mod) {
+
+        case MOD_DST_ENV_1_DST:
+        case MOD_DST_ENV_2_DST:
+        case MOD_DST_ENV_3_DST:
+        case MOD_DST_LFO_1_DST:
+        case MOD_DST_LFO_2_DST:
+        case MOD_DST_LFO_3_DST:
+            mod = MOD_DST_NONE;
+            break;
+            
+        default: break;
+
+    }
+
+    return mod;
+
 }
 
 mod_destinations_t layerLookupModDst(view_layer_t layer, pot_index_t pot) {
@@ -510,6 +559,33 @@ mod_destinations_t layerLookupModDst(view_layer_t layer, pot_index_t pot) {
             }
             break;
 
+        case LAYER_USER_PARAM:
+
+/*             switch (pot) {
+                case POT_0: return (mod_destinations_t) synth->user_param.destination[0]; 
+                case POT_1: return (mod_destinations_t) synth->user_param.destination[1]; 
+                case POT_2: return (mod_destinations_t) synth->user_param.destination[2]; 
+                case POT_3: return (mod_destinations_t) synth->user_param.destination[3]; 
+                case POT_4: return (mod_destinations_t) synth->user_param.destination[4]; 
+
+                case POT_5: return (mod_destinations_t) synth->user_param.destination[5]; 
+                case POT_6: return (mod_destinations_t) synth->user_param.destination[6]; 
+                case POT_7: return (mod_destinations_t) synth->user_param.destination[7]; 
+                case POT_8: return (mod_destinations_t) synth->user_param.destination[8]; 
+                case POT_9: return (mod_destinations_t) synth->user_param.destination[9]; 
+
+                case POT_10: return (mod_destinations_t) synth->user_param.destination[10]; 
+                case POT_11: return (mod_destinations_t) synth->user_param.destination[11]; 
+                case POT_12: return (mod_destinations_t) synth->user_param.destination[12]; 
+                case POT_13: return (mod_destinations_t) synth->user_param.destination[13]; 
+                case POT_14: return (mod_destinations_t) synth->user_param.destination[14]; // for drone mode off/on
+
+                default:     break;
+            } */
+            return getUserParameterModDestination(pot);
+
+            break;
+
         default:
             // Handle unknown layer
             break;
@@ -608,8 +684,24 @@ inline void setParamModDst(
 
 #else
 
-        *param_ptr[dst] = value_modified;
-        // *render_patch_ptr[dst] = value_modified;
+        uint8_t* p = param_ptr[dst];
+
+        if(synth->settings.latch && viewGetLatchSingle(pot)) {
+
+            if(value_modified > *p - k_latch_threshold && value_modified <= *p + k_latch_threshold) {
+
+                viewResetLatchSingle(pot);
+
+            } else {
+
+                return;
+
+            }
+
+        }
+
+        *p = value_modified;
+        // *param_ptr[dst] = value_modified;
 
 #endif
 
@@ -690,21 +782,24 @@ void parameterSetup(synth_state_t *synth_state) {
     render_patch_ptr[MOD_DST_DELAY_AMOUNT] = &render_patch.delay.amount; 
     render_patch_ptr[MOD_DST_DELAY_RATE] = &render_patch.delay.rate;
     render_patch_ptr[MOD_DST_DELAY_FEEDBACK] = &render_patch.delay.feedback; 
-    render_patch_ptr[MOD_DST_DELAY_FILTER] = &render_patch.delay.filter;
+    // render_patch_ptr[MOD_DST_DELAY_FILTER] = &render_patch.delay.filter;
     render_patch_ptr[MOD_DST_ENV_1_ATTACK] = &render_patch.env[0].attack; 
     render_patch_ptr[MOD_DST_ENV_1_DECAY] = &render_patch.env[0].decay; 
     render_patch_ptr[MOD_DST_ENV_1_SUSTAIN] = &render_patch.env[0].sustain; 
     render_patch_ptr[MOD_DST_ENV_1_RELEASE] = &render_patch.env[0].release; 
+    render_patch_ptr[MOD_DST_ENV_1_LOOP] = &render_patch.env[0].loop;
     render_patch_ptr[MOD_DST_ENV_1_AMOUNT] = &render_patch.mod[0].amount; 
     render_patch_ptr[MOD_DST_ENV_2_ATTACK] = &render_patch.env[1].attack; 
     render_patch_ptr[MOD_DST_ENV_2_DECAY] = &render_patch.env[1].decay; 
     render_patch_ptr[MOD_DST_ENV_2_SUSTAIN] = &render_patch.env[1].sustain; 
     render_patch_ptr[MOD_DST_ENV_2_RELEASE] = &render_patch.env[1].release; 
+    render_patch_ptr[MOD_DST_ENV_2_LOOP] = &render_patch.env[1].loop;
     render_patch_ptr[MOD_DST_ENV_2_AMOUNT] = &render_patch.mod[1].amount;  
     render_patch_ptr[MOD_DST_ENV_3_ATTACK] = &render_patch.env[2].attack; 
     render_patch_ptr[MOD_DST_ENV_3_DECAY] = &render_patch.env[2].decay; 
     render_patch_ptr[MOD_DST_ENV_3_SUSTAIN] = &render_patch.env[2].sustain; 
     render_patch_ptr[MOD_DST_ENV_3_RELEASE] = &render_patch.env[2].release; 
+    render_patch_ptr[MOD_DST_ENV_3_LOOP] = &render_patch.env[2].loop;
     render_patch_ptr[MOD_DST_ENV_3_AMOUNT] = &render_patch.mod[2].amount;  
     render_patch_ptr[MOD_DST_LFO_1_RATE] = &render_patch.lfo[0].rate; 
     render_patch_ptr[MOD_DST_LFO_1_SHAPE] = &render_patch.lfo[0].shape; 
@@ -753,21 +848,24 @@ void parameterSetup(synth_state_t *synth_state) {
     param_ptr[MOD_DST_DELAY_AMOUNT] = &synth->patch.delay.amount; 
     param_ptr[MOD_DST_DELAY_RATE] = &synth->patch.delay.rate;
     param_ptr[MOD_DST_DELAY_FEEDBACK] = &synth->patch.delay.feedback; 
-    param_ptr[MOD_DST_DELAY_FILTER] = &synth->patch.delay.filter;
+    // param_ptr[MOD_DST_DELAY_FILTER] = &synth->patch.delay.filter;
     param_ptr[MOD_DST_ENV_1_ATTACK] = &synth->patch.env[0].attack; 
     param_ptr[MOD_DST_ENV_1_DECAY] = &synth->patch.env[0].decay; 
     param_ptr[MOD_DST_ENV_1_SUSTAIN] = &synth->patch.env[0].sustain; 
     param_ptr[MOD_DST_ENV_1_RELEASE] = &synth->patch.env[0].release; 
+    param_ptr[MOD_DST_ENV_1_LOOP] = &synth->patch.env[0].loop;
     param_ptr[MOD_DST_ENV_1_AMOUNT] = &synth->patch.mod[0].amount; 
     param_ptr[MOD_DST_ENV_2_ATTACK] = &synth->patch.env[1].attack; 
     param_ptr[MOD_DST_ENV_2_DECAY] = &synth->patch.env[1].decay; 
     param_ptr[MOD_DST_ENV_2_SUSTAIN] = &synth->patch.env[1].sustain; 
     param_ptr[MOD_DST_ENV_2_RELEASE] = &synth->patch.env[1].release; 
+    param_ptr[MOD_DST_ENV_2_LOOP] = &synth->patch.env[1].loop;
     param_ptr[MOD_DST_ENV_2_AMOUNT] = &synth->patch.mod[1].amount;  
     param_ptr[MOD_DST_ENV_3_ATTACK] = &synth->patch.env[2].attack; 
     param_ptr[MOD_DST_ENV_3_DECAY] = &synth->patch.env[2].decay; 
     param_ptr[MOD_DST_ENV_3_SUSTAIN] = &synth->patch.env[2].sustain; 
     param_ptr[MOD_DST_ENV_3_RELEASE] = &synth->patch.env[2].release; 
+    param_ptr[MOD_DST_ENV_3_LOOP] = &synth->patch.env[2].loop;
     param_ptr[MOD_DST_ENV_3_AMOUNT] = &synth->patch.mod[2].amount;  
     param_ptr[MOD_DST_LFO_1_RATE] = &synth->patch.lfo[0].rate; 
     param_ptr[MOD_DST_LFO_1_SHAPE] = &synth->patch.lfo[0].shape; 
@@ -790,6 +888,7 @@ void parameterSetup(synth_state_t *synth_state) {
     param_ptr[MOD_DST_LFO_1_DST] = &synth->patch.mod[3].destination;
     param_ptr[MOD_DST_LFO_2_DST] = &synth->patch.mod[4].destination;
     param_ptr[MOD_DST_LFO_3_DST] = &synth->patch.mod[5].destination;
+
 
 }
 
@@ -824,6 +923,7 @@ void parameterSetValueWithPot(
         case LAYER_ENV:
         case LAYER_LFO:
         case LAYER_SYNTH_ENV_SPLIT:
+        case LAYER_USER_PARAM:
 
             setParamModDst(
                 layer, 
@@ -835,6 +935,8 @@ void parameterSetValueWithPot(
                 bottom_key);
 
             break;
+
+        default: break;
 
     }
 
@@ -850,19 +952,28 @@ void parameterSetValueByModDst(mod_destinations_t dst, uint8_t value) {
 
 }
 
+// TODO: not urgent, but this function can be removed, and the synth ext_mod params should be fed directly into 
+// seq_poll.h via a pointer. 
 void parameterSetPLockByStep(uint8_t step, bool active) {
 
     if(active) {
 
-        p_lock_active_dst[step] = (mod_destinations_t) synth->seq.getStepPLockParam(step);
-        p_lock_active_value[step] = synth->seq.getStepPLockValue(step);
-
-    } else {
-
-        p_lock_active_dst[step] = MOD_DST_NONE;
-        p_lock_active_value[step] = 0;
+        synth->ext_mod.p_lock_dst = synth->seq.getStepPLockParam(step);
+        synth->ext_mod.p_lock_amt = synth->seq.getStepPLockValue(step);
 
     }
+
+    // if(active) {
+
+    //     p_lock_active_dst[step] = (mod_destinations_t) synth->seq.getStepPLockParam(step);
+    //     p_lock_active_value[step] = synth->seq.getStepPLockValue(step);
+
+    // } else {
+
+    //     p_lock_active_dst[step] = MOD_DST_NONE;
+    //     p_lock_active_value[step] = 0;
+
+    // }
 
 #ifdef ALLOW_P_LOCK
 
@@ -871,22 +982,24 @@ void parameterSetPLockByStep(uint8_t step, bool active) {
     
 }
 
+// this function is in use and is entrenched in the way that parameters are fed to the display and the synth, 
+// but should be changed and deprecated in the future, so that the synth patch is used directly. 
+// consider this a TODO that is not happening soon...
 void parameterCopyValuesToSynth() {
 
-    // synth->patch = render_patch;
     render_patch = synth->patch;
 
-    for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
+    // for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
 
-        mod_destinations_t dst = p_lock_active_dst[i];
+    //     mod_destinations_t dst = p_lock_active_dst[i];
 
-        if(dst != MOD_DST_NONE) {
+    //     if(dst != MOD_DST_NONE) {
 
-            *param_ptr[dst] = p_lock_active_value[i];
+    //         *param_ptr[dst] = p_lock_active_value[i];
 
-        }
+    //     }
 
-    }
+    // }
 
 }
 
@@ -912,7 +1025,8 @@ synth_parameters_t* parameterGetRenderedPatchPointer() {
 
 uint8_t* parameterGetPointer(mod_destinations_t dst) {
 
-    return param_ptr[dst];
+    // return param_ptr[dst];
+return render_patch_ptr[dst];
 
 }
 
@@ -989,5 +1103,30 @@ uint8_t parameterGetParamFromCurrentLayer(uint8_t index) {
     }
 
     return 0;
+
+}
+
+void parameterSetUserParameter(uint8_t index, mod_destinations_t dst) {
+
+    synth->user_param.destination[index] = (uint8_t) dst;
+    user_param[index] = param_ptr[dst];
+
+}
+
+void parameterSetUserParameterAllPointers() {
+
+    for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
+
+        mod_destinations_t dst = (mod_destinations_t) synth->user_param.destination[i];
+        
+        parameterSetUserParameter(i, dst);
+
+    }
+
+}
+
+uint8_t parameterGetUserParameter(uint8_t index) {
+
+    return *user_param[index];
 
 }

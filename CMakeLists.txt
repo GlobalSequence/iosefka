@@ -72,8 +72,6 @@ controller/switch_actions.h
 controller/switch_actions.cpp
 controller/ui.h
 controller/ui.cpp
-controller/version.h  
-controller/version.cpp
 controller/view.h
 controller/view.cpp
 
@@ -131,6 +129,10 @@ synth/voice2.h
 synth/voice2.cpp
 synth/synth.h  
 synth/synth.cpp
+
+version/version.h  
+version/version.cpp
+version/version_data.h
 
 )
 

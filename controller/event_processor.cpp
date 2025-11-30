@@ -30,11 +30,6 @@ void switchEvent(uint8_t index, uint8_t value) {
     switchReaderSubmit(sw, pressed); 
 
     switch_reader_t *s = switchReaderGetStructPtr();
-    // TEST_PRINT_TEXT("TIMEOUT ALL: ")
-    // for(int i = 0; i < NUMBER_OF_SWITCHES_TOTAL; i++){
-    //         TEST_PRINT_ONE_TAB(s->timeout[i])
-    // }
-    // TEST_PRINT_NL
 
     switchActionsTakeInput(
         sw, 
@@ -132,6 +127,46 @@ bool processUiEvents() {
     }
 
     return event_happened;
+
+}
+
+
+bool eventProcessorCheckForActionsOnStartup() {
+
+    bool seq_pressed = false; 
+    bool env_pressed = false; 
+    bool sy1_pressed = false;
+    bool play_pressed = false;
+
+    while(!event_queue.isEmpty()) {
+
+        event_t e = event_queue.dequeue();
+
+        switch(e.event_type) {
+                
+            case EVENT_SWITCH:
+                if(e.value == 0) {
+                    switch(e.index) {
+                        case SW_SEQ_VIEW: seq_pressed = true; break;
+                        case SW_MOD_ENV_VIEW: env_pressed = true; break;
+                        case SW_SYNTH_1_VIEW: sy1_pressed = true; break;
+                        case SW_PLAY: play_pressed = true; break;
+                        default: break;
+                    }
+                }
+                break;
+
+            case EVENT_POT:
+            case EVENT_ENCODER:
+            default:
+                break;        
+
+        }
+
+    }
+    if(seq_pressed && env_pressed && sy1_pressed && play_pressed) return true;
+
+    return false;
 
 }
 
