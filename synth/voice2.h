@@ -24,6 +24,8 @@ typedef struct voice_inputs_t {
     uint8_t osc_1_mix;
     uint8_t osc_2_mix;
     uint8_t noise_mix;
+    uint8_t srr;
+    uint8_t brr;
     bool osc_reset;
 
 } voice_inputs_t;
@@ -53,6 +55,9 @@ class Voice2 {
         bool no_sync_[AUDIO_BLOCK_SIZE];
         bool sync_buffer_[AUDIO_BLOCK_SIZE];
         bool dummy_sync_buffer_[AUDIO_BLOCK_SIZE];
+
+        uint16_t srr_sample;
+        uint srr_count = 0;
 
         uint16_t seed_ = 0xFC25;
 

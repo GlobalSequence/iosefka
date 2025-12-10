@@ -16,6 +16,22 @@
 
 // _v1_0_0
 
+typedef enum mod_sources_v1_0_0_t {
+    V1_0_0_MOD_SRC_ENV_1,
+    V1_0_0_MOD_SRC_ENV_2,
+    V1_0_0_MOD_SRC_ENV_3,
+    V1_0_0_MOD_SRC_LFO_1,
+    V1_0_0_MOD_SRC_LFO_2,
+    V1_0_0_MOD_SRC_LFO_3,
+    V1_0_0_MOD_SRC_VELOCITY,
+    V1_0_0_MOD_SRC_MOD_WHEEL,
+    V1_0_0_MOD_SRC_AFTERTOUCH,
+    V1_0_0_MOD_SRC_NOTE,
+    V1_0_0_MOD_SRC_BREATH,
+
+    V1_0_0_NUM_MOD_SOURCES
+} mod_sources_v1_0_0_t;
+
 typedef struct machine_settings_v1_0_0_t {
     // MIDI settings
     uint8_t channel;
@@ -27,6 +43,18 @@ typedef struct machine_settings_v1_0_0_t {
     // view settings
     bool latch = false;
 } machine_setting_v1_0_0_t;
+
+typedef struct oscillator_shared_params_v1_0_0_t
+{
+    uint8_t portamento;         // 0 - 255
+    uint8_t phase_mod;          // 0 - 255
+    uint8_t sync;               // 0 - 1
+    uint8_t bitrate_reduce;     // 11 - 0
+    uint8_t samplerate_reduce;  //
+    uint8_t legato; 
+    uint8_t osc_duo;
+
+} oscillator_shared_params_v1_0_0_t;
 
 typedef struct envelope_params_v1_0_0_t
 {
@@ -46,15 +74,15 @@ typedef struct vca_params_v1_0_0_t
 } vca_params_v1_0_0_t;
 
 typedef struct synth_parameter_v1_0_0_t {
-     oscillator_params_t            osc[NUMBER_OF_OSCS];
-     oscillator_shared_params_t     shared;
-     mixer_params_t                 mixer;
-     filter_params_t                filter;
-     vca_params_v1_0_0_t            vca;
-     delay_params_t                 delay; 
-     envelope_params_v1_0_0_t       env[NUMBER_OF_ENVS];
-     lfo_params_t                   lfo[NUMBER_OF_LFOS];
-     modulation_params_t            mod[NUM_MOD_SOURCES];
+     oscillator_params_t                    osc[NUMBER_OF_OSCS];
+     oscillator_shared_params_v1_0_0_t      shared;
+     mixer_params_t                         mixer;
+     filter_params_t                        filter;
+     vca_params_v1_0_0_t                    vca;
+     delay_params_t                         delay; 
+     envelope_params_v1_0_0_t               env[NUMBER_OF_ENVS];
+     lfo_params_t                           lfo[NUMBER_OF_LFOS];
+     modulation_params_t                    mod[V1_0_0_NUM_MOD_SOURCES];
 
 } synth_parameters_v1_0_0_t;
 
@@ -161,6 +189,20 @@ typedef enum mod_destinations_v1_0_0_t {
 
 // _v0_1_2
 
+typedef enum mod_sources_v0_1_2_t {
+    V0_1_2_MOD_SRC_ENV_1,
+    V0_1_2_MOD_SRC_ENV_2,
+    V0_1_2_MOD_SRC_ENV_3,
+    V0_1_2_MOD_SRC_LFO_1,
+    V0_1_2_MOD_SRC_LFO_2,
+    V0_1_2_MOD_SRC_LFO_3,
+    V0_1_2_MOD_SRC_VELOCITY,
+    V0_1_2_MOD_SRC_MOD_WHEEL,
+    V0_1_2_MOD_SRC_AFTERTOUCH,
+
+    V0_1_2_NUM_MOD_SOURCES
+} mod_sources_v0_1_2_t;
+
 typedef struct machine_settings_v0_1_2_t {
     uint8_t channel;
     uint8_t pitch_bend_depth;
@@ -169,6 +211,16 @@ typedef struct machine_settings_v0_1_2_t {
     bool transport_rx = true;
     bool out_thru = MIDI_OUTPUT_OUT;
 } machine_settings_v0_1_2_t;
+
+typedef struct oscillator_shared_params_v0_1_2_t
+{
+    uint8_t portamento;         // 0 - 255
+    uint8_t phase_mod;          // 0 - 255
+    uint8_t sync;               // 0 - 1
+    uint8_t bitrate_reduce;     // 11 - 0
+    uint8_t samplerate_reduce;  //
+
+} oscillator_shared_params_v0_1_2_t;
 
 typedef struct envelope_params_v0_1_2_t
 {
@@ -195,15 +247,15 @@ typedef struct vca_params_v0_1_2_t
 } vca_params_v0_1_2_t;
 
 typedef struct synth_parameters_v0_1_2_t {
-     oscillator_params_t            osc[NUMBER_OF_OSCS];
-     oscillator_shared_params_t     shared;
-     mixer_params_t                 mixer;
-     filter_params_t                filter;
-     vca_params_v0_1_2_t            vca;
-     delay_params_t                 delay; 
-     envelope_params_v0_1_2_t       env[NUMBER_OF_ENVS];
-     lfo_params_t                   lfo[NUMBER_OF_LFOS];
-     modulation_params_t            mod[NUM_MOD_SOURCES];
+     oscillator_params_t                    osc[NUMBER_OF_OSCS];
+     oscillator_shared_params_v0_1_2_t      shared;
+     mixer_params_t                         mixer;
+     filter_params_t                        filter;
+     vca_params_v0_1_2_t                    vca;
+     delay_params_t                         delay; 
+     envelope_params_v0_1_2_t               env[NUMBER_OF_ENVS];
+     lfo_params_t                           lfo[NUMBER_OF_LFOS];
+     modulation_params_t                    mod[V0_1_2_NUM_MOD_SOURCES];
 
 } synth_parameters_v0_1_2_t;
 

@@ -64,7 +64,17 @@ class Delay {
                 int32_t output_sample = S8S16MULSHIFT8(delay_buf_[read_index], p.amount) << 1;
                 buf_ptr_[i] = U12CLIPMAXMIN(output_sample + k_sign_offset);
 
-                // buf_ptr_[i] = input_buf_[i] >> 1;
+/*                 int32_t delayed = delay_buf_[read_index];  // Signed
+                int32_t feedback = S8S16MULSHIFT8(delayed, p.feedback);
+                int32_t input = (input_buf_[i] >> 1) - k_sign_offset;
+
+                int32_t mixed = input + feedback;
+
+                // Clamp to avoid overflow
+                delay_buf_[index_write_ + i] = S12CLIP(mixed);
+
+                int32_t output_sample = S8S16MULSHIFT8(delayed, p.amount) << 1;
+                buf_ptr_[i] = U12CLIPMAXMIN(output_sample + k_sign_offset); */
 
                 read_position_ += (1 << 8);
 

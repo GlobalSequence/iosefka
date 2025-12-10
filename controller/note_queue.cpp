@@ -10,7 +10,7 @@ RingBuffer<note_data_t, NOTE_BUFFER_SIZE>  note_queue_midi_out;
 
 NoteStack noteStack;
 
-bool* legato_ptr;
+uint8_t* legato_ptr;
 static uint8_t note_count = 0;
 static uint8_t last_on_velocity;
 
@@ -20,7 +20,7 @@ static void addToQueue(note_data_t note_data);
 
 // public function
 
-void noteQueueSetup(bool* legato) {
+void noteQueueSetup(uint8_t* legato) {
 
     legato_ptr = legato;
     noteStack.init();

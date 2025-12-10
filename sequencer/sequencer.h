@@ -48,7 +48,7 @@ typedef struct step_data_t {
     uint8_t length = 0; // steps will always have a length of 1, so 0 == 1
     uint8_t p_lock_param = 0;
     uint8_t p_lock_value = 0;
-    uint8_t step_prob;
+    uint8_t step_prob = 0;
 } step_data_t;
 
 // TODO: Initialize this (all 0) and create a default struct that loads on startup
@@ -105,6 +105,7 @@ class Sequencer {
         void setLastStep(uint8_t new_last_step);
         void setProbability(uint8_t new_probability);
         void setRotation(uint8_t new_rotation);
+        void shiftByPatternLength(bool advance);
 
         void setStepData(uint8_t index, step_data_t step_data);
         void setWrittenStep(uint8_t index);
@@ -117,6 +118,7 @@ class Sequencer {
         void setStepVelocity(uint8_t index, uint8_t value);
         void setStepPLockParam(uint8_t index, uint8_t value);
         void setStepPLockValue(uint8_t index, uint8_t value); 
+        void setStepProbability(uint8_t index, uint8_t value);
         void resetLoopCount();
         void resetStepNote(uint8_t index);
         void resetAllStepNotes();
@@ -140,6 +142,7 @@ class Sequencer {
         inline uint16_t getPatternLength() {return pattern_data_.last_step - pattern_data_.first_step;}
         inline uint16_t getSwingAmt() {return pattern_data_.swing_amt;}
         inline uint8_t getProbability() {return pattern_data_.probability;}
+        inline uint8_t getStepProbability(uint8_t index) {return pattern_data_.step[index].step_prob;}
         inline uint8_t getRotation() {return pattern_data_.rotation;}
         inline int getLoopCount() {return loop_count_;}
 
@@ -150,6 +153,13 @@ class Sequencer {
 
         inline bool probabilityCheck(uint16_t var) {
             return (var >> 8) <= pattern_data_.probability;
+        }
+
+        inline bool stepProbabilityCheck(uint16_t var, uint8_t index) {
+            uint8_t step_prob = this->pattern_data_.step[index].step_prob;
+            if(step_prob) return (var >> 8) <= step_prob;
+            else return probabilityCheck(var);
+            return false;
         }
 
         inline pattern_data_t* getPatternDataPtr() { return &pattern_data_; }
@@ -208,6 +218,11 @@ class Sequencer {
         bool note_off_event_[NUMBER_OF_SEQUENCER_STEPS] = { false };
         bool note_playing[NUMBER_OF_SEQUENCER_STEPS] = { false };
         uint8_t step_length_countdown_[NUMBER_OF_SEQUENCER_STEPS] = {0};
+
+        // variables tied to changing first and last step
+        int16_t pending_current_step_;
+        bool pending_current_step_change_;
+        void changeCurrentStep(int16_t delta);
 
         uint8_t most_recent_step_note_;
 

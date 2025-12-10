@@ -16,6 +16,7 @@
 enum CCParamNames
 {
     CC_MOD_WHEEL = 1,
+    CC_BREATH_CONTROL = 2,
     CC_OSC_1_PITCH = 10,
     CC_OSC_1_OCTAVE = 11,
     CC_OSC_1_X_MORPH = 12,
@@ -130,6 +131,7 @@ void ccParser(uint8_t cc_number, uint8_t value) {
 
     switch(cc_number){
         case CC_MOD_WHEEL: dst = (mod_destinations_t)synth->patch.mod[MOD_SRC_MOD_WHEEL].destination; break;
+        case CC_BREATH_CONTROL: dst = (mod_destinations_t)synth->patch.mod[MOD_SRC_BREATH].destination; break;
         case CC_OSC_1_PITCH: dst = MOD_DST_OSC_1_PITCH; break;
         case CC_OSC_1_OCTAVE: dst = MOD_DST_OSC_1_OCTAVE; break;
         case CC_OSC_1_X_MORPH: dst = MOD_DST_OSC_1_X_MORPH; break;
@@ -444,6 +446,16 @@ void midiProcessEvent(midi_event_t m) {
         case MIDI_AFTERTOUCH:
 
             synth->ext_mod.aftertouch_amt = m.val1;
+
+            break;
+
+        case MIDI_PROGRAM:
+
+            if(synth->settings.program_change_rx && m.val1 < NUMBER_OF_PRESETS) {
+
+                //load the preset and set the view loaded and current preset number
+
+            }
 
             break;
 

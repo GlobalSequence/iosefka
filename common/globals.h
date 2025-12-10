@@ -188,6 +188,7 @@ typedef enum led_index_t {
 // ################################
 
 #define NUMBER_OF_PRESETS 64
+#define PRESET_NAME_LENGTH 8
 
 // ################################
 // SYNTH
@@ -268,6 +269,7 @@ typedef enum midi_output_t {
 // the 2 octave + 1 semitone range of scale parameter
 #define NOTE_SCALE_RANGE 25
 #define NUMBER_OF_PARAMETERS_PER_LAYER NUMBER_OF_POTENTIOMETERS - 1
+#define NUMBER_OF_USER_PARAMETERS NUMBER_OF_POTENTIOMETERS
 
 // ################################
 // MODULATION
@@ -369,6 +371,8 @@ typedef enum mod_sources_t {
     MOD_SRC_VELOCITY,
     MOD_SRC_MOD_WHEEL,
     MOD_SRC_AFTERTOUCH,
+    MOD_SRC_NOTE,
+    MOD_SRC_BREATH,
 
     NUM_MOD_SOURCES
 } mod_sources_t;
@@ -421,11 +425,38 @@ typedef enum settings_mod_sources_t {
     SET_MOD_SRC_VELOCITY,
     SET_MOD_SRC_MOD_WHEEL,
     SET_MOD_SRC_AFTERTOUCH,
-    // SET_MOD_SRC_NOTE, // TODO: MAKE ADDITIONAL MODULATORS IN PATCH.H 
-    // SET_MOD_SRC_BR_CTRL,
+    SET_MOD_SRC_NOTE, 
+    SET_MOD_SRC_BREATH,
 
     NUM_SET_MOD_SRC
 
 } settings_mod_sources_t;
+
+// ################################
+// DISPLAYABLE EVENTS
+// ################################
+
+typedef enum displayable_events_t {
+
+    //DISP_EVT
+    DISP_EVT_NONE,
+    DISP_EVT_MODE_MOD_ENV,
+    DISP_EVT_MODE_MOD_LFO,
+    DISP_EVT_MODE_KEYBOARD,
+    DISP_EVT_MODE_BPM,
+    DISP_EVT_PAGE_KBD,
+    DISP_EVT_PAGE_SEQ,
+    DISP_EVT_INIT_PATCH,
+    DISP_EVT_CLEAR_P_LOCK_PARAM,
+    DISP_EVT_SAVE_PREPARE,
+    DISP_EVT_SAVE_PROGRESS,
+    DISP_EVT_SAVE_COMPLETE,
+    DISP_EVT_LOAD_PREPARE,
+    DISP_EVT_LOAD_PROGRESS,
+    DISP_EVT_LOAD_COMPLETE,
+
+    NUM_DISPLAYABLE_EVENTS
+
+} displayable_events_t;
 
 #endif

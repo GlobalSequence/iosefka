@@ -11,6 +11,8 @@
 #include "../sequencer/pattern_generator.h"
 #include "../sequencer/p_lock.h"
 
+static switchEventDisplayFunc dispFunc;
+
 static const switch_id_t save_switch = SW_T0;
 static const switch_id_t load_switch = SW_T1;
 
@@ -221,13 +223,21 @@ void pageSequencer(
                 
         case SW_T0:
         
-            if(pressed) setSequencerWindow(false);
+            // if(pressed) setSequencerWindow(false);
+            if(pressed) {
+                if(!shift) setSequencerWindow(false);
+                else synth->seq.shiftByPatternLength(false);
+            }
         
             break;
         
         case SW_T1:
         
-            if(pressed) setSequencerWindow(true);
+            // if(pressed) setSequencerWindow(true);
+            if(pressed) {
+                if(!shift) setSequencerWindow(true);
+                else synth->seq.shiftByPatternLength(true);
+            }
         
             break;
         
@@ -286,7 +296,7 @@ void setStorageState(storage_type_t type, bool shift) {
     storage_type_t current_type = storageGetType();
     storage_state_t state = storageGetState();
 
-    storageSetBlockIndex(viewGetPresetNumber());
+    storageSetBlockIndex(viewGetPresetNumberSelected());
 
     if(type != current_type) {
 
@@ -298,6 +308,7 @@ void setStorageState(storage_type_t type, bool shift) {
         if(shift) {
 
             storageSetState(STORAGE_STATE_ACTIVE);
+            viewSetPresetNumberLoaded(viewGetPresetNumberSelected());
 
         }
 
@@ -372,6 +383,7 @@ void pageSettings(switch_id_t sw, bool pressed, bool shift) {
         case SW_B4:
         
             if(pressed) {
+                viewSetMode(MODE_SET_SCROLL);
                 toggleSetting(&synth->settings.clock_rx);
                 viewSetSettingsRow(SET_ROW_MIDI_CLOCK);
             }
@@ -381,6 +393,7 @@ void pageSettings(switch_id_t sw, bool pressed, bool shift) {
         case SW_B5:
         
             if(pressed) {
+                viewSetMode(MODE_SET_SCROLL);
                 toggleSetting(&synth->settings.transport_rx);
                 viewSetSettingsRow(SET_ROW_MIDI_TRANS);
             }
@@ -400,6 +413,7 @@ void pageSettings(switch_id_t sw, bool pressed, bool shift) {
         
             // if(pressed) toggleSetting(&synth->settings.out_thru);
             if(pressed) {
+                viewSetMode(MODE_SET_SCROLL);
                 toggleSetting(&synth->settings.latch);
                 viewSetSettingsRow(SET_ROW_POT_LATCH);
             }        
@@ -429,39 +443,9 @@ void pageSettings(switch_id_t sw, bool pressed, bool shift) {
 
         case SW_T3:
         
-            if(pressed) viewSetMode(MODE_SET_SCROLL);
-        
             break;
         
         case SW_T4:
-
-            if(pressed) {
-
-                switch(viewGetSettingsRow()) {
-                    
-                    // SETTINGS VALUES SELECTED BY ENCODER MODE
-                    case SET_ROW_PRESET_NUM: viewSetMode(MODE_SAVE_PRESET_SEL); break;
-                    // case SET_ROW_PRESET_NAME: viewSetMode(MODE_SET_PRESET_NAME_SEL); break;
-                    case SET_ROW_MIDI_CHAN: viewSetMode(MODE_MIDI_CHANNEL); break;
-                    case SET_ROW_PB_DEPTH: viewSetMode(MODE_MIDI_PITCHBEND_DEPTH); break;
-                    case SET_ROW_MOD_SRC: viewSetMode(MODE_SET_MOD_SRC_SEL); break;
-                    case SET_ROW_MOD_DST: viewSetMode(MODE_SET_MOD_DST_SEL); break;
-
-                    // SETTINGS VALUES TOGGLED
-                    case SET_ROW_MIDI_CLOCK: toggleSetting(&synth->settings.clock_rx); break;
-                    case SET_ROW_MIDI_TRANS: toggleSetting(&synth->settings.transport_rx); break;
-                    case SET_ROW_MIDI_PGM: toggleSetting(&synth->settings.program_change_rx); break;
-                    case SET_ROW_LEGATO: break; // TODO: IMPLEMENT LEGATO
-                    case SET_ROW_OSC_DUO: break; // TODO: IMPLEMENT OSC DUO
-                    case SET_ROW_VCA_VELOCITY: toggleSetting(&synth->patch.vca.velocity_on); break;
-                    case SET_ROW_POT_LATCH: toggleSetting(&synth->settings.latch); break;
-                    default: break;
-                    // case SET_ROW_: viewSetMode(MODE_); break;
-                    // case SET_ROW_: toggleSetting(synth->); break;
-
-                }
-
-            }
 
             break;
     
@@ -597,9 +581,10 @@ void handleViewSwitch(view_switch_t sw, bool state) {
 // PUBLIC FUNCTIONS
 // ################################
 
-void switchActionsSetup(synth_state_t *synth_state) {
+void switchActionsSetup(synth_state_t *synth_state, switchEventDisplayFunc func) {
 
     synth = synth_state;
+    dispFunc = func;
 
 }
 
@@ -702,7 +687,7 @@ void switchActionsTakeInput(
                 if(checkViewSwitchesMinusCurrent(VIEW_SWITCH_SEQ)) {
 
                     viewSetPage(PAGE_SEQ);
-                    viewSetMachineStateMode(MODE_SEQ_WINDOW_SEL);
+                    viewSetMachineStateMode(MODE_SEQ_SET_BPM);
 
                 } else if(shift) {
 
@@ -731,10 +716,31 @@ void switchActionsTakeInput(
 
             // if(pressed && viewGetMode() == MODE_USER_PARAM_DST) viewSetMachineStateMode(MODE_USER_PARAM_SEL);
             // else if(!pressed && viewGetMode() == MODE_USER_PARAM_SEL) viewSetMachineStateMode(MODE_USER_PARAM_DST);
-            if(layer == LAYER_USER_PARAM) {
+            // if(layer == LAYER_USER_PARAM) {
 
-                if(pressed) viewSetMode(MODE_USER_PARAM_SEL);
-                else viewSetMachineStateMode(MODE_USER_PARAM_DST);
+            //     if(pressed) viewSetMode(MODE_USER_PARAM_SEL);
+            //     else viewSetMachineStateMode(MODE_USER_PARAM_DST);
+
+            // } else 
+            switch(mode) {
+
+                // selecting the user parameter
+                case MODE_USER_PARAM_DST:
+                    if(pressed) viewSetMachineStateMode(MODE_USER_PARAM_SEL);
+                    break;
+                
+                case MODE_USER_PARAM_SEL:
+                    if(!pressed) viewSetMachineStateMode(MODE_USER_PARAM_DST);
+                    break;
+
+                // setting the preset name character selection
+                case MODE_SET_PRESET_CHAR_SEL:
+                    if(pressed) viewSetMachineStateMode(MODE_SET_PRESET_CHAR_INDEX);
+                    break;
+
+                case MODE_SET_PRESET_CHAR_INDEX:
+                    if(!pressed) viewSetMachineStateMode(MODE_SET_PRESET_CHAR_SEL);
+                    break;
 
             }
 
@@ -744,6 +750,10 @@ void switchActionsTakeInput(
 
             // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_SY2, VIEW_CHANGE_SEQ_SY2, shift);
             handleViewSwitch(VIEW_SWITCH_SY2, pressed);
+
+            // TEST_PRINT_TEXT("SY2: ")
+            // TEST_PRINT_ONE_NL(pressed)
+
             if(pressed) {
 
                 if(layer == LAYER_USER_PARAM && !shift) { 
@@ -753,11 +763,18 @@ void switchActionsTakeInput(
                 } else {
 
                     // viewChange(VIEW_CHANGE_KBD_SY2);
-                    setView(VIEW_CHANGE_KBD_SY2);
+                    // setView(VIEW_CHANGE_KBD_SY2);
                     if(shift) {
-
+                        // crazy hack because "User Param" isn't a 'view'. 
+                        // it's because the view change process is a bit convoluted
+                        viewChange(VIEW_CHANGE_KBD_SY2);
                         viewSetLayer(LAYER_USER_PARAM);
                         viewSetMachineStateMode(MODE_USER_PARAM_DST);
+                        view_changed = true;
+
+                    } else {
+
+                        setView(VIEW_CHANGE_KBD_SY2);
 
                     }
 
@@ -774,6 +791,7 @@ void switchActionsTakeInput(
                 
 
             }
+            TEST_PRINT_ONE_NL(viewGetLayer())
 
             break;
 
@@ -797,7 +815,7 @@ void switchActionsTakeInput(
                             
                             // SETTINGS VALUES SELECTED BY ENCODER MODE
                             case SET_ROW_PRESET_NUM: viewSetMode(MODE_SAVE_PRESET_SEL); break;
-                            // case SET_ROW_PRESET_NAME: viewSetMode(MODE_SET_PRESET_NAME_SEL); break;
+                            case SET_ROW_PRESET_NAME: viewSetMode(MODE_SET_PRESET_CHAR_SEL); break;
                             case SET_ROW_MIDI_CHAN: viewSetMode(MODE_MIDI_CHANNEL); break;
                             case SET_ROW_PB_DEPTH: viewSetMode(MODE_MIDI_PITCHBEND_DEPTH); break;
                             case SET_ROW_MOD_SRC: viewSetMode(MODE_SET_MOD_SRC_SEL); break;
@@ -807,11 +825,17 @@ void switchActionsTakeInput(
                             case SET_ROW_MIDI_CLOCK: toggleSetting(&synth->settings.clock_rx); break;
                             case SET_ROW_MIDI_TRANS: toggleSetting(&synth->settings.transport_rx); break;
                             case SET_ROW_MIDI_PGM: toggleSetting(&synth->settings.program_change_rx); break;
-                            case SET_ROW_LEGATO: break; // TODO: IMPLEMENT LEGATO
+                            // needs to be toggled manually because it's not a boolean
+                            case SET_ROW_LEGATO: synth->patch.shared.legato = synth->patch.shared.legato? 0 : 1;  break; 
                             case SET_ROW_OSC_DUO: break; // TODO: IMPLEMENT OSC DUO
                             case SET_ROW_VCA_VELOCITY: toggleSetting(&synth->patch.vca.velocity_on); break;
                             case SET_ROW_POT_LATCH: toggleSetting(&synth->settings.latch); break;
-                            case SET_ROW_INIT_PATCH: if(shift) settingsSetInitPatch(); break;
+                            case SET_ROW_INIT_PATCH: 
+                                if(shift) {
+                                    settingsSetInitPatch();
+                                    dispFunc(DISP_EVT_INIT_PATCH, true);
+                                }
+                                break;
 
                             default: break;
                             // case SET_ROW_: viewSetMode(MODE_); break;

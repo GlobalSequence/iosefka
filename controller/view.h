@@ -101,7 +101,8 @@ typedef enum view_mode_t{
     MODE_SET_SCROLL,
     MODE_SET_MOD_SRC_SEL,
     MODE_SET_MOD_DST_SEL,
-    MODE_SET_PRESET_NAME_SEL,
+    MODE_SET_PRESET_CHAR_INDEX,
+    MODE_SET_PRESET_CHAR_SEL,
     MODE_USER_PARAM_SEL,
     MODE_USER_PARAM_DST,
     MODE_SEQ_WINDOW_SEL,
@@ -148,7 +149,10 @@ typedef struct machine_state_t {
     uint8_t sequencer_window;
     uint8_t seq_step_note;
     uint8_t seq_step_octave;
-    uint8_t preset_number;
+    uint8_t preset_number_selected;
+    uint8_t preset_number_loaded;
+    uint8_t preset_char_index;
+    uint8_t preset_char_selected;
     uint8_t settings_row;
     uint8_t settings_mod_source;
     uint8_t current_user_param;
@@ -169,13 +173,16 @@ void viewSetMachineStateMode(view_mode_t mode);
 void viewSetKeyboardOctave(uint8_t octave);
 void viewSetSequencerWindow(bool increment);
 void viewSetSequencerWindowByValue(uint8_t value);
-void viewSetPresetNumber(uint8_t preset);
+void viewSetPresetNumberSelected(uint8_t preset);
+void viewSetPresetNumberLoaded(uint8_t preset);
 void viewSetSeqParamStepNote(uint8_t note);
 void viewSetSeqParamStepOctave(uint8_t octave);
 void viewSetSettingsRow(uint8_t row);
 void viewSetSettingsModSource(uint8_t index);
 void viewSetCurrentUserParameter(uint8_t index);
 void viewSetEncoderTurnedWhileHeld();
+void viewSetPresetCharIndex(uint8_t index);
+void viewSetPresetCharSelected(uint8_t index);
 
 view_change_t viewGetLastViewChange();
 view_page_t viewGetPage();
@@ -184,7 +191,8 @@ view_mode_t viewGetMode();
 uint8_t viewGetKeyboardOctave();
 uint8_t viewGetSequencerWindow();
 uint8_t viewGetSequencerWindowStepBase();
-uint8_t viewGetPresetNumber();
+uint8_t viewGetPresetNumberSelected();
+uint8_t viewGetPresetNumberLoaded();
 bool viewIsSubLayerPLockReady();
 bool viewDidPLockHappen();
 uint8_t viewGetSeqParamStepNote();
@@ -195,6 +203,9 @@ uint8_t viewGetSettingsModSource();
 uint8_t viewGetModSourceFromSettings(); // convert settings specific mod sources to mod_sources_t
 uint8_t viewGetCurrentUserParameter();
 bool viewGetEncoderTurnedWhileHeld();
+uint8_t viewGetPresetCharIndex();
+uint8_t viewGetPresetCharSelected();
+bool viewPresetSelectedIsPresetLoaded();
 
 void viewSetLatchSingle(uint8_t index);
 void viewResetLatchSingle(uint8_t index);

@@ -120,13 +120,6 @@ bool seqPollUpdate(unsigned long time) {
     // this is outside the tick counter because the ticks are also triggered by MIDI
     patternGenCheckLoopCount();
 
-    // if(patternGenOccurred()) {
-
-    //     killNoteFunc();
-
-    // }
-
-    // check to see if the step has advanced
     bool step_advanced = seq->update();
 
     if(step_advanced) {
@@ -183,7 +176,7 @@ void noteOnEvent() {
 
         uint16_t rand_var = patternGenGetRand();
 
-        bool allow_step = patternGenIsActive()? true : seq->probabilityCheck(rand_var);
+        bool allow_step = patternGenIsActive()? true : seq->stepProbabilityCheck(rand_var, step);
 
         if(allow_step) {
 

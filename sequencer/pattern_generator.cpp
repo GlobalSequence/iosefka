@@ -92,6 +92,7 @@ void patternGenExecute() {
         step_data.note = note;
         step_data.length = step_length;
         step_data.velocity = velocity;
+        step_data.step_prob = 0;
 
         // TEST_PRINT_TEXT("SEED: ")
         // TEST_PRINT_ONE_TAB(seed)

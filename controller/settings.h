@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include "pico/stdlib.h"
+#include "../common/globals.h"
 #include "../synth/patch.h"
 #include "../sequencer/sequencer.h"
 #include "../sequencer/pattern_generator.h"
@@ -28,7 +29,7 @@ typedef struct version_t {
 
 typedef struct preset_name_t {
 
-    char name_char[8];
+    char name_char[PRESET_NAME_LENGTH];
 
 } preset_name_t;
 
@@ -51,7 +52,7 @@ typedef struct special_settings_t {
 
 typedef struct user_param_t {
 
-    uint8_t destination[15];
+    uint8_t destination[NUMBER_OF_POTENTIOMETERS];
 
 } user_param_t;
 
@@ -113,6 +114,17 @@ void settingsSetInitMachineSettings();
 synth_storable_t settingsGetInitPatch();
 
 machine_settings_t settingsGetInitMachineSettings(); 
+
+// void settingsSetPresetName(preset_name_t n, uint8_t index);
+// void settingsSetTempPresetName(preset_name_t n);
+
+void settingsSetLoadedPresetNameByIndex(preset_name_t name, uint8_t index);
+
+void settingsSetPresetNameChar(char c, uint8_t index, uint8_t preset); 
+
+preset_name_t settingsGetLoadedPresetNameByIndex(uint8_t index);
+
+// preset_name_t settingsGetTempPresetName();
 
 #ifdef __cplusplus
 }

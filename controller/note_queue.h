@@ -18,7 +18,7 @@ extern "C"
 {
 #endif
 
-void noteQueueSetup(bool* legato_ptr);
+void noteQueueSetup(uint8_t* legato_ptr);
 void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on);
 // void noteQueueKillActiveNotes();
 

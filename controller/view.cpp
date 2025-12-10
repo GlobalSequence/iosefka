@@ -217,12 +217,15 @@ void viewSetup() {
 
     machine_state.keyboard_octave = kbd_oct_startup;
     machine_state.sequencer_window = seq_window_startup;
-    machine_state.preset_number = preset_startup;
+    machine_state.preset_number_selected = preset_startup;
+    machine_state.preset_number_loaded = preset_startup;
     machine_state.seq_step_note = seq_step_note_startup;
     machine_state.seq_step_octave = seq_step_octave_startup;
 
     last_synth_1_layer = LAYER_SYNTH_1;
     last_synth_2_layer = LAYER_SYNTH_2;
+
+    machine_state.preset_number_selected = machine_state.preset_number_loaded = 0;
 
 }
 
@@ -295,9 +298,15 @@ void viewSetSequencerWindowByValue(uint8_t value) {
 
 }
 
-void viewSetPresetNumber(uint8_t preset) {
+void viewSetPresetNumberSelected(uint8_t preset) {
 
-    machine_state.preset_number = preset;
+    machine_state.preset_number_selected = preset;
+
+}
+
+void viewSetPresetNumberLoaded(uint8_t preset) {
+
+    machine_state.preset_number_loaded = preset;
 
 }
 
@@ -372,6 +381,18 @@ void viewSetEncoderTurnedWhileHeld() {
 
 }
 
+void viewSetPresetCharIndex(uint8_t index) {
+
+    machine_state.preset_char_index = index;
+
+}
+
+void viewSetPresetCharSelected(uint8_t index) {
+
+    machine_state.preset_char_selected = index;
+
+}
+
 // ################################
 // GET FUNCTIONS
 // ################################
@@ -394,7 +415,9 @@ uint8_t viewGetSequencerWindowStepBase() {
 
 }
 
-uint8_t viewGetPresetNumber() { return machine_state.preset_number; }
+uint8_t viewGetPresetNumberSelected() { return machine_state.preset_number_selected; }
+
+uint8_t viewGetPresetNumberLoaded() { return machine_state.preset_number_loaded; }
 
 uint8_t viewGetSeqParamStepNote() { return machine_state.seq_step_note; }
 
@@ -432,8 +455,8 @@ uint8_t viewGetModSourceFromSettings() {
 
         case SET_MOD_SRC_MOD_WHEEL: return MOD_SRC_MOD_WHEEL; break;
         case SET_MOD_SRC_AFTERTOUCH: return MOD_SRC_AFTERTOUCH; break;
-        // case SET_MOD_SRC_NOTE: return MOD_SRC_NOTE; break;
-        // case SET_MOD_SRC_BR_CTRL: return MOD_SRC_BR_CTRL; break;
+        case SET_MOD_SRC_NOTE: return MOD_SRC_NOTE; break;
+        case SET_MOD_SRC_BREATH: return MOD_SRC_BREATH; break;
         default: return MOD_SRC_VELOCITY; break;
     }
 
@@ -455,3 +478,9 @@ bool viewGetEncoderTurnedWhileHeld() {
     return false;
 
 }
+
+uint8_t viewGetPresetCharIndex() { return machine_state.preset_char_index; }
+
+uint8_t viewGetPresetCharSelected() { return machine_state.preset_char_selected; }
+
+bool viewPresetSelectedIsPresetLoaded() { return machine_state.preset_number_selected == machine_state.preset_number_loaded; }

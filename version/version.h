@@ -14,6 +14,8 @@ void versionUpdate();
 void versionTest();
 void versionStorageTest();
 
+void versionParameterHotfix();
+
 #ifdef __cplusplus
 }
 #endif

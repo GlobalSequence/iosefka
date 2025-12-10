@@ -6,12 +6,14 @@
 #include "settings.h"
 #include "../common/globals.h"
 
+typedef void (*switchEventDisplayFunc)(displayable_events_t, bool);
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-void switchActionsSetup(synth_state_t *synth_state);
+void switchActionsSetup(synth_state_t *synth_state, switchEventDisplayFunc func);
 
 void switchActionsTakeInput(
     switch_id_t sw, 

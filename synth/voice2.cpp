@@ -73,17 +73,32 @@ void Voice2::renderOscillators()
         uint16_t osc_2_mixed = U16U8MULSHIFT8(osc_2_buffer_[i], p.osc_2_mix);
         uint16_t noise_mixed = U16U8MULSHIFT8(noise_sample, p.noise_mix);
 
-        // uint16_t dac_osc_audio_ = (osc_1_mixed + osc_2_mixed + noise_mixed) / 3;
+        seed_ -= osc_1_buffer_[i];
 
         // wavetable test
         uint32_t osc_mix = (osc_1_mixed + osc_2_mixed) >> 4;
 
-        uint16_t dac_osc_audio_ = (osc_mix + noise_mixed) / 3;
+        uint16_t generator_mix = (osc_mix + noise_mixed) / 3;
 
-        seed_ -= dac_osc_audio_;
+        // bitrate reduction effect
+        uint16_t effect_1_mix = (generator_mix >> p.brr) << p.brr;
 
-        buf_ptr_[i] = dac_osc_audio_;
-        // buf_ptr_[i] = p.y_morph[0] << 4;
+        // buf_ptr_[i] = effect_1_mix;
+
+        // samplerate reduction effect
+        srr_count++;
+        if(srr_count >= p.srr) {
+            srr_count = 0;
+            srr_sample = effect_1_mix;
+        }
+        uint16_t effect_2_mix = srr_sample;
+
+        buf_ptr_[i] = effect_2_mix;
+
+
+/*         uint16_t dac_osc_audio_ = (osc_mix + noise_mixed) / 3;
+
+        buf_ptr_[i] = dac_osc_audio_; */
 
     }
 

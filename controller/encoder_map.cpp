@@ -4,6 +4,7 @@
 #include "settings.h"
 #include "../controller/view.h"
 #include "../common/test.h"
+#include "../graphics/graphics.h"
 
 #define MOD_ACCEL 4
 
@@ -40,7 +41,8 @@ const mode_constants_t rules[NUM_VIEW_MODES] = {
     { MODE_SET_SCROLL, 0, NUM_SET_ROWS - 1, false, 1},
     { MODE_SET_MOD_SRC_SEL, 0, NUM_SET_MOD_SRC - 1, true, 1},
     { MODE_SET_MOD_DST_SEL, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
-    { MODE_SET_PRESET_NAME_SEL, 0, 0, true, 4},
+    { MODE_SET_PRESET_CHAR_INDEX, 0, PRESET_NAME_LENGTH - 1, true, 1},    
+    { MODE_SET_PRESET_CHAR_SEL, 0, NUM_CHAR_IDS - 1, true, 4},
     { MODE_USER_PARAM_SEL, 0, NUMBER_OF_POTENTIOMETERS - 1, true, 1},
     { MODE_USER_PARAM_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
     { MODE_SEQ_WINDOW_SEL, 0, NUMBER_OF_SEQUENCER_WINDOWS - 1, true, 1},
@@ -113,7 +115,7 @@ int16_t getCount(view_mode_t mode) {
 
         case MODE_MIDI_AFTERTOUCH_DST: return getModDst(MOD_SRC_AFTERTOUCH);
 
-        case MODE_SAVE_PRESET_SEL: return viewGetPresetNumber();
+        case MODE_SAVE_PRESET_SEL: return viewGetPresetNumberSelected();
 
         case MODE_SEQ_SET_BPM: return synth->seq.getBpm();
 
@@ -130,6 +132,10 @@ int16_t getCount(view_mode_t mode) {
         case MODE_USER_PARAM_DST: return synth->user_param.destination[viewGetCurrentUserParameter()];
 
         case MODE_SEQ_WINDOW_SEL: return viewGetSequencerWindow();
+
+        case MODE_SET_PRESET_CHAR_INDEX: return viewGetPresetCharIndex();
+
+        case MODE_SET_PRESET_CHAR_SEL: return viewGetPresetCharSelected();
 
         default:
             break;
@@ -237,7 +243,7 @@ void encoderMapAssignValue(int8_t value, bool accel) {
     
         case MODE_SAVE_PRESET_SEL:
 
-            viewSetPresetNumber(count_value);
+            viewSetPresetNumberSelected(count_value);
         
             break;
     
@@ -304,6 +310,23 @@ void encoderMapAssignValue(int8_t value, bool accel) {
         case MODE_SEQ_WINDOW_SEL:
 
             viewSetSequencerWindowByValue(count_value);
+
+            break;
+
+        case MODE_SET_PRESET_CHAR_INDEX:
+
+            viewSetPresetCharIndex(count_value);
+
+            break;
+
+        case MODE_SET_PRESET_CHAR_SEL:
+
+            // viewSetPresetCharSelected(count_value);
+            if(viewPresetSelectedIsPresetLoaded()) {
+                
+                settingsSetPresetNameChar((char)count_value, viewGetPresetCharIndex(), viewGetPresetNumberLoaded());
+            
+            }
 
             break;
 

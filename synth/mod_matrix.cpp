@@ -4,7 +4,8 @@ bool ModMatrix::lfo_reset_sync[4][2] {
     {false, false}, {true, false}, {false, true}, {true, true}
 };
 
-uint16_t ModMatrix::lfo_div_val[] = {256, 192, 128, 96, 64, 48, 32, 24, 16, 12, 8, 6, 4, 3, 2, 1};
+// uint16_t ModMatrix::lfo_div_val[] = {256, 192, 128, 96, 64, 48, 32, 24, 16, 12, 8, 6, 4, 3, 2, 1};
+uint16_t ModMatrix::lfo_div_val[] = {576, 288, 192, 96, 72, 48, 36, 24, 18, 12, 9, 6, 4, 3, 2, 1};
 
 ModMatrix::ModMatrix(
     synth_parameters_t      *synth_params,
@@ -122,13 +123,14 @@ void ModMatrix::loadSources() {
     mod_source_[MOD_SRC_LFO_2] = LFORender(&lfo_[1]);
     mod_source_[MOD_SRC_LFO_3] = LFORender(&lfo_[2]);
  
-
-
     mod_source_[MOD_SRC_VELOCITY]   = velocity_ << 1;
     mod_source_[MOD_SRC_MOD_WHEEL]  = ext_mod_->mod_wheel_amt << 1;
     mod_source_[MOD_SRC_AFTERTOUCH] = ext_mod_->aftertouch_amt << 1;
+    mod_source_[MOD_SRC_BREATH] = ext_mod_->breath_amt << 1;
+    mod_source_[MOD_SRC_NOTE] = v_i->pitch_value >> 7;
 
-    vca_drone_mode_ = patch_->vca.level >> 7;
+    // vca_drone_mode_ = patch_->vca.level >> 7;
+    vca_drone_mode_ = patch_->vca.level;
 
     dst_[MOD_DST_VCA] = vca_drone_mode_ == false? 0 : patch_->vca.level << 4;
 
@@ -230,6 +232,9 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_DELAY_RATE] = patch_->delay.rate << 4;
     dst_[MOD_DST_DELAY_FEEDBACK] = patch_->delay.feedback << 4;
 
+    dst_[MOD_DST_BITRATE_REDUCE] = patch_->shared.bitrate_reduce << 4;
+    dst_[MOD_DST_SAMPLERATE_REDUCE] = patch_->shared.samplerate_reduce << 4;
+
     // lastly, swap out any destination with the Parameter Lock value
     mod_destinations_t p_lock_dst = (mod_destinations_t) ext_mod_->p_lock_dst;
     uint8_t p_lock_amt = ext_mod_->p_lock_amt;
@@ -273,12 +278,6 @@ void ModMatrix::updateDestinations()
     int16_t vca_output;
 
     if(!vca_drone_mode_) {
-
-        // uint8_t vca_base = 0xDF;
-        // uint8_t overdrive = patch_->vca.level >> 2;
-
-        // uint16_t velocity_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_ << 1);
-        // dst_[MOD_DST_VCA] += velocity_out;
 
         int16_t vca_out = mod_source_[MOD_SRC_ENV_3];
 
@@ -354,6 +353,12 @@ void ModMatrix::updateDestinations()
     v_i->osc_1_mix = dst_[MOD_DST_MIX_OSC_1_MIX] >> 4;
     v_i->osc_2_mix = dst_[MOD_DST_MIX_OSC_2_MIX] >> 4;
     v_i->noise_mix = dst_[MOD_DST_MIX_NOISE_MIX] >> 4;
+
+    uint8_t notbrr = ~(dst_[MOD_DST_BITRATE_REDUCE] >> 4);
+    v_i->brr = param8Bits0To10(notbrr);
+
+    uint8_t notsrr = ~(dst_[MOD_DST_SAMPLERATE_REDUCE] >> 4);
+    v_i->srr = notsrr;
 
     // int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
     // for (int i = 0; i < NUMBER_OF_ENVS; ++i)

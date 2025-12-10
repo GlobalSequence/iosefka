@@ -117,19 +117,23 @@ void setParamValSeqPLock(seq_params_t seq_param, uint8_t index, uint8_t value) {
 
             synth->seq.setStepVelocity(step, value);
 
-            TEST_PRINT_TEXT("P VEL: ")
-            TEST_PRINT_ONE_TAB(index)
-            TEST_PRINT_ONE_NL(synth->seq.getStepVelocity(step));
+            // TEST_PRINT_TEXT("P VEL: ")
+            // TEST_PRINT_ONE_TAB(index)
+            // TEST_PRINT_ONE_NL(synth->seq.getStepVelocity(step));
             break;
         
         case SEQ_PARAM_STEP_LENGTH:
 
             synth->seq.setStepLength(step, param8bits0To31(value));
 
-            TEST_PRINT_TEXT("P LEN: ")
-            TEST_PRINT_ONE_TAB(index)
-            TEST_PRINT_ONE_NL(synth->seq.getStepVelocity(step));
+            // TEST_PRINT_TEXT("P LEN: ")
+            // TEST_PRINT_ONE_TAB(index)
+            // TEST_PRINT_ONE_NL(synth->seq.getStepVelocity(step));
             break;
+
+        case SEQ_PARAM_PROBABILITY:
+
+            synth->seq.setStepProbability(step, value);
         
         default:
             break;
@@ -353,6 +357,8 @@ uint8_t modifyParamValueModDst(mod_destinations_t *dst, uint8_t value, bool shif
             }
             break;
 
+        case MOD_DST_LFO_1_SYNC: if(value > 0x80);
+
         default:
             break;
     }
@@ -396,27 +402,32 @@ mod_destinations_t getUserParameterModDestination(pot_index_t pot) {
     mod_destinations_t mod;
 
     switch (pot) {
-        case POT_0: mod = (mod_destinations_t) synth->user_param.destination[0]; 
-        case POT_1: mod = (mod_destinations_t) synth->user_param.destination[1]; 
-        case POT_2: mod = (mod_destinations_t) synth->user_param.destination[2]; 
-        case POT_3: mod = (mod_destinations_t) synth->user_param.destination[3]; 
-        case POT_4: mod = (mod_destinations_t) synth->user_param.destination[4]; 
+        case POT_0: mod = (mod_destinations_t) synth->user_param.destination[0]; break; 
+        case POT_1: mod = (mod_destinations_t) synth->user_param.destination[1]; break;
+        case POT_2: mod = (mod_destinations_t) synth->user_param.destination[2]; break;
+        case POT_3: mod = (mod_destinations_t) synth->user_param.destination[3]; break;
+        case POT_4: mod = (mod_destinations_t) synth->user_param.destination[4]; break;
 
-        case POT_5: mod = (mod_destinations_t) synth->user_param.destination[5]; 
-        case POT_6: mod = (mod_destinations_t) synth->user_param.destination[6]; 
-        case POT_7: mod = (mod_destinations_t) synth->user_param.destination[7]; 
-        case POT_8: mod = (mod_destinations_t) synth->user_param.destination[8]; 
-        case POT_9: mod = (mod_destinations_t) synth->user_param.destination[9]; 
+        case POT_5: mod = (mod_destinations_t) synth->user_param.destination[5]; break;
+        case POT_6: mod = (mod_destinations_t) synth->user_param.destination[6]; break;
+        case POT_7: mod = (mod_destinations_t) synth->user_param.destination[7]; break;
+        case POT_8: mod = (mod_destinations_t) synth->user_param.destination[8]; break;
+        case POT_9: mod = (mod_destinations_t) synth->user_param.destination[9]; break;
 
-        case POT_10: mod = (mod_destinations_t) synth->user_param.destination[10]; 
-        case POT_11: mod = (mod_destinations_t) synth->user_param.destination[11]; 
-        case POT_12: mod = (mod_destinations_t) synth->user_param.destination[12]; 
-        case POT_13: mod = (mod_destinations_t) synth->user_param.destination[13]; 
-        case POT_14: mod = (mod_destinations_t) synth->user_param.destination[14]; // for drone mode off/on
+        case POT_10: mod = (mod_destinations_t) synth->user_param.destination[10]; break;
+        case POT_11: mod = (mod_destinations_t) synth->user_param.destination[11]; break;
+        case POT_12: mod = (mod_destinations_t) synth->user_param.destination[12]; break;
+        case POT_13: mod = (mod_destinations_t) synth->user_param.destination[13]; break;
+        case POT_14: mod = (mod_destinations_t) synth->user_param.destination[14]; break;
 
         default:     break;
     }
-
+    
+/*     for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
+        TEST_PRINT_ONE_TAB(synth->user_param.destination[i])
+    }
+    TEST_PRINT_NL */
+    
     switch(mod) {
 
         case MOD_DST_ENV_1_DST:
@@ -431,6 +442,7 @@ mod_destinations_t getUserParameterModDestination(pot_index_t pot) {
         default: break;
 
     }
+    
 
     return mod;
 
@@ -632,7 +644,7 @@ inline void setParamSeq(
 
 }
 
-void testSynthParameters() {
+/* void testSynthParameters() {
 
     for(int i = 0; i < NUM_VIEW_LAYERS; i++) {
 
@@ -659,7 +671,7 @@ void testSynthParameters() {
 
     }
 
-}
+} */
 
 inline void setParamModDst(
     view_layer_t layer,
@@ -674,7 +686,7 @@ inline void setParamModDst(
     mod_destinations_t dst = layerLookupModDst(layer, pot);
     uint8_t value_modified = modifyParamValueModDst(&dst, value, shift);
 
-    // TEST_PRINT_ONE_NL(dst)
+    // TEST_PRINT_TWO_NL(layer, pot)
 
     if(!p_lock_set) {
 
@@ -743,6 +755,12 @@ bool isPLockHappening() {
     }
 
     return pLockIsEngaged();
+
+}
+
+void lfoSyncCheck(mod_destinations_t dst) {
+
+
 
 }
 
@@ -822,6 +840,8 @@ void parameterSetup(synth_state_t *synth_state) {
     render_patch_ptr[MOD_DST_LFO_1_DST] = &render_patch.mod[3].destination;
     render_patch_ptr[MOD_DST_LFO_2_DST] = &render_patch.mod[4].destination;
     render_patch_ptr[MOD_DST_LFO_3_DST] = &render_patch.mod[5].destination;
+    render_patch_ptr[MOD_DST_BITRATE_REDUCE] = &render_patch.shared.bitrate_reduce;
+    render_patch_ptr[MOD_DST_SAMPLERATE_REDUCE] = &render_patch.shared.samplerate_reduce;
 
     param_ptr[MOD_DST_NONE] = NULL;
     param_ptr[MOD_DST_OSC_1_PITCH] = &synth->patch.osc[0].scale; 
@@ -888,7 +908,8 @@ void parameterSetup(synth_state_t *synth_state) {
     param_ptr[MOD_DST_LFO_1_DST] = &synth->patch.mod[3].destination;
     param_ptr[MOD_DST_LFO_2_DST] = &synth->patch.mod[4].destination;
     param_ptr[MOD_DST_LFO_3_DST] = &synth->patch.mod[5].destination;
-
+    param_ptr[MOD_DST_BITRATE_REDUCE] = &synth->patch.shared.bitrate_reduce;
+    param_ptr[MOD_DST_SAMPLERATE_REDUCE] = &synth->patch.shared.samplerate_reduce;
 
 }
 

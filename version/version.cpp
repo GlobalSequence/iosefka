@@ -116,7 +116,18 @@ void versionMigratePresetv0_1_2_to_1_0_0() {
         n.preset_name = o.preset_name;
         n.patch.osc[0] = o.patch.osc[0];
         n.patch.osc[1] = o.patch.osc[1];
-        n.patch.shared = o.patch.shared;
+        // n.patch.shared = o.patch.shared;
+
+        n.patch.shared.portamento = o.patch.shared.portamento;
+        n.patch.shared.phase_mod = o.patch.shared.phase_mod;
+        n.patch.shared.sync = o.patch.shared.sync;
+        // n.patch.shared.bitrate_reduce = o.patch.shared.bitrate_reduce;
+        // n.patch.shared.samplerate_reduce = o.patch.shared.samplerate_reduce;
+        n.patch.shared.bitrate_reduce = 0xFF;
+        n.patch.shared.samplerate_reduce = 0xFF;
+        n.patch.shared.legato = 0xFF;           // new param
+        n.patch.shared.osc_duo = 0x00;          // new param
+
         n.patch.mixer = o.patch.mixer;
         n.patch.filter = o.patch.filter;
         n.patch.vca.level = o.patch.vca.level;
@@ -132,13 +143,40 @@ void versionMigratePresetv0_1_2_to_1_0_0() {
         for(int i = 0; i < NUMBER_OF_LFOS; i++) {
             n.patch.lfo[i] = o.patch.lfo[i];
         }
-        for(int i = 0; i < NUM_MOD_SOURCES; i++) {
+        // for(int i = 0; i < NUM_MOD_SOURCES; i++) {
+        //     n.patch.mod[i] = o.patch.mod[i];
+        // }
+        for(int i = 0; i < V0_1_2_NUM_MOD_SOURCES; i++) {
             n.patch.mod[i] = o.patch.mod[i];
         }
+        n.patch.mod[MOD_SRC_NOTE].amount = 0xFF;        // new param
+        n.patch.mod[MOD_SRC_NOTE].destination = 0x00;   // new param
+        n.patch.mod[MOD_SRC_BREATH].amount = 0xFF;      // new param
+        n.patch.mod[MOD_SRC_BREATH].destination = 0x00; // new param
+
         n.seq_pattern_data = o.seq_pattern_data;
+        for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
+
+            n.seq_pattern_data.step[i].step_prob = 0x00;
+
+        }
         n.step_data = o.step_data;
+        n.step_data.step_prob = 0x00;
         n.pattern_gen = o.pattern_gen;
-        n.user_param = o.user_param;
+        n.pattern_gen.on = false;
+        // n.user_param = o.user_param;
+        user_param_t new_user_param;
+        for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
+            if(i == 13) {
+                new_user_param.destination[i] = MOD_DST_BITRATE_REDUCE;
+            } else if (i == 14) {
+                new_user_param.destination[i] = MOD_DST_SAMPLERATE_REDUCE;
+            } else {
+                new_user_param.destination[i] = MOD_DST_NONE;
+            }
+
+        }
+        n.user_param = new_user_param;
 
         for(int i = 0; i < NUM_MOD_SOURCES; i++) {
 
@@ -184,7 +222,39 @@ void versionMigratePresetv0_1_2_to_1_0_0() {
 
 }
 
-void versionStorageTest() {
+void versionParameterHotfix() {
+
+    for(int i = 0; i < NUMBER_OF_PRESETS; i++) {
+
+        synth_storable_t s = storageLoadPreset(i);
+
+        // s.patch.shared.bitrate_reduce = 0xFF;
+        // s.patch.shared.samplerate_reduce = 0xFF;
+        // s.pattern_gen.on = false;
+        user_param_t new_user_param;
+        for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
+            if(i == 13) {
+                new_user_param.destination[i] = MOD_DST_BITRATE_REDUCE;
+            } else if (i == 14) {
+                new_user_param.destination[i] = MOD_DST_SAMPLERATE_REDUCE;
+            } else {
+                new_user_param.destination[i] = MOD_DST_NONE;
+            }
+
+        }
+        s.user_param = new_user_param;
+
+        storageSavePreset(s, i);
+
+        displayShowUpdatingPresets(i);
+
+        sleep_ms(10);
+
+    }
+
+}
+
+/* void versionStorageTest() {
 
     version_t v = storageLoadVersion();
     if(
@@ -303,7 +373,18 @@ void versionStorageTest() {
         n.preset_name = o.preset_name;
         n.patch.osc[0] = o.patch.osc[0];
         n.patch.osc[1] = o.patch.osc[1];
-        n.patch.shared = o.patch.shared;
+        // n.patch.shared = o.patch.shared;
+
+        n.patch.shared.portamento = o.patch.shared.portamento;
+        n.patch.shared.phase_mod = o.patch.shared.phase_mod;
+        n.patch.shared.sync = o.patch.shared.sync;
+        // n.patch.shared.bitrate_reduce = o.patch.shared.bitrate_reduce;
+        // n.patch.shared.samplerate_reduce = o.patch.shared.samplerate_reduce;
+        n.patch.shared.bitrate_reduce = 0xFF;
+        n.patch.shared.samplerate_reduce = 0xFF;
+        n.patch.shared.legato = 0xFF;
+        n.patch.shared.osc_duo = 0x00;
+
         n.patch.mixer = o.patch.mixer;
         n.patch.filter = o.patch.filter;
         n.patch.vca.level = o.patch.vca.level;
@@ -317,12 +398,28 @@ void versionStorageTest() {
         for(int i = 0; i < NUMBER_OF_LFOS; i++) {
             n.patch.lfo[i] = o.patch.lfo[i];
         }
-        for(int i = 0; i < NUM_MOD_SOURCES; i++) {
+        // for(int i = 0; i < NUM_MOD_SOURCES; i++) {
+        //     n.patch.mod[i] = o.patch.mod[i];
+        // }
+
+        for(int i = 0; i < V0_1_2_NUM_MOD_SOURCES; i++) {
             n.patch.mod[i] = o.patch.mod[i];
         }
+        n.patch.mod[MOD_SRC_NOTE].amount = 0xFF;
+        n.patch.mod[MOD_SRC_NOTE].destination = 0x00;
+        n.patch.mod[MOD_SRC_BREATH].amount = 0xFF;
+        n.patch.mod[MOD_SRC_BREATH].destination = 0x00;
+
         n.seq_pattern_data = o.seq_pattern_data;
+        for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
+
+            n.seq_pattern_data.step[i].step_prob = 0x00;
+
+        }
         n.step_data = o.step_data;
+        n.step_data.step_prob = 0x00;
         n.pattern_gen = o.pattern_gen;
+        n.pattern_gen.on = false;
         n.user_param = o.user_param;
 
         for(int i = 0; i < NUM_MOD_SOURCES; i++) {
@@ -368,4 +465,4 @@ void versionStorageTest() {
 
 #endif
 
-}
+} */

@@ -425,6 +425,33 @@ static inline uint8_t param8Bits0To9(uint8_t value) {
   return 0;
 }
 
+static inline uint8_t param8Bits0To10(uint8_t value) {
+
+    if (value < 24) {
+        return 0;
+    } else if (value < 47) {
+        return 1;
+    } else if (value < 70) {
+        return 2;
+    } else if (value < 93) {
+        return 3;
+    } else if (value < 116) {
+        return 4;
+    } else if (value < 139) {
+        return 5;
+    } else if (value < 162) {
+        return 6;
+    } else if (value < 185) {
+        return 7;
+    } else if (value < 208) {
+        return 8;
+    } else if (value < 231) {
+        return 9;
+    } else {
+        return 10;
+    }
+}
+
 static inline uint8_t param8Bits0To11(uint8_t value) {
 
   if (value >= 0 && value < 22) {

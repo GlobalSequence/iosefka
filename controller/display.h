@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "settings.h"
+#include "common/globals.h"
 #include "../synth/patch.h"
 #include "../devices/ssd1306.h"
 
@@ -24,6 +25,8 @@ void displayShowEncoderModeCountdown();
 
 void displayShowWritingNewPresets(uint8_t index);
 void displayShowUpdatingPresets(uint8_t index);
+
+void displayShowAltScreen(displayable_events_t evt, bool timer);
 
 #ifdef __cplusplus
 }

@@ -23,7 +23,9 @@ typedef struct oscillator_shared_params_t
     uint8_t phase_mod;          // 0 - 255
     uint8_t sync;               // 0 - 1
     uint8_t bitrate_reduce;     // 11 - 0
-    uint8_t samplerate_reduce;  // 
+    uint8_t samplerate_reduce;  //
+    uint8_t legato; 
+    uint8_t osc_duo;
 
 } oscillator_shared_params_t;
 
@@ -119,6 +121,7 @@ typedef struct external_modulation_t {
     volatile uint8_t pitch_bend_depth_send;
     uint8_t mod_wheel_amt;
     uint8_t aftertouch_amt;
+    uint8_t breath_amt;
     volatile bool clock_tick_occurred;
     volatile bool start_occurred;
     volatile uint8_t p_lock_dst;

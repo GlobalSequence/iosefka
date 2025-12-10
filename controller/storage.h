@@ -72,6 +72,8 @@ bool storageStateChanged();
 uint storageGetAddressFromBlockNum(uint block_num);
 void storageLoadToPointer(uint8_t* p, uint address, uint size);
 
+void storageLoadPresetNames();
+
 // void storageLoadSettingsWithPointer(uint8_t* r);
 // bool storageNeverWritten();
 

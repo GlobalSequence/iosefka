@@ -33,6 +33,11 @@ void Sequencer::trigger() {
     // trigger the step action
     // then increment the step
     // TODO: ADD ROTATION TO THIS FUNCTION
+
+    if(pending_current_step_change_) {
+        pending_current_step_change_ = false;
+        current_step_ = pending_current_step_;
+    }
     previous_step_ = current_step_;
     uint8_t first_ = pattern_data_.first_step;
     uint8_t last_ = pattern_data_.last_step;
@@ -141,19 +146,24 @@ void Sequencer::run() {
 
 void Sequencer::stop() {
     run_ = false;
-    current_step_ = pattern_data_.direction == BACKWARD ? pattern_data_.last_step + 1 : pattern_data_.first_step - 1;
+    // current_step_ = pattern_data_.direction == BACKWARD ? pattern_data_.last_step + 1 : pattern_data_.first_step - 1;
+    if(pattern_data_.direction != BACKWARD) {
+        current_step_ = pattern_data_.first_step - 1;
+        dir_fwd_ = true;
+    } else {
+        current_step_ = pattern_data_.last_step + 1;
+        dir_fwd_ = false;
+    }
     tick_counter_ = ticks_per_sixteenth_note_[0]; 
     is_swing_step_ = false; 
     just_stopped_ = true;
 
     this->resetAllStepNotes();
-    // this->resetAllPlayingNotes();
 
 }
 
 void Sequencer::setPatternData(pattern_data_t pattern_data) {
     pattern_data_ = pattern_data;
-    // this->resetAllStepNotes();
     this->setBpm(pattern_data_.bpm);
     tickCalculator();
     this->stop();
@@ -189,6 +199,9 @@ void Sequencer::setTranspose(uint8_t new_trans) {
 }
 
 void Sequencer::setFirstStep(uint8_t new_first_step) {
+
+    int8_t delta = new_first_step - pattern_data_.first_step;
+
     pattern_data_.first_step = new_first_step;
 
     for(int i = 0; i < new_first_step; i++) {
@@ -197,9 +210,14 @@ void Sequencer::setFirstStep(uint8_t new_first_step) {
 
     }
 
+    if(dir_fwd_) changeCurrentStep(delta);
+
 }
 
 void Sequencer::setLastStep(uint8_t new_last_step) {
+
+    int8_t delta = new_last_step - pattern_data_.last_step;
+
     pattern_data_.last_step = new_last_step;
 
     uint8_t last_step_index = new_last_step + 1;
@@ -214,6 +232,13 @@ void Sequencer::setLastStep(uint8_t new_last_step) {
 
     }
 
+    if(!dir_fwd_) changeCurrentStep(delta);
+
+}
+
+void Sequencer::changeCurrentStep(int16_t delta) {
+    pending_current_step_change_ = true;
+    pending_current_step_ = current_step_ + delta;
 }
 
 void Sequencer::setActiveStep(uint8_t index) {
@@ -260,6 +285,32 @@ void Sequencer::setStepPLockParam(uint8_t index, uint8_t value) {
 
 void Sequencer::setStepPLockValue(uint8_t index, uint8_t value) {
     pattern_data_.step[index].p_lock_value = value;   
+}
+
+void Sequencer::setStepProbability(uint8_t index, uint8_t value) {
+    pattern_data_.step[index].step_prob = value;
+}
+
+void Sequencer::shiftByPatternLength(bool advance) {
+    uint8_t len = this->getPatternLength();
+    if(advance) {
+        int new_last = pattern_data_.last_step + len + 1;
+        if(!(new_last >= NUMBER_OF_SEQUENCER_STEPS)) {
+            // pattern_data_.last_step = new_last;
+            // pattern_data_.first_step = new_last - len;
+            this->setFirstStep(new_last - len);
+            this->setLastStep(new_last);
+        }
+    } else {
+        int new_first = pattern_data_.first_step - len - 1;
+        if(!(new_first < 0)) {
+            // pattern_data_.first_step = new_first;
+            // pattern_data_.last_step = new_first + len;
+            this->setFirstStep(new_first);
+            this->setLastStep(new_first + len);
+        }
+    }
+
 }
 
 // void Sequencer::setStepAllParams(uint8_t index, step_data_t new_step) {
@@ -325,6 +376,8 @@ void Sequencer::tickCalculator() {
     ticks_per_sixteenth_note_[0] = swing_ticks_by_division[div][swing][0];
     ticks_per_sixteenth_note_[1] = swing_ticks_by_division[div][swing][1];
 }
+
+
 
 void Sequencer::resetStepNote(uint8_t index) {
 

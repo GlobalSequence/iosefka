@@ -174,6 +174,8 @@ void storageSave(uint block_num) {
 
 void storageSavePreset(synth_storable_t s, uint block_num) {
 
+    s.preset_name = settingsGetLoadedPresetNameByIndex(block_num);
+
     uint address = calculateAddress(block_num);
             
     uint8_t* s_ptr = (uint8_t*)&s;
@@ -227,6 +229,8 @@ synth_storable_t storageLoadPreset(uint block_num) {
 
     devicesStorageGet((uint8_t*)&s, address, size);
 
+    settingsSetLoadedPresetNameByIndex(s.preset_name, block_num);
+
     return s;
 
 }
@@ -266,6 +270,22 @@ uint storageGetAddressFromBlockNum(uint block_num) {
 void storageLoadToPointer(uint8_t* p, uint address, uint size) {
 
     devicesStorageGet(p, address, size);
+
+}
+
+void storageLoadPresetNames() {
+
+    for(int i = 0; i < NUMBER_OF_PRESETS; i++) {
+
+        synth_storable_t s = storageLoadPreset(i);
+
+        // char* name = s.preset_name.name_char;
+
+        // settingsSetLoadedPresetNameByIndex(s.preset_name, i);
+
+        sleep_ms(1);
+
+    }
 
 }
 
