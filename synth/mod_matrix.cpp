@@ -4,8 +4,8 @@ bool ModMatrix::lfo_reset_sync[4][2] {
     {false, false}, {true, false}, {false, true}, {true, true}
 };
 
-// uint16_t ModMatrix::lfo_div_val[] = {256, 192, 128, 96, 64, 48, 32, 24, 16, 12, 8, 6, 4, 3, 2, 1};
-uint16_t ModMatrix::lfo_div_val[] = {576, 288, 192, 96, 72, 48, 36, 24, 18, 12, 9, 6, 4, 3, 2, 1};
+// uint16_t ModMatrix::clock_sync_div_val[] = {256, 192, 128, 96, 64, 48, 32, 24, 16, 12, 8, 6, 4, 3, 2, 1};
+uint16_t ModMatrix::clock_sync_div_val[] = {576, 288, 192, 96, 72, 48, 36, 24, 18, 12, 9, 6, 4, 3, 2, 1};
 
 ModMatrix::ModMatrix(
     synth_parameters_t      *synth_params,
@@ -100,21 +100,9 @@ void ModMatrix::triggerNoteOff(uint8_t note) {
 
     }
 
-    // EnvTrigger2(RELEASE, &et_); // ENV TEST
-    // et.Trigger(ENV_SEGMENT_RELEASE);
 }
 
 void ModMatrix::loadSources() {
-
-        // uint16_t r = et.Render();
-    // if(et.segment() != ENV_SEGMENT_DEAD) TEST_PRINT_ONE_NL(r >> 4)
-    // uint16_t r = EnvRender2(&et_); // ENV TEST
-    // if(et_.stage_ != DEAD) TEST_PRINT_TWO_NL(r >> 4, mod_source_[MOD_SRC_ENV_1])
-    
-    // mod_source_[MOD_SRC_ENV_3] = r >> 4;
-    // mod_source_[MOD_SRC_ENV_1] = EnvRender(&env_[0]) >> 4;
-    // mod_source_[MOD_SRC_ENV_2] = EnvRender(&env_[1]) >> 4;
-    // mod_source_[MOD_SRC_ENV_3] = EnvRender(&env_[2]) >> 4;
 
     mod_source_[MOD_SRC_ENV_1] = env_[0].Render() >> 4;
     mod_source_[MOD_SRC_ENV_2] = env_[1].Render() >> 4;
@@ -123,11 +111,14 @@ void ModMatrix::loadSources() {
     mod_source_[MOD_SRC_LFO_2] = LFORender(&lfo_[1]);
     mod_source_[MOD_SRC_LFO_3] = LFORender(&lfo_[2]);
  
-    mod_source_[MOD_SRC_VELOCITY]   = velocity_ << 1;
-    mod_source_[MOD_SRC_MOD_WHEEL]  = ext_mod_->mod_wheel_amt << 1;
-    mod_source_[MOD_SRC_AFTERTOUCH] = ext_mod_->aftertouch_amt << 1;
-    mod_source_[MOD_SRC_BREATH] = ext_mod_->breath_amt << 1;
-    mod_source_[MOD_SRC_NOTE] = v_i->pitch_value >> 7;
+    // mod_source_[MOD_SRC_VELOCITY]   = velocity_ << 1;
+
+    // velocity is 8 bits internally, so no shifting needs to be done
+    mod_source_[MOD_SRC_VELOCITY]   = velocity_ << 4;
+    mod_source_[MOD_SRC_MOD_WHEEL]  = ext_mod_->mod_wheel_amt << 5;
+    mod_source_[MOD_SRC_AFTERTOUCH] = ext_mod_->aftertouch_amt << 5;
+    mod_source_[MOD_SRC_BREATH] = ext_mod_->breath_amt << 5;
+    mod_source_[MOD_SRC_NOTE] = v_i->pitch_value << 5;
 
     // vca_drone_mode_ = patch_->vca.level >> 7;
     vca_drone_mode_ = patch_->vca.level;
@@ -168,25 +159,6 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_MIX_OSC_2_MIX] = patch_->mixer.osc_2_mix << 4;
     dst_[MOD_DST_MIX_NOISE_MIX] = patch_->mixer.noise_mix << 4;
 
-    // int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
-    // for (uint8_t i = 0; i < NUMBER_OF_ENVS; ++i)
-    // {
-    //     *envelope_parameters++ = patch_->env[i].attack << 4;
-    //     *envelope_parameters++ = patch_->env[i].decay << 4;
-    //     *envelope_parameters++ = patch_->env[i].sustain << 4;
-    //     *envelope_parameters++ = patch_->env[i].release << 4;
-    //     *envelope_parameters++ = patch_->env[i].loop << 4;
-    //     envelope_parameters += 1;
-    // }
-
-    // TEST_PRINT_ONE_TAB(patch_->env[2].attack)
-    // TEST_PRINT_ONE_TAB(patch_->env[2].decay)
-    // TEST_PRINT_ONE_TAB(patch_->env[2].sustain)
-    // TEST_PRINT_ONE_TAB(patch_->env[2].release)
-    // TEST_PRINT_ONE_TAB(patch_->env[2].loop)
-    // TEST_PRINT_ONE_NL(patch_->mod[MOD_SRC_ENV_3].amount)
-
-
     dst_[MOD_DST_ENV_1_ATTACK] =    patch_->env[0].attack << 4;
     dst_[MOD_DST_ENV_1_DECAY] =     patch_->env[0].decay << 4;
     dst_[MOD_DST_ENV_1_SUSTAIN] =   patch_->env[0].sustain << 4;
@@ -205,21 +177,23 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_ENV_3_RELEASE] =   patch_->env[2].release << 4;
     dst_[MOD_DST_ENV_3_LOOP] =      patch_->env[2].loop << 4;
 
-    int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
+/*     int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
     for (uint8_t i = 0; i < NUMBER_OF_ENVS; ++i)
     {
         *lfo_parameters++ = patch_->lfo[i].rate << 4;
         *lfo_parameters++ = patch_->lfo[i].shape << 4;
         *lfo_parameters++ = patch_->lfo[i].phase << 4;
         lfo_parameters += 2;
+    } */
+    int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
+    for (uint8_t i = 0; i < NUMBER_OF_LFOS; ++i)
+    {
+        *lfo_parameters++ = patch_->lfo[i].rate << 4;
+        *lfo_parameters++ = patch_->lfo[i].shape << 4;
+        *lfo_parameters++ = patch_->lfo[i].phase << 4;
+        *lfo_parameters++ = patch_->lfo[i].sync << 4;
+        lfo_parameters += 1;
     }
-
-    // int16_t *mod_amount = &dst_[MOD_DST_ENV_1_AMOUNT];
-    // for (uint8_t i = 0; i < NUMBER_OF_ENVS + NUMBER_OF_LFOS; i++)
-    // {
-    //     *mod_amount = patch_->mod[i].amount << 4;
-    //     mod_amount += 5;
-    // }
 
     dst_[MOD_DST_ENV_1_AMOUNT] = patch_->mod[MOD_SRC_ENV_1].amount << 4;
     dst_[MOD_DST_ENV_2_AMOUNT] = patch_->mod[MOD_SRC_ENV_2].amount << 4;
@@ -274,7 +248,6 @@ void ModMatrix::updateDestinations()
     ext_mod_->osc_reset = false;
 
     // VCA 1 CV output
-
     int16_t vca_output;
 
     if(!vca_drone_mode_) {
@@ -283,7 +256,8 @@ void ModMatrix::updateDestinations()
 
         if(patch_->vca.velocity_on) {
 
-            vca_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_ << 1);
+            // vca_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_ << 1);
+            vca_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_);
 
         }
 
@@ -292,15 +266,13 @@ void ModMatrix::updateDestinations()
 
     c_o->vca1 = U12CLIPMAXMIN(dst_[MOD_DST_VCA]) >> 1;
 
-    // VCA 2 CV output
+    // VCA 2 (filter FM) CV output
     c_o->vca2 = U12CLIPMAXMIN(dst_[MOD_DST_FILTER_FM]) >> 1;
 
     // filter cutoff CV output
     int16_t tracking_amount = dst_[MOD_DST_FILTER_TRACKING] >> 4;
     int16_t pitch_scaled = v_i->pitch_value >> 3;
     int16_t tracking = U8S16MULSHIFT8(pitch_scaled , tracking_amount);
-
-    // TEST_PRINT_ONE_NL(pitch_scaled)
 
     int16_t cutoffModulation = dst_[MOD_DST_FILTER_CUTOFF] + tracking;
     int16_t cutoff_env= mod_source_[MOD_SRC_ENV_2];
@@ -354,41 +326,16 @@ void ModMatrix::updateDestinations()
     v_i->osc_2_mix = dst_[MOD_DST_MIX_OSC_2_MIX] >> 4;
     v_i->noise_mix = dst_[MOD_DST_MIX_NOISE_MIX] >> 4;
 
+    // bitrate reduction, value is reversed so that turning down increases the effect
     uint8_t notbrr = ~(dst_[MOD_DST_BITRATE_REDUCE] >> 4);
     v_i->brr = param8Bits0To10(notbrr);
 
+    // samplerate reduction, ""
     uint8_t notsrr = ~(dst_[MOD_DST_SAMPLERATE_REDUCE] >> 4);
     v_i->srr = notsrr;
 
-    // int16_t *envelope_parameters = &dst_[MOD_DST_ENV_1_ATTACK];
-    // for (int i = 0; i < NUMBER_OF_ENVS; ++i)
-    // {
-    //     // EnvUpdate(
-    //     //     envelope_parameters[0] >> 4,
-    //     //     envelope_parameters[1] >> 4,
-    //     //     envelope_parameters[2] >> 4,
-    //     //     envelope_parameters[3] >> 4,
-    //     //     &env_[i]            
-    //     // );
-    //     env_[i].Update(
-    //         envelope_parameters[0] >> 5,
-    //         envelope_parameters[1] >> 5,
-    //         envelope_parameters[2] >> 4,
-    //         envelope_parameters[3] >> 5, 
-    //         envelope_parameters[4] >> 11  
-    //     );
-    //     envelope_parameters += 6;
-    // }
-
-    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_1_SUSTAIN])
-    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_2_SUSTAIN])
-
-    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_3_ATTACK])
-    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_3_DECAY])
-    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_3_SUSTAIN])
-    // TEST_PRINT_ONE_TAB(dst_[MOD_DST_ENV_3_RELEASE])
-    // TEST_PRINT_ONE_NL(dst_[MOD_DST_ENV_3_AMOUNT])
-    // TEST_PRINT_TWO_NL(dst_[MOD_DST_ENV_3_LOOP], dst_[MOD_DST_ENV_3_LOOP] >> 11)
+    // oscillator duophony
+    v_i->duophony = patch_->shared.osc_duo;
 
     env_[0].Update(
         dst_[MOD_DST_ENV_1_ATTACK]      >> 5,
@@ -421,25 +368,44 @@ void ModMatrix::updateDestinations()
     ext_mod_->start_occurred = false;
 
     int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
+
+    uint32_t clock_period = ext_mod_->clock_tick_period;
+
     for (int i = 0; i < NUMBER_OF_LFOS; ++i)
     {
-        uint8_t lfo_sync_reset_state = patch_->lfo[i].sync >> 6;
+/*         uint8_t lfo_sync_reset_state = patch_->lfo[i].sync >> 6;
+        bool lfo_reset = lfo_reset_sync[lfo_sync_reset_state][0];
+        bool lfo_sync = lfo_reset_sync[lfo_sync_reset_state][1];
+        LFOSetSync(&lfo_[i], lfo_sync);
+        LFOSetReset(&lfo_[i], lfo_reset); */
+        uint8_t lfo_sync_reset_state;
+
+        switch(i) {
+            case 0: lfo_sync_reset_state = dst_[MOD_DST_LFO_1_SYNC] >> 10; break;
+            case 1: lfo_sync_reset_state = dst_[MOD_DST_LFO_2_SYNC] >> 10; break;
+            case 2: lfo_sync_reset_state = dst_[MOD_DST_LFO_3_SYNC] >> 10; break;
+            default: break;
+        }
+
         bool lfo_reset = lfo_reset_sync[lfo_sync_reset_state][0];
         bool lfo_sync = lfo_reset_sync[lfo_sync_reset_state][1];
         LFOSetSync(&lfo_[i], lfo_sync);
         LFOSetReset(&lfo_[i], lfo_reset);
 
-        uint16_t sync_div_val = lfo_div_val[lfo_parameters[0] >> 8];
-        uint32_t lfo_sync_inc = 
-        ((klfo_sync_tick_dividend/(ext_mod_->clock_tick_period * sync_div_val)) << 16)/klfo_sync_divisor;
+        uint16_t sync_div_val = clock_sync_div_val[lfo_parameters[0] >> 8];
+/*         uint32_t lfo_sync_inc = 
+        ((k_clock_sync_tick_dividend/(ext_mod_->clock_tick_period * sync_div_val)) << 16)/k_clock_sync_divisor;
 
             // (60 seconds in us / (tick period * division of period) << 16 bit) / update frequency in HZ
             // It can be thought of like this:
             // say the value being shifted by 16 bits is 1 (1 << 16)...
             // at the update rate defined by the sync divisor, a total cycle will take 1 second
             // anything greater than 1 << 16 is less than a second, where anything less is more than a second
-            // ... klfo_syn_tick_dividend should be called something more like kone_second_in_us_times_100 or sth
+            // ... k_clock_syn_tick_dividend should be called something more like kone_second_in_us_times_100 or sth
         //if(i == 0) printf("%d, %d, %d\t", lfo_[0].getSync(), lfo_sync_inc, sync_div_val);
+ */
+
+        uint32_t lfo_sync_inc = getClockDivValue12Bits(clock_period, sync_div_val);
 
         LFOUpdate(
             &lfo_[i], 
@@ -483,9 +449,22 @@ void ModMatrix::updateDestinations()
     mod_amount_[MOD_SRC_AFTERTOUCH] = MAX_PARAM_VALUE;
 
     d_i->amount = dst_[MOD_DST_DELAY_AMOUNT] >> 4;
-    d_i->length = dst_[MOD_DST_DELAY_RATE] >> 4;
     d_i->feedback = dst_[MOD_DST_DELAY_FEEDBACK] >> 4;
 
+    // d_i->length = dst_[MOD_DST_DELAY_RATE] >> 4;
+    d_i->length = dst_[MOD_DST_DELAY_RATE] << 4;
+    // d_i->length = getClockDivValue12Bits(clock_period, clock_sync_div_val[dst_[MOD_DST_DELAY_RATE] >> 8]) << 4;
 
 }
 
+uint16_t ModMatrix::getClockDivValue12Bits(uint32_t clock_period, uint16_t div_val) {
+
+    return ((k_clock_sync_tick_dividend/(clock_period * div_val)) << 16)/k_clock_sync_divisor;
+
+    // (60 seconds in us / (tick period * division of period) << 16 bit) / update frequency in HZ
+    // It can be thought of like this:
+    // say the value being shifted by 16 bits is 1 (1 << 16)...
+    // at the update rate defined by the sync divisor, a total cycle will take 1 second
+    // anything greater than 1 << 16 is less than a second, where anything less is more than a second
+    // ... k_clock_syn_tick_dividend should be called something more like kone_second_in_us_times_100 or sth
+}

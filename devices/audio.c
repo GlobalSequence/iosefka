@@ -11,6 +11,9 @@ volatile bool render_trigger = false;
 uint16_t dac_buf[DAC_OUTPUT_BUF_SIZE]__attribute__((aligned(DAC_OUTPUT_BUF_SIZE * 2)));
 uint16_t adc_buf[ADC_INPUT_BUF_SIZE]__attribute__((aligned(ADC_INPUT_BUF_SIZE * 2)));
 
+// scope buffer
+uint16_t scope_buf[SCOPE_BUF_SIZE]__attribute__((aligned(SCOPE_BUF_SIZE * 2)));
+
 uint16_t *adc_double_buf_ptr;
 
 uint16_t audio_buf_1[AUDIO_BLOCK_SIZE]__attribute__((aligned(AUDIO_BLOCK_SIZE * 2)));
@@ -27,6 +30,11 @@ static uint8_t counter_adc_buf;
 static uint16_t input_dummy;
 
 bool transmitting_buffer_two;
+// bool scope_buffer_two;
+static uint8_t scope_div = 4;
+static int16_t last_scope_sample;
+static uint8_t scope_counter;
+static bool scope_buffer_half;
 
 void audioSetup(uint8_t dac_dma_channel, uint8_t adc_dma_channel, uint8_t int_channel, uint8_t irq_number) {
 
@@ -87,7 +95,15 @@ void audioIrqHandler() {
 
         if(counter & 0x1) {
 
-            // adc_buf_ptr = &input_dummy;
+            // uint8_t c = counter_adc_buf;
+            // int16_t sample_compare = c - scope_div;
+            // if(sample_compare <= 0) last_scope_sample -= 0xFF;
+            // if(sample_compare >= last_scope_sample) {
+            //     last_scope_sample = c;
+            //     scope_buf[scope_counter] = adc_buf[c];
+            //     scope_counter++;
+            //     scope_buffer_half = scope_counter >> 7;
+            // }
 
         } else { 
 
@@ -129,51 +145,30 @@ void audioFillOutputBuffer() {
     }
 
     for(int i = 0; i < AUDIO_BLOCK_SIZE; i++) {
-        // dac_buf[buf_ctr++] = audio_buf_1[i] | DAC_CONFIG_CHAN_A;
-        // dac_buf[buf_ctr++] = audio_buf_2[i] | DAC_CONFIG_CHAN_B;
         dac_buf[buf_ctr++] = DAC_CONFIG_CHAN_B | (audio_buf_1[i] & 0xFFF);
         dac_buf[buf_ctr++] = DAC_CONFIG_CHAN_A | (audio_buf_2[i] & 0xFFF);
     }
     
 }
 
-// bool audioOutputTest() {
+uint16_t* audioGetScopeBufPtr() {
 
-//     static bool last_buffer_transmitted;
-//     if(transmitting_buffer_two != last_buffer_transmitted) {
+    return scope_buf;
 
-//         // static unsigned long period;
-//         // unsigned long now = time_us_64();
+}
 
-//         // TEST_PRINT_ONE_NL(now - period)
+uint8_t* audioGetScopeDivPointer() {
 
-//         // period = now;
+    return &scope_div;
 
-//         // printf("K\n");
+}
 
-//         last_buffer_transmitted = transmitting_buffer_two;  
-//         uint16_t buf_ctr;
-//         uint16_t table_start;
-//         if(!transmitting_buffer_two) {
-//             buf_ctr = 256;
-//             table_start = 128;
-//         }
-//         else {
-//             buf_ctr = 0;
-//             table_start = 0;
-//         }
+bool* audioGetScopeBufferHalfPtr() {
 
-//         for(int i = 0; i < AUDIO_BLOCK_SIZE; i++) {
-//             dac_buf[buf_ctr++] = sin_wavetable[table_start + i] | DAC_CONFIG_CHAN_A;
-//             dac_buf[buf_ctr++] = i << 5 | DAC_CONFIG_CHAN_B;
-//         }
+    return &scope_buffer_half;
 
-//         return true;
-//     }
+}
 
-//     return false;
-
-// }
 
 uint16_t *audioGetBlockPointer1() {
 

@@ -47,9 +47,19 @@ static const view_mode_t k_mode_lfo[NUMBER_OF_LFOS] = {MODE_MOD_DST_LFO_1, MODE_
 // PRIVATE FUNCTIONS
 // ################################
 
+view_page_t getPageFromEvent(view_page_event_t event) {
+    switch(event) {
+        case EVT_PAGE_KEYS: return PAGE_KEYS; break;
+        case EVT_PAGE_SEQ: return PAGE_SEQ; break;
+        case EVT_PAGE_SETTINGS: return PAGE_SETTINGS; break;
+        default: return PAGE_KEYS;
+    }
+    return PAGE_KEYS;
+}
+
 void viewSetPageContext(view_page_event_t event) {
 
-    view_page_t page;
+/*     view_page_t page;
     switch(event) {
         case EVT_PAGE_KEYS:
             page = PAGE_KEYS;
@@ -62,8 +72,9 @@ void viewSetPageContext(view_page_event_t event) {
             case EVT_PAGE_SETTINGS:
             page = PAGE_SETTINGS;
             break;
-    }
-    // machine_state.page = page;
+    } */
+    view_page_t page = getPageFromEvent(event);
+
     viewSetPage(page);
     last_page_event = event; 
 
@@ -206,12 +217,10 @@ void viewSetup() {
     };
 
 
-    mode_context[EVT_MODE_KEYS] = MODE_KBD_OCT;
+/*     mode_context[EVT_MODE_KEYS] = MODE_KBD_OCT;
     mode_context[EVT_MODE_ENV] = MODE_MOD_DST_ENV_1;
     mode_context[EVT_MODE_LFO] = MODE_MOD_DST_LFO_1;
     mode_context[EVT_MODE_SEQ] = MODE_SEQ_SET_BPM;
-    // mode_context[EVT_MODE_SETTINGS] = MODE_MIDI_CHANNEL;
-    // mode_context[EVT_MODE_SETTINGS] = MODE_SAVE_PRESET_SEL;
     mode_context[EVT_MODE_SETTINGS] = MODE_SET_SCROLL;
     mode_context[EVT_MODE_USER_PARAM] = MODE_USER_PARAM_DST;
 
@@ -223,10 +232,21 @@ void viewSetup() {
     machine_state.seq_step_octave = seq_step_octave_startup;
 
     last_synth_1_layer = LAYER_SYNTH_1;
-    last_synth_2_layer = LAYER_SYNTH_2;
+    last_synth_2_layer = LAYER_SYNTH_2; */
 
+    viewResetMachineStateOnLoad();
+    // set a few extra states on startup that aren't set during preset loading
+    mode_context[EVT_MODE_SETTINGS] = MODE_SET_SCROLL;
     machine_state.preset_number_selected = machine_state.preset_number_loaded = 0;
 
+}
+
+bool viewWillPageChangeOnViewChange(view_change_t event) {
+
+    view_page_event_t page_event = view_events[event].p;
+    view_page_t next_page = getPageFromEvent(page_event);
+    
+    return next_page == machine_state.page? false : true;
 }
 
 // ################################
@@ -272,6 +292,25 @@ void viewSetMachineStateMode(view_mode_t mode) {
     machine_state.mode = mode;
     view_change_led = true;
 
+}
+
+void viewResetMachineStateOnLoad() {
+
+    mode_context[EVT_MODE_KEYS] = MODE_KBD_OCT;
+    mode_context[EVT_MODE_ENV] = MODE_MOD_DST_ENV_1;
+    mode_context[EVT_MODE_LFO] = MODE_MOD_DST_LFO_1;
+    mode_context[EVT_MODE_SEQ] = MODE_SEQ_SET_BPM;
+    mode_context[EVT_MODE_USER_PARAM] = MODE_USER_PARAM_DST;
+
+    machine_state.keyboard_octave = kbd_oct_startup;
+    machine_state.sequencer_window = seq_window_startup;
+    machine_state.seq_step_note = seq_step_note_startup;
+    machine_state.seq_step_octave = seq_step_octave_startup;
+    machine_state.preset_char_index = 0;
+    machine_state.current_user_param = 0;
+
+    last_synth_1_layer = LAYER_SYNTH_1;
+    last_synth_2_layer = LAYER_SYNTH_2;
 }
 
 void viewSetKeyboardOctave(uint8_t octave) {

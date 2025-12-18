@@ -219,6 +219,7 @@ typedef enum note_state_t {
 // #define ADC_INPUT_BUF_SIZE 32768
 #define DELAY_BUF_SIZE 32768
 #define ADC_INPUT_BUF_SIZE AUDIO_BLOCK_SIZE * 2
+#define SCOPE_BUF_SIZE AUDIO_BLOCK_SIZE * 2
 
 
 // ################################
@@ -276,6 +277,7 @@ typedef enum midi_output_t {
 // ################################
 
 #define MAX_PARAM_VALUE 0xFF
+#define MAX_VELOCITY_VALUE 0X80
 
 typedef enum mod_destinations_t {
     MOD_DST_NONE,

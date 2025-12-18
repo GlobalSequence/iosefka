@@ -138,6 +138,8 @@ void storageWriteAllMemory(write_callback func) {
 
     for(int i = 0; i < NUMBER_OF_PRESETS; i++) {
 
+        settingsSetBlankLoadedPresetNameByIndex(i);
+
         storageSave(i);
 
         sleep_ms(10);
@@ -152,14 +154,6 @@ void storageWriteAllMemory(write_callback func) {
 
 void storageSave(uint block_num) {
 
-    // uint address = calculateAddress(block_num);
-
-    // synth_storable_t s = settingsGetStorableData();
-            
-    // uint8_t* s_ptr = (uint8_t*)&s;
-    
-    // devicesStoragePut(s_ptr, address, sizeof(s));
-
     synth_storable_t s = settingsGetStorableData();
 
     storageSavePreset(s, block_num);
@@ -168,7 +162,6 @@ void storageSave(uint block_num) {
 
     uint8_t* m_ptr = (uint8_t*)&m;
 
-    // devicesStoragePut(m_ptr, k_settings_address, sizeof(m));
     devicesStoragePut(m_ptr, SETTINGS_ADDRESS, sizeof(m));
 }
 
@@ -198,21 +191,12 @@ void storageSaveVersion(version_t v) {
 
 void storageLoad(uint block_num) {
 
-    // uint address = calculateAddress(block_num);
-
-    // synth_storable_t s;
-
-    // size_t size = sizeof(s);
-
-    // devicesStorageGet((uint8_t*)&s, address, size);
-
     synth_storable_t s = storageLoadPreset(block_num);
 
     settingsSetStoredData(s);
 
     machine_settings_t m;
 
-    // devicesStorageGet((uint8_t*)&m, k_settings_address, sizeof(m));
     devicesStorageGet((uint8_t*)&m, SETTINGS_ADDRESS, sizeof(m));
 
     settingsSetMachineSettingsAll(m);

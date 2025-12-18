@@ -11,8 +11,10 @@ RingBuffer<note_data_t, NOTE_BUFFER_SIZE>  note_queue_midi_out;
 NoteStack noteStack;
 
 uint8_t* legato_ptr;
+uint8_t* duo_ptr;
 static uint8_t note_count = 0;
 static uint8_t last_on_velocity;
+static uint8_t bass_note;
 
 // private function
 
@@ -20,9 +22,10 @@ static void addToQueue(note_data_t note_data);
 
 // public function
 
-void noteQueueSetup(uint8_t* legato) {
+void noteQueueSetup(uint8_t* legato, uint8_t* osc_duo) {
 
     legato_ptr = legato;
+    duo_ptr = osc_duo;
     noteStack.init();
 
 }
@@ -64,11 +67,13 @@ void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on) {
         }
 
         last_on_velocity = after.velocity;
+        
+        uint8_t least_recent = noteStack.leastRecentNote().note;
+        bool bass_note_cancel = least_recent == after.note;
+        bass_note = bass_note_cancel? 0 : least_recent;
+
 
     } else {
-
-        // the before and after here are for operator duo mode, if ever implemented
-        // for now I'm half assing it
 
         const note_entry_t before = noteStack.mostRecentNote();
         
@@ -83,7 +88,7 @@ void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on) {
             note_data = {note, 0, 0, 0};
 
             
-        } else if (*legato_ptr) {
+        } else if (*legato_ptr && !*duo_ptr) {
 
             note_data = {after.note, last_on_velocity, true, false};
 
@@ -92,8 +97,6 @@ void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on) {
         addToQueue(note_data);
 
     }
-
-    // TEST_PRINT_ONE_NL(*legato_ptr)
 
 }
 
@@ -157,3 +160,5 @@ void noteQueueKillActiveNotes() {
     }
 
 }
+
+uint8_t noteQueueGetBassNote() { return bass_note; } 

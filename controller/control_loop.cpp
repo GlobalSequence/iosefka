@@ -171,7 +171,10 @@ bool pollSequencer(bool flag) {
 
 void pollDisplay(uint8_t count, bool flag) {
 
-    if(flag && count & 1) {
+    bool scope_active = displayScopeActive();
+    if(scope_active) displayTrigger();
+
+    if((flag && count & 1) || scope_active) {
 
         displayDisplay();
 

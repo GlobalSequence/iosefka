@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "pico/stdlib.h"
-#include "voice2.h"
+#include "voice.h"
 #include "cv.h"
 #include "delay.h"
 #include "patch.h"
@@ -32,6 +32,7 @@ class ModMatrix {
         void loadSources();
         void processModulation();
         void updateDestinations();  
+        uint16_t getClockDivValue12Bits(uint32_t clock_period, uint16_t div_val);
 
         synth_parameters_t      *patch_;
         external_modulation_t   *ext_mod_;
@@ -44,9 +45,6 @@ class ModMatrix {
         lfo_t lfo_[NUMBER_OF_LFOS];
 
         // Envelope et;
-
-        
-
         MovingAverage32 PhaseModSmooth;
 
         uint16_t mod_source_[NUM_MOD_SOURCES];
@@ -55,11 +53,12 @@ class ModMatrix {
         int8_t mod_destination[NUM_MOD_DESTINATIONS];
         uint8_t velocity_;
 
-        static const uint klfo_sync_div_headroom = 100;
-        static const uint klfo_sync_divisor = AUDIO_RENDER_RATE_KHZ * klfo_sync_div_headroom;
-        static const uint klfo_sync_tick_dividend = 1000000 * klfo_sync_div_headroom;
+        static const uint k_clock_sync_div_headroom = 100;
+        static const uint k_clock_sync_divisor = AUDIO_RENDER_RATE_KHZ * k_clock_sync_div_headroom;
+        static const uint k_clock_sync_tick_dividend = 1000000 * k_clock_sync_div_headroom;
+        static uint16_t clock_sync_div_val[16];
+
         static bool lfo_reset_sync[4][2];
-        static uint16_t lfo_div_val[16];
         uint16_t lfo_tick_count[NUMBER_OF_LFOS];
 
         bool vca_drone_mode_;

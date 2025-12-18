@@ -263,7 +263,6 @@ synth_storable_t settingsGetInitPatch() {
 
     }
 
-
     return st;
 
 }
@@ -286,12 +285,6 @@ machine_settings_t settingsGetInitMachineSettings() {
 
 }
 
-// void settingsSetTempPresetName(preset_name_t n) {
-
-//     temp_preset_name = n;
-
-// }
-
 void settingsSetLoadedPresetNameByIndex(preset_name_t name, uint8_t index) {
 
     for(int i = 0; i < PRESET_NAME_LENGTH; i++) {
@@ -300,15 +293,26 @@ void settingsSetLoadedPresetNameByIndex(preset_name_t name, uint8_t index) {
 
     }
     uint8_t* ptr = (uint8_t*) name.name_char;
-    // memcpy(&loaded_preset_name[index], name.name_char, PRESET_NAME_LENGTH);
-    // memcpy(&loaded_preset_name[index], ptr, PRESET_NAME_LENGTH);
+
+}
+
+void settingsSetBlankLoadedPresetNameByIndex(uint8_t index) {
+
+        preset_name_t p;
+
+    for(int i = 0; i < PRESET_NAME_LENGTH; i++) { 
+        
+        p.name_char[i] = 0; 
+    
+    }
+
+    settingsSetLoadedPresetNameByIndex(p, index);
 
 }
 
 void settingsSetPresetNameChar(char c, uint8_t index, uint8_t preset) {
 
     loaded_preset_name[preset].name_char[index] = c;
-    // temp_preset_name.name_char[index] = c;
 
 }
 

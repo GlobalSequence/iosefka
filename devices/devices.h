@@ -40,6 +40,7 @@ void devicesDisplayClear();
 void devicesDisplayDrawTextNormFont(const char* text, uint8_t x, uint8_t y, pico_ssd1306::WriteMode write_mode);
 void devicesDisplayDrawRectangle(uint8_t x, uint8_t y, uint8_t x_length, uint8_t y_height, bool fill, pico_ssd1306::WriteMode write_mode);
 void devicesDisplayDrawBitmap(uint8_t x, uint8_t y, uint8_t x_length, uint8_t y_height, uint8_t *image, pico_ssd1306::WriteMode write_mode);
+void devicesDisplayDrawLine(uint8_t x, uint8_t y, uint8_t l, uint8_t w, pico_ssd1306::WriteMode write_mode);
 void devicesDisplaySetPixel(uint8_t x, uint8_t y, pico_ssd1306::WriteMode write_mode);
 void devicesDisplayDisplay();
 

@@ -36,6 +36,10 @@ uint16_t *audioGetBlockPointer2();
 uint16_t *audioGetAdcBufferPointer();
 volatile bool *audioGetRenderTrigger();
 
+// scope functions (tacked onto here due to late addition)
+uint16_t* audioGetScopeBufPtr();
+uint8_t* audioGetScopeDivPointer();
+bool* audioGetScopeBufferHalfPtr();
 
 #ifdef __cplusplus
 }

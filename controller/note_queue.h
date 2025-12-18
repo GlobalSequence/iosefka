@@ -18,7 +18,7 @@ extern "C"
 {
 #endif
 
-void noteQueueSetup(uint8_t* legato_ptr);
+void noteQueueSetup(uint8_t* legato, uint8_t* osc_duo);
 void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on);
 // void noteQueueKillActiveNotes();
 
@@ -28,6 +28,8 @@ note_data_t noteQueuePullInternal();
 bool noteQueueAvailableMidiOut();
 note_data_t noteQueuePullMidiOut();
 uint8_t noteQueueGetCount();
+
+uint8_t noteQueueGetBassNote();
 
 #ifdef __cplusplus
 }

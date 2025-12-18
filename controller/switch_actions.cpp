@@ -11,6 +11,8 @@
 #include "../sequencer/pattern_generator.h"
 #include "../sequencer/p_lock.h"
 
+#include "../graphics/oscilloscope.h"
+
 static switchEventDisplayFunc dispFunc;
 
 static const switch_id_t save_switch = SW_T0;
@@ -24,7 +26,8 @@ static int8_t stored_pressed_note[NUMBER_OF_KEY_SWITCHES] = {
 
 view_change_t selected_view;
 bool view_change_pending = false;
-bool p_lock_exception;
+bool p_lock_exception = false;
+bool same_page_exception = false;
 bool view_changed = false;
 bool selected_window_direction;
 bool seq_window_change_pending = false;
@@ -64,6 +67,22 @@ void pageKeyboard(switch_id_t sw, bool pressed, bool shift) {
         case SW_T3: key = 8; break;
         case SW_T4: key = 10; break;
 
+        default: break;
+
+    }
+
+    // oscilloscope test, temporary
+    switch (sw) {
+
+        case SW_T0: oscilloscopeSetModulo(0); break;
+        case SW_T1: oscilloscopeSetModulo(1); break;
+        case SW_T2: oscilloscopeSetModulo(2); break;
+        case SW_T3: oscilloscopeSetModulo(3); break;
+        case SW_T4: oscilloscopeSetModulo(4); break;
+        case SW_B4: oscilloscopeSetTimeDiv(0); break;
+        case SW_B5: oscilloscopeSetTimeDiv(1); break;
+        case SW_B6: oscilloscopeSetTimeDiv(2); break;
+        case SW_B7: oscilloscopeSetTimeDiv(3); break;
         default: break;
 
     }
@@ -309,6 +328,7 @@ void setStorageState(storage_type_t type, bool shift) {
 
             storageSetState(STORAGE_STATE_ACTIVE);
             viewSetPresetNumberLoaded(viewGetPresetNumberSelected());
+            if(current_type == STORAGE_TYPE_LOAD) viewResetMachineStateOnLoad();
 
         }
 
@@ -492,6 +512,7 @@ void setView(view_change_t view) {
 
         selected_view = view;
         view_change_pending = true;
+        if(!viewWillPageChangeOnViewChange(view)) same_page_exception = true;
 
 }
 
@@ -524,10 +545,11 @@ void setViewCheckSeq(
 
 void executeNewView(uint8_t num_all_keys_pressed) {
 
-    if(view_change_pending && (!num_all_keys_pressed || p_lock_exception)) {
+    if(view_change_pending && (!num_all_keys_pressed || p_lock_exception || same_page_exception)) {
 
         view_change_pending = false;
         p_lock_exception = false;
+        same_page_exception = false;
 
         viewChange(selected_view);
 
@@ -827,12 +849,13 @@ void switchActionsTakeInput(
                             case SET_ROW_MIDI_PGM: toggleSetting(&synth->settings.program_change_rx); break;
                             // needs to be toggled manually because it's not a boolean
                             case SET_ROW_LEGATO: synth->patch.shared.legato = synth->patch.shared.legato? 0 : 1;  break; 
-                            case SET_ROW_OSC_DUO: break; // TODO: IMPLEMENT OSC DUO
+                            case SET_ROW_OSC_DUO: synth->patch.shared.osc_duo = synth->patch.shared.osc_duo? 0: 1; break; // TODO: IMPLEMENT OSC DUO
                             case SET_ROW_VCA_VELOCITY: toggleSetting(&synth->patch.vca.velocity_on); break;
                             case SET_ROW_POT_LATCH: toggleSetting(&synth->settings.latch); break;
                             case SET_ROW_INIT_PATCH: 
                                 if(shift) {
                                     settingsSetInitPatch();
+                                    settingsSetBlankLoadedPresetNameByIndex(viewGetPresetNumberSelected());
                                     dispFunc(DISP_EVT_INIT_PATCH, true);
                                 }
                                 break;

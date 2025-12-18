@@ -104,6 +104,8 @@ graphics/textRenderer/TextRenderer.h
 graphics/textRenderer/TextRenderer.cpp
 graphics/shapeRenderer/ShapeRenderer.h
 graphics/shapeRenderer/ShapeRenderer.cpp
+graphics/oscilloscope.h
+graphics/oscilloscope.cpp
 
 sequencer/pattern_generator.h
 sequencer/pattern_generator.cpp
@@ -125,8 +127,6 @@ synth/oscillator.cpp
 synth/patch.h
 synth/voice.h
 synth/voice.cpp
-synth/voice2.h
-synth/voice2.cpp
 synth/synth.h  
 synth/synth.cpp
 

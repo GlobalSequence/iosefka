@@ -12,7 +12,8 @@
 typedef struct delay_inputs_t {
 
 	uint16_t amount; // should be 8 bit number
-	uint16_t length; // should be 8 bit number
+	// uint16_t length; // should be 8 bit number
+    uint16_t length; // should be 16 bit number
     // uint16_t rate;
 	uint16_t feedback;
 	uint16_t diffusion;
@@ -39,13 +40,12 @@ class Delay {
         void render() {
 
             // FOR THIS TO BE MODULAR, YOU HAVE TO HARD CODE IT SO THAT DELAY SIZE IS ALWAYS A POWER OF 2. THAT IS OKAY, BUT EDIT THE DELAY TO DO THAT.
-            int32_t time = writeAvg.getAverage(p.length << 19);
+            // int32_t time = writeAvg.getAverage(p.length << 19);
+            int32_t time = writeAvg.getAverage(p.length << 11);
             step_ = (time - last_time_) >> 7;
             current_time_ = last_time_;
             last_time_ = time;
             read_position_ = (index_write_ - size - 1) << 8;
-
-            // TEST_PRINT_ONE_NL(input_buf_[0] >> 1)
 
             for(int i = 0; i < block_size_; i++) {
                 current_time_ += step_;
@@ -54,7 +54,8 @@ class Delay {
 
 #ifdef DELAY_SIGNED
                 
-                // shift right once for mcp3201 extra bit
+                // shift right once for mcp3201 extra bit.
+                // TODO: try putting the shift in the DMA callback function, then remove it here
                 delay_buf_[index_write_ + i] = (input_buf_[i] >> 1) - k_sign_offset;
 
                 int32_t feedback_sample = S8S16MULSHIFT8(delay_buf_[read_index], p.feedback);
@@ -63,18 +64,6 @@ class Delay {
 
                 int32_t output_sample = S8S16MULSHIFT8(delay_buf_[read_index], p.amount) << 1;
                 buf_ptr_[i] = U12CLIPMAXMIN(output_sample + k_sign_offset);
-
-/*                 int32_t delayed = delay_buf_[read_index];  // Signed
-                int32_t feedback = S8S16MULSHIFT8(delayed, p.feedback);
-                int32_t input = (input_buf_[i] >> 1) - k_sign_offset;
-
-                int32_t mixed = input + feedback;
-
-                // Clamp to avoid overflow
-                delay_buf_[index_write_ + i] = S12CLIP(mixed);
-
-                int32_t output_sample = S8S16MULSHIFT8(delayed, p.amount) << 1;
-                buf_ptr_[i] = U12CLIPMAXMIN(output_sample + k_sign_offset); */
 
                 read_position_ += (1 << 8);
 

@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <new>
 #include "pico/stdlib.h"
-#include "voice.h"
+// #include "voice.h"
 
 #include "mod_matrix.h"
-#include "voice2.h"
+#include "voice.h"
 #include "delay.h"
 #include "cv.h"
 
@@ -16,6 +16,8 @@
 #include "../common/globals.h"
 #include "../common/test.h"
 
+#include "../graphics/oscilloscope.h"
+
 // ################################
 // STATIC DECLARATIONS
 // ################################
@@ -23,16 +25,16 @@
 volatile bool *render_trig;
 
 // Voice voice;
-alignas(Voice) static uint8_t voice_buffer[sizeof(Voice)];
-Voice *voice = nullptr;
+// alignas(Voice) static uint8_t voice_buffer[sizeof(Voice)];
+// Voice *voice = nullptr;
 
 ////
 
 alignas(ModMatrix) static uint8_t modmatrix_object_buffer[sizeof(ModMatrix)];
 ModMatrix *modmatrix = nullptr;
 
-alignas(Voice2) static uint8_t voice2_object_buffer[sizeof(Voice2)];
-Voice2 *voice2 = nullptr;
+alignas(Voice) static uint8_t voice_object_buffer[sizeof(Voice)];
+Voice *voice = nullptr;
 
 alignas(Delay<DELAY_BUF_SIZE>) static uint8_t delay_object_buffer[sizeof(Delay<DELAY_BUF_SIZE>)];
 Delay<DELAY_BUF_SIZE> *delay = nullptr;
@@ -66,7 +68,7 @@ void synthSetup(synth_parameters_t *patch, external_modulation_t *ext_mod, uint1
     
     // voice = new (voice_buffer) Voice(patch, buf_ptr_1, random_seed);
 
-    voice2 = new (voice2_object_buffer) Voice2(buf_ptr_1, random_seed);
+    voice = new (voice_object_buffer) Voice(buf_ptr_1, random_seed);
 
     delay = new (delay_object_buffer) Delay<DELAY_BUF_SIZE>(buf_ptr_2, adc_buf_ptr, AUDIO_BLOCK_SIZE);
 
@@ -75,7 +77,7 @@ void synthSetup(synth_parameters_t *patch, external_modulation_t *ext_mod, uint1
     modmatrix = new (modmatrix_object_buffer) ModMatrix(
         patch,
         ext_mod,
-        voice2->getParamPointer(),
+        voice->getParamPointer(),
         delay->getParamPointer(),
         cv->getParamPointer(),
         random_seed
@@ -98,7 +100,7 @@ bool synthUpdate() {
 
         modmatrix->process();
 
-        voice2->renderOscillators();
+        voice->renderOscillators();
 
         delay->setInputBufferPointer(audioGetAdcBufferPointer());
 
@@ -111,6 +113,8 @@ bool synthUpdate() {
         pwmUpdateLevels();
 
         gpioSetTwo();
+
+        oscilloscopeProcess(audioGetAdcBufferPointer(), voice->getSyncBuffer());
 
         return true;
 
@@ -130,12 +134,11 @@ void retrieveSynthNotes() {
     while(noteQueueAvailableInternal()) {
 
         note_data_t note = noteQueuePullInternal();
-        // TEST_PRINT_ONE_TAB(note.note)
-        // TEST_PRINT_TWO_NL(note.on, note.velocity)
 
         if(note.on) {
 
             modmatrix->triggerNoteOn(note.note, note.velocity, note.trigger);
+            voice->getBassNote(noteQueueGetBassNote());
 
         } else {
 

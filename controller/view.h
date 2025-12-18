@@ -156,6 +156,7 @@ typedef struct machine_state_t {
     uint8_t settings_row;
     uint8_t settings_mod_source;
     uint8_t current_user_param;
+    uint8_t* scope_div;
 
 } machine_state_t;
 
@@ -170,6 +171,9 @@ void viewSetPage(view_page_t page);
 void viewSetLayer(view_layer_t layer);
 void viewSetMode(view_mode_t mode);
 void viewSetMachineStateMode(view_mode_t mode);
+void viewResetMachineStateOnLoad();
+void viewSetScopeDivPtr(uint8_t* ptr);
+
 void viewSetKeyboardOctave(uint8_t octave);
 void viewSetSequencerWindow(bool increment);
 void viewSetSequencerWindowByValue(uint8_t value);
@@ -183,6 +187,7 @@ void viewSetCurrentUserParameter(uint8_t index);
 void viewSetEncoderTurnedWhileHeld();
 void viewSetPresetCharIndex(uint8_t index);
 void viewSetPresetCharSelected(uint8_t index);
+void viewSetScopeDiv(uint8_t value);
 
 view_change_t viewGetLastViewChange();
 view_page_t viewGetPage();
@@ -206,11 +211,14 @@ bool viewGetEncoderTurnedWhileHeld();
 uint8_t viewGetPresetCharIndex();
 uint8_t viewGetPresetCharSelected();
 bool viewPresetSelectedIsPresetLoaded();
+uint8_t viewGetScopeDiv(); 
 
 void viewSetLatchSingle(uint8_t index);
 void viewResetLatchSingle(uint8_t index);
 void viewSetLatchAll();
 bool viewGetLatchSingle(uint8_t index);
+
+bool viewWillPageChangeOnViewChange(view_change_t event);
 
 #ifdef __cplusplus
 }

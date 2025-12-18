@@ -120,6 +120,8 @@ machine_settings_t settingsGetInitMachineSettings();
 
 void settingsSetLoadedPresetNameByIndex(preset_name_t name, uint8_t index);
 
+void settingsSetBlankLoadedPresetNameByIndex(uint8_t index);
+
 void settingsSetPresetNameChar(char c, uint8_t index, uint8_t preset); 
 
 preset_name_t settingsGetLoadedPresetNameByIndex(uint8_t index);

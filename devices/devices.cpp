@@ -419,6 +419,12 @@ void devicesDisplayDrawBitmap(uint8_t x, uint8_t y, uint8_t x_length, uint8_t y_
     display.addBitmapImage(x, y, x_length, y_height, image, write_mode);
 }
 
+void devicesDisplayDrawLine(uint8_t x, uint8_t y, uint8_t l, uint8_t w, pico_ssd1306::WriteMode write_mode) 
+{
+    pico_ssd1306::drawLine(&display, x, y, l, w, write_mode);
+}
+
+
 void devicesDisplaySetPixel(uint8_t x, uint8_t y, pico_ssd1306::WriteMode write_mode)
 {
     display.setPixel(x, y, write_mode);

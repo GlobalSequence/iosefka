@@ -46,7 +46,9 @@ void startupRun() {
         synth_state, 
         parameterGetRenderedPatchPointer(), 
         &gpio_exp_led_bits, 
-        &gpio_exp_transmit_leds
+        &gpio_exp_transmit_leds,
+        audioGetScopeBufPtr(),
+        audioGetScopeBufferHalfPtr()
     );
 
     if(versionWriteVersionToCleanStorage() || checkForRestoreMemoryRequest()) {
@@ -96,7 +98,7 @@ void startupRun() {
     
     patternGenSetup(&synth_state->seq, &synth_state->pattern_gen, seed);
 
-    noteQueueSetup(/* &temp_legato */&synth_state->patch.shared.legato);
+    noteQueueSetup(/* &temp_legato */&synth_state->patch.shared.legato, &synth_state->patch.shared.osc_duo);
 
     synthSetup(
         parameterGetRenderedPatchPointer(),

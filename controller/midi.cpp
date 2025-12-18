@@ -106,6 +106,8 @@ static synth_state_t *synth;
 RingBuffer<uint8_t, MIDI_TX_BUFFER_SIZE> midiTxBuffer;
 uint8_t last_status_byte;
 
+// convert incoming 7 bit values to 8 bits, adding 1 to make shifted values of 127 into 255
+uint8_t shift7BitValueTo8Bits(uint8_t val);
 void midiProcessEvent(midi_event_t m);
 void ccParser(uint8_t cc_number_, uint8_t value);
 
@@ -121,11 +123,18 @@ static uint16_t midiCount;
 // PRIVATE FUNCTIONS
 // ################################
 
+uint8_t shift7BitValueTo8Bits(uint8_t val) {
+    val <<= 1;
+    if(val == 254) val = 255;
+    return val;
+}
+
 void ccParser(uint8_t cc_number, uint8_t value) {
 
     // scale 7 bit MIDI values to 8 bit internal vals
-    value <<= 1;
-    if(value == 254) value = 255;
+    // value <<= 1;
+    // if(value == 254) value = 255;
+    shift7BitValueTo8Bits(value);
 
     mod_destinations_t dst;
 
@@ -409,7 +418,7 @@ void midiProcessEvent(midi_event_t m) {
     switch (m.type) {
         case MIDI_NOTE_ON:
             if (m.val2){
-
+                m.val2 = shift7BitValueTo8Bits(m.val2); 
                 noteQueueSubmit(m.val1, m.val2, NOTE_ON);
 
             } else {
@@ -507,10 +516,6 @@ void midiExtClockCountdown() {
         if(now - midi_last_tick_time >= midi_ext_clk_timeout) {
 
             synth->special.ext_clock_active = false;
-
-            // uint16_t bpm = synth->seq.getBpm();
-
-            // synth->seq.setBpm(bpm);
     
         }
 

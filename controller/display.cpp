@@ -15,6 +15,8 @@
 #include "../synth/patch.h"
 #include "../common/test.h"
 
+#include "../graphics/oscilloscope.h"
+
 using namespace pico_ssd1306;
 
 // ################################
@@ -32,6 +34,14 @@ typedef enum alt_screen_t {
 static alt_screen_t current_alt_screen = ALT_SCRN_NONE;
 static displayable_events_t alt_screen_event = DISP_EVT_NONE;
 
+static uint16_t* scope_buf_ptr;
+static bool* scope_double_buf_indicator;
+static bool last_scope_double_buf_indicator;
+static bool scope_active;
+static uint8_t scope_reset_index;
+static bool scope_reset_triggered = false;
+static uint8_t scope_last_sample;
+
 // ################################
 // SETTINGS DEFINES
 // ################################
@@ -40,6 +50,9 @@ static displayable_events_t alt_screen_event = DISP_EVT_NONE;
 #define SCREEN_HEIGHT 64
 // #define NUMBER_OF_VISIBLE_SETTINGS_ROWS 8
 #define NUMBER_OF_VISIBLE_SETTINGS_ROWS 6
+
+const uint8_t k_splash_name_y = 48;
+const uint8_t k_splash_version_y = 56;
 
 // const uint8_t k_settings_row_y[NUMBER_OF_VISIBLE_SETTINGS_ROWS] = {0, 8, 16, 24, 32, 40, 48, 54};
 const uint8_t k_settings_row_x = 8;
@@ -397,6 +410,7 @@ void displayOffTimer(bool reset);
 // void draw8x8Rectangle(uint8_t x, uint8_t y);
 void drawChars(const char* text, uint8_t x, uint8_t y, WriteMode write_mode);
 void drawRectangle(uint8_t x, uint8_t y, uint8_t x_len, uint8_t y_len, bool fill, WriteMode mode);
+void drawLineBresenham(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
 uint8_t getSeqParamValue(uint8_t index, uint8_t step, bool p_lock);
 disp_encoder_mode_t getEncoderParamValue(view_mode_t mode);
 bool isModLayer(view_layer_t layer);
@@ -406,6 +420,8 @@ uint8_t setValueXCoordIndexByTens(int value);
 bool isUserParamUsable(mod_destinations_t dst);
 void altScreenWholeDisplay();
 void altScreenBottomDisplay(view_layer_t layer, view_page_t page); 
+
+void showScope();
 
 // ################################
 // PRIVATE FUNCTION DEFINITIONS
@@ -485,6 +501,39 @@ inline void drawLine(uint8_t x, uint8_t y, uint8_t l, uint8_t h, WriteMode mode)
 
     }
 
+}
+
+inline void drawLineBresenham(
+    int16_t x0, int16_t y0,
+    int16_t x1, int16_t y1
+) {
+    int16_t dx = (x1 > x0) ? (x1 - x0) : (x0 - x1);
+    int16_t sx = (x0 < x1) ? 1 : -1;
+
+    int16_t dy = (y1 > y0) ? (y0 - y1) : (y1 - y0); // negative
+    int16_t sy = (y0 < y1) ? 1 : -1;
+
+    int16_t err = dx + dy; // error term
+
+    while (1) {
+        devicesDisplaySetPixel(x0, y0, WriteMode::ADD);
+
+        if (x0 == x1 && y0 == y1) {
+            break;
+        }
+
+        int16_t e2 = err << 1;
+
+        if (e2 >= dy) {
+            err += dy;
+            x0 += sx;
+        }
+
+        if (e2 <= dx) {
+            err += dx;
+            y0 += sy;
+        }
+    }
 }
 
 inline uint8_t getSeqParamValue(uint8_t index, uint8_t step, bool p_lock) {
@@ -1040,7 +1089,7 @@ void displayPageSettings() {
 
                 case SET_ROW_OSC_DUO:
                     str[i] = s(STRING_OSC_DUO);
-                    // checkbox[i] = false;
+                    checkbox[i] = synth->patch.shared.osc_duo;
                     break;
 
                 case SET_ROW_VCA_VELOCITY:
@@ -1791,11 +1840,84 @@ void altScreenBottomDisplay(view_layer_t layer, view_page_t page) {
 
 }
 
+void showScope() {
+
+    uint8_t* scope_ptr = oscilloscopeGetActiveBuffer();
+
+    // uint8_t last_scope_sample;
+
+    for(int i = 0; i < SCREEN_WIDTH; i++) {
+
+        devicesDisplaySetPixel(i, scope_ptr[i], WriteMode::ADD);
+
+        // uint8_t y_pos = scope_ptr[i];
+
+        // if(i > 0) {
+        //     // devicesDisplayDrawLine(i - 1, last_scope_sample, i, y_pos, WriteMode::ADD);
+        //     drawLineBresenham(i - 1, last_scope_sample, i, y_pos);
+            
+        // }
+
+        // last_scope_sample = y_pos;
+
+    }
+
+/*     bool indicator = *scope_double_buf_indicator;
+    uint8_t start_index = indicator? 0x00 : 0x80;
+
+    for(int i = 0; i < SCREEN_WIDTH; i++) {
+        uint8_t buf_index = start_index + i;
+        uint8_t y = scope_buf_ptr[buf_index] >> 7;
+        
+        devicesDisplaySetPixel(i, y, WriteMode::ADD);
+    } */
+
+/*     //this works but sadly not as good as I'd like it to
+    uint8_t buffer[SCREEN_WIDTH];
+    uint8_t scope_index = 0;
+
+    for(int i = 0; i < SCREEN_WIDTH; i++) {
+        uint8_t buf_index = start_index + i;
+        uint8_t sample = scope_buf_ptr[buf_index] >> 7;
+
+        if(sample > 32 && scope_last_sample <= 32) {
+            if(!scope_reset_triggered) {
+                scope_reset_triggered = true;
+                scope_reset_index = i;
+                // scope_index = 0;
+            }
+        }
+
+        if(scope_reset_triggered) {
+            buffer[scope_index] = sample;
+            scope_index++;
+        } else {
+            buffer[i] = sample;
+        }
+
+    }
+
+    scope_reset_triggered = false;
+
+    for(int i = 0; i < SCREEN_WIDTH; i++) {
+
+        devicesDisplaySetPixel(i, buffer[i], WriteMode::ADD);
+
+        if(scope_index) {
+
+            if(i > scope_index) return;
+
+        }
+
+    } */
+
+}
+
 // ################################
 // PUBLIC FUNCTION DEFINITIONS
 // ################################
 
-void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, uint8_t *led, bool *led_tx) {
+void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, uint8_t *led, bool *led_tx, uint16_t* scope_buf, bool* scope_buf_indicator) {
 
     // disp = display;
     synth = synth_state;
@@ -1803,6 +1925,9 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
 
     led_bits = led;
     led_transmit = led_tx;
+
+    scope_buf_ptr = scope_buf;
+    scope_double_buf_indicator = scope_buf_indicator;
 
     uint8_t *param_ptr_s1[k_num_disp_parameters] = {
         &patch->osc[0].scale, 
@@ -1956,11 +2081,12 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
     settings_scroll_bar_height    = (uint8_t)scroll_bar_height_float + 1;
     settings_scroll_bar_increment = (uint8_t)scroll_bar_increment_float;
 
-    // devicesDisplayClear();
+    devicesDisplayClear();
 
-    // devicesDisplayDrawBitmap(0, 0, 128, 64, (uint8_t*)graphicsGetLogo(), WriteMode::ADD);
+    devicesDisplayDrawBitmap(0, 0, 128, 64, (uint8_t*)graphicsGetLogo(), WriteMode::ADD);
+    // drawChars("Iosefka")
 
-    // devicesDisplayDisplay();
+    devicesDisplayDisplay();
 
     // sleep_ms(4000);
 
@@ -2003,8 +2129,8 @@ void displayDisplay() {
     bool p_lock = pLockIsEnabled();
     bool showing_encoder_mode = encoder_mode_show || display_hang_timer_active;
 
-
-    if(current_alt_screen == ALT_SCRN_WHOLE) {
+    showScope();
+/*     if(current_alt_screen == ALT_SCRN_WHOLE) {
 
         altScreenWholeDisplay();
 
@@ -2055,7 +2181,7 @@ void displayDisplay() {
         }
 
     }
-
+ */
     displayUpdateLeds(layer, page);
 
 
@@ -2158,5 +2284,12 @@ void displayShowAltScreen(displayable_events_t evt, bool timer) {
             break;
 
     }
+
+}
+
+bool displayScopeActive() { 
+    
+    // return scope_active;
+    return true;
 
 }
