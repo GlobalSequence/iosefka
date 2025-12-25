@@ -17,6 +17,9 @@
 
 #include "../graphics/oscilloscope.h"
 
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+
 using namespace pico_ssd1306;
 
 // ################################
@@ -32,22 +35,20 @@ typedef enum alt_screen_t {
 } alt_screen_t;
 
 static alt_screen_t current_alt_screen = ALT_SCRN_NONE;
+static alt_screen_t resume_alt_screen = ALT_SCRN_NONE;
 static displayable_events_t alt_screen_event = DISP_EVT_NONE;
+static displayable_events_t resume_alt_screen_event = DISP_EVT_NONE;
+static displayable_events_t last_alt_screen_event = DISP_EVT_NONE;
+bool ignore_timer_event = false;
 
-static uint16_t* scope_buf_ptr;
-static bool* scope_double_buf_indicator;
-static bool last_scope_double_buf_indicator;
-static bool scope_active;
-static uint8_t scope_reset_index;
-static bool scope_reset_triggered = false;
-static uint8_t scope_last_sample;
+const uint8_t k_scope_div_x_coord = 112;
+const uint8_t k_scope_div_x_times_coord = 120;
 
 // ################################
 // SETTINGS DEFINES
 // ################################
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
+
 // #define NUMBER_OF_VISIBLE_SETTINGS_ROWS 8
 #define NUMBER_OF_VISIBLE_SETTINGS_ROWS 6
 
@@ -450,8 +451,12 @@ void displayHangTimerCheck() {
             display_trigger = true;
             disableAdditionalTimerFlags();
 
-            alt_screen_event = DISP_EVT_NONE;
-            current_alt_screen = ALT_SCRN_NONE;
+            // we declare these here instead of calling displayShowAltScreen so we don't set off the timer again
+            // alt_screen_event = DISP_EVT_NONE;
+            // current_alt_screen = ALT_SCRN_NONE;
+            alt_screen_event = resume_alt_screen_event;
+            current_alt_screen = resume_alt_screen;
+
 
         }
 
@@ -1121,6 +1126,10 @@ void displayPageSettings() {
                     str[i] = s(STRING_INIT_PATCH);
                     break;
 
+                case SET_ROW_SCOPE:
+                    str[i] = s(STRING_SCOPE);
+                    break;
+
                 case NUM_SET_ROWS:
                 default:
                     str[i] = "";
@@ -1186,8 +1195,7 @@ void displayPageSettings() {
         uint8_t scroll_pos = row_ref - set_row_top;
         uint8_t y_pos = k_settings_row_y[scroll_pos];
 
-        // drawChars(graphicsGetDecString(row_ref), 0, k_settings_row_y[scroll_pos], WriteMode::ADD);
-        devicesDisplayDrawBitmap(0, /* k_settings_row_y[scroll_pos] */y_pos, k_char_height, k_char_width, graphicsGetStepIcon(STEP_ICON_INACTIVE), WriteMode::ADD);
+        devicesDisplayDrawBitmap(0, y_pos, k_char_height, k_char_width, graphicsGetStepIcon(STEP_ICON_INACTIVE), WriteMode::ADD);
 
         uint8_t scroll_bar_y_top = (settings_scroll_bar_increment * set_row_top) + 2; // the "+ 2" is a manual adjustment for visual purposes
 
@@ -1813,6 +1821,9 @@ void altScreenWholeDisplay() {
         case DISP_EVT_LOAD_COMPLETE:
         
             break;
+        case DISP_EVT_SCOPE:
+            showScope();
+            break;
         default:
             break;
 
@@ -1844,72 +1855,35 @@ void showScope() {
 
     uint8_t* scope_ptr = oscilloscopeGetActiveBuffer();
 
+    if(viewGetMode() == MODE_SCOPE_DIV) {
+
+        drawRectangle(k_scope_div_x_coord - 1, 0, 17, k_char_height + 1, true, WriteMode::ADD);
+
+    }    
+
+    drawChars(graphicsGetScopeDiv(oscilloscopeGetTimeDivCtrl()), k_scope_div_x_coord, 1, WriteMode::INVERT);
+
     // uint8_t last_scope_sample;
+    uint8_t j = SCREEN_WIDTH;
 
     for(int i = 0; i < SCREEN_WIDTH; i++) {
 
-        devicesDisplaySetPixel(i, scope_ptr[i], WriteMode::ADD);
+        devicesDisplaySetPixel(i, scope_ptr[--j], WriteMode::ADD);
 
-        // uint8_t y_pos = scope_ptr[i];
+        // unfortunately, drawing straight lines between each scope point is too processor intensive :/
+/*         
+        uint8_t y_pos = scope_ptr[i];
 
-        // if(i > 0) {
-        //     // devicesDisplayDrawLine(i - 1, last_scope_sample, i, y_pos, WriteMode::ADD);
-        //     drawLineBresenham(i - 1, last_scope_sample, i, y_pos);
+        if(i > 0) {
+            // devicesDisplayDrawLine(i - 1, last_scope_sample, i, y_pos, WriteMode::ADD);
+            drawLineBresenham(i - 1, last_scope_sample, i, y_pos);
             
-        // }
+        }
 
-        // last_scope_sample = y_pos;
+        last_scope_sample = y_pos; 
+*/
 
     }
-
-/*     bool indicator = *scope_double_buf_indicator;
-    uint8_t start_index = indicator? 0x00 : 0x80;
-
-    for(int i = 0; i < SCREEN_WIDTH; i++) {
-        uint8_t buf_index = start_index + i;
-        uint8_t y = scope_buf_ptr[buf_index] >> 7;
-        
-        devicesDisplaySetPixel(i, y, WriteMode::ADD);
-    } */
-
-/*     //this works but sadly not as good as I'd like it to
-    uint8_t buffer[SCREEN_WIDTH];
-    uint8_t scope_index = 0;
-
-    for(int i = 0; i < SCREEN_WIDTH; i++) {
-        uint8_t buf_index = start_index + i;
-        uint8_t sample = scope_buf_ptr[buf_index] >> 7;
-
-        if(sample > 32 && scope_last_sample <= 32) {
-            if(!scope_reset_triggered) {
-                scope_reset_triggered = true;
-                scope_reset_index = i;
-                // scope_index = 0;
-            }
-        }
-
-        if(scope_reset_triggered) {
-            buffer[scope_index] = sample;
-            scope_index++;
-        } else {
-            buffer[i] = sample;
-        }
-
-    }
-
-    scope_reset_triggered = false;
-
-    for(int i = 0; i < SCREEN_WIDTH; i++) {
-
-        devicesDisplaySetPixel(i, buffer[i], WriteMode::ADD);
-
-        if(scope_index) {
-
-            if(i > scope_index) return;
-
-        }
-
-    } */
 
 }
 
@@ -1917,7 +1891,7 @@ void showScope() {
 // PUBLIC FUNCTION DEFINITIONS
 // ################################
 
-void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, uint8_t *led, bool *led_tx, uint16_t* scope_buf, bool* scope_buf_indicator) {
+void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, uint8_t *led, bool *led_tx) {
 
     // disp = display;
     synth = synth_state;
@@ -1925,9 +1899,6 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
 
     led_bits = led;
     led_transmit = led_tx;
-
-    scope_buf_ptr = scope_buf;
-    scope_double_buf_indicator = scope_buf_indicator;
 
     uint8_t *param_ptr_s1[k_num_disp_parameters] = {
         &patch->osc[0].scale, 
@@ -2129,8 +2100,8 @@ void displayDisplay() {
     bool p_lock = pLockIsEnabled();
     bool showing_encoder_mode = encoder_mode_show || display_hang_timer_active;
 
-    showScope();
-/*     if(current_alt_screen == ALT_SCRN_WHOLE) {
+    // showScope();
+    if(current_alt_screen == ALT_SCRN_WHOLE) {
 
         altScreenWholeDisplay();
 
@@ -2181,7 +2152,7 @@ void displayDisplay() {
         }
 
     }
- */
+
     displayUpdateLeds(layer, page);
 
 
@@ -2248,13 +2219,12 @@ void displayShowUpdatingPresets(uint8_t index) {
 
 }
 
+// call this to display an alt screen. 
+// if timer is called, the event is set to 'ALT_SCRN_NONE' automatically when the timer is up
+// otherwise it must be set to 'ALT_SCN_NONE' manually to reset
 void displayShowAltScreen(displayable_events_t evt, bool timer) {
 
     alt_screen_event = evt;
-
-    if(timer) {
-        displayHangTimerSet();
-    }
 
     switch (evt)
     {
@@ -2267,6 +2237,7 @@ void displayShowAltScreen(displayable_events_t evt, bool timer) {
         case DISP_EVT_LOAD_PREPARE:
         case DISP_EVT_LOAD_PROGRESS:
         case DISP_EVT_LOAD_COMPLETE:
+        case DISP_EVT_SCOPE:
             current_alt_screen = ALT_SCRN_WHOLE;
             break;
 
@@ -2285,11 +2256,40 @@ void displayShowAltScreen(displayable_events_t evt, bool timer) {
 
     }
 
+    if(timer) {
+        displayHangTimerSet();
+    } else {
+        // this one ensures that you return to the correct screen when the timer ends
+        // for example, if the scope is enabled and a timer event happens, you'll return to scope
+        resume_alt_screen_event = evt;
+        resume_alt_screen = current_alt_screen;
+    }
+
 }
 
-bool displayScopeActive() { 
-    
-    // return scope_active;
-    return true;
+bool displayInternalEventTrigger() {
+
+    displayable_events_t evt = DISP_EVT_NONE;
+    bool timer = false;
+    bool trigger = false;
+
+    if(viewGetScopeOn()) {
+
+        evt = DISP_EVT_SCOPE;
+        timer = false;
+        trigger = true;
+
+    } 
+
+    if(evt != last_alt_screen_event) {
+
+        last_alt_screen_event = evt;
+
+        displayShowAltScreen(evt, timer);
+
+    }
+
+
+    return trigger;
 
 }

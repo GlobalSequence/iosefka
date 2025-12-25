@@ -16,7 +16,7 @@ extern "C"
 {
 #endif
 
-void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, uint8_t *led, bool *led_tx, uint16_t* scope_buf, bool* scope_buf_indicator);
+void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, uint8_t *led, bool *led_tx);
 void displayTrigger();
 void displayDisplay();
 void displayShowEncoderMode();
@@ -28,7 +28,8 @@ void displayShowUpdatingPresets(uint8_t index);
 
 void displayShowAltScreen(displayable_events_t evt, bool timer);
 
-bool displayScopeActive();
+// bool displayScopeActive();
+bool displayInternalEventTrigger();
 
 #ifdef __cplusplus
 }

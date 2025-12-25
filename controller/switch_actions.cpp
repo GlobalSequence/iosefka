@@ -71,21 +71,21 @@ void pageKeyboard(switch_id_t sw, bool pressed, bool shift) {
 
     }
 
-    // oscilloscope test, temporary
-    switch (sw) {
+    // // oscilloscope test, temporary
+    // switch (sw) {
 
-        case SW_T0: oscilloscopeSetModulo(0); break;
-        case SW_T1: oscilloscopeSetModulo(1); break;
-        case SW_T2: oscilloscopeSetModulo(2); break;
-        case SW_T3: oscilloscopeSetModulo(3); break;
-        case SW_T4: oscilloscopeSetModulo(4); break;
-        case SW_B4: oscilloscopeSetTimeDiv(0); break;
-        case SW_B5: oscilloscopeSetTimeDiv(1); break;
-        case SW_B6: oscilloscopeSetTimeDiv(2); break;
-        case SW_B7: oscilloscopeSetTimeDiv(3); break;
-        default: break;
+    //     case SW_T0: oscilloscopeSetModulo(0); break;
+    //     case SW_T1: oscilloscopeSetModulo(1); break;
+    //     case SW_T2: oscilloscopeSetModulo(2); break;
+    //     case SW_T3: oscilloscopeSetModulo(3); break;
+    //     case SW_T4: oscilloscopeSetModulo(4); break;
+    //     case SW_B4: oscilloscopeSetTimeDiv(0); break;
+    //     case SW_B5: oscilloscopeSetTimeDiv(1); break;
+    //     case SW_B6: oscilloscopeSetTimeDiv(2); break;
+    //     case SW_B7: oscilloscopeSetTimeDiv(3); break;
+    //     default: break;
 
-    }
+    // }
 
     uint8_t note, velocity;
 
@@ -327,7 +327,7 @@ void setStorageState(storage_type_t type, bool shift) {
         if(shift) {
 
             storageSetState(STORAGE_STATE_ACTIVE);
-            viewSetPresetNumberLoaded(viewGetPresetNumberSelected());
+            // viewSetPresetNumberLoaded(viewGetPresetNumberSelected());
             if(current_type == STORAGE_TYPE_LOAD) viewResetMachineStateOnLoad();
 
         }
@@ -702,8 +702,11 @@ void switchActionsTakeInput(
 
         case SW_SEQ_VIEW:
 
-            // if(pressed)shift? setView(VIEW_CHANGE_SETTINGS) : setView(VIEW_CHANGE_SEQ_SEQ);
+            // turn off the scope if it's on, no need to check
+            viewSetScopeOn(false);
+
             handleViewSwitch(VIEW_SWITCH_SEQ, pressed);
+            
             if(pressed) {
 
                 if(checkViewSwitchesMinusCurrent(VIEW_SWITCH_SEQ)) {
@@ -736,14 +739,6 @@ void switchActionsTakeInput(
 
         case SW_SHIFT:
 
-            // if(pressed && viewGetMode() == MODE_USER_PARAM_DST) viewSetMachineStateMode(MODE_USER_PARAM_SEL);
-            // else if(!pressed && viewGetMode() == MODE_USER_PARAM_SEL) viewSetMachineStateMode(MODE_USER_PARAM_DST);
-            // if(layer == LAYER_USER_PARAM) {
-
-            //     if(pressed) viewSetMode(MODE_USER_PARAM_SEL);
-            //     else viewSetMachineStateMode(MODE_USER_PARAM_DST);
-
-            // } else 
             switch(mode) {
 
                 // selecting the user parameter
@@ -763,6 +758,8 @@ void switchActionsTakeInput(
                 case MODE_SET_PRESET_CHAR_INDEX:
                     if(!pressed) viewSetMachineStateMode(MODE_SET_PRESET_CHAR_SEL);
                     break;
+
+                default: break;
 
             }
 
@@ -852,13 +849,18 @@ void switchActionsTakeInput(
                             case SET_ROW_OSC_DUO: synth->patch.shared.osc_duo = synth->patch.shared.osc_duo? 0: 1; break; // TODO: IMPLEMENT OSC DUO
                             case SET_ROW_VCA_VELOCITY: toggleSetting(&synth->patch.vca.velocity_on); break;
                             case SET_ROW_POT_LATCH: toggleSetting(&synth->settings.latch); break;
+                            case SET_ROW_SCOPE: 
+                                viewSetScopeOn(true);
+                                viewSetMachineStateMode(MODE_SCOPE_DIV);
+                                viewSetPage(PAGE_KEYS);
+                                break;
                             case SET_ROW_INIT_PATCH: 
                                 if(shift) {
                                     settingsSetInitPatch();
                                     settingsSetBlankLoadedPresetNameByIndex(viewGetPresetNumberSelected());
                                     dispFunc(DISP_EVT_INIT_PATCH, true);
                                 }
-                                break;
+                                break; 
 
                             default: break;
                             // case SET_ROW_: viewSetMode(MODE_); break;

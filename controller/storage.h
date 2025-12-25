@@ -36,12 +36,19 @@ typedef enum storage_state_t {
 
 } storage_state_t;
 
+struct storageViewCallbacks {
+
+    void (*presetNumber)(uint);
+
+};
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-void storageSetup(synth_state_t synth_state, saveFunc, loadFunc);
+// void storageSetup(synth_state_t synth_state, saveFunc, loadFunc);
+void storageSetup(storageViewCallbacks viewCallbacks);
 void storageSetType(storage_type_t type);
 void storageSetState(storage_state_t state);
 void storageSetBlockIndex(uint8_t index);
@@ -57,6 +64,7 @@ void storageLoad(uint block_num); // loads specified preset and machine settings
 
 void storageSavePreset(synth_storable_t s, uint block_num);
 synth_storable_t storageLoadPreset(uint block_num);
+void storageLoadPresetInternal(uint block_num);
 
 void storageSaveSettings(machine_settings_t s);
 machine_settings_t storageLoadSettings();

@@ -349,6 +349,13 @@ void viewSetPresetNumberLoaded(uint8_t preset) {
 
 }
 
+void viewSetPresetNumberSelectedAndLoaded(uint preset) {
+
+    viewSetPresetNumberSelected(preset);
+    viewSetPresetNumberLoaded(preset);
+
+}
+
 void viewReadySubLayerPLock(bool set) {
 
     sub_layer_p_lock_ready = set;
@@ -429,6 +436,12 @@ void viewSetPresetCharIndex(uint8_t index) {
 void viewSetPresetCharSelected(uint8_t index) {
 
     machine_state.preset_char_selected = index;
+
+}
+
+void viewSetScopeOn(bool on) {
+
+    machine_state.scope_on = on;
 
 }
 
@@ -523,3 +536,5 @@ uint8_t viewGetPresetCharIndex() { return machine_state.preset_char_index; }
 uint8_t viewGetPresetCharSelected() { return machine_state.preset_char_selected; }
 
 bool viewPresetSelectedIsPresetLoaded() { return machine_state.preset_number_selected == machine_state.preset_number_loaded; }
+
+bool viewGetScopeOn() { return machine_state.scope_on; }

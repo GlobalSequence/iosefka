@@ -5,6 +5,7 @@
 #include "../controller/view.h"
 #include "../common/test.h"
 #include "../graphics/graphics.h"
+#include "../graphics/oscilloscope.h"
 
 #define MOD_ACCEL 4
 
@@ -38,7 +39,7 @@ const mode_constants_t rules[NUM_VIEW_MODES] = {
     { MODE_MIDI_PITCHBEND_DEPTH, 0, MIDI_PITCH_BEND_DEPTH_MAX - 1, false, 1},
     { MODE_MIDI_BREATH_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
     { MODE_MIDI_NOTE_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
-    { MODE_SET_SCROLL, 0, NUM_SET_ROWS - 1, false, 1},
+    { MODE_SET_SCROLL, 0, NUM_SET_ROWS - 1, false, NUM_SET_ROWS - 1},
     { MODE_SET_MOD_SRC_SEL, 0, NUM_SET_MOD_SRC - 1, true, 1},
     { MODE_SET_MOD_DST_SEL, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
     { MODE_SET_PRESET_CHAR_INDEX, 0, PRESET_NAME_LENGTH - 1, true, 1},    
@@ -46,6 +47,8 @@ const mode_constants_t rules[NUM_VIEW_MODES] = {
     { MODE_USER_PARAM_SEL, 0, NUMBER_OF_POTENTIOMETERS - 1, true, 1},
     { MODE_USER_PARAM_DST, 0, NUM_MOD_DESTINATIONS - 1, true, MOD_ACCEL},
     { MODE_SEQ_WINDOW_SEL, 0, NUMBER_OF_SEQUENCER_WINDOWS - 1, true, 1},
+    { MODE_SCOPE_DIV, 0, NUMBER_OF_SCOPE_DIVS - 1, false, 1},
+
 };
 
 static synth_state_t *synth;
@@ -71,19 +74,6 @@ mod_destinations_t getModDst(mod_sources_t src) {
 }
 
 mod_sources_t getSettingsModSource() {
-
-    // uint8_t a = viewGetSettingsModSource();
-
-    // switch(a) {
-
-    //     case SET_MOD_SRC_MOD_WHEEL: return MOD_SRC_MOD_WHEEL; break;
-    //     case SET_MOD_SRC_AFTERTOUCH: return MOD_SRC_AFTERTOUCH; break;
-    //     // case SET_MOD_SRC_NOTE: return MOD_SRC_NOTE; break;
-    //     // case SET_MOD_SRC_BR_CTRL: return MOD_SRC_BR_CTRL; break;
-    //     default: return MOD_SRC_VELOCITY; break;
-    // }
-
-    // return MOD_SRC_VELOCITY;
 
     return (mod_sources_t) viewGetModSourceFromSettings();
 
@@ -136,6 +126,8 @@ int16_t getCount(view_mode_t mode) {
         case MODE_SET_PRESET_CHAR_INDEX: return viewGetPresetCharIndex();
 
         case MODE_SET_PRESET_CHAR_SEL: return viewGetPresetCharSelected();
+
+        case MODE_SCOPE_DIV: return oscilloscopeGetTimeDivCtrl();
 
         default:
             break;
@@ -321,12 +313,17 @@ void encoderMapAssignValue(int8_t value, bool accel) {
 
         case MODE_SET_PRESET_CHAR_SEL:
 
-            // viewSetPresetCharSelected(count_value);
             if(viewPresetSelectedIsPresetLoaded()) {
                 
                 settingsSetPresetNameChar((char)count_value, viewGetPresetCharIndex(), viewGetPresetNumberLoaded());
             
             }
+
+            break;
+
+        case MODE_SCOPE_DIV:
+
+            oscilloscopeSetTimeDivCtrl(count_value);
 
             break;
 

@@ -56,6 +56,7 @@ typedef enum settings_string_t {
     STRING_VCA_VELOCITY,
     STRING_MOD_SOURCE,
     STRING_INIT_PATCH,
+    STRING_SCOPE,
 
     NUM_SETTINGS_STRINGS
 
@@ -142,9 +143,11 @@ const char* graphicsGetDoubleDash(uint8_t x);
 const char* graphicsGetCharFromID(uint8_t index);
 // const char* graphicsGetCharStringFromPtr(uint8_t* ptr, size_t size);
 const char* graphicsBuildCharString(const uint8_t* ids, size_t count, char* outBuffer);
+const char* graphicsGetScopeDiv(uint8_t value);
 
 const char* graphicsGetParamHeader(view_layer_t l, uint8_t index);
 unsigned char* graphicsGetStepIcon(graphic_step_icon_t i);
+unsigned char* graphicsGetSettingsIcon(bool global);
 unsigned char* graphicsGetPlayIcon();
 const char* graphicsGetModDst(mod_destinations_t dst);
 const char* graphicsGetUserParamString(mod_destinations_t dst);

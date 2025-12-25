@@ -11,9 +11,6 @@ volatile bool render_trigger = false;
 uint16_t dac_buf[DAC_OUTPUT_BUF_SIZE]__attribute__((aligned(DAC_OUTPUT_BUF_SIZE * 2)));
 uint16_t adc_buf[ADC_INPUT_BUF_SIZE]__attribute__((aligned(ADC_INPUT_BUF_SIZE * 2)));
 
-// scope buffer
-uint16_t scope_buf[SCOPE_BUF_SIZE]__attribute__((aligned(SCOPE_BUF_SIZE * 2)));
-
 uint16_t *adc_double_buf_ptr;
 
 uint16_t audio_buf_1[AUDIO_BLOCK_SIZE]__attribute__((aligned(AUDIO_BLOCK_SIZE * 2)));
@@ -30,11 +27,6 @@ static uint8_t counter_adc_buf;
 static uint16_t input_dummy;
 
 bool transmitting_buffer_two;
-// bool scope_buffer_two;
-static uint8_t scope_div = 4;
-static int16_t last_scope_sample;
-static uint8_t scope_counter;
-static bool scope_buffer_half;
 
 void audioSetup(uint8_t dac_dma_channel, uint8_t adc_dma_channel, uint8_t int_channel, uint8_t irq_number) {
 
@@ -95,19 +87,9 @@ void audioIrqHandler() {
 
         if(counter & 0x1) {
 
-            // uint8_t c = counter_adc_buf;
-            // int16_t sample_compare = c - scope_div;
-            // if(sample_compare <= 0) last_scope_sample -= 0xFF;
-            // if(sample_compare >= last_scope_sample) {
-            //     last_scope_sample = c;
-            //     scope_buf[scope_counter] = adc_buf[c];
-            //     scope_counter++;
-            //     scope_buffer_half = scope_counter >> 7;
-            // }
+            // vestiges of when the oscilloscope lived here
 
         } else { 
-
-            // adc_buf_ptr = &adc_buf[counter_adc_buf];
 
             counter_adc_buf++;
 
@@ -150,25 +132,6 @@ void audioFillOutputBuffer() {
     }
     
 }
-
-uint16_t* audioGetScopeBufPtr() {
-
-    return scope_buf;
-
-}
-
-uint8_t* audioGetScopeDivPointer() {
-
-    return &scope_div;
-
-}
-
-bool* audioGetScopeBufferHalfPtr() {
-
-    return &scope_buffer_half;
-
-}
-
 
 uint16_t *audioGetBlockPointer1() {
 

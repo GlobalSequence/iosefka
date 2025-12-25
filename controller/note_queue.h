@@ -20,7 +20,6 @@ extern "C"
 
 void noteQueueSetup(uint8_t* legato, uint8_t* osc_duo);
 void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on);
-// void noteQueueKillActiveNotes();
 
 bool noteQueueAvailableInternal();
 note_data_t noteQueuePullInternal();

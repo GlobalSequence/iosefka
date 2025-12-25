@@ -102,6 +102,7 @@ const uint8_t midiMsgLengths[] = {
 };
 
 static synth_state_t *synth;
+midiPgmChgFunc pgmChgFunc;
 
 RingBuffer<uint8_t, MIDI_TX_BUFFER_SIZE> midiTxBuffer;
 uint8_t last_status_byte;
@@ -229,8 +230,6 @@ void midiEnqueueTransfer(uint8_t type, uint8_t byte_1, uint8_t byte_2) {
 
         last_status_byte = status_byte;
 
-        // uint8_t status = type | synthStateGetMidiChannel();
-
         midiTxBuffer.enqueue(status_byte);
 
     }
@@ -271,8 +270,6 @@ void midiTransmitNow() {
         // if the UART TX FIFO is full
         } else {
 
-            // TEST_PRINT_TEXT("buffer full?\n")
-
             // leave and come back later to empty the MIDI buffer
             return;
 
@@ -286,9 +283,10 @@ void midiTransmitNow() {
 // PUBLIC FUNCTIONS
 // ################################
 
-void midiSetup(synth_state_t *synth_state) {
+void midiSetup(synth_state_t *synth_state, midiPgmChgFunc pgmChgFunction) {
 
     synth = synth_state;
+    pgmChgFunc = pgmChgFunction;
 
 }
 
@@ -299,12 +297,6 @@ bool midiRxHandler() {
     while(uart_is_readable(UART_MIDI)) {
 
         uint8_t b = uart_getc(UART_MIDI);
-
-        // if(synth->settings.out_thru == MIDI_OUTPUT_THRU) {
-
-        //     uart_putc(UART_MIDI, b);
-        
-        // }
 
         // Realtime messages
         if ((b & 0xF8) == 0xF8)
@@ -452,7 +444,8 @@ void midiProcessEvent(midi_event_t m) {
 
             break;
 
-        case MIDI_AFTERTOUCH:
+        // "aFtErToUcH"
+        case MIDI_PRESSURE:
 
             synth->ext_mod.aftertouch_amt = m.val1;
 
@@ -462,7 +455,7 @@ void midiProcessEvent(midi_event_t m) {
 
             if(synth->settings.program_change_rx && m.val1 < NUMBER_OF_PRESETS) {
 
-                //load the preset and set the view loaded and current preset number
+                pgmChgFunc(m.val1);
 
             }
 
@@ -477,23 +470,6 @@ void midiProcessEvent(midi_event_t m) {
 }
 
 void midiTxHandler() {
-
-    // if(synth->settings.out_thru == MIDI_OUTPUT_OUT) {
-
-    //     while(noteQueueAvailableMidiOut()) {
-
-    //         note_data_t note_data = noteQueuePullMidiOut();
-
-    //         // TEST_PRINT_TEXT("ON?: ")
-    //         // TEST_PRINT_ONE_NL(note_data.on)
-
-    //         midiEnqueueTransfer(MIDI_NOTE_ON, note_data.note, note_data.velocity >> 1);
-
-    //     }
-
-    //     midiTransmitNow();
-
-    // }
 
     while(noteQueueAvailableMidiOut()) {
 
@@ -523,3 +499,26 @@ void midiExtClockCountdown() {
 
 }
 
+void midiEnqueueNote(uint8_t note, uint8_t velocity) {
+
+    midiEnqueueTransfer(MIDI_NOTE_ON, note, velocity);
+
+}
+
+void midiEnqueueTick() {
+
+    midiEnqueueTransfer(MIDI_TICK, 0, 0);
+
+}
+
+void midiEnqueueStart() {
+
+    midiEnqueueTransfer(MIDI_START, 0, 0);
+
+}
+
+void midiEnqueueStop() {
+
+    midiEnqueueTransfer(MIDI_STOP, 0, 0);
+
+}

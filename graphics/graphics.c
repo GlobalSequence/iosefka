@@ -304,6 +304,17 @@ const unsigned char unwritten_step_icon[] = {
     0b00000000,
 };
 
+const unsigned char small_filled_circle_icon[] = {
+    0b0000000,
+    0b00000000,
+    0b00011000,
+    0b00111100,
+    0b00111100,
+    0b00011000,
+    0b00000000,
+    0b00000000,
+};
+
 const char* graphicsGetLogo() {
 
     return globe_seq_logo;
@@ -385,13 +396,13 @@ const char* graphicsGetSettingsString(settings_string_t string) {
         case STRING_VELOCITY: return "vel"; break;
         case STRING_MOD_WHEEL: return "m.w."; break;
         case STRING_AFTERTOUCH: return "a.t."; break;
-        case STRING_CLOCK: return "clk"; break;
-        case STRING_TRANSPORT: return "trns"; break;
-        case STRING_PROGRAM_CHANGE: return "pchg"; break;
+        case STRING_CLOCK: return "clock rx"; break;
+        case STRING_TRANSPORT: return "trnsprt rx"; break;
+        case STRING_PROGRAM_CHANGE: return "pgm chg rx"; break;
         case STRING_OUT: return "out"; break;
         case STRING_THRU: return "thru"; break;
         case STRING_PRESET: return "preset"; break;
-        case STRING_PITCH_BEND_DEPTH: return "pb dp"; break;
+        case STRING_PITCH_BEND_DEPTH: return "p.b. dpth"; break;
         case STRING_LATCH: return "latch"; break;
         case STRING_JUMP: return "jump"; break;
         case STRING_NAME: return "name"; break;
@@ -400,6 +411,7 @@ const char* graphicsGetSettingsString(settings_string_t string) {
         case STRING_VCA_VELOCITY: return "vca velo"; break;
         case STRING_MOD_SOURCE: return "src:"; break;
         case STRING_INIT_PATCH: return "init (shift)"; break;
+        case STRING_SCOPE: return "scope"; break;
         
         default:
             // handle unknown setting
@@ -545,6 +557,20 @@ unsigned char* graphicsGetStepIcon(graphic_step_icon_t i) {
     } else if (i == STEP_ICON_UNWRITTEN) {
 
         return (unsigned char*)unwritten_step_icon;
+
+    }
+
+}
+
+unsigned char* graphicsGetSettingsIcon(bool global) {
+
+    if(global) {
+
+        return (unsigned char*)small_filled_circle_icon;
+
+    } else {
+
+        return (unsigned char*)inactive_step_icon;
 
     }
 
@@ -818,6 +844,22 @@ const char* graphicsBuildCharString(const uint8_t* ids, size_t count, char* outB
     outBuffer[count] = '\0';
 
     return outBuffer;     // safe: caller owns the buffer
+}
+
+const char* graphicsGetScopeDiv(uint8_t value) {
+
+    switch(value) {
+
+        case 0: return "1x" ; break;
+        case 1: return "2x" ; break;
+        case 2: return "4x" ; break;
+        case 3: return "8x" ; break; 
+        default: break;
+        
+    }
+
+    return "xx";
+
 }
 
 const char* graphicsGetLayerName(view_layer_t layer) {

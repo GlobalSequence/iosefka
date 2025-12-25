@@ -15,6 +15,8 @@ static seqPollClockTickPeriodFunc clockTickPeriodFunc;
 static seqPollClockTickEventFunc clockTickEventFunc;
 static seqPollStartEventFunc startEventFunc;
 
+seqPollMidiCallbacks midi;
+
 unsigned long last_update_sequencer;
 static uint8_t seq_active_step;
 static uint32_t tick_period;
@@ -32,10 +34,12 @@ static uint8_t seq_active_note;
 // PRIVATE FUNCTION DECLARATIONS
 // ################################
 
-void seqStepTest();
 void noteOffEvent();
-void noteOffEventSingle(uint8_t note);
 void noteOnEvent();
+
+// unused
+void noteOffEventSingle(uint8_t note);
+void seqStepTest();
 
 // ################################
 // PUBLIC FUNCTIONS 
@@ -45,11 +49,11 @@ void seqPollSetup(
     Sequencer *sequencer, 
     bool *external_clk, 
     seqPollNoteFunc noteFunction, 
-    // seqPollKillNoteFunc killNoteFunction,
     seqPollPLockFunc pLockFunction,
     seqPollClockTickPeriodFunc clockTickPeriodFunction,
     seqPollClockTickEventFunc clockTickEventFunction,
-    seqPollStartEventFunc startEventFunction) {
+    seqPollStartEventFunc startEventFunction
+) {
 
     seq = sequencer;
 

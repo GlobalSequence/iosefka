@@ -6,6 +6,8 @@
 #include "../common/globals.h"
 #include "../common/test.h"
 
+storageViewCallbacks view;
+
 static const uint k_storage_block_size = 512;
 static const uint k_settings_block_size = 64;
 static const uint k_settings_address = (k_storage_block_size * NUMBER_OF_PRESETS) - k_settings_block_size;
@@ -30,6 +32,12 @@ uint calculateAddress(uint8_t block_num);
 // ################################
 // PUBLIC FUNCTIONS
 // ################################
+
+void storageSetup(storageViewCallbacks viewCallbacks) {
+
+    view = viewCallbacks;
+
+}
 
 void storageSetType(storage_type_t type) { 
     
@@ -175,6 +183,8 @@ void storageSavePreset(synth_storable_t s, uint block_num) {
     
     devicesStoragePut(s_ptr, address, sizeof(s));
 
+    view.presetNumber(block_num);
+
 }
 
 void storageSaveSettings(machine_settings_t s) {
@@ -191,9 +201,10 @@ void storageSaveVersion(version_t v) {
 
 void storageLoad(uint block_num) {
 
-    synth_storable_t s = storageLoadPreset(block_num);
+    // synth_storable_t s = storageLoadPreset(block_num);
 
-    settingsSetStoredData(s);
+    // settingsSetStoredData(s);
+    storageLoadPresetInternal(block_num);
 
     machine_settings_t m;
 
@@ -215,7 +226,17 @@ synth_storable_t storageLoadPreset(uint block_num) {
 
     settingsSetLoadedPresetNameByIndex(s.preset_name, block_num);
 
+    view.presetNumber(block_num);
+
     return s;
+
+}
+
+void storageLoadPresetInternal(uint block_num) {
+
+    synth_storable_t s = storageLoadPreset(block_num);
+
+    settingsSetStoredData(s);
 
 }
 

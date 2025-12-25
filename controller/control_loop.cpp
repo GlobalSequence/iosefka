@@ -66,7 +66,7 @@ void controlLoopUpdateByFlag(bool flag) {
 
     uint32_t time = time_us_32();
 
-    bool midi_event, ui_event, seq_event, storage_event;
+    bool midi_event, ui_event, seq_event, storage_event, internal_event;
 
     midi_event = pollMidi();
     
@@ -84,8 +84,11 @@ void controlLoopUpdateByFlag(bool flag) {
 
     storage_event = storageStateChanged();
     storageCheckForFinished();
+
+    // scope_event = displayScopeActive();
+    internal_event = displayInternalEventTrigger();
     
-    if(midi_event || ui_event || seq_event || storage_event) {
+    if(midi_event || ui_event || seq_event || storage_event || internal_event) {
 
         displayTrigger();
 
@@ -171,10 +174,7 @@ bool pollSequencer(bool flag) {
 
 void pollDisplay(uint8_t count, bool flag) {
 
-    bool scope_active = displayScopeActive();
-    if(scope_active) displayTrigger();
-
-    if((flag && count & 1) || scope_active) {
+    if((flag && count & 1)) {
 
         displayDisplay();
 

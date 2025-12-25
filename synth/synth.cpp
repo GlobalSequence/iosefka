@@ -24,12 +24,6 @@
 
 volatile bool *render_trig;
 
-// Voice voice;
-// alignas(Voice) static uint8_t voice_buffer[sizeof(Voice)];
-// Voice *voice = nullptr;
-
-////
-
 alignas(ModMatrix) static uint8_t modmatrix_object_buffer[sizeof(ModMatrix)];
 ModMatrix *modmatrix = nullptr;
 
@@ -64,9 +58,6 @@ void synthSetup(synth_parameters_t *patch, external_modulation_t *ext_mod, uint1
     uint16_t *vca_1_ptr = pwmGetVca1Pointer();
     uint16_t *vca_2_ptr = pwmGetVca2Pointer();
     uint8_t *filter_type_ptr = gpioGetStateValPointer();
-    
-    
-    // voice = new (voice_buffer) Voice(patch, buf_ptr_1, random_seed);
 
     voice = new (voice_object_buffer) Voice(buf_ptr_1, random_seed);
 

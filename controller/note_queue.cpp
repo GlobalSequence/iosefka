@@ -19,6 +19,7 @@ static uint8_t bass_note;
 // private function
 
 static void addToQueue(note_data_t note_data);
+static void addToQueueMidi(uint8_t note, uint8_t velocity, bool on);
 
 // public function
 
@@ -32,16 +33,10 @@ void noteQueueSetup(uint8_t* legato, uint8_t* osc_duo) {
 
 void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on) {
 
-    // on? note_count++ : note_count--;
-
-    // note_data_t note_data = {note, velocity, on};
-
-    // note_queue_internal.enqueue(note_data);
-    // note_queue_midi_out.enqueue(note_data);
-
-    // TEST_PRINT_TWO_NL(note, on)
-
     note_data_t note_data;
+
+    // MIDI notes get the raw note on/off messages without any legato tricks
+    addToQueueMidi(note, velocity, on);
 
     if(on) {
 
@@ -85,16 +80,18 @@ void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on) {
 
         if(noteStack.size() == 0) {
 
+            add = true;
             note_data = {note, 0, 0, 0};
 
             
         } else if (*legato_ptr && !*duo_ptr) {
 
+            add = true;
             note_data = {after.note, last_on_velocity, true, false};
 
         }
 
-        addToQueue(note_data);
+        if(add) addToQueue(note_data);
 
     }
 
@@ -137,7 +134,16 @@ uint8_t noteQueueGetCount() {
 void addToQueue(note_data_t note_data) {
 
     note_queue_internal.enqueue(note_data);
-    note_queue_midi_out.enqueue(note_data);
+    // note_queue_midi_out.enqueue(note_data);
+
+}
+
+static void addToQueueMidi(uint8_t note, uint8_t velocity, bool on) {
+    
+    note_data_t note_data_midi;
+    uint8_t midi_velocity = on ? velocity : 0;
+    note_data_midi = {note, midi_velocity, on, false};
+    note_queue_midi_out.enqueue(note_data_midi);
 
 }
 

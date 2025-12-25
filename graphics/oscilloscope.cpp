@@ -13,22 +13,16 @@ static uint8_t* scope_active_buffer;
 
 // number of waves that appear on screen at once
 static uint8_t time_div_ctrl;
-static uint8_t time_div[] = {0, 1, 3, 7};
-static uint8_t modulo_ctrl;
-static uint16_t modulo[] = {16, 32, 64, 128, 256};
-static uint8_t change_buffer_counter;
-
+static uint8_t time_div[] = {7, 3, 1, 0};
+// index at which sampling begins
 static uint trigger_index;
-// static bool trigger_index_collected;
-
+// index of the oscilloscope buffer
 static uint8_t scope_buffer_index;
-// static int16_t last_read_index;
-// static bool buffer_half_changed;
-
+// scope division based on time div
 static uint8_t window;
-
-uint8_t count;
-
+// counts the number of samples until overflow to write input sample to scope buffer
+uint8_t sample_count;
+// prevents buffer from filling while waiting for next trigger index to be set
 bool pause_buffer_fill; 
 
 // private function declarations
@@ -36,7 +30,6 @@ bool pause_buffer_fill;
 void fillReadBuffer(uint16_t* buf_ptr);
 void getTriggerIndex(bool* reset_ptr);
 void fillScopeBuffer();
-// void iterateWindow();
 
 // public functions
 
@@ -45,20 +38,13 @@ void oscilloscopeProcess(uint16_t* buf_ptr, bool* reset_ptr) {
     getTriggerIndex(reset_ptr);
     fillReadBuffer(buf_ptr);
     fillScopeBuffer();
-    // iterateWindow();
 
 }
 
-void oscilloscopeSetTimeDiv(uint8_t div) { 
+void oscilloscopeSetTimeDivCtrl(uint8_t div) { 
 
     if(div <= 3) time_div_ctrl = div;
     scope_buffer_index = scope_buffer_index > SCOPE_HALF_BUFFER_SIZE ? 0 : SCOPE_HALF_BUFFER_SIZE;
-
-}
-
-void oscilloscopeSetModulo(uint8_t mod) {
-
-    if(mod <= 4) modulo_ctrl = mod;
 
 }
 
@@ -66,12 +52,13 @@ uint8_t* oscilloscopeGetActiveBuffer() {
 
     scope_active_buffer = scope_buffer_index >= SCOPE_HALF_BUFFER_SIZE ? &scope_buffer[0] : &scope_buffer[SCOPE_HALF_BUFFER_SIZE];
 
-    // TEST_PRINT_ONE_NL(scope_buffer_index >= SCOPE_HALF_BUFFER_SIZE ? 1 : 0)
-    // scope_active_buffer = &scope_buffer[0];
-
     return scope_active_buffer;
 
 }
+
+uint8_t oscilloscopeGetTimeDivCtrl() { return time_div_ctrl; }
+
+uint8_t oscilloscopeGetTimeDiv() { return time_div[time_div_ctrl]; }
 
 // private functions
 
@@ -129,21 +116,6 @@ void getTriggerIndex(bool* reset_ptr) {
 
     }
 
-    // // find the next trigger index
-    // for(int i = 0; i < AUDIO_BLOCK_SIZE; i++) {
-
-    //     if(reset_ptr[i] && !trigger_index_collected /* && !buffer_count */) {
-            
-    //         // if this is the first buffer in the division series, only collect the first trigger of the buffer
-    //         trigger_index_collected = true;
-
-    //         // get the trigger index
-    //         trigger_index = i;
-
-
-    //     }
-    // }
-
 }
 
 void fillScopeBuffer() {
@@ -152,7 +124,6 @@ void fillScopeBuffer() {
 
     // get the value for the time division
     uint8_t time_division = time_div[time_div_ctrl] + 1;
-    // uint8_t time_division = 7;
 
     for(int i = 0; i < SCOPE_HALF_BUFFER_SIZE; i++) {
 
@@ -160,10 +131,10 @@ void fillScopeBuffer() {
         uint8_t input_buf_index = trigger_index + i;
 
         // see if the counter has overflowed the time division
-        uint8_t check = count % time_division;
+        uint8_t check = sample_count % time_division;
 
         // increment the counter 
-        count++;
+        sample_count++;
 
         // if we've surpassed the increment, add a sample to the buffer
         if(!check) {
@@ -183,29 +154,6 @@ void fillScopeBuffer() {
     // TEST_PRINT_TWO_NL(scope_buffer_index, window)
 
 }
-
-// void iterateWindow() {
-
-//     uint8_t time_division = time_div[time_div_ctrl];
-
-//     uint8_t iterations_until_reset;
-
-//     if(time_division == 0 || time_division == 1) iterations_until_reset = 0;
-//     else iterations_until_reset = (time_division + 1) >> 1;
-
-//     if(window >= time_division) {
-
-//         window = 0;
-//         trigger_index_collected = false;
-//         // scope_buffer_index = 0;
-
-//     } else {
-
-//         window++;
-    
-//     }
-
-// }
 
 /* 
 NOTES

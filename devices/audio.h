@@ -16,10 +16,7 @@
 // the coveted audio buffers
 extern uint16_t dac_buf[DAC_OUTPUT_BUF_SIZE]__attribute__((aligned(DAC_OUTPUT_BUF_SIZE * BIT_WIDTH_MULT_8_TO_16)));
 extern uint16_t adc_buf[ADC_INPUT_BUF_SIZE]__attribute__((aligned(ADC_INPUT_BUF_SIZE * BIT_WIDTH_MULT_8_TO_16)));
-
 extern bool transmitting_buffer_two;
-
-// extern volatile bool trigger_render;
 
 #ifdef __cplusplus
 extern "C"
@@ -35,11 +32,6 @@ uint16_t *audioGetBlockPointer1();
 uint16_t *audioGetBlockPointer2();
 uint16_t *audioGetAdcBufferPointer();
 volatile bool *audioGetRenderTrigger();
-
-// scope functions (tacked onto here due to late addition)
-uint16_t* audioGetScopeBufPtr();
-uint8_t* audioGetScopeDivPointer();
-bool* audioGetScopeBufferHalfPtr();
 
 #ifdef __cplusplus
 }

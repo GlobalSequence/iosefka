@@ -106,6 +106,7 @@ typedef enum view_mode_t{
     MODE_USER_PARAM_SEL,
     MODE_USER_PARAM_DST,
     MODE_SEQ_WINDOW_SEL,
+    MODE_SCOPE_DIV,
     MODE_MOD_LAYER_SEL,
 
     NUM_VIEW_MODES
@@ -156,7 +157,8 @@ typedef struct machine_state_t {
     uint8_t settings_row;
     uint8_t settings_mod_source;
     uint8_t current_user_param;
-    uint8_t* scope_div;
+    // uint8_t* scope_div;
+    bool scope_on;
 
 } machine_state_t;
 
@@ -172,13 +174,14 @@ void viewSetLayer(view_layer_t layer);
 void viewSetMode(view_mode_t mode);
 void viewSetMachineStateMode(view_mode_t mode);
 void viewResetMachineStateOnLoad();
-void viewSetScopeDivPtr(uint8_t* ptr);
+// void viewSetScopeDivPtr(uint8_t* ptr);
 
 void viewSetKeyboardOctave(uint8_t octave);
 void viewSetSequencerWindow(bool increment);
 void viewSetSequencerWindowByValue(uint8_t value);
 void viewSetPresetNumberSelected(uint8_t preset);
 void viewSetPresetNumberLoaded(uint8_t preset);
+void viewSetPresetNumberSelectedAndLoaded(uint preset);
 void viewSetSeqParamStepNote(uint8_t note);
 void viewSetSeqParamStepOctave(uint8_t octave);
 void viewSetSettingsRow(uint8_t row);
@@ -187,7 +190,8 @@ void viewSetCurrentUserParameter(uint8_t index);
 void viewSetEncoderTurnedWhileHeld();
 void viewSetPresetCharIndex(uint8_t index);
 void viewSetPresetCharSelected(uint8_t index);
-void viewSetScopeDiv(uint8_t value);
+// void viewSetScopeDiv(uint8_t value);
+void viewSetScopeOn(bool on);
 
 view_change_t viewGetLastViewChange();
 view_page_t viewGetPage();
@@ -199,7 +203,7 @@ uint8_t viewGetSequencerWindowStepBase();
 uint8_t viewGetPresetNumberSelected();
 uint8_t viewGetPresetNumberLoaded();
 bool viewIsSubLayerPLockReady();
-bool viewDidPLockHappen();
+// bool viewDidPLockHappen();
 uint8_t viewGetSeqParamStepNote();
 uint8_t viewGetSeqParamStepOctave();
 bool viewGetViewChangeFlagLed();
@@ -211,7 +215,8 @@ bool viewGetEncoderTurnedWhileHeld();
 uint8_t viewGetPresetCharIndex();
 uint8_t viewGetPresetCharSelected();
 bool viewPresetSelectedIsPresetLoaded();
-uint8_t viewGetScopeDiv(); 
+// uint8_t viewGetScopeDiv(); 
+bool viewGetScopeOn();
 
 void viewSetLatchSingle(uint8_t index);
 void viewResetLatchSingle(uint8_t index);

@@ -48,8 +48,9 @@
 #define MIDI_CC_POLY_MODE 127
 
 typedef void (*midiSetParameter)(mod_destinations_t, uint8_t);
+typedef void (*midiPgmChgFunc)(uint);
 
-void midiSetup(synth_state_t *synth_state);
+void midiSetup(synth_state_t *synth_state, midiPgmChgFunc pgmChgFunction);
 
 bool midiRxHandler();
 void midiTxHandler();
@@ -59,5 +60,10 @@ void midiExtClockCountdown();
 void midiEnqueueTransfer(uint8_t type, uint8_t byte_1, uint8_t byte_2);
 void midiEnqueueRealtime(uint8_t event_type);
 void midiTransmitNow();
+
+void midiEnqueueNote(uint8_t note, uint8_t velocity);
+void midiEnqueueTick();
+void midiEnqueueStart();
+void midiEnqueueStop();
 
 #endif
