@@ -109,6 +109,10 @@ static inline uint32_t U32MixU32(uint32_t a, uint32_t b, uint16_t limit, uint16_
   return a * (limit - balance) + b * balance;
 }
 
+static inline uint32_t U32Interp8Bit(uint32_t a, uint32_t b, uint8_t balance, uint8_t not_balance) {
+  return (a * not_balance + b * balance) >> 8;
+}
+ 
 static inline uint8_t U8Mix(uint8_t a, uint8_t b, uint8_t balance) {
   return a * (255 - balance) + b * balance >> 8;
 }

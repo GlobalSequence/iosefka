@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "../common/globals.h"
+#include "../common/moving_average.h"
 #include "wavetable.h"
 
 #define WAVE_INTERPOLATE_DELTA_X    (NUM_WAVETABLE_SAMPLES / NUM_X_WAVETABLES)
@@ -73,6 +74,8 @@ private:
     bool *sync_out_;
 
     void phaseAccumulator(void);
+
+    MovingAverage32 phaseModSmooth;
 
 };
 

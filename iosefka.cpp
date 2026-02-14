@@ -18,14 +18,14 @@ void core1_main() {
 
     while(1) {
 
-        // if(!control_flag) {
+        // TEST_PRINT_MICROS_ELAPSED_START
 
-        //     control_flag = synthUpdate();
+        if(synthUpdate()) {
 
-        // }
+        // TEST_PRINT_MICROS_ELAPSED_END
 
-        if(synthUpdate()) control_flag = true;
-
+            control_flag = true;
+        }
     }
 
 }

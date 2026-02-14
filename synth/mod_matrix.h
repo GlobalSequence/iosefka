@@ -44,7 +44,6 @@ class ModMatrix {
         Envelope env_[NUMBER_OF_ENVS];
         lfo_t lfo_[NUMBER_OF_LFOS];
 
-        // Envelope et;
         MovingAverage32 PhaseModSmooth;
 
         uint16_t mod_source_[NUM_MOD_SOURCES];

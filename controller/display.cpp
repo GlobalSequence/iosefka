@@ -1769,7 +1769,7 @@ void drawPresetName(uint8_t y, view_mode_t mode) {
 
     preset_name_t n = settingsGetLoadedPresetNameByIndex(viewGetPresetNumberSelected());
 
-    if(viewPresetSelectedIsPresetLoaded() && (mode == MODE_SET_PRESET_CHAR_INDEX || mode == MODE_SET_PRESET_CHAR_SEL)) {
+    if(/* viewPresetSelectedIsPresetLoaded() &&  */(mode == MODE_SET_PRESET_CHAR_INDEX || mode == MODE_SET_PRESET_CHAR_SEL)) {
         
         uint8_t x = k_settings_preset_char_x[viewGetPresetCharIndex()];
         drawRectangle(x, y, k_char_width, k_char_height, true, WriteMode::ADD);

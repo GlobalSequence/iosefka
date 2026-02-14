@@ -51,7 +51,8 @@ class Voice {
         voice_inputs_t p;
 
         const int8_t koctave_offset_[4] = {-12, 0, 12, 24};
-        const uint8_t knote_base_offset_ = 12;
+        // const uint8_t knote_base_offset_ = 12;
+        const uint8_t knote_base_offset_ = 15;
 
         uint32_t osc_1_buffer_[AUDIO_BLOCK_SIZE];
         uint32_t osc_2_buffer_[AUDIO_BLOCK_SIZE];

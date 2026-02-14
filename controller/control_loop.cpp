@@ -64,6 +64,9 @@ void pollDisplay(uint8_t count, bool flag);
 
 void controlLoopUpdateByFlag(bool flag) {
 
+    // unsigned long t1, t2;
+    // t1 = time_us_64();
+
     uint32_t time = time_us_32();
 
     bool midi_event, ui_event, seq_event, storage_event, internal_event;
@@ -99,6 +102,9 @@ void controlLoopUpdateByFlag(bool flag) {
     storageExecuteTypeIfActive();
 
     if(flag) call_counter++;
+
+    // t2 = time_us_64();
+    // if(flag) printf("%d\n", t2 - t1);
 
 }
 
