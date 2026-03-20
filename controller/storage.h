@@ -82,9 +82,6 @@ void storageLoadToPointer(uint8_t* p, uint address, uint size);
 
 void storageLoadPresetNames();
 
-// void storageLoadSettingsWithPointer(uint8_t* r);
-// bool storageNeverWritten();
-
 #ifdef __cplusplus
 }
 #endif

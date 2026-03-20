@@ -161,19 +161,6 @@ const char *graphic_seq_note[] = {
 
 };
 
-// const char* midi_note_names[128] = {
-//     "C0", "c0", "D0", "d0", "E0", "F0", "f0", "G0", "g0", "A0", "a0", "B0",  // Octave 0
-//     "C1", "c1", "D1", "d1", "E1", "F1", "f1", "G1", "g1", "A1", "a1", "B1",  // Octave 1
-//     "C2", "c2", "D2", "d2", "E2", "F2", "f2", "G2", "g2", "A2", "a2", "B2",  // Octave 2
-//     "C3", "c3", "D3", "d3", "E3", "F3", "f3", "G3", "g3", "A3", "a3", "B3",  // Octave 3
-//     "C4", "c4", "D4", "d4", "E4", "F4", "f4", "G4", "g4", "A4", "a4", "B4",  // Octave 4
-//     "C5", "c5", "D5", "d5", "E5", "F5", "f5", "G5", "g5", "A5", "a5", "B5",  // Octave 5
-//     "C6", "c6", "D6", "d6", "E6", "F6", "f6", "G6", "g6", "A6", "a6", "B6",  // Octave 6
-//     "C7", "c7", "D7", "d7", "E7", "F7", "f7", "G7", "g7", "A7", "a7", "B7",  // Octave 7
-//     "C8", "c8", "D8", "d8", "E8", "F8", "f8", "G8", "g8", "A8", "a8", "B8",  // Octave 8
-//     "C9", "c9", "D9", "d9", "E9", "F9", "f9", "G9", "g9", "A9", "a9", "B9"   // Octave 9
-// };
-
 const char* midi_note_names[128] = {
     "C0 ", "C#0", "D0 ", "D#0", "E0 ", "F0 ", "F#0", "G0 ", "G#0", "A0 ", "A#0", "B0 ",
     "C1 ", "C#1", "D1 ", "D#1", "E1 ", "F1 ", "F#1", "G1 ", "G#1", "A1 ", "A#1", "B1 ",
@@ -464,18 +451,6 @@ const char *graphicsGetVcaMode(uint8_t index) {
 
     return graphicsGetHexString(index);
 
-    // if(setting){
-
-    //     return graphicsGetHexString(index);
-
-    // } else {
-
-    //     uint8_t scaled_index = index >> 3;
-    //     return graphic_plus_sign_hex[scaled_index];
-
-    // }
-
-
 }
 
 const char* graphicsGetResetSync(uint8_t index) {
@@ -610,9 +585,6 @@ const char* graphicsGetModDst(mod_destinations_t dst) {
         case MOD_DST_DELAY_RATE:            return "delay rate";
         case MOD_DST_DELAY_FEEDBACK:        return "delay feedback";
         case MOD_DST_DELAY_AMOUNT:          return "delay level";
-        // case MOD_DST_DELAY_DIFFUSION:       return "delay diffusion";
-        // case MOD_DST_DELAY_FILTER:          return "delay filter";
-        // case MOD_DST_DELAY_STEREO:          return "delay stereo";
         case MOD_DST_ENV_1_ATTACK:          return "env 1 attack";
         case MOD_DST_ENV_1_DECAY:           return "env 1 decay";
         case MOD_DST_ENV_1_SUSTAIN:         return "env 1 sustain";
@@ -818,21 +790,6 @@ const char* graphicsGetCharFromID(uint8_t index) {
             return " ";
     }
 }
-
-/* const char* graphicsGetCharStringFromPtr(uint8_t* ptr, size_t size) {
-
-    char word[size];
-
-    for(int i = 0; i < size; i++) {
-
-        word[i] = graphicsGetCharFromID(ptr[i]);
-
-    }
-
-    return (const char*) word;
-
-}
- */
 
 const char* graphicsBuildCharString(const uint8_t* ids, size_t count, char* outBuffer) {
 

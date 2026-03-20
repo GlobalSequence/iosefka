@@ -132,9 +132,6 @@ uint8_t shift7BitValueTo8Bits(uint8_t val) {
 
 void ccParser(uint8_t cc_number, uint8_t value) {
 
-    // scale 7 bit MIDI values to 8 bit internal vals
-    // value <<= 1;
-    // if(value == 254) value = 255;
     shift7BitValueTo8Bits(value);
 
     mod_destinations_t dst;
@@ -193,7 +190,6 @@ void ccParser(uint8_t cc_number, uint8_t value) {
         case CC_LFO_1_AMOUNT: dst = MOD_DST_LFO_1_AMOUNT; break;
         case CC_LFO_2_AMOUNT: dst = MOD_DST_LFO_2_AMOUNT; break;
         case CC_LFO_3_AMOUNT: dst = MOD_DST_LFO_3_AMOUNT; break;
-        // TODO: implement destination select (limit selection to NUM_MOD_DESTINATIONS)
         // case CC_ENV_1_DST: dst = MOD_DST_ENV_1_DST; break;
         // case CC_ENV_2_DST: dst = MOD_DST_ENV_2_DST; break;
         // case CC_ENV_3_DST: dst = MOD_DST_ENV_3_DST; break;
@@ -203,8 +199,6 @@ void ccParser(uint8_t cc_number, uint8_t value) {
         // case CC_DELAY_RATE: dst = MOD_DST_DELAY_RATE; break;
         case CC_DELAY_FEEDBACK: dst = MOD_DST_DELAY_FEEDBACK; break;
         case CC_DELAY_AMOUNT: dst = MOD_DST_DELAY_AMOUNT; break;
-        // case CC_DELAY_DIFFUSION: dst = MOD_DST_DELAY_DIFFUSION; break;
-        // case CC_DELAY_FILTER: dst = MOD_DST_DELAY_FILTER; break;
         default: break;
     }
 
@@ -311,7 +305,6 @@ bool midiRxHandler() {
 
                     synth->special.ext_clock_active = true;
                     uint64_t tick_time = time_us_64();
-                    // midi_tick_period = tick_time - midi_last_tick_time;
                     synth->ext_mod.clock_tick_period = tick_time - midi_last_tick_time;
                     synth->ext_mod.clock_tick_occurred = true;
                     midi_last_tick_time = tick_time;

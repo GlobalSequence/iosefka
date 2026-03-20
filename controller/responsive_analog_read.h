@@ -1,3 +1,5 @@
+// TODO: Provide proper attribution!!!
+
 /*
  * ResponsiveAnalogRead.h
  * Arduino library for eliminating noise in analogRead inputs without decreasing responsiveness

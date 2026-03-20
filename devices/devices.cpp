@@ -12,7 +12,6 @@
 
 #include "peripheral_config.h"
 #include "pin_assignments.h"
-// #include "init_peripherals.h"
 #include "cd4051.h"
 #include "mcp230xx.h"
 #include "encoder.h"
@@ -71,25 +70,12 @@ void devicesSetup()
     // SPI setup + SPI DMA + devices
     // ################
 
-    // setupInitSPI(
-    //     SPI_DISPLAY,
-    //     PIN_DISPLAY_SCK,
-    //     PIN_DISPLAY_MOSI,
-    //     -1,
-    //     PIN_DISPLAY_CS,
-    //     PIN_DISPLAY_DC,
-    //     SPI_DISPLAY_RATE);
-
-    // spi_display = spi;
-
     spi_init(SPI_DISPLAY, 10000000);
     gpio_set_function(PIN_DISPLAY_SCK, GPIO_FUNC_SPI);
     gpio_set_function(PIN_DISPLAY_MOSI, GPIO_FUNC_SPI);
     gpio_set_function(PIN_DISPLAY_CS, GPIO_FUNC_SPI);
     gpio_init(PIN_DISPLAY_DC);
     gpio_set_dir(PIN_DISPLAY_DC, GPIO_OUT);
-
-    // setupInitDMADisplay(&dma_display);
 
     dma_display.channel = dma_claim_unused_channel(true);
     dma_display.config = dma_channel_get_default_config(dma_display.channel);
@@ -115,8 +101,6 @@ void devicesSetup()
     // UART setup
     // ################
 
-    // setupInitUart(UART_MIDI, PIN_MIDI_TX, PIN_MIDI_RX);
-
     uart_init(UART_MIDI, UART_BAUD_RATE);
     uart_set_hw_flow(UART_MIDI, false, false);
     uart_set_format(UART_MIDI, UART_DATA_BITS, UART_STOP_BITS, UART_PARITY);
@@ -126,8 +110,6 @@ void devicesSetup()
     // ################
     // I2C setup + devices
     // ################
-
-    // setupInitI2C(I2C_DEVICES, PIN_DEVICE_SDA, PIN_DEVICE_SCL, I2C_DEVICES_RATE);
 
     i2c_init(I2C_DEVICES, I2C_DEVICES_RATE);
     gpio_set_function(PIN_DEVICE_SDA, GPIO_FUNC_I2C);
@@ -330,7 +312,6 @@ void devicesSetupCore1() {
 
     // SETUP DMA IRQ
 	dma_channel_set_irq0_enabled(dma_adc.channel, true);
-    // irq_add_shared_handler(DMA_IRQ_0, pioSpiHandler, 255);
     irq_add_shared_handler(DMA_IRQ_0, audioIrqHandler, 255);
     irq_set_enabled(DMA_IRQ_0, true); 
     dma_start_channel_mask(1u << dma_dac.channel | 1u << dma_adc.channel);
@@ -394,7 +375,7 @@ void devicesDisplayDrawTextNormFont(const char *text, uint8_t x, uint8_t y, pico
 {
 
     pico_ssd1306::drawText(&display, font_8x8, text, x, y, write_mode);
-    // pico_ssd1306::drawText8x8NoRotation(&display, text, x, y, write_mode);
+    
 }
 
 void devicesDisplayDrawRectangle(uint8_t x, uint8_t y, uint8_t x_length, uint8_t y_height, bool fill, pico_ssd1306::WriteMode write_mode)

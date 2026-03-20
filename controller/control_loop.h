@@ -9,7 +9,6 @@ extern "C"
 {
 #endif
 
-void controlLoopUpdate();
 void controlLoopUpdateByFlag(bool flag);
 
 #ifdef __cplusplus

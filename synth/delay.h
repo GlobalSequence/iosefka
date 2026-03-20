@@ -12,9 +12,7 @@
 typedef struct delay_inputs_t {
 
 	uint16_t amount; // should be 8 bit number
-	// uint16_t length; // should be 8 bit number
     uint16_t length; // should be 16 bit number
-    // uint16_t rate;
 	uint16_t feedback;
 	uint16_t diffusion;
 	uint16_t saturation;
@@ -40,7 +38,6 @@ class Delay {
         void render() {
 
             // FOR THIS TO BE MODULAR, YOU HAVE TO HARD CODE IT SO THAT DELAY SIZE IS ALWAYS A POWER OF 2. THAT IS OKAY, BUT EDIT THE DELAY TO DO THAT.
-            // int32_t time = writeAvg.getAverage(p.length << 19);
             int32_t time = writeAvg.getAverage(p.length << 11);
             step_ = (time - last_time_) >> 7;
             current_time_ = last_time_;

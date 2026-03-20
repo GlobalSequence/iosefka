@@ -8,7 +8,6 @@
 #define NUMBER_OF_SEQUENCER_STEPS 32
 #define NUMBER_OF_SEQUENCER_STEP_PAGES (NUMBER_OF_SEQUENCER_STEPS / 4)
 static const uint8_t kmax_steps_ = 32;
-// static const uint8_t kppq_ = 96;
 static const uint8_t kppq_ = 24;
 static const uint8_t ksixteenth_pulse_range_ = kppq_ / 4; 
 static const int8_t ktranspose_offset = -12;
@@ -92,7 +91,7 @@ class Sequencer {
         inline uint32_t getTickPeriod() {
             return tick_period_;
         }
-        //void setPatternData(PatternData new_data); 
+
         inline int16_t getCurrentStep() {return current_step_;}
         inline int16_t getPreviousStep() {return previous_step_;}
 
@@ -145,11 +144,6 @@ class Sequencer {
         inline uint8_t getStepProbability(uint8_t index) {return pattern_data_.step[index].step_prob;}
         inline uint8_t getRotation() {return pattern_data_.rotation;}
         inline int getLoopCount() {return loop_count_;}
-
-        // inline bool probabilityCheck() {
-        //     static uint16_t prob_var = 0x4200; XOR798(&prob_var);
-        //     return (prob_var >> 8) <= pattern_data_.probability;
-        // }
 
         inline bool probabilityCheck(uint16_t var) {
             return (var >> 8) <= pattern_data_.probability;

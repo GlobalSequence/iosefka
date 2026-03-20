@@ -4,17 +4,37 @@
 
 static const uint8_t scale_major[NUMBER_OF_NOTES_PER_SCALE] = {0, 2, 4, 5, 7, 9, 11, 0};
 static const uint8_t scale_minor[NUMBER_OF_NOTES_PER_SCALE] = {0, 2, 3, 5, 7, 8, 10, 0};
+static const uint8_t k_num_weighted_len_values = 5;
+static const uint8_t weighted_length[k_num_weighted_len_values] = {0, 1, 3, 7, 15};
 
 static const uint8_t weighted_chance[NUMBER_OF_WEIGHTED_CHANCE_VALS][NUMBER_OF_WEIGHTED_CHANCE_POINTS] {
 
-    {0, 0, 0, 0, 0, 0, 0, 0},
+/*     {0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 1, 1},
     {0, 0, 0, 0, 1, 1, 1, 2},
     {0, 0, 0, 1, 1, 1, 2, 2},
     {0, 0, 1, 1, 2, 2, 3, 3},
     {1, 2, 2, 2, 3, 3, 3, 3},
     {2, 2, 3, 3, 3, 3, 3, 3},
-    {3, 3, 3, 3, 3, 3, 3, 3},
+    {3, 3, 3, 3, 3, 3, 3, 3}, */
+
+/*     {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 1, 1, 1},
+    {0, 0, 0, 1, 1, 1, 3, 3},
+    {0, 0, 1, 1, 3, 3, 7, 7},
+    {0, 1, 1, 3, 3, 7, 7, 15},
+    {0, 1, 3, 3, 7, 7, 15, 15},
+    {0, 1, 3, 7, 7, 15, 15, 15},
+    {0, 1, 3, 7, 15, 15, 15, 15} */
+
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 1, 1, 1},
+    {0, 0, 0, 1, 1, 1, 2, 2},
+    {0, 0, 1, 1, 2, 2, 3, 3},
+    {0, 1, 1, 2, 2, 3, 3, 4},
+    {0, 1, 2, 2, 3, 3, 4, 4},
+    {0, 1, 2, 3, 3, 4, 4, 4},
+    {0, 1, 2, 3, 4, 4, 4, 4}
 
 };
 
@@ -67,9 +87,6 @@ void patternGenExecute() {
     uint8_t len = seq->getPatternLength() + 1;
     uint8_t first = seq->getFirstStep();
     uint8_t chance = seq->getProbability();
-    
-    // TEST_PRINT_TEXT("PATTERN LENGTH: ")
-    // TEST_PRINT_ONE_NL(len)
 
     for(int i = 0; i < len; i++) {
 
@@ -94,17 +111,6 @@ void patternGenExecute() {
         step_data.velocity = velocity;
         step_data.step_prob = 0;
 
-        // TEST_PRINT_TEXT("SEED: ")
-        // TEST_PRINT_ONE_TAB(seed)
-        // TEST_PRINT_TEXT("NOTE: ")
-        // TEST_PRINT_ONE_TAB(note)
-        // TEST_PRINT_TEXT("VELOCITY: ")
-        // TEST_PRINT_ONE_TAB(velocity)
-        // TEST_PRINT_TEXT("LENGTH: ")
-        // TEST_PRINT_ONE_TAB(step_length)
-        // TEST_PRINT_TEXT("CHANCE: ")
-        // TEST_PRINT_ONE_NL(active)
-
         seq->setStepData(step, step_data);
         seq->setWrittenStep(step);
         if(active) seq->setActiveStep(step);
@@ -113,8 +119,6 @@ void patternGenExecute() {
     }
     
     pattern_generated = true;
-
-    // TEST_PRINT_NL
 
 }
 
@@ -136,19 +140,12 @@ bool patternGenCheckLoopCount() {
             
             patternGenExecute();
 
-            // TEST_PRINT_TEXT("REPEAT   \n")
-            // TEST_PRINT_ONE_NL(seq->getCurrentStep());
-
             int16_t new_countdown = repeat_limit - 1;
             if(new_countdown < 0) param->countdown = 0;
             else param->countdown = new_countdown;
 
-            // param->countdown = repeat_limit - 1;
             return true;
         }
-
-        // TEST_PRINT_TEXT("repeat: ")
-        // TEST_PRINT_TWO_NL(repeat_count, repeat_limit)
 
     }
 
@@ -189,6 +186,9 @@ uint16_t patternGenGetRand() {
 
 uint8_t generateStepLength(uint8_t pattern_length) {
 
+/*     
+    // TODO: Evaluate this. in retrospect, no real need to limit the step length.
+
     uint8_t step_len_limiter;
 
     if(pattern_length < 4) {
@@ -201,9 +201,14 @@ uint8_t generateStepLength(uint8_t pattern_length) {
 
     int8_t rand_limited_val = rand_val_raw - step_len_limiter;
     
-    if(rand_limited_val <= 0) rand_limited_val = 0;
-
+    if(rand_limited_val <= 0) rand_limited_val = 0; 
+    
     return rand_limited_val;
+    */
+
+    uint8_t rand_val_raw = getWeightedChanceValue(param->density);
+
+    return weighted_length[rand_val_raw];
 
 }
 
@@ -215,7 +220,6 @@ uint8_t generateNote() {
     uint8_t output = note + octave;
     if(output >= 127) output = 127;
 
-    // return note + octave;
     return output;
 
 }
@@ -232,9 +236,7 @@ uint8_t generateVelocity() {
 
 bool generateActiveStep(uint8_t chance) {
 
-    // return param->chance >= (getRand() >> 8);
     return chance >= (getRand() >> 8);
-
 
 }
 

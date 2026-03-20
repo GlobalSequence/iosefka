@@ -89,8 +89,6 @@ void eepromPut(uint8_t *ptr, uint address, size_t size) {
         // the chip has a physical page boundary, so if we're beginning in a middle of the page, we write with fewer than page_size bytes
         uint8_t first_page_size = page_size * ((address / page_size) + 1) - address;
 
-        // printf("first page size: %d\n", first_page_size);
-
         if(first_page_size > size) first_page_size = size;
 
         eepromReadBytes(read_buffer, address, first_page_size);
@@ -101,7 +99,6 @@ void eepromPut(uint8_t *ptr, uint address, size_t size) {
 
             waitPeriodFinished();
 
-            // printf("first page written?\n");
         }
 
         ptr += first_page_size;
@@ -132,8 +129,6 @@ void eepromPut(uint8_t *ptr, uint address, size_t size) {
 
                     }
 
-                    // printf("%d address written?\n", i + address);
-
                 }
 
                 ptr += next_page_size;
@@ -149,8 +144,6 @@ void eepromPut(uint8_t *ptr, uint address, size_t size) {
 uint8_t* eepromGet(uint8_t *ptr, uint address, size_t size) {
 
     if(waitPeriodFinished()) {
-
-        // printf("%d address read?\n", address);
 
         eepromReadBytes(ptr, address, size);
 

@@ -40,7 +40,6 @@ class ModMatrix {
         delay_inputs_t          *d_i;
         cv_outputs_t            *c_o;
 
-        // envelope_t env_[NUMBER_OF_ENVS];
         Envelope env_[NUMBER_OF_ENVS];
         lfo_t lfo_[NUMBER_OF_LFOS];
 

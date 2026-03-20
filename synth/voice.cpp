@@ -41,7 +41,6 @@ void Voice::renderOscillators()
 
         if(i == 0 && p.duophony && bass_note_) {
 
-            // TEST_PRINT_TWO_NL(p.pitch_value, bass_note_)
             pitch -= p.pitch_value;
             pitch += bass_note_;
 
@@ -60,13 +59,15 @@ void Voice::renderOscillators()
 
         if (i == 0)
         {
-            osc_[0].render(increment, octave, pitch_gradient, dummy_phase_mod_buffer_, 0, no_sync_, sync_buffer_, osc_1_buffer_);
+            osc_[0].render2(increment, coarse, dummy_phase_mod_buffer_, 0, no_sync_, sync_buffer_, osc_1_buffer_);
+            // osc_[0].render(increment, octave, pitch_gradient, dummy_phase_mod_buffer_, 0, no_sync_, sync_buffer_, osc_1_buffer_);
         }
         else
         {
             bool* sync_select;
             sync_select = p.sync == true? sync_buffer_ : no_sync_;
-            osc_[1].render(increment, octave, pitch_gradient, osc_1_buffer_, p.phase_mod, sync_select, dummy_sync_buffer_, osc_2_buffer_);
+            osc_[1].render2(increment, coarse, osc_1_buffer_, p.phase_mod, sync_select, dummy_sync_buffer_, osc_2_buffer_);
+            // osc_[1].render(increment, octave, pitch_gradient, osc_1_buffer_, p.phase_mod, sync_select, dummy_sync_buffer_, osc_2_buffer_);
         }
     }
     
@@ -101,10 +102,6 @@ void Voice::renderOscillators()
 
         buf_ptr_[i] = effect_2_mix;
 
-
-/*         uint16_t dac_osc_audio_ = (osc_mix + noise_mixed) / 3;
-
-        buf_ptr_[i] = dac_osc_audio_; */
 
     }
 

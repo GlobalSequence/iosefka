@@ -313,14 +313,6 @@ void encoderMapAssignValue(int8_t value, bool accel) {
 
         case MODE_SET_PRESET_CHAR_SEL:
 
-/*             
-            if(viewPresetSelectedIsPresetLoaded()) {
-                
-                settingsSetPresetNameChar((char)count_value, viewGetPresetCharIndex(), viewGetPresetNumberLoaded());
-            
-            } 
-*/
-
             settingsSetPresetNameChar((char)count_value, viewGetPresetCharIndex(), viewGetPresetNumberSelected());
 
             break;

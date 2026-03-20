@@ -93,10 +93,6 @@ void settingsSetStoredData(synth_storable_t data);
 
 void settingsSetMachineSettingsAll(machine_settings_t settings);
 
-// void settingsToggleMidiSetting(midi_settings_toggle_type_t setting);
-
-// bool settingsGetMidiSetting(midi_settings_toggle_type_t setting);
-
 machine_settings_t settingsGetMachineSettingsAll();
 
 external_modulation_t* settingsGetExternalModulation();
@@ -115,9 +111,6 @@ synth_storable_t settingsGetInitPatch();
 
 machine_settings_t settingsGetInitMachineSettings(); 
 
-// void settingsSetPresetName(preset_name_t n, uint8_t index);
-// void settingsSetTempPresetName(preset_name_t n);
-
 void settingsSetLoadedPresetNameByIndex(preset_name_t name, uint8_t index);
 
 void settingsSetBlankLoadedPresetNameByIndex(uint8_t index);
@@ -125,8 +118,6 @@ void settingsSetBlankLoadedPresetNameByIndex(uint8_t index);
 void settingsSetPresetNameChar(char c, uint8_t index, uint8_t preset); 
 
 preset_name_t settingsGetLoadedPresetNameByIndex(uint8_t index);
-
-// preset_name_t settingsGetTempPresetName();
 
 #ifdef __cplusplus
 }

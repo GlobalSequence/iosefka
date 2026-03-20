@@ -141,7 +141,6 @@ const char* graphicsPrintNothing(uint8_t index);
 const char* graphicsGetSettingsString(settings_string_t string);
 const char* graphicsGetDoubleDash(uint8_t x);
 const char* graphicsGetCharFromID(uint8_t index);
-// const char* graphicsGetCharStringFromPtr(uint8_t* ptr, size_t size);
 const char* graphicsBuildCharString(const uint8_t* ids, size_t count, char* outBuffer);
 const char* graphicsGetScopeDiv(uint8_t value);
 

@@ -134,7 +134,6 @@ uint8_t noteQueueGetCount() {
 void addToQueue(note_data_t note_data) {
 
     note_queue_internal.enqueue(note_data);
-    // note_queue_midi_out.enqueue(note_data);
 
 }
 
@@ -160,7 +159,6 @@ void noteQueueKillActiveNotes() {
 
         note_data_t note = note_queue_internal.readElement(index);
 
-        // noteQueueSubmit(note.note, 0, false);
         addToQueue(note);
 
     }

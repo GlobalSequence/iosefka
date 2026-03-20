@@ -9,7 +9,6 @@
 
 #include "../devices/peripheral_config.h"
 #include "../devices/pin_assignments.h"
-// #include "../devices/init_peripherals.h"
 #include "../devices/cd4051.h"
 #include "../devices/mcp230xx.h"
 #include "../devices/encoder.h"
@@ -53,13 +52,6 @@ static uint16_t last_encoder_val = 0;
 // ################################
 // GPIO EXPANDER DEFINES (gpio expander == mcp23017)
 // ################################
-
-// enum gpio_exp_enum {
-//     GPIO_EXP_KEYS,
-//     GPIO_EXP_LEDS,
-    
-//     NUM_GPIO_EXP
-// };
 
 static mcp23017_t mcp23017[NUM_GPIO_EXP] = {
     {I2C_DEVICES, I2C_MCP_ADDR_1, 0b1111111111111111},
@@ -108,25 +100,6 @@ void uiSetEncoderLoop(bool loop) {
     encoder_loop = loop;
 }
 
-// void uiSetLeds(uint8_t page, uint8_t layer, uint8_t layer_2) {
-    
-//     // shift the lit led to the respective page 0 - 2
-//     uint8_t page_position = 0b10000000 >> (page + 5);
-
-//     // shift the lit led to the respective layer 3 - 7
-//     uint8_t layer_position      = 0b10000000 >> layer;
-
-//     // do the same for layer_2, which gives us 2 leds in layer section
-//     // for special layer types like custom and mod
-//     uint8_t layer_position_2    = 0b10000000 >> layer_2;
-
-//     // OR the two values together
-//     gpio_exp_led_bits =  page_position | layer_position | layer_position_2;
-
-//     // allow the GPIO expander to transmit
-//     gpio_exp_transmit_leds = true;
-// }
-
 // ################################
 // PRIVATE FUNCTIONS
 // ################################
@@ -134,7 +107,6 @@ void uiSetEncoderLoop(bool loop) {
 void uiUpdatePotentiometers(uint8_t i) {
 
     // read the adc for the current mux input
-    // uint16_t val = getRawPotValSelect(i >> 3, i & 0x07);
     uint16_t val = getPotValSelectShiftRight3(i >> 3, i & 0x07);
 
     // check to see if the pot read is unlocked
@@ -202,27 +174,15 @@ void uiUpdatePotentiometers(uint8_t i) {
             // unlock pot read
             lock_pot_read[i] = false;
         }
+
     }
-    // if(i == 0) {
-    //     // TEST_PRINT_ONE_NL(val)
-    //     printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\n", 
-    //         i, 
-    //         val >> 1, 
-    //         getSmoothPotVal(i), 
-    //         lock_pot_read[i], 
-    //         pot_val_upon_locking[i],
-    //         pot_began_sleeping_time[i],
-    //         to_ms_since_boot(get_absolute_time())
-    //     );
-    // }
-    // printf("%d\t", getSmoothPotVal(i));
+
 }
 
 void uiUpdateEncoder() {
 
-    if(/* encoderAdvanced() */devicesEncoderAdvanced()) {
-        // static int8_t encoder_val;
-        // int8_t encoder_val = encoderGetValue();
+    if(devicesEncoderAdvanced()) {
+
         int8_t encoder_val = devicesEncoderGetValue();
 
         // create event struct
@@ -231,7 +191,6 @@ void uiUpdateEncoder() {
         // put the value into queue
         event_queue.enqueue(e);
 
-        // TEST_PRINT_TEXT("ENCodER\n")
     }
 }
 
@@ -246,7 +205,6 @@ void uiUpdateGpioExpanders(uint8_t i) {
     if(i != GPIO_EXP_PORTS_LEDS) {
 
         // read the port
-        // gpio_exp_port_val[i] = mcp23017Read(&mcp23017[gpio_exp_active], port_b);
         gpio_exp_port_val[i] = devicesGpioExpRead(gpio_exp_active, port_b);
 
         // loop to extract each bit from the gpio expander port output
@@ -283,7 +241,6 @@ void uiUpdateGpioExpanders(uint8_t i) {
             gpio_exp_transmit_leds = false;
 
             // write the LEDs to the port
-            // mcp23017Write(&mcp23017[GPIO_EXP_LEDS], 1, gpio_exp_led_bits);
             devicesGpioExpWrite(gpio_exp_led_bits);
         }
     }
@@ -323,8 +280,8 @@ void potentiometerReadSetup() {
             // loop through the update twice so the smoothing library has a read of the current value
             for(int l = 0; l < 2; l++) {
 
-                // pot[k].update(getRawPotValSelect(i, j));
                 pot[k].update(getPotValSelectShiftRight3(i, j));
+
             }
         }
     }
@@ -340,7 +297,6 @@ uint16_t getPotValSelectShiftRight3(int adc, int mux_input) {
 }
 
 uint16_t getRawPotValSelect(int adc, int mux_input) {
-    // return cd4051SelectChannelAndRead(adc, mux_input) >> 3;
     return devicesMuxSelectAndRead(adc, mux_input);
 }
 
@@ -356,12 +312,6 @@ uint16_t uiGetAdcValueForRandSeed() {
 
     return (v_1 << 4) ^ v_2;
 }
-
-// pico_ssd1306::SSD1306* uiGetDisplayPtr() {
-
-//     return display_ptr;
-
-// }
 
 // DEPRECATED FUNCTIONS
 

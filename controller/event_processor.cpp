@@ -50,8 +50,6 @@ void switchEvent(uint8_t index, uint8_t value) {
 
     if(switchActionsViewChanged()) displayShowEncoderModeCountdown();
 
-    // testSwitchReader();
-
 }
 
 void potEvent(uint8_t index, uint8_t value) {
@@ -65,14 +63,6 @@ void potEvent(uint8_t index, uint8_t value) {
         s->shift, 
         s->state_bottom);
 
-    // for(int i = 0; i < NUMBER_OF_PARAMETERS_PER_LAYER; i++) {
-
-    //     uint8_t val = parameterGetParamFromCurrentLayer(i);
-    //     TEST_PRINT_ONE_TAB(val)
-
-    // }
-    // TEST_PRINT_NL
-
 }
 
 void encoderEvent(int8_t value) {
@@ -82,9 +72,6 @@ void encoderEvent(int8_t value) {
     encoderMapAssignValue(value, s->encoder_switch);
 
     displayShowEncoderModeCountdown();
-
-    // TEST_PRINT_TEXT("ENCODER: ")
-    // TEST_PRINT_ONE_NL(encoderMapGetCount());
 
 }
 
@@ -102,9 +89,6 @@ bool processUiEvents() {
 
                 switchEvent(e.index, e.value);
 
-                // TEST_PRINT_TEXT("SWITCH: ")
-                // TEST_PRINT_ONE_NL(e.index)
-
                 break;
 
             case EVENT_POT:
@@ -121,7 +105,6 @@ bool processUiEvents() {
 
         }
 
-        // TEST_PRINT_TWO_NL(e.index, e.value)
         event_happened = true;
 
     }
@@ -177,49 +160,4 @@ bool eventProcessorUpdate() {
     event_happened_ui = processUiEvents();
 
     return event_happened_ui /* || other event || etc... */;
-}
-
-
-
-void testSwitchReader() {
-
-    // switch_reader_t *s = switchReaderGetStructPtr();
-
-    // TEST_PRINT_TEXT("STATE: ")
-
-    // for(int i = 0; i < NUMBER_OF_SWITCHES_TOTAL; i++) {
-
-    //     TEST_PRINT_ONE_TAB(s->state[i])
-
-    // }
-
-    // TEST_PRINT_NL
-
-    // TEST_PRINT_TEXT("TIMEOUT: ")
-
-    // for(int i = 0; i < NUMBER_OF_SWITCHES_TOTAL; i++) {
-
-    //     TEST_PRINT_ONE_TAB(s->timeout[i])
-
-    // }
-
-    // TEST_PRINT_NL
-
-    // TEST_PRINT_TEXT("SHIFT: ")
-    // TEST_PRINT_ONE_NL(s->shift)
-    // TEST_PRINT_TEXT("ALL: ")
-    // TEST_PRINT_ONE_NL(s->num_all_pressed)
-    // TEST_PRINT_TEXT("KEYS: ")
-    // TEST_PRINT_ONE_NL(s->num_keys_pressed)
-    // TEST_PRINT_TEXT("BOTTOM KEYS COUNT: ")
-    // TEST_PRINT_ONE_NL(s->num_bottom_keys_pressed)
-    // TEST_PRINT_TEXT("BOTTOM KEYS PRESSED")
-
-    // for(int i = 0; i < NUMBER_OF_BOTTOM_SWITCHES; i++) {
-
-    //     TEST_PRINT_ONE_TAB(s->state_bottom[i])
-
-    // }
-    // TEST_PRINT_NL
-
 }

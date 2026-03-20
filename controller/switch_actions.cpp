@@ -71,22 +71,6 @@ void pageKeyboard(switch_id_t sw, bool pressed, bool shift) {
 
     }
 
-    // // oscilloscope test, temporary
-    // switch (sw) {
-
-    //     case SW_T0: oscilloscopeSetModulo(0); break;
-    //     case SW_T1: oscilloscopeSetModulo(1); break;
-    //     case SW_T2: oscilloscopeSetModulo(2); break;
-    //     case SW_T3: oscilloscopeSetModulo(3); break;
-    //     case SW_T4: oscilloscopeSetModulo(4); break;
-    //     case SW_B4: oscilloscopeSetTimeDiv(0); break;
-    //     case SW_B5: oscilloscopeSetTimeDiv(1); break;
-    //     case SW_B6: oscilloscopeSetTimeDiv(2); break;
-    //     case SW_B7: oscilloscopeSetTimeDiv(3); break;
-    //     default: break;
-
-    // }
-
     uint8_t note, velocity;
 
     if(pressed) {
@@ -160,9 +144,7 @@ void seqSwitchAction(
 
                 }
 
-                // synth->seq.setStepData(step, synth->new_step);
                 synth->seq.setActiveStep(step);
-                // synth->seq.setWrittenStep(step);
     
                 ignore_release_action[sw_num] = true;
 
@@ -199,16 +181,6 @@ void seqSwitchAction(
 
     }
 
-    // TEST_PRINT_TEXT("P LOCK ORDER: ")
-
-    // for(int i = 0; i < NUMBER_OF_BOTTOM_SWITCHES; i++) {
-    
-    //     // TEST_PRINT_ONE_TAB(viewGetPLockOrder(i))
-    //     TEST_PRINT_ONE_TAB(pLockGetOrder(i))
-        
-    // }
-    // TEST_PRINT_NL
-
 }
 
 void setSequencerWindow(bool window_sel) {
@@ -242,7 +214,6 @@ void pageSequencer(
                 
         case SW_T0:
         
-            // if(pressed) setSequencerWindow(false);
             if(pressed) {
                 if(!shift) setSequencerWindow(false);
                 else synth->seq.shiftByPatternLength(false);
@@ -252,7 +223,6 @@ void pageSequencer(
         
         case SW_T1:
         
-            // if(pressed) setSequencerWindow(true);
             if(pressed) {
                 if(!shift) setSequencerWindow(true);
                 else synth->seq.shiftByPatternLength(true);
@@ -294,23 +264,7 @@ void pageSequencer(
 
 void setStorageState(storage_type_t type, bool shift) {
 
-    // TEST_PRINT_TEXT("ALL DATA SIZE: ")
-    // TEST_PRINT_ONE_NL(sizeof(*synth))
-    // TEST_PRINT_TEXT("PATCH SIZE: ")
-    // TEST_PRINT_ONE_NL(sizeof(synth->patch))
-    // TEST_PRINT_TEXT("SEQ SIZE: ")
-    // TEST_PRINT_ONE_NL(sizeof(*synth->seq.getPatternDataPtr()))
-    // TEST_PRINT_TEXT("PATTERN GEN: ")
-    // TEST_PRINT_ONE_NL(sizeof(synth->pattern_gen))
-    // TEST_PRINT_TEXT("MIDI SIZE: ")
-    // TEST_PRINT_ONE_NL(sizeof(synth->settings))
-    // TEST_PRINT_TEXT("NEW STEP: ")
-    // TEST_PRINT_ONE_NL(sizeof(synth->new_step))
-
     uint save_data_size = sizeof(synth->patch) + sizeof(*synth->seq.getPatternDataPtr()) + sizeof(synth->pattern_gen) + sizeof(synth->settings) + sizeof(synth->new_step);
-
-    // TEST_PRINT_TEXT("SAVE SIZE: ")
-    // TEST_PRINT_ONE_NL(save_data_size)
 
     storage_type_t current_type = storageGetType();
     storage_state_t state = storageGetState();
@@ -327,7 +281,6 @@ void setStorageState(storage_type_t type, bool shift) {
         if(shift) {
 
             storageSetState(STORAGE_STATE_ACTIVE);
-            // viewSetPresetNumberLoaded(viewGetPresetNumberSelected());
             if(current_type == STORAGE_TYPE_LOAD) viewResetMachineStateOnLoad();
 
         }
@@ -431,7 +384,6 @@ void pageSettings(switch_id_t sw, bool pressed, bool shift) {
         
         case SW_B7:
         
-            // if(pressed) toggleSetting(&synth->settings.out_thru);
             if(pressed) {
                 viewSetMode(MODE_SET_SCROLL);
                 toggleSetting(&synth->settings.latch);
@@ -580,7 +532,6 @@ bool checkViewSwitchesMinusCurrent(view_switch_t sw) {
 
         if(i != sw && view_switch_pressed[i]) {
             
-            // TEST_PRINT_ONE_NL(i);   
             return true;
         }
 
@@ -658,8 +609,6 @@ void switchActionsTakeInput(
 
         case SW_SYNTH_1_VIEW:
 
-            // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_SY1, VIEW_CHANGE_SEQ_SY1, shift);
-
             handleViewSwitch(VIEW_SWITCH_SY1, pressed);
 
             if(pressed) {
@@ -675,8 +624,8 @@ void switchActionsTakeInput(
 
                 } else {
 
-                    // viewChange(VIEW_CHANGE_KBD_SY1);
                     setView(VIEW_CHANGE_KBD_SY1);
+                
                 }
 
             } else {
@@ -684,8 +633,9 @@ void switchActionsTakeInput(
                 if(wait_for_sy1_release) {
 
                     wait_for_sy1_release = false;
-                    // viewChange(VIEW_CHANGE_KBD_SY1);
+
                     setView(VIEW_CHANGE_KBD_SY1);
+
                 }
             
             }
@@ -694,15 +644,13 @@ void switchActionsTakeInput(
 
         case SW_MOD_ENV_VIEW:
 
-            // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_ENV, VIEW_CHANGE_SEQ_ENV, shift);
             handleViewSwitch(VIEW_SWITCH_ENV, pressed);
-            if(pressed) setView(VIEW_CHANGE_KBD_ENV); /* viewChange(VIEW_CHANGE_KBD_ENV); */ 
+            if(pressed) setView(VIEW_CHANGE_KBD_ENV); 
 
             break;
 
         case SW_SEQ_VIEW:
 
-            // turn off the scope if it's on, no need to check
             viewSetScopeOn(false);
 
             handleViewSwitch(VIEW_SWITCH_SEQ, pressed);
@@ -716,13 +664,12 @@ void switchActionsTakeInput(
 
                 } else if(shift) {
 
-                    // viewChange(VIEW_CHANGE_SETTINGS);
                     setView(VIEW_CHANGE_SETTINGS);
 
                 } else {
 
-                    // viewChange(VIEW_CHANGE_SEQ_SEQ);
                     setView(VIEW_CHANGE_SEQ_SEQ);
+
                 }
 
             }
@@ -732,7 +679,6 @@ void switchActionsTakeInput(
 
         case SW_PLAY:
 
-            // if(pressed) synth->seq.isRunning()? synth->seq.stop() : synth->seq.run();
             if(pressed) playPressed();
 
             break;
@@ -767,11 +713,7 @@ void switchActionsTakeInput(
 
         case SW_SYNTH_2_VIEW:
 
-            // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_SY2, VIEW_CHANGE_SEQ_SY2, shift);
             handleViewSwitch(VIEW_SWITCH_SY2, pressed);
-
-            // TEST_PRINT_TEXT("SY2: ")
-            // TEST_PRINT_ONE_NL(pressed)
 
             if(pressed) {
 
@@ -781,8 +723,6 @@ void switchActionsTakeInput(
                 
                 } else {
 
-                    // viewChange(VIEW_CHANGE_KBD_SY2);
-                    // setView(VIEW_CHANGE_KBD_SY2);
                     if(shift) {
                         // crazy hack because "User Param" isn't a 'view'. 
                         // it's because the view change process is a bit convoluted
@@ -804,8 +744,9 @@ void switchActionsTakeInput(
                 if(wait_for_sy2_release == true) {
 
                     wait_for_sy2_release = false;
-                    // viewChange(VIEW_CHANGE_KBD_SY2);
+
                     setView(VIEW_CHANGE_KBD_SY2);
+
                 }
                 
 
@@ -816,9 +757,8 @@ void switchActionsTakeInput(
 
         case SW_MOD_LFO_VIEW:
 
-            // if(pressed) setViewCheckSeq(page, VIEW_CHANGE_KBD_LFO, VIEW_CHANGE_SEQ_LFO, shift);
             handleViewSwitch(VIEW_SWITCH_LFO, pressed);
-            if(pressed) setView(VIEW_CHANGE_KBD_LFO); /* viewChange(VIEW_CHANGE_KBD_LFO); */
+            if(pressed) setView(VIEW_CHANGE_KBD_LFO); 
 
             break;
 
@@ -863,8 +803,6 @@ void switchActionsTakeInput(
                                 break; 
 
                             default: break;
-                            // case SET_ROW_: viewSetMode(MODE_); break;
-                            // case SET_ROW_: toggleSetting(synth->); break;
 
                         }
 

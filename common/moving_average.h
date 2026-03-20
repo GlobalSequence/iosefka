@@ -9,6 +9,7 @@
 
 #define MA32_SIZE 32
 
+// ready made moving average class for 8-bit samples and buffer size of 32
 class MovingAverage32
 {
     public:
@@ -30,6 +31,7 @@ class MovingAverage32
         uint8_t ctr_;
 };
 
+// generalized moving average class
 template<typename T>
 class MovingAverage {
     public: 

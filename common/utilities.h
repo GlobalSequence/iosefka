@@ -326,14 +326,6 @@ static inline void XOR798(volatile uint16_t *seed) {
   *seed = x;
 }
 
-// typedef struct RingBufferState
-// {
-//   uint8_t size;
-//   uint8_t ctr;
-//   uint16_t total;
-//   uint8_t buffer[size];
-// };
-
 static inline uint8_t U8RingBuffer(uint8_t size, uint8_t& ctr, uint8_t& total, uint8_t* buffer, uint8_t sample) {
     total -= *(buffer + ctr);
     *(buffer + ctr) = sample;

@@ -120,7 +120,7 @@ void getTriggerIndex(bool* reset_ptr) {
 
 void fillScopeBuffer() {
 
-    if((scope_buffer_index % /* modulo[modulo_ctrl] */128 == 0) && pause_buffer_fill) return;
+    if((scope_buffer_index % 128 == 0) && pause_buffer_fill) return;
 
     // get the value for the time division
     uint8_t time_division = time_div[time_div_ctrl] + 1;
@@ -151,99 +151,4 @@ void fillScopeBuffer() {
         
     }
 
-    // TEST_PRINT_TWO_NL(scope_buffer_index, window)
-
 }
-
-/* 
-NOTES
-- RESET 'TRIGGER INDEX COLLECTED' ONCE BUFFER IS FULL
-- 
-
-*/
-
-// uint8_t current_window;
-// bool flip_buffer_half;
-
-// void getTriggerIndex(bool* reset_ptr) {
-
-//     uint8_t window_amount = time_div[time_div_ctrl];
-
-//     if(current_window >= window_amount) {
-
-//         current_window = 0; 
-//         flip_buffer_half = !flip_buffer_half;
-
-//             // find the next trigger index
-//         for(int i = 0; i < AUDIO_BLOCK_SIZE; i++) {
-
-//             if(reset_ptr[i]) {
-
-//                 // get the trigger index
-//                 trigger_index = i;
-//                 return;
-
-//             }
-        
-//         }
-
-//     } else {
-
-//         current_window++;
-
-
-//     }
-
-// }
-
-// uint8_t input_buffer[AUDIO_BLOCK_SIZE * 8];
-
-// void fillReadBuffer(uint16_t* buf_ptr) {
-
-//     uint input_start_index = (AUDIO_BLOCK_SIZE * current_window);
-
-//     for(int i = 0; i < SCOPE_HALF_BUFFER_SIZE; i++) {
-
-//         uint j = input_start_index + i;
-
-//         input_buffer[j] = buf_ptr[i] >> 7;
-
-//     }
-
-// }
-
-
-
-// void fillScopeBuffer() {
-
-//     uint8_t window_amount = time_div[time_div_ctrl];
-
-//     if(current_window == window_amount) {
-
-//         uint8_t write_start_index = flip_buffer_half ? SCOPE_HALF_BUFFER_SIZE : 0;
-//         uint8_t count_delta = window_amount + 1;
-//         uint limit = AUDIO_BLOCK_SIZE * (window_amount + 1);
-
-//         for(int i = 0; i < AUDIO_BLOCK_SIZE; i++) {
-
-//             uint r_i = trigger_index + (i * count_delta);
-//             // uint r_i = i * count_delta;
-//             uint8_t w_i = write_start_index + i;
-
-//             if(r_i >= limit) r_i -= limit;
-            
-//             scope_buffer[w_i] = input_buffer[r_i];
-
-//         }
-
-//     }
-
-// }
-
-// uint8_t* oscilloscopeGetActiveBuffer() {
-
-//     scope_active_buffer = flip_buffer_half ? &scope_buffer[SCOPE_HALF_BUFFER_SIZE] : &scope_buffer[0];
-
-//     return scope_active_buffer;
-
-// }

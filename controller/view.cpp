@@ -59,20 +59,6 @@ view_page_t getPageFromEvent(view_page_event_t event) {
 
 void viewSetPageContext(view_page_event_t event) {
 
-/*     view_page_t page;
-    switch(event) {
-        case EVT_PAGE_KEYS:
-            page = PAGE_KEYS;
-            break;
-
-            case EVT_PAGE_SEQ:
-            page = PAGE_SEQ;
-            break;
-
-            case EVT_PAGE_SETTINGS:
-            page = PAGE_SETTINGS;
-            break;
-    } */
     view_page_t page = getPageFromEvent(event);
 
     viewSetPage(page);
@@ -96,13 +82,6 @@ void viewSetLayerContext(view_layer_event_t event) {
             last_synth_1_layer = layer;
             break;
         case EVT_LAYER_SYNTH_2:
-/*             if(last_layer_event == event) {
-                layer = machine_state.layer == LAYER_SYNTH_2 ?
-                    LAYER_USER_PARAM : LAYER_SYNTH_2;
-            } else {
-                layer = last_synth_2_layer;
-            }
-            last_synth_2_layer = layer; */
             layer = LAYER_SYNTH_2;
             break;
         case EVT_LAYER_ENV:
@@ -160,19 +139,11 @@ void viewSetModeContext(view_mode_event_t event) {
 
         }
 
-    // this is hacky asf and also relies on the layer switching BEFORE mode switching. sorry not sorry.
-    } /* else if (last_layer_event == EVT_LAYER_SYNTH_2 && machine_state.layer == LAYER_USER_PARAM) {
-
-        last_mode_event = event;
-        machine_state.mode = MODE_USER_PARAM_DST;
-        return;
-
-    } */
+    } 
 
     last_mode_event = event;
     machine_state.mode = mode_context[event];
     viewSetMachineStateMode(mode_context[event]);
-    // viewSetMode(mode_context[event]);
 
 }
 
@@ -216,24 +187,6 @@ void viewSetup() {
         EVT_PAGE_SETTINGS, EVT_LAYER_NULL, EVT_MODE_SETTINGS
     };
 
-
-/*     mode_context[EVT_MODE_KEYS] = MODE_KBD_OCT;
-    mode_context[EVT_MODE_ENV] = MODE_MOD_DST_ENV_1;
-    mode_context[EVT_MODE_LFO] = MODE_MOD_DST_LFO_1;
-    mode_context[EVT_MODE_SEQ] = MODE_SEQ_SET_BPM;
-    mode_context[EVT_MODE_SETTINGS] = MODE_SET_SCROLL;
-    mode_context[EVT_MODE_USER_PARAM] = MODE_USER_PARAM_DST;
-
-    machine_state.keyboard_octave = kbd_oct_startup;
-    machine_state.sequencer_window = seq_window_startup;
-    machine_state.preset_number_selected = preset_startup;
-    machine_state.preset_number_loaded = preset_startup;
-    machine_state.seq_step_note = seq_step_note_startup;
-    machine_state.seq_step_octave = seq_step_octave_startup;
-
-    last_synth_1_layer = LAYER_SYNTH_1;
-    last_synth_2_layer = LAYER_SYNTH_2; */
-
     viewResetMachineStateOnLoad();
     // set a few extra states on startup that aren't set during preset loading
     mode_context[EVT_MODE_SETTINGS] = MODE_SET_SCROLL;
@@ -259,7 +212,6 @@ void viewChange(view_change_t event) {
     viewSetLayerContext(view_events[event].l);
     viewSetModeContext(view_events[event].m);
 
-    // view_change_led = true;
     last_view_change = event;
 }
 
@@ -279,8 +231,6 @@ void viewSetLayer(view_layer_t layer) {
 }
 
 void viewSetMode(view_mode_t mode) {
-
-    // machine_state.mode = mode_context[last_mode_event] = mode;
     
     mode_context[last_mode_event] = mode;
     viewSetMachineStateMode(mode);
@@ -326,8 +276,6 @@ void viewSetSequencerWindow(bool increment) {
     uint8_t val = cycleIntAddOrSub(machine_state.sequencer_window, 0, NUMBER_OF_SEQUENCER_WINDOWS - 1, counter);
 
     viewSetSequencerWindowByValue(val);
-
-    // machine_state.sequencer_window = cycleIntAddOrSub(machine_state.sequencer_window, 0, NUMBER_OF_SEQUENCER_WINDOWS - 1, counter);
 
 }
 

@@ -28,7 +28,6 @@
 bool temp_legato = true;
 
 // private
-// void startupSetAllPresetsToDefault();
 bool checkForRestoreMemoryRequest();
 
 // public

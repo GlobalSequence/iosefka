@@ -65,7 +65,6 @@ void setParamValSeqPLock(seq_params_t seq_param, uint8_t index, uint8_t value) {
 
                 step_p_lock_note[index] = v_1;
                 
-                // v_2 = viewGetSeqNoteSnapshot(index);
                 v_2 = pLockGetNote(index);
                 
                 v_3 = v_1 + v_2; 
@@ -73,12 +72,6 @@ void setParamValSeqPLock(seq_params_t seq_param, uint8_t index, uint8_t value) {
                 if(v_3 <= 0) v_3 = 0;
 
                 synth->seq.setStepNote(step, v_3);
-
-                // current_p_lock_note[index] = v_3;
-                // viewSetPLockNote(index, v_3);
-                // TEST_PRINT_TEXT("P NOTE: ")
-                // TEST_PRINT_ONE_TAB(index)
-                // TEST_PRINT_ONE_NL(v_3);
 
             }
             break;
@@ -98,17 +91,10 @@ void setParamValSeqPLock(seq_params_t seq_param, uint8_t index, uint8_t value) {
                 
                 while(v_3 >= 12) { v_3 -= 12; } v_3 += (v_1 * 12);
                 
-                // viewSetSeqNoteSnapshot(index, v_3);
                 pLockSetNote(index, v_3);
                 
                 synth->seq.setStepNote(step, v_3);
 
-                // current_p_lock_octave[index] = v_3;
-                // viewSetPLockOctave(index, v_3);
-                
-                // TEST_PRINT_TEXT("P OCT: ")
-                // TEST_PRINT_ONE_TAB(index)
-                // TEST_PRINT_ONE_NL(v_3);
             }
 
             break;
@@ -117,18 +103,12 @@ void setParamValSeqPLock(seq_params_t seq_param, uint8_t index, uint8_t value) {
 
             synth->seq.setStepVelocity(step, value);
 
-            // TEST_PRINT_TEXT("P VEL: ")
-            // TEST_PRINT_ONE_TAB(index)
-            // TEST_PRINT_ONE_NL(synth->seq.getStepVelocity(step));
             break;
         
         case SEQ_PARAM_STEP_LENGTH:
 
             synth->seq.setStepLength(step, param8bits0To31(value));
 
-            // TEST_PRINT_TEXT("P LEN: ")
-            // TEST_PRINT_ONE_TAB(index)
-            // TEST_PRINT_ONE_NL(synth->seq.getStepVelocity(step));
             break;
 
         case SEQ_PARAM_PROBABILITY:
@@ -143,10 +123,6 @@ void setParamValSeqPLock(seq_params_t seq_param, uint8_t index, uint8_t value) {
 }
 
 void setParamValSeq(seq_params_t seq_param, uint8_t value, bool shift) {
-
-    // // these go into the p lock function
-    // static uint8_t step_p_lock_note[NUMBER_OF_BOTTOM_SWITCHES];
-    // static uint8_t step_p_lock_octave[NUMBER_OF_BOTTOM_SWITCHES];
 
     uint8_t note;
     uint8_t octave;
@@ -214,13 +190,14 @@ void setParamValSeq(seq_params_t seq_param, uint8_t value, bool shift) {
 
         case SEQ_PARAM_DENSITY:
         case SEQ_PARAM_REPEAT:
+        case SEQ_PARAM_OCTAVE_RANGE:
             value = param8Bits0To7(value);
             break;
 
-        case SEQ_PARAM_OCTAVE_RANGE:
+/*         case SEQ_PARAM_OCTAVE_RANGE:
             if(synth->pattern_gen.on) value = param8Bits0To7(value);
             else value = param8Bits0To11(value);
-            break;
+            break; */
 
         default:
             break;
@@ -231,7 +208,6 @@ void setParamValSeq(seq_params_t seq_param, uint8_t value, bool shift) {
         case SEQ_PARAM_STEP_OCTAVE:
             synth->new_step.note = value;
             synth->pattern_gen.base_note = value;
-            // calculateSeqOctaveLimitNote();
             break;
     
         case SEQ_PARAM_STEP_LENGTH:
@@ -273,8 +249,6 @@ void setParamValSeq(seq_params_t seq_param, uint8_t value, bool shift) {
             break;
     
         case SEQ_PARAM_PROBABILITY:
-            // if(synth->pattern_gen.on) synth->pattern_gen.chance = value;   
-            // else synth->seq.setProbability(value);
             synth->seq.setProbability(value);
             break;
     
@@ -292,10 +266,6 @@ void setParamValSeq(seq_params_t seq_param, uint8_t value, bool shift) {
             break;
     
         case SEQ_PARAM_OCTAVE_RANGE:   
-            // if(synth->pattern_gen.on) synth->pattern_gen.octave_range = value;
-            // else {
-            //     synth->special.seq_octave_limit = value;
-            // }
             synth->pattern_gen.octave_range = value;
 
             break;
@@ -305,13 +275,10 @@ void setParamValSeq(seq_params_t seq_param, uint8_t value, bool shift) {
             break;
     }
 
-    // TEST_PRINT_ONE_NL(viewGetSeqParamStepOctave())
-
 }
 
 uint8_t modifyParamValueModDst(mod_destinations_t *dst, uint8_t value, bool shift) {
 
-    // mod_destinations_t new_dst;
     uint8_t mod_index;
     bool change_dst = false;
 
@@ -365,7 +332,6 @@ uint8_t modifyParamValueModDst(mod_destinations_t *dst, uint8_t value, bool shif
 
     if(change_dst && shift) {
         *dst = (mod_destinations_t) synth->patch.mod[mod_index].destination;
-        // TEST_PRINT_TWO_NL(*dst, mod_index)
     }
 
     return value;
@@ -423,11 +389,6 @@ mod_destinations_t getUserParameterModDestination(pot_index_t pot) {
         default:     break;
     }
     
-/*     for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
-        TEST_PRINT_ONE_TAB(synth->user_param.destination[i])
-    }
-    TEST_PRINT_NL */
-    
     switch(mod) {
 
         case MOD_DST_ENV_1_DST:
@@ -443,7 +404,6 @@ mod_destinations_t getUserParameterModDestination(pot_index_t pot) {
 
     }
     
-
     return mod;
 
 }
@@ -573,27 +533,6 @@ mod_destinations_t layerLookupModDst(view_layer_t layer, pot_index_t pot) {
 
         case LAYER_USER_PARAM:
 
-/*             switch (pot) {
-                case POT_0: return (mod_destinations_t) synth->user_param.destination[0]; 
-                case POT_1: return (mod_destinations_t) synth->user_param.destination[1]; 
-                case POT_2: return (mod_destinations_t) synth->user_param.destination[2]; 
-                case POT_3: return (mod_destinations_t) synth->user_param.destination[3]; 
-                case POT_4: return (mod_destinations_t) synth->user_param.destination[4]; 
-
-                case POT_5: return (mod_destinations_t) synth->user_param.destination[5]; 
-                case POT_6: return (mod_destinations_t) synth->user_param.destination[6]; 
-                case POT_7: return (mod_destinations_t) synth->user_param.destination[7]; 
-                case POT_8: return (mod_destinations_t) synth->user_param.destination[8]; 
-                case POT_9: return (mod_destinations_t) synth->user_param.destination[9]; 
-
-                case POT_10: return (mod_destinations_t) synth->user_param.destination[10]; 
-                case POT_11: return (mod_destinations_t) synth->user_param.destination[11]; 
-                case POT_12: return (mod_destinations_t) synth->user_param.destination[12]; 
-                case POT_13: return (mod_destinations_t) synth->user_param.destination[13]; 
-                case POT_14: return (mod_destinations_t) synth->user_param.destination[14]; // for drone mode off/on
-
-                default:     break;
-            } */
             return getUserParameterModDestination(pot);
 
             break;
@@ -624,54 +563,19 @@ inline void setParamSeq(
 
     } else {
 
-        // TEST_PRINT_TEXT("SEQ P LOCK: ")
-
         for(int i = 0; i < NUMBER_OF_BOTTOM_SWITCHES; i++) {
 
             if(bottom_key[i]) {
 
                 setParamValSeqPLock(seq_param, i, value);
 
-                // TEST_PRINT_ONE_TAB(i)
-
             }
-
-            // TEST_PRINT_NL
 
         }
 
     }
 
 }
-
-/* void testSynthParameters() {
-
-    for(int i = 0; i < NUM_VIEW_LAYERS; i++) {
-
-        if(i != LAYER_SEQ) {
-
-            // TEST_PRINT_TEXT("LAYER: ")
-            // TEST_PRINT_ONE_TAB(i)
-
-            for(int j = 0; j < NUMBER_OF_PARAMETERS_PER_LAYER; j++) {
-
-                view_layer_t layer = (view_layer_t)i;
-                pot_index_t pot = (pot_index_t)j;
-
-                mod_destinations_t dst = layerLookupModDst(layer, pot);
-            
-                // TEST_PRINT_ONE_TAB(*param_ptr[dst])
-                // TEST_PRINT_ONE_TAB(*render_patch_ptr[dst])
-
-            }
-
-            // TEST_PRINT_NL
-
-        }
-
-    }
-
-} */
 
 inline void setParamModDst(
     view_layer_t layer,
@@ -685,8 +589,6 @@ inline void setParamModDst(
 
     mod_destinations_t dst = layerLookupModDst(layer, pot);
     uint8_t value_modified = modifyParamValueModDst(&dst, value, shift);
-
-    // TEST_PRINT_TWO_NL(layer, pot)
 
     if(!p_lock_set) {
 
@@ -713,7 +615,6 @@ inline void setParamModDst(
         }
 
         *p = value_modified;
-        // *param_ptr[dst] = value_modified;
 
 #endif
 
@@ -731,8 +632,6 @@ inline void setParamModDst(
                 synth->seq.setStepPLockValue(step, value_modified);
 
 #ifdef ALLOW_P_LOCK
-
-
 
 #endif
 
@@ -800,7 +699,6 @@ void parameterSetup(synth_state_t *synth_state) {
     render_patch_ptr[MOD_DST_DELAY_AMOUNT] = &render_patch.delay.amount; 
     render_patch_ptr[MOD_DST_DELAY_RATE] = &render_patch.delay.rate;
     render_patch_ptr[MOD_DST_DELAY_FEEDBACK] = &render_patch.delay.feedback; 
-    // render_patch_ptr[MOD_DST_DELAY_FILTER] = &render_patch.delay.filter;
     render_patch_ptr[MOD_DST_ENV_1_ATTACK] = &render_patch.env[0].attack; 
     render_patch_ptr[MOD_DST_ENV_1_DECAY] = &render_patch.env[0].decay; 
     render_patch_ptr[MOD_DST_ENV_1_SUSTAIN] = &render_patch.env[0].sustain; 
@@ -868,7 +766,6 @@ void parameterSetup(synth_state_t *synth_state) {
     param_ptr[MOD_DST_DELAY_AMOUNT] = &synth->patch.delay.amount; 
     param_ptr[MOD_DST_DELAY_RATE] = &synth->patch.delay.rate;
     param_ptr[MOD_DST_DELAY_FEEDBACK] = &synth->patch.delay.feedback; 
-    // param_ptr[MOD_DST_DELAY_FILTER] = &synth->patch.delay.filter;
     param_ptr[MOD_DST_ENV_1_ATTACK] = &synth->patch.env[0].attack; 
     param_ptr[MOD_DST_ENV_1_DECAY] = &synth->patch.env[0].decay; 
     param_ptr[MOD_DST_ENV_1_SUSTAIN] = &synth->patch.env[0].sustain; 
@@ -961,15 +858,12 @@ void parameterSetValueWithPot(
 
     }
 
-    // testSynthParameters();
-
 }
 
 void parameterSetValueByModDst(mod_destinations_t dst, uint8_t value) {
 
     uint8_t value_modified = modifyParamValueModDst(&dst, value, false);
     *param_ptr[dst] = value_modified;
-    // *render_patch_ptr[dst] = value_modified;
 
 }
 
@@ -984,18 +878,6 @@ void parameterSetPLockByStep(uint8_t step, bool active) {
 
     }
 
-    // if(active) {
-
-    //     p_lock_active_dst[step] = (mod_destinations_t) synth->seq.getStepPLockParam(step);
-    //     p_lock_active_value[step] = synth->seq.getStepPLockValue(step);
-
-    // } else {
-
-    //     p_lock_active_dst[step] = MOD_DST_NONE;
-    //     p_lock_active_value[step] = 0;
-
-    // }
-
 #ifdef ALLOW_P_LOCK
 
 
@@ -1009,18 +891,6 @@ void parameterSetPLockByStep(uint8_t step, bool active) {
 void parameterCopyValuesToSynth() {
 
     render_patch = synth->patch;
-
-    // for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
-
-    //     mod_destinations_t dst = p_lock_active_dst[i];
-
-    //     if(dst != MOD_DST_NONE) {
-
-    //         *param_ptr[dst] = p_lock_active_value[i];
-
-    //     }
-
-    // }
 
 }
 
@@ -1046,7 +916,6 @@ synth_parameters_t* parameterGetRenderedPatchPointer() {
 
 uint8_t* parameterGetPointer(mod_destinations_t dst) {
 
-    // return param_ptr[dst];
 return render_patch_ptr[dst];
 
 }
@@ -1118,6 +987,7 @@ uint8_t parameterGetParamFromCurrentLayer(uint8_t index) {
             case SEQ_PARAM_SCALE: return synth->pattern_gen.scale; break;
             case SEQ_PARAM_REPEAT: return synth->pattern_gen.repeat; break;
             case SEQ_PARAM_OCTAVE_RANGE: return synth->pattern_gen.octave_range; break;
+            default: break;
 
         }
 

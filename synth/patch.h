@@ -91,15 +91,6 @@ typedef struct modulation_params_t
 
 } modulation_params_t;
 
-// typedef struct midi_config_params_t
-// {
-//     // uint8_t velocity;           // 0 - 255
-//     // uint8_t mod_wheel;          // 0 - 255
-//     // uint8_t aftertouch;         // 0 - 255
-
-
-// } midi_config_params_t;
-
 typedef struct synth_parameters_t {
      oscillator_params_t            osc[NUMBER_OF_OSCS];
      oscillator_shared_params_t     shared;
@@ -110,7 +101,6 @@ typedef struct synth_parameters_t {
      envelope_params_t              env[NUMBER_OF_ENVS];
      lfo_params_t                   lfo[NUMBER_OF_LFOS];
      modulation_params_t            mod[NUM_MOD_SOURCES];
-    //  midi_config_params_t           midi;
 
 } synth_parameters_t;
 

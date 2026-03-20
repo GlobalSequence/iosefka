@@ -57,7 +57,6 @@ void storageSetState(storage_state_t state) {
 
 void storageSetBlockIndex(uint8_t index) {
 
-    // storage_address = index * k_storage_block_size;
     storage_address = index;
 
 }
@@ -84,8 +83,6 @@ void storageExecuteTypeIfActive() {
 
         } 
 
-        // storage_finished = true;
-        // TEST_PRINT_TEXT("SAVE_OR_LOAD_HAPPENED\n")
         storageSetState(STORAGE_STATE_FINISHED);
 
     }
@@ -125,9 +122,6 @@ storage_state_t storageGetState() {
 
 bool storageStateChanged() {
 
-    // TEST_PRINT_TEXT("STATE: ")
-    // TEST_PRINT_ONE_NL(current_state);
-
     if(storage_state_changed) {
 
         storage_state_changed = false;
@@ -141,7 +135,6 @@ bool storageStateChanged() {
 
 void storageWriteAllMemory(write_callback func) {
 
-    // synth_storable_t s = settingsGetInitPatch();
     settingsSetInitPatch();
 
     for(int i = 0; i < NUMBER_OF_PRESETS; i++) {
@@ -201,9 +194,6 @@ void storageSaveVersion(version_t v) {
 
 void storageLoad(uint block_num) {
 
-    // synth_storable_t s = storageLoadPreset(block_num);
-
-    // settingsSetStoredData(s);
     storageLoadPresetInternal(block_num);
 
     machine_settings_t m;
@@ -261,7 +251,6 @@ version_t storageLoadVersion() {
 
 uint calculateAddress(uint8_t block_num) {
 
-    // return block_num * k_storage_block_size;
     return block_num * STORAGE_BLOCK_SIZE;
 
 }
@@ -284,56 +273,8 @@ void storageLoadPresetNames() {
 
         synth_storable_t s = storageLoadPreset(i);
 
-        // char* name = s.preset_name.name_char;
-
-        // settingsSetLoadedPresetNameByIndex(s.preset_name, i);
-
         sleep_ms(1);
 
     }
 
 }
-
-/* void storageLoadSettingsWithPointer(uint8_t* r) {
-
-    // devicesStorageGet(r, k_settings_address, sizeof(r));
-    devicesStorageGet(r, SETTINGS_ADDRESS, sizeof(r));
-
-} */
-
-// bool storageNeverWritten() {
-
-// /*     uint8_t c;
-//     uint8_t d = 0;
-
-//     devicesStorageGet(&c, k_first_written_address, sizeof(c));
-
-//     if(c) devicesStoragePut(&d, k_first_written_address, sizeof(d));
-
-//     return (bool)c; */
-
-
-//     // the eeprom comes with all bits set high
-//     // so if the version comes up as 255.255.255, we know to write all default presets
-//     version_t v;
-
-//     devicesStorageGet(&v.major, k_version_address, sizeof(version_t));
-
-//     if(v.major == 0xFF && v.minor == 0xFF && v.patch == 0xFF) {
-     
-//         v.major = VERSION_MAJOR;
-//         v.minor = VERSION_MINOR;
-//         v.patch = VERSION_PATCH;
-
-//         storageSaveVersion(v);
-        
-//         return true;
-
-//     }
-
-//     return false; 
-
-// }
-
-// private
-

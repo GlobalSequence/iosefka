@@ -8,7 +8,6 @@
 
 synth_state_t synth_state;
 preset_name_t loaded_preset_name[NUMBER_OF_PRESETS];
-// preset_name_t temp_preset_name;
 
 synth_state_t* settingsGetSynthState() {
 
@@ -207,9 +206,6 @@ synth_storable_t settingsGetInitPatch() {
     p.mod[10].destination       = 0x00; // breath control
     p.mod[10].amount            = 0x80;
 
-    // p.mod[11].destination       = 0x00;
-    // p.mod[11].amount            = 0x80;
-
     // step data;
 
     sd.note                 = 0x24;
@@ -321,86 +317,3 @@ preset_name_t settingsGetLoadedPresetNameByIndex(uint8_t index) {
     return loaded_preset_name[index];
 
 }
-
-// preset_name_t settingsGetTempPresetName() { return temp_preset_name; }
-
-// temp preset name set
-
-
-
-// deprecated
-
-/* void settingsToggleMidiSetting(midi_settings_toggle_type_t setting) {
-
-    bool *val_ptr;
-
-    switch(setting) {
-
-        case MIDI_SETTING_CLOCK:
-
-            val_ptr = &synth_state.midi.clock_rx;
-
-            break;
-
-        case MIDI_SETTING_TRANSPORT:
-
-            val_ptr = &synth_state.midi.transport_rx;
-        
-            break;
-
-
-        case MIDI_SETTING_PROGRAM_CHANGE:
-
-            val_ptr = &synth_state.midi.program_change_rx;
-        
-            break;
-
-        case MIDI_SETTING_OUT_THRU:
-
-            val_ptr = &synth_state.midi.out_thru;
-        
-            break;
-
-    }
-
-    *val_ptr = !*val_ptr;
-
-} */
-
-/* bool settingsGetMidiSetting(midi_settings_toggle_type_t setting) {
-
-    bool *val_ptr;
-
-    switch(setting) {
-
-        case MIDI_SETTING_CLOCK:
-
-            return synth_state.midi.clock_rx;
-
-            break;
-
-        case MIDI_SETTING_TRANSPORT:
-
-            return synth_state.midi.transport_rx;
-        
-            break;
-
-
-        case MIDI_SETTING_PROGRAM_CHANGE:
-
-            return synth_state.midi.program_change_rx;
-        
-            break;
-
-        case MIDI_SETTING_OUT_THRU:
-
-            return synth_state.midi.out_thru;
-        
-            break;
-
-        default:
-            return 0;
-
-    }
-
-} */

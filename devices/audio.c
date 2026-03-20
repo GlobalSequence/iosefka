@@ -22,7 +22,6 @@ static uint8_t int_chan;
 static uint8_t irq_num;
 
 static uint16_t counter;
-// static uint16_t counter_adc_buf;
 static uint8_t counter_adc_buf;
 static uint16_t input_dummy;
 

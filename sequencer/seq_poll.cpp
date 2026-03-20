@@ -1,15 +1,11 @@
 #include "seq_poll.h"
 #include "pattern_generator.h"
-// #include "../controller/note_queue.h"
-// #include "../controller/settings.h"
 #include "../common/test.h"
 #include "sequencer.h"
 
-// static synth_state_t *synth;
 static Sequencer *seq;
 static bool *ext_clk;
 static seqPollNoteFunc noteFunc;
-// static seqPollKillNoteFunc killNoteFunc;
 static seqPollPLockFunc pLockFunc;
 static seqPollClockTickPeriodFunc clockTickPeriodFunc;
 static seqPollClockTickEventFunc clockTickEventFunc;
@@ -61,8 +57,6 @@ void seqPollSetup(
 
     noteFunc = noteFunction;
 
-    // killNoteFunc = killNoteFunction;
-
     pLockFunc = pLockFunction;
 
     clockTickPeriodFunc = clockTickPeriodFunction;
@@ -70,8 +64,6 @@ void seqPollSetup(
     clockTickEventFunc = clockTickEventFunction;
 
     startEventFunc = startEventFunction;
-
-    // TEST_STEP_DATA_PATTERN_GEN_ON
 
 }
 
@@ -93,9 +85,6 @@ bool seqPollUpdate(unsigned long time) {
     }
 
     if(!ext_clk_active) {
-
-        // static uint32_t count;
-        // TEST_PRINT_ONE_NL(count++)
 
         tick_period = seq->getTickPeriod();
 
@@ -127,8 +116,6 @@ bool seqPollUpdate(unsigned long time) {
     bool step_advanced = seq->update();
 
     if(step_advanced) {
-
-        // TEST_PRINT_TEXT(".\n")
 
         noteOffEvent();
 
@@ -183,8 +170,6 @@ void noteOnEvent() {
         bool allow_step = patternGenIsActive()? true : seq->stepProbabilityCheck(rand_var, step);
 
         if(allow_step) {
-
-            // TEST_PRINT_TEXT("N\t")
 
             seq_active_step = step;
 

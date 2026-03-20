@@ -24,12 +24,9 @@ ModMatrix::ModMatrix(
     ext_mod_ = ext_mod;
     seed_ = random_seed;
 
-    // EnvInit2(&et_); // ENV TEST
-    // et.Init();
 
     for(int i = 0; i < NUMBER_OF_ENVS; i++) {
 
-        // EnvInit(&env_[i]);
         env_[i].Init();
 
     }
@@ -73,7 +70,6 @@ void ModMatrix::triggerNoteOn(uint8_t note, uint8_t velocity, bool trigger) {
 
         for (int i = 0; i < NUMBER_OF_ENVS; i++) {
 
-            // EnvTrigger(ATTACK, &env_[i]);
             env_[i].Trigger(ENV_SEGMENT_ATTACK);
 
         }
@@ -94,8 +90,7 @@ void ModMatrix::triggerNoteOn(uint8_t note, uint8_t velocity, bool trigger) {
 void ModMatrix::triggerNoteOff(uint8_t note) {
 
     for (int i = 0; i < NUMBER_OF_ENVS; i++) {
-        
-        // EnvTrigger(RELEASE, &env_[i]);
+
         env_[i].Trigger(ENV_SEGMENT_RELEASE);
 
     }
@@ -110,8 +105,6 @@ void ModMatrix::loadSources() {
     mod_source_[MOD_SRC_LFO_1] = LFORender(&lfo_[0]);
     mod_source_[MOD_SRC_LFO_2] = LFORender(&lfo_[1]);
     mod_source_[MOD_SRC_LFO_3] = LFORender(&lfo_[2]);
- 
-    // mod_source_[MOD_SRC_VELOCITY]   = velocity_ << 1;
 
     // velocity is 8 bits internally, so no shifting needs to be done
     mod_source_[MOD_SRC_VELOCITY]   = velocity_ << 4;
@@ -120,7 +113,6 @@ void ModMatrix::loadSources() {
     mod_source_[MOD_SRC_BREATH] = ext_mod_->breath_amt << 5;
     mod_source_[MOD_SRC_NOTE] = v_i->pitch_value << 5;
 
-    // vca_drone_mode_ = patch_->vca.level >> 7;
     vca_drone_mode_ = patch_->vca.level;
 
     dst_[MOD_DST_VCA] = vca_drone_mode_ == false? 0 : patch_->vca.level << 4;
@@ -177,14 +169,6 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_ENV_3_RELEASE] =   patch_->env[2].release << 4;
     dst_[MOD_DST_ENV_3_LOOP] =      patch_->env[2].loop << 4;
 
-/*     int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
-    for (uint8_t i = 0; i < NUMBER_OF_ENVS; ++i)
-    {
-        *lfo_parameters++ = patch_->lfo[i].rate << 4;
-        *lfo_parameters++ = patch_->lfo[i].shape << 4;
-        *lfo_parameters++ = patch_->lfo[i].phase << 4;
-        lfo_parameters += 2;
-    } */
     int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
     for (uint8_t i = 0; i < NUMBER_OF_LFOS; ++i)
     {
@@ -256,7 +240,6 @@ void ModMatrix::updateDestinations()
 
         if(patch_->vca.velocity_on) {
 
-            // vca_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_ << 1);
             vca_out = U8S16MULSHIFT8(mod_source_[MOD_SRC_ENV_3], velocity_);
 
         }
@@ -373,11 +356,6 @@ void ModMatrix::updateDestinations()
 
     for (int i = 0; i < NUMBER_OF_LFOS; ++i)
     {
-/*         uint8_t lfo_sync_reset_state = patch_->lfo[i].sync >> 6;
-        bool lfo_reset = lfo_reset_sync[lfo_sync_reset_state][0];
-        bool lfo_sync = lfo_reset_sync[lfo_sync_reset_state][1];
-        LFOSetSync(&lfo_[i], lfo_sync);
-        LFOSetReset(&lfo_[i], lfo_reset); */
         uint8_t lfo_sync_reset_state;
 
         switch(i) {
@@ -450,10 +428,7 @@ void ModMatrix::updateDestinations()
 
     d_i->amount = dst_[MOD_DST_DELAY_AMOUNT] >> 4;
     d_i->feedback = dst_[MOD_DST_DELAY_FEEDBACK] >> 4;
-
-    // d_i->length = dst_[MOD_DST_DELAY_RATE] >> 4;
     d_i->length = dst_[MOD_DST_DELAY_RATE] << 4;
-    // d_i->length = getClockDivValue12Bits(clock_period, clock_sync_div_val[dst_[MOD_DST_DELAY_RATE] >> 8]) << 4;
 
 }
 

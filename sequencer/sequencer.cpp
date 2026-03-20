@@ -146,7 +146,6 @@ void Sequencer::run() {
 
 void Sequencer::stop() {
     run_ = false;
-    // current_step_ = pattern_data_.direction == BACKWARD ? pattern_data_.last_step + 1 : pattern_data_.first_step - 1;
     if(pattern_data_.direction != BACKWARD) {
         current_step_ = pattern_data_.first_step - 1;
         dir_fwd_ = true;
@@ -296,16 +295,12 @@ void Sequencer::shiftByPatternLength(bool advance) {
     if(advance) {
         int new_last = pattern_data_.last_step + len + 1;
         if(!(new_last >= NUMBER_OF_SEQUENCER_STEPS)) {
-            // pattern_data_.last_step = new_last;
-            // pattern_data_.first_step = new_last - len;
             this->setFirstStep(new_last - len);
             this->setLastStep(new_last);
         }
     } else {
         int new_first = pattern_data_.first_step - len - 1;
         if(!(new_first < 0)) {
-            // pattern_data_.first_step = new_first;
-            // pattern_data_.last_step = new_first + len;
             this->setFirstStep(new_first);
             this->setLastStep(new_first + len);
         }
@@ -313,35 +308,9 @@ void Sequencer::shiftByPatternLength(bool advance) {
 
 }
 
-// void Sequencer::setStepAllParams(uint8_t index, step_data_t new_step) {
-//     pattern_data_.step[index] = new_step;
-// }
-
 void Sequencer::resetLoopCount() {
     loop_count_ = 0;
 }
-
-// void Sequencer::resetPlayingNote(uint8_t index) {
-
-//     if(step_length_countdown_[index]) {
-
-//         step_length_countdown_[index] = 0;
-
-//         note_off_event_[index] = true;
-
-//     }
-
-// }
-
-// void Sequencer::resetAllPlayingNotes() {
-
-//     for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
-
-//         this->resetPlayingNote(i);
-
-//     }
-
-// }
 
 uint8_t Sequencer::getStepNote(uint8_t index) {
     uint8_t step_note = pattern_data_.step[index].note + pattern_data_.transpose + ktranspose_offset;
@@ -365,10 +334,6 @@ uint8_t Sequencer::getStepPLockParam(uint8_t index) {
 uint8_t Sequencer::getStepPLockValue(uint8_t index) {
     return pattern_data_.step[index].p_lock_value;
 } 
-
-// bool Sequencer::getBlankStep(uint8_t index) {
-//     return pattern_data_.blank_step[index];
-// }
 
 void Sequencer::tickCalculator() {
     uint8_t div = pattern_data_.clock_div;

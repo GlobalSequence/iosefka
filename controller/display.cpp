@@ -1,3 +1,5 @@
+// in the event I've apologize for the code anywhere else, I apologize especially in this file
+
 #include "display.h"
 #include "../common/globals.h"
 #include "../common/utilities.h"
@@ -48,14 +50,11 @@ const uint8_t k_scope_div_x_times_coord = 120;
 // SETTINGS DEFINES
 // ################################
 
-
-// #define NUMBER_OF_VISIBLE_SETTINGS_ROWS 8
 #define NUMBER_OF_VISIBLE_SETTINGS_ROWS 6
 
 const uint8_t k_splash_name_y = 48;
 const uint8_t k_splash_version_y = 56;
 
-// const uint8_t k_settings_row_y[NUMBER_OF_VISIBLE_SETTINGS_ROWS] = {0, 8, 16, 24, 32, 40, 48, 54};
 const uint8_t k_settings_row_x = 8;
 const uint8_t k_settings_row_y[NUMBER_OF_VISIBLE_SETTINGS_ROWS] = {2, 12, 22, 32, 42, 52};
 const uint8_t k_settings_value_x[] = {110, 102, 94};
@@ -289,7 +288,7 @@ paramFuncGetGraphic param_func_s_env[k_num_disp_parameters] = {
     graphicsGetHexString, 
     graphicsGetHexString, 
     graphicsGetHexString, 
-    /* graphicsGetVcaMode, */graphicsGetHexString,
+    graphicsGetHexString,
 
 };
 
@@ -395,8 +394,6 @@ display_param_t *display_param[NUM_VIEW_LAYERS];
 // PRIVATE DECLARATIONS
 // ################################
 
-// the function that determines what to display
-// void determineDisplay();
 void displayLayerHeader(view_layer_t layer);
 void displayParams(view_layer_t layer, view_page_t page, bool p_lock);
 void displaySteps();
@@ -408,7 +405,6 @@ void disableAdditionalTimerFlags();
 void displayHangTimerSet();
 void displayHangTimerCheck();
 void displayOffTimer(bool reset);
-// void draw8x8Rectangle(uint8_t x, uint8_t y);
 void drawChars(const char* text, uint8_t x, uint8_t y, WriteMode write_mode);
 void drawRectangle(uint8_t x, uint8_t y, uint8_t x_len, uint8_t y_len, bool fill, WriteMode mode);
 void drawLineBresenham(int16_t x0, int16_t y0, int16_t x1, int16_t y1);
@@ -451,9 +447,6 @@ void displayHangTimerCheck() {
             display_trigger = true;
             disableAdditionalTimerFlags();
 
-            // we declare these here instead of calling displayShowAltScreen so we don't set off the timer again
-            // alt_screen_event = DISP_EVT_NONE;
-            // current_alt_screen = ALT_SCRN_NONE;
             alt_screen_event = resume_alt_screen_event;
             current_alt_screen = resume_alt_screen;
 
@@ -558,14 +551,7 @@ inline uint8_t getSeqParamValue(uint8_t index, uint8_t step, bool p_lock) {
         
             break;
 
-        case 1:
-
-            // if(!p_lock) {
-            //     val = viewGetSeqParamStepOctave();
-            // } else {
-            //     // viewGetFirstPLockOctave();
-            // }
-            
+        case 1:            
             break;
 
         case 2:
@@ -780,6 +766,7 @@ bool isModLayer(view_layer_t layer) {
     return false;
 
 }
+
 // this is basically the same as the encoder mode mod layer except with the loop and minus the mod dsts
 // TODO: merge them
 void drawModLayer(view_layer_t layer, uint8_t index) {
@@ -912,7 +899,6 @@ void displayUpdateLeds(view_layer_t layer, view_page_t page) {
                 break;
         }
 
-        // *led_bits = (0x80 >> page_led) | (0x80 >> layer_led) | (0x80 >> layer_led_2);
         *led_bits = (1 << page_led) | (1 << layer_led) | (1 << layer_led_2);
     
         // allow the GPIO expander to transmit
@@ -1138,8 +1124,6 @@ void displayPageSettings() {
                     break;
             }
 
-            // drawChars(string, )
-
         }
 
         for(int i = 0; i < NUMBER_OF_VISIBLE_SETTINGS_ROWS; i++) {
@@ -1230,8 +1214,6 @@ void displayPageSettings() {
             }
             drawLine(0, y_pos_top, k_settings_mode_focus_w, 1, WriteMode::ADD);
             drawLine(0, y_pos_bottom, k_settings_mode_focus_w, 1, WriteMode::ADD);
-            // drawLine(0, y_pos - 2, k_settings_mode_focus_w, 1, WriteMode::ADD);
-            // drawLine(0, y_pos + 10, k_settings_mode_focus_w, 1, WriteMode::ADD);
 
         }
 
@@ -1274,7 +1256,6 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
                     dst = (mod_destinations_t)*p.val_p;
                     ptr = parameterGetPointer(dst);
 
-                    // if(dst == MOD_DST_NONE) func = graphicsGetDoubleDash;
                     if(!isUserParamUsable(dst)) func = graphicsGetDoubleDash;
 
                     if(k == viewGetCurrentUserParameter()) {
@@ -1309,12 +1290,6 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
                         else if (k == k_param_fil_t_i) val = param8Bits0To3(val);
                         break;
                     case LAYER_LFO:
-/*                         if (k == k_param_lfo_1_sh_i) val = param8Bits0To4(val);
-                        else if (k == k_param_lfo_2_sh_i) val = param8Bits0To4(val);
-                        else if (k == k_param_lfo_3_sh_i) val = param8Bits0To4(val);
-                        else if (k == k_param_lfo_1_rs_i) val = param8Bits0To3(val);
-                        else if (k == k_param_lfo_2_rs_i) val = param8Bits0To3(val);
-                        else if (k == k_param_lfo_3_rs_i) val = param8Bits0To3(val); */
                         switch(k) {
 
                             case k_param_lfo_1_sh_i:
@@ -1390,98 +1365,6 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
         if(mod_layer) drawModLayer(layer, i);
 
     }
-
-/*     uint8_t step = getPLockStep();
-
-    uint8_t k = 0;
-
-    for(int i = 0; i < NUMBER_OF_PARAM_ROWS; i++) {
-
-        for(int j = 0; j < NUMBER_OF_PARAM_COLS; j++) {
-
-            uint8_t x, y;
-
-            x = param_coords_x[j];
-            y = param_coords_y[i];
-
-            display_param_t p = display_param[layer][k];
-            uint8_t val;
-
-            if(layer != LAYER_SEQ) {
-
-                val = val = *p.val_p;
-
-                if(p_lock && isThisAPLockedSynthVal(step, p.val_p)) {
-
-                    val = synth->seq.getStepPLockValue(step);
-                    drawRectangle(x - 1, y - 1, k_param_p_lock_length, k_param_p_lock_height, true, WriteMode::ADD);
-            
-                }
-
-                if(p.val_p == &patch->shared.sync) val = param8Bits0To1(val);
-                // else if (p.val_p == &patch->vca.level) val = param8Bits0To1(val);
-                else if (p.val_p == &patch->osc[0].octave) val = param8Bits0To3(val);
-                else if (p.val_p == &patch->osc[1].octave) val = param8Bits0To3(val);
-                else if (p.val_p == &patch->lfo[0].shape) val = param8Bits0To4(val);
-                else if (p.val_p == &patch->lfo[1].shape) val = param8Bits0To4(val);
-                else if (p.val_p == &patch->lfo[2].shape) val = param8Bits0To4(val);
-                else if (p.val_p == &patch->lfo[0].sync) val = param8Bits0To3(val);
-                else if (p.val_p == &patch->lfo[1].sync) val = param8Bits0To3(val);
-                else if (p.val_p == &patch->lfo[2].sync) val = param8Bits0To3(val);
-                else if (p.val_p == &patch->filter.type) val = param8Bits0To3(val);
-
-            } else {
-
-                if(p_lock && k == 0) {
-                    
-                    drawRectangle(x - 1, y - 1, seq_p_lock_length, seq_p_lock_height, true, WriteMode::ADD);
-
-                }
-
-                val = getSeqParamValue(k, step, p_lock);
-
-            }
-
-            const char *param = p.func(val);  
-            drawChars(param, x , y, WriteMode::INVERT);
-            k++;
-
-        }
-
-        // WHEN YOU MOVE THIS, REPLACE THIS WITH THE 'ISMODLAYER' FUNCTION IN THIS FILE
-        if(layer == LAYER_ENV || layer == LAYER_LFO) {
-
-            uint8_t y = param_coords_y[i];
-            const char* index = "0";
-
-            switch(i) {
-                case 0:
-                    index = "1";
-                    break;
-                case 1:
-                    index = "2";
-                    break;
-                case 2:
-                    index = "3";
-                    break;
-                default:
-                    break;
-            }
-
-            drawChars(index, 0, y, WriteMode::INVERT);
-
-            if(layer == LAYER_ENV) {
-
-                const char* loop = " ";
-                if(patch->env[i].loop) loop = "L";
-
-                drawChars(loop, 120, y, WriteMode::ADD);
-
-            }
-
-        }
-
-    } */
 
 }
 
@@ -1592,11 +1475,6 @@ void displaySteps() {
     
     drawLine(w_x, w_y, k_step_window_len, 1, WriteMode::INVERT);
     
-    // for(int i = 0; i < k_step_window_len; i++) {
-
-    //     devicesDisplaySetPixel(w_x + i, w_y, WriteMode::INVERT);
-
-    // }
 }
 
 void displayEncoderMode(view_layer_t layer) {
@@ -1616,8 +1494,6 @@ void displayEncoderMode(view_layer_t layer) {
 }
 
 void displayEncoderModeNormal(view_mode_t mode) {
-
-    // bool user_param;
     
     // hack to make it so that you're always seeing the user param dst
     if(mode == MODE_USER_PARAM_SEL) {
@@ -1871,6 +1747,7 @@ void showScope() {
         devicesDisplaySetPixel(i, scope_ptr[--j], WriteMode::ADD);
 
         // unfortunately, drawing straight lines between each scope point is too processor intensive :/
+        // I left this here so you know that I tried <3
 /*         
         uint8_t y_pos = scope_ptr[i];
 
@@ -2038,13 +1915,6 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
     set_row_top = 0;
     set_row_bottom = NUMBER_OF_VISIBLE_SETTINGS_ROWS - 1;
 
-    // float scroll_bar_proportion = (float)(NUMBER_OF_VISIBLE_SETTINGS_ROWS) / (float)(NUM_SET_ROWS);
-    // // float scroll_bar_height_float = scroll_bar_proportion * (float)(SCREEN_HEIGHT);
-    // float scroll_bar_increment_float = scroll_bar_proportion * ((float)(SCREEN_HEIGHT) / (float)(NUMBER_OF_VISIBLE_SETTINGS_ROWS));
-    // float scroll_bar_height_float = scroll_bar_increment_float * ((float)(NUMBER_OF_VISIBLE_SETTINGS_ROWS));
-    // settings_scroll_bar_height = (uint8_t)(scroll_bar_height_float);
-    // settings_scroll_bar_increment = (uint8_t)(scroll_bar_increment_float);
-
     float p = (float)NUMBER_OF_VISIBLE_SETTINGS_ROWS / (float)NUM_SET_ROWS;
     float scroll_bar_height_float = p * (float)SCREEN_HEIGHT;
     float scroll_bar_increment_float = ((float)SCREEN_HEIGHT - scroll_bar_height_float) / ((float)NUM_SET_ROWS - (float)NUMBER_OF_VISIBLE_SETTINGS_ROWS);
@@ -2055,23 +1925,8 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
     devicesDisplayClear();
 
     devicesDisplayDrawBitmap(0, 0, 128, 64, (uint8_t*)graphicsGetLogo(), WriteMode::ADD);
-    // drawChars("Iosefka")
 
     devicesDisplayDisplay();
-
-    // sleep_ms(4000);
-
-    // const uint8_t chars[PRESET_NAME_LENGTH] = {
-    //     CHAR_ID_A, CHAR_ID_B, CHAR_ID_C, CHAR_ID_D,
-    //     CHAR_ID_E, CHAR_ID_F, CHAR_ID_G, CHAR_ID_H,
-    // };
-
-    // char buf[PRESET_NAME_LENGTH];
-
-    // const char* graphic = graphicsBuildCharString(chars, PRESET_NAME_LENGTH, buf);
-
-    // TEST_PRINT_TEXT(graphic);
-    // TEST_PRINT_NL
 
 }
 
@@ -2186,7 +2041,6 @@ void displayShowPresetCounterText(uint8_t index) {
 
     devicesDisplayDisplay();
 
-    // display_trigger = true;
     displayTrigger();
 
 }
@@ -2196,15 +2050,6 @@ void displayShowWritingNewPresets(uint8_t index) {
     devicesDisplayClear();
 
     drawChars("writing new", 0, 0, WriteMode::ADD);
-    // drawChars("presets. ", 0, k_storage_y[0], WriteMode::ADD);
-    // drawChars("please wait.", 0, k_storage_y[1], WriteMode::ADD);
-
-    // drawChars(graphicsGetHexString(index), 0, k_storage_y[3], WriteMode::ADD);
-
-    // devicesDisplayDisplay();
-
-    // // display_trigger = true;
-    // displayTrigger();
 
     displayShowPresetCounterText(index);
 }
@@ -2219,6 +2064,7 @@ void displayShowUpdatingPresets(uint8_t index) {
 
 }
 
+// TODO: Modify older functions to use this
 // call this to display an alt screen. 
 // if timer is called, the event is set to 'ALT_SCRN_NONE' automatically when the timer is up
 // otherwise it must be set to 'ALT_SCN_NONE' manually to reset

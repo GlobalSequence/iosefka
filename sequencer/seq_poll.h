@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "sequencer.h"
-// #include "../common/globals.h"
-// #include "../controller/settings.h"
 
 typedef void (*seqPollNoteFunc)(uint8_t, uint8_t, bool);
 typedef void (*seqPollPLockFunc)(uint8_t, bool);

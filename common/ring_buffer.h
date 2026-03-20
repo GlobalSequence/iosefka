@@ -32,8 +32,8 @@ class RingBuffer {
             return out;
         }
 
+        // dangerous function, as you can exceed ring buffer size
         T readElement(uint index) {
-            // dangerous function, as you can exceed ring buffer size
             return buffer_[index];
         }
 

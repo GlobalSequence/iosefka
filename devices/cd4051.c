@@ -23,21 +23,6 @@ void cd4051Setup(int mux_a, int mux_b, int mux_c, int mux_com_1, int mux_com_2) 
     analog_read_pin[MUX_COM_1] =  mux_com_1;
     analog_read_pin[MUX_COM_2] = mux_com_2;
 
-    // // initialize the control pins
-    // gpio_init(mux_ctrl_pin[MUX_CTRL_A]);
-    // gpio_init(mux_ctrl_pin[MUX_CTRL_B]);
-    // gpio_init(mux_ctrl_pin[MUX_CTRL_C]);
-    // gpio_set_dir(mux_ctrl_pin[MUX_CTRL_A], GPIO_OUT);
-    // gpio_set_dir(mux_ctrl_pin[MUX_CTRL_B], GPIO_OUT);
-    // gpio_set_dir(mux_ctrl_pin[MUX_CTRL_C], GPIO_OUT);
-    // gpio_put(mux_ctrl_pin[MUX_CTRL_A], 0);
-    // gpio_put(mux_ctrl_pin[MUX_CTRL_B], 0);
-    // gpio_put(mux_ctrl_pin[MUX_CTRL_C], 0);
-
-    // // setup the ADC
-    // adc_init();
-    // adc_gpio_init(analog_read_pin[MUX_COM_1]);
-    // adc_gpio_init(analog_read_pin[MUX_COM_2]);
 }
 
 uint16_t cd4051SelectChannelAndRead(uint8_t adc_in_sel, uint8_t mux_in_sel) {

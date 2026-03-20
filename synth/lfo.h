@@ -5,7 +5,6 @@
 #include "pico/stdlib.h"
 #include "math.h"
 #include "../common/utilities.h"
-// #include "noise.h"
 
 // #define USING_ATMEGA328P
 
@@ -316,14 +315,12 @@ typedef struct lfo_t {
 
     bool reset_ = false;
     bool sync_ = false;
-    // xorShiftVariables lfoNoise;
     SawParams s;
     Sample_Hold_Params sh;
 } lfo_t;
 
 inline void LFOSetup(lfo_t* l, uint32_t seed) {
 
-  // xorShift128Init(&l->lfoNoise, seed);
   l->seed_ = seed;
 
 }
@@ -425,7 +422,6 @@ static uint16_t LFORender(lfo_t* l) {
       
       if (l->previous_phase_ > l->phase_)
       {
-          // sample = xorShift128(&l->lfoNoise) >> 20;
           XOR798(&l->seed_);
           sample = l->seed_ >> 4;
           l->hold_sample_ = sample;

@@ -96,24 +96,6 @@ typedef enum view_switch_t {
 
 } view_switch_t;
 
-// typedef enum switch_to_key_t {
-
-//     KEY_C       = SW_B7,
-//     KEY_C_S     = SW_T0,
-//     KEY_D       = SW_B6,
-//     KEY_D_S     = SW_T1,
-//     KEY_E       = SW_B5,
-//     KEY_F       = SW_B4,
-//     KEY_F_S     = SW_T2,
-//     KEY_G       = SW_B3,
-//     KEY_G_S     = SW_T3,
-//     KEY_A       = SW_B2,
-//     KEY_A_S     = SW_T4,
-//     KEY_B       = SW_B1,
-//     KEY_C2      = SW_B0
-
-// } switch_to_key_t;
-
 // ################################
 // POTENTIOMETERS
 // ################################
@@ -294,8 +276,8 @@ typedef enum mod_destinations_t {
     MOD_DST_PORTAMENTO,
     MOD_DST_PHASE_MOD,
     MOD_DST_SYNC,
-    MOD_DST_BITRATE_REDUCE,          // NEW
-    MOD_DST_SAMPLERATE_REDUCE,       // NEW
+    MOD_DST_BITRATE_REDUCE,          
+    MOD_DST_SAMPLERATE_REDUCE,      
     MOD_DST_MIX_OSC_1_MIX,
     MOD_DST_MIX_OSC_2_MIX,
     MOD_DST_MIX_NOISE_MIX,
@@ -308,27 +290,24 @@ typedef enum mod_destinations_t {
     MOD_DST_DELAY_RATE,
     MOD_DST_DELAY_FEEDBACK,
     MOD_DST_DELAY_AMOUNT,
-    // MOD_DST_DELAY_DIFFUSION,
-    // MOD_DST_DELAY_FILTER,
-    // MOD_DST_DELAY_STEREO,
     MOD_DST_ENV_1_ATTACK,
     MOD_DST_ENV_1_DECAY,
     MOD_DST_ENV_1_SUSTAIN,
     MOD_DST_ENV_1_RELEASE,
     MOD_DST_ENV_1_AMOUNT,
-    MOD_DST_ENV_1_LOOP,              // NEW
+    MOD_DST_ENV_1_LOOP,
     MOD_DST_ENV_2_ATTACK,
     MOD_DST_ENV_2_DECAY,
     MOD_DST_ENV_2_SUSTAIN,
     MOD_DST_ENV_2_RELEASE,
     MOD_DST_ENV_2_AMOUNT,
-    MOD_DST_ENV_2_LOOP,              // NEW
+    MOD_DST_ENV_2_LOOP,
     MOD_DST_ENV_3_ATTACK,
     MOD_DST_ENV_3_DECAY,
     MOD_DST_ENV_3_SUSTAIN,
     MOD_DST_ENV_3_RELEASE,
     MOD_DST_ENV_3_AMOUNT,
-    MOD_DST_ENV_3_LOOP,              // NEW
+    MOD_DST_ENV_3_LOOP,
     MOD_DST_LFO_1_RATE,
     MOD_DST_LFO_1_SHAPE,
     MOD_DST_LFO_1_PHASE,

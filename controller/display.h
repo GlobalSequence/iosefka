@@ -8,7 +8,6 @@
 #include "../synth/patch.h"
 #include "../devices/ssd1306.h"
 
-
 using namespace pico_ssd1306;
 
 #ifdef __cplusplus
@@ -28,7 +27,6 @@ void displayShowUpdatingPresets(uint8_t index);
 
 void displayShowAltScreen(displayable_events_t evt, bool timer);
 
-// bool displayScopeActive();
 bool displayInternalEventTrigger();
 
 #ifdef __cplusplus
