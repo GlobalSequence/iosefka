@@ -143,7 +143,6 @@ pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/devices/spi.p
 pico_set_program_name(iosefka "iosefka")
 pico_set_program_version(iosefka "0.1")
 
-
 # Modify the below lines to enable/disable output over UART/USB
 pico_enable_stdio_uart(iosefka 0)
 pico_enable_stdio_usb(iosefka 1)
