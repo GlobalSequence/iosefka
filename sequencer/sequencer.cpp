@@ -250,6 +250,17 @@ void Sequencer::resetActiveStep(uint8_t index) {
     note_on_event_[index] = false;
 }
 
+void Sequencer::clearAllSteps() {
+
+    for(int i = 0; i < NUMBER_OF_SEQUENCER_STEPS; i++) {
+
+        pattern_data_.step_active[i] = false;
+        pattern_data_.step_written[i] = false;
+
+    }
+
+}
+
 void Sequencer::setProbability(uint8_t new_probability) {
     pattern_data_.probability = new_probability;
 }
@@ -293,16 +304,18 @@ void Sequencer::setStepProbability(uint8_t index, uint8_t value) {
 void Sequencer::shiftByPatternLength(bool advance) {
     uint8_t len = this->getPatternLength();
     if(advance) {
-        int new_last = pattern_data_.last_step + len + 1;
+        int new_first = pattern_data_.first_step + len;
+        int new_last = pattern_data_.last_step + len;
         if(!(new_last >= NUMBER_OF_SEQUENCER_STEPS)) {
-            this->setFirstStep(new_last - len);
+            this->setFirstStep(new_first);
             this->setLastStep(new_last);
         }
     } else {
-        int new_first = pattern_data_.first_step - len - 1;
+        int new_first = pattern_data_.first_step - len;
+        int new_last = pattern_data_.last_step - len;
         if(!(new_first < 0)) {
             this->setFirstStep(new_first);
-            this->setLastStep(new_first + len);
+            this->setLastStep(new_last);
         }
     }
 

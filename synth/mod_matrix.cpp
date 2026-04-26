@@ -111,7 +111,7 @@ void ModMatrix::loadSources() {
     mod_source_[MOD_SRC_MOD_WHEEL]  = ext_mod_->mod_wheel_amt << 5;
     mod_source_[MOD_SRC_AFTERTOUCH] = ext_mod_->aftertouch_amt << 5;
     mod_source_[MOD_SRC_BREATH] = ext_mod_->breath_amt << 5;
-    mod_source_[MOD_SRC_NOTE] = v_i->pitch_value << 5;
+    mod_source_[MOD_SRC_NOTE] = v_i->pitch_value >> 3;
 
     vca_drone_mode_ = patch_->vca.level;
 
@@ -169,15 +169,30 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_ENV_3_RELEASE] =   patch_->env[2].release << 4;
     dst_[MOD_DST_ENV_3_LOOP] =      patch_->env[2].loop << 4;
 
-    int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
-    for (uint8_t i = 0; i < NUMBER_OF_LFOS; ++i)
-    {
-        *lfo_parameters++ = patch_->lfo[i].rate << 4;
-        *lfo_parameters++ = patch_->lfo[i].shape << 4;
-        *lfo_parameters++ = patch_->lfo[i].phase << 4;
-        *lfo_parameters++ = patch_->lfo[i].sync << 4;
-        lfo_parameters += 1;
-    }
+    // int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
+    // for (uint8_t i = 0; i < NUMBER_OF_LFOS; ++i)
+    // {
+    //     *lfo_parameters++ = patch_->lfo[i].rate << 4;
+    //     *lfo_parameters++ = patch_->lfo[i].shape << 4;
+    //     *lfo_parameters++ = patch_->lfo[i].phase << 4;
+    //     *lfo_parameters++ = patch_->lfo[i].sync << 4;
+    //     lfo_parameters += 1;
+    // }
+
+    dst_[MOD_DST_LFO_1_RATE] = patch_->lfo[0].rate << 4;
+    dst_[MOD_DST_LFO_1_SHAPE] = patch_->lfo[0].shape << 4;
+    dst_[MOD_DST_LFO_1_PHASE] = patch_->lfo[0].phase << 4;
+    dst_[MOD_DST_LFO_1_SYNC] = patch_->lfo[0].sync << 4;
+
+    dst_[MOD_DST_LFO_2_RATE] = patch_->lfo[1].rate << 4;
+    dst_[MOD_DST_LFO_2_SHAPE] = patch_->lfo[1].shape << 4;
+    dst_[MOD_DST_LFO_2_PHASE] = patch_->lfo[1].phase << 4;
+    dst_[MOD_DST_LFO_2_SYNC] = patch_->lfo[1].sync << 4;
+
+    dst_[MOD_DST_LFO_3_RATE] = patch_->lfo[2].rate << 4;
+    dst_[MOD_DST_LFO_3_SHAPE] = patch_->lfo[2].shape << 4;
+    dst_[MOD_DST_LFO_3_PHASE] = patch_->lfo[2].phase << 4;
+    dst_[MOD_DST_LFO_3_SYNC] = patch_->lfo[2].sync << 4;
 
     dst_[MOD_DST_ENV_1_AMOUNT] = patch_->mod[MOD_SRC_ENV_1].amount << 4;
     dst_[MOD_DST_ENV_2_AMOUNT] = patch_->mod[MOD_SRC_ENV_2].amount << 4;
@@ -186,9 +201,18 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_LFO_2_AMOUNT] = patch_->mod[MOD_SRC_LFO_2].amount << 4;
     dst_[MOD_DST_LFO_3_AMOUNT] = patch_->mod[MOD_SRC_LFO_3].amount << 4;
 
+    dst_[MOD_DST_ENV_1_DST] = patch_->mod[MOD_SRC_ENV_1].destination << 5;
+    dst_[MOD_DST_ENV_2_DST] = patch_->mod[MOD_SRC_ENV_2].destination << 5;
+    dst_[MOD_DST_ENV_3_DST] = patch_->mod[MOD_SRC_ENV_3].destination << 5;
+    dst_[MOD_DST_LFO_1_DST] = patch_->mod[MOD_SRC_LFO_1].destination << 5;
+    dst_[MOD_DST_LFO_2_DST] = patch_->mod[MOD_SRC_LFO_2].destination << 5;
+    dst_[MOD_DST_LFO_3_DST] = patch_->mod[MOD_SRC_LFO_3].destination << 5;
+
     dst_[MOD_DST_DELAY_AMOUNT] = patch_->delay.amount << 4;
     dst_[MOD_DST_DELAY_RATE] = patch_->delay.rate << 4;
     dst_[MOD_DST_DELAY_FEEDBACK] = patch_->delay.feedback << 4;
+    dst_[MOD_DST_DELAY_TYPE] = patch_->delay.type << 4;
+    dst_[MOD_DST_DELAY_INPUT] = patch_->delay.input << 4;
 
     dst_[MOD_DST_BITRATE_REDUCE] = patch_->shared.bitrate_reduce << 4;
     dst_[MOD_DST_SAMPLERATE_REDUCE] = patch_->shared.samplerate_reduce << 4;
@@ -208,7 +232,8 @@ void ModMatrix::processModulation() {
 
         int16_t amount = bipolarParameter(mod_amount_[i]) << 1;
         int16_t source = mod_source_[i];
-        uint8_t destination = U8CLIPMAX(NUM_MOD_DESTINATIONS, patch_->mod[i].destination);
+        // uint8_t destination = U8CLIPMAX(NUM_MOD_DESTINATIONS, patch_->mod[i].destination);
+        uint8_t destination = mod_destination_[i];
         int16_t modulation = dst_[destination];
 
         if (i >= MOD_SRC_LFO_1 && i <= MOD_SRC_LFO_3)
@@ -371,17 +396,6 @@ void ModMatrix::updateDestinations()
         LFOSetReset(&lfo_[i], lfo_reset);
 
         uint16_t sync_div_val = clock_sync_div_val[lfo_parameters[0] >> 8];
-/*         uint32_t lfo_sync_inc = 
-        ((k_clock_sync_tick_dividend/(ext_mod_->clock_tick_period * sync_div_val)) << 16)/k_clock_sync_divisor;
-
-            // (60 seconds in us / (tick period * division of period) << 16 bit) / update frequency in HZ
-            // It can be thought of like this:
-            // say the value being shifted by 16 bits is 1 (1 << 16)...
-            // at the update rate defined by the sync divisor, a total cycle will take 1 second
-            // anything greater than 1 << 16 is less than a second, where anything less is more than a second
-            // ... k_clock_syn_tick_dividend should be called something more like kone_second_in_us_times_100 or sth
-        //if(i == 0) printf("%d, %d, %d\t", lfo_[0].getSync(), lfo_sync_inc, sync_div_val);
- */
 
         uint32_t lfo_sync_inc = getClockDivValue12Bits(clock_period, sync_div_val);
 
@@ -393,7 +407,7 @@ void ModMatrix::updateDestinations()
             0,
             0
         );
-        lfo_parameters += 5;
+        lfo_parameters += 6;
 
         bool tick_reset = false;
 
@@ -425,10 +439,42 @@ void ModMatrix::updateDestinations()
     mod_amount_[MOD_SRC_VELOCITY] = MAX_PARAM_VALUE;
     mod_amount_[MOD_SRC_MOD_WHEEL] = MAX_PARAM_VALUE;
     mod_amount_[MOD_SRC_AFTERTOUCH] = MAX_PARAM_VALUE;
+    mod_amount_[MOD_SRC_BREATH] = MAX_PARAM_VALUE;
+
+    uint8_t mod_dst_max = NUM_MOD_DESTINATIONS - 1;
+
+    mod_destination_[MOD_SRC_ENV_1] = S8ClipZeroMax(dst_[MOD_DST_ENV_1_DST] >> 5, mod_dst_max);
+    mod_destination_[MOD_SRC_ENV_2] = S8ClipZeroMax(dst_[MOD_DST_ENV_2_DST] >> 5, mod_dst_max);
+    mod_destination_[MOD_SRC_ENV_3] = S8ClipZeroMax(dst_[MOD_DST_ENV_3_DST] >> 5, mod_dst_max);
+    mod_destination_[MOD_SRC_LFO_1] = S8ClipZeroMax(dst_[MOD_DST_LFO_1_DST] >> 5, mod_dst_max);
+    mod_destination_[MOD_SRC_LFO_2] = S8ClipZeroMax(dst_[MOD_DST_LFO_2_DST] >> 5, mod_dst_max);
+    mod_destination_[MOD_SRC_LFO_3] = S8ClipZeroMax(dst_[MOD_DST_LFO_3_DST] >> 5, mod_dst_max);
+    mod_destination_[MOD_SRC_VELOCITY] = patch_->mod[MOD_SRC_VELOCITY].destination;
+    mod_destination_[MOD_SRC_MOD_WHEEL] = patch_->mod[MOD_SRC_MOD_WHEEL].destination;
+    mod_destination_[MOD_SRC_AFTERTOUCH] = patch_->mod[MOD_SRC_AFTERTOUCH].destination;
+    mod_destination_[MOD_SRC_NOTE] = patch_->mod[MOD_SRC_NOTE].destination;
+    mod_destination_[MOD_SRC_BREATH] = patch_->mod[MOD_SRC_BREATH].destination;
+
 
     d_i->amount = dst_[MOD_DST_DELAY_AMOUNT] >> 4;
     d_i->feedback = dst_[MOD_DST_DELAY_FEEDBACK] >> 4;
-    d_i->length = dst_[MOD_DST_DELAY_RATE] << 4;
+    d_i->input = dst_[MOD_DST_DELAY_INPUT] >> 4;
+
+    // The d_i->type variable actually never touches the delay class. 
+    // the type is determined here;
+    d_i->type = dst_[MOD_DST_DELAY_TYPE] >> 10;
+
+    uint16_t delay_rate_default = dst_[MOD_DST_DELAY_RATE] << 4;
+    uint16_t delay_rate_sync = (48000ULL * ((uint64_t)clock_period * (uint64_t)clock_sync_div_val[15 - (dst_[MOD_DST_DELAY_RATE] >> 8)])) / 1000000ULL;
+    uint16_t delay_rate_short = osc_increments[dst_[MOD_DST_DELAY_RATE] >> 5] >> 16;
+
+    switch(d_i->type) {
+        
+        case DELAY_TYPE_SYNC:   d_i->length = delay_rate_sync;      break;
+        case DELAY_TYPE_SHORT:  d_i->length = delay_rate_short;     break;
+        default:                d_i->length = delay_rate_default;   break;
+
+    }
 
 }
 

@@ -80,22 +80,23 @@ void saveUpdatedPresetByIndex(synth_storable_t p, uint index) {
 
 // version update functions
 
+// function currently not in use, but keeping it for future use if necessary.
 void versionUpdate() {
 
-    version_t version = storageLoadVersion();
+    // version_t version = storageLoadVersion();
 
-    // version 1.0.0 update
-    if(
-        version.major == 0x00 && 
-        version.minor == 0x01 && 
-        version.patch == 0x02) {
+    // // version 1.0.0 update
+    // if(
+    //     version.major == 0x00 && 
+    //     version.minor == 0x01 && 
+    //     version.patch == 0x02) {
 
-        updateStoredVersionNumber(1, 0, 0);
+    //     updateStoredVersionNumber(1, 0, 0);
 
-        versionMigratePresetv0_1_2_to_1_0_0();
+    //     versionMigratePresetv0_1_2_to_1_0_0();
 
-        version = storageLoadVersion();
-    } // copy this and adapt for subsequent versions
+    //     version = storageLoadVersion();
+    // } // copy this and adapt for subsequent versions
 
 }
 
@@ -232,11 +233,26 @@ void versionParameterHotfix() {
         // s.patch.shared.samplerate_reduce = 0xFF;
         // s.pattern_gen.on = false;
         user_param_t new_user_param;
+        // for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
+        //     if(i == 13) {
+        //         new_user_param.destination[i] = MOD_DST_BITRATE_REDUCE;
+        //     } else if (i == 14) {
+        //         new_user_param.destination[i] = MOD_DST_SAMPLERATE_REDUCE;
+        //     } else {
+        //         new_user_param.destination[i] = MOD_DST_NONE;
+        //     }
+
+        // }
+
         for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
-            if(i == 13) {
-                new_user_param.destination[i] = MOD_DST_BITRATE_REDUCE;
+            if(i == 11) {
+                new_user_param.destination[i] = MOD_DST_ENV_1_LOOP;
+            } else if (i == 12) {
+                new_user_param.destination[i] = MOD_DST_ENV_2_LOOP;
+            } else if(i == 13) {
+                new_user_param.destination[i] = MOD_DST_ENV_3_LOOP;
             } else if (i == 14) {
-                new_user_param.destination[i] = MOD_DST_SAMPLERATE_REDUCE;
+                new_user_param.destination[i] = MOD_DST_VCA;
             } else {
                 new_user_param.destination[i] = MOD_DST_NONE;
             }

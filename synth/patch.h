@@ -60,8 +60,8 @@ typedef struct delay_params_t
     uint8_t rate;               // 0 - 255
     uint8_t feedback;           // 0 - 255  
     uint8_t amount;             // 0 - 255
-    uint8_t diffusion;          // 0 - 255
-    uint8_t filter;             // 0 - 255
+    uint8_t type;               // 0 - 3
+    uint8_t input;              // 0 - 255
 
 } delay_params_t;
 

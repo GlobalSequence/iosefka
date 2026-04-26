@@ -48,7 +48,7 @@ class ModMatrix {
         uint16_t mod_source_[NUM_MOD_SOURCES];
         uint16_t mod_amount_[NUM_MOD_SOURCES];
         int16_t dst_[NUM_MOD_DESTINATIONS];
-        int8_t mod_destination[NUM_MOD_DESTINATIONS];
+        int8_t mod_destination_[NUM_MOD_SOURCES];
         uint8_t velocity_;
 
         static const uint k_clock_sync_div_headroom = 100;

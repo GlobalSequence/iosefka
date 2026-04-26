@@ -128,7 +128,14 @@ const uint8_t k_storage_y[] = {7, 15, 23, 31, 39, 47, 55};
 const uint8_t k_param_sync_i = 12;
 const uint8_t k_param_oct_1_i = 0;
 const uint8_t k_param_oct_2_i = 1;
+const uint8_t k_param_mix_osc_1_i = 3;
 const uint8_t k_param_fil_t_i = 3;
+const uint8_t k_param_del_t_i = 6;
+const uint8_t k_param_brr_i = 10;
+const uint8_t k_param_del_r_i = 7;
+const uint8_t k_param_env_1_sh_i = 1;
+const uint8_t k_param_env_2_sh_i = 6;
+const uint8_t k_param_env_3_sh_i = 11; 
 const uint8_t k_param_lfo_1_rt_i = 0;
 const uint8_t k_param_lfo_2_rt_i = 5;
 const uint8_t k_param_lfo_3_rt_i = 10;
@@ -210,6 +217,7 @@ static bool encoder_mode_show = false;
 static bool seq_special_coords = false;
 
 static bool show_storage_complete = false;
+
 
 // ################################
 // LED DECLARATIONS
@@ -1221,17 +1229,77 @@ void displayPageSettings() {
 
 }
 
+display_param_t getParamDisplayData(view_layer_t layer, uint8_t index, bool alt) {
+
+    if(alt) {
+
+        display_param_t p;
+
+        switch(layer) {
+
+            case LAYER_SYNTH_1:
+
+                switch(index) {
+
+                    case k_param_mix_osc_1_i:
+                        p.val_p = &patch->vca.level;
+                        p.func = graphicsGetHexString;
+                        return p;
+
+                    default: break;
+                }
+
+                break;
+
+            case LAYER_ENV:
+                
+                switch(index) {
+                    case k_param_env_1_sh_i:
+                        p.val_p = &patch->env[0].loop;
+                        p.func = graphicsGetHexString;
+                        return p;
+
+                    case k_param_env_2_sh_i:
+                        p.val_p = &patch->env[1].loop;
+                        p.func = graphicsGetHexString;
+                        return p;
+
+                    case k_param_env_3_sh_i:
+                        p.val_p = &patch->env[2].loop;
+                        p.func = graphicsGetHexString;
+                        return p;
+
+                    default: break;
+                }
+
+                break;
+
+            default:
+                break;
+
+       } 
+
+    }
+
+    return display_param[layer][index];
+
+}
+
 void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
 
     uint8_t step = getPLockStep();
     uint8_t k = 0;
     bool mod_layer = isModLayer(layer);
+    bool alt = viewGetShiftState();
 
     for(int i = 0; i < NUMBER_OF_PARAM_ROWS; i++) {
 
         for(int j = 0; j < NUMBER_OF_PARAM_COLS; j++) {
 
-            display_param_t p = display_param[layer][k];
+            // display_param_t p = display_param[layer][k];
+
+            display_param_t p = getParamDisplayData(layer, k, alt);
+
             paramFuncGetGraphic func = p.func;
             uint8_t* ptr;
             uint8_t val;
@@ -1285,9 +1353,12 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
                         if(k == k_param_sync_i) val = param8Bits0To1(val);
                         break;
                     case LAYER_SYNTH_2:
-                        if (k == k_param_oct_1_i) val = param8Bits0To3(val);
-                        else if (k == k_param_oct_2_i) val = param8Bits0To3(val);
-                        else if (k == k_param_fil_t_i) val = param8Bits0To3(val);
+                        if(k == k_param_oct_1_i) val = param8Bits0To3(val);
+                        else if(k == k_param_oct_2_i) val = param8Bits0To3(val);
+                        else if(k == k_param_del_t_i) val = param8Bits0To3(val);
+                        else if(k == k_param_fil_t_i) val = param8Bits0To3(val);
+                        else if (k == k_param_brr_i) val = param8Bits0To10(val);
+                        else if (k == k_param_del_r_i) if((synth->patch.delay.type >> 6) == 1) val >>= 4;
                         break;
                     case LAYER_LFO:
                         switch(k) {
@@ -1315,11 +1386,16 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
                     case LAYER_USER_PARAM:
                         
                         switch(dst) {
+
                             case MOD_DST_SYNC: 
                             case MOD_DST_ENV_1_LOOP:
                             case MOD_DST_ENV_2_LOOP:
                             case MOD_DST_ENV_3_LOOP:
                                 val = param8Bits0To1(val); 
+                                break;
+
+                            case MOD_DST_DELAY_RATE:
+                                if((synth->patch.delay.type >> 5) == 1) val >>= 4;
                                 break;
 
                             case MOD_DST_OSC_1_OCTAVE:
@@ -1328,6 +1404,7 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
                             case MOD_DST_LFO_1_SYNC:
                             case MOD_DST_LFO_2_SYNC:
                             case MOD_DST_LFO_3_SYNC:
+                            case MOD_DST_DELAY_TYPE:
                                 val = param8Bits0To3(val);
                                 break;
 
@@ -1630,7 +1707,8 @@ bool isUserParamUsable(mod_destinations_t dst) {
         case MOD_DST_OSC_BOTH_OCTAVE:
         case MOD_DST_OSC_BOTH_X_MORPH:
         case MOD_DST_OSC_BOTH_Y_MORPH:
-        case MOD_DST_VCA:
+        case MOD_DST_MIX_OSCS:
+        // case MOD_DST_VCA:
         case MOD_DST_NONE:
             return false;
             break;
@@ -1801,13 +1879,13 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
         &patch->delay.amount, 
         &patch->filter.type,
         &patch->filter.cutoff,
-        &patch->osc[0].x_morph, 
-        &patch->osc[1].x_morph, 
+        &patch->shared.samplerate_reduce, 
+        &patch->delay.type, 
         &patch->delay.rate, 
         &patch->filter.fm,
         &patch->filter.resonance, 
-        &patch->osc[0].y_morph, 
-        &patch->osc[1].y_morph, 
+        &patch->shared.bitrate_reduce, 
+        &patch->delay.input, 
         &patch->delay.feedback, 
         &patch->filter.tracking,
         &patch->filter.env_amt, 

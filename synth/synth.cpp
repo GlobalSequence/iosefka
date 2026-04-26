@@ -17,6 +17,7 @@
 #include "../common/test.h"
 
 #include "../graphics/oscilloscope.h"
+#include "../sequencer/metronome.h"
 
 // ################################
 // STATIC DECLARATIONS
@@ -36,17 +37,23 @@ Delay<DELAY_BUF_SIZE> *delay = nullptr;
 alignas(Cv) static uint8_t cv_object_buffer[sizeof(Cv)];
 Cv *cv = nullptr;
 
+alignas(Metronome<AUDIO_BLOCK_SIZE>) static uint8_t metro_object_buffer[sizeof(Metronome<AUDIO_BLOCK_SIZE>)];
+Metronome<AUDIO_BLOCK_SIZE> *metronome = nullptr;
+
 // ################################
 // PRIVATE FUNCTION DECLARATIONS
 // ################################
 
 void retrieveSynthNotes();
 
+typedef bool (*stepRecordFlagFunction)();
+stepRecordFlagFunction stepRecordFlagFunc;
+
 // ################################
 // PUBLIC FUNCTION DEFINITIONS
 // ################################
 
-void synthSetup(synth_parameters_t *patch, external_modulation_t *ext_mod, uint16_t random_seed) {
+void synthSetup(synth_parameters_t *patch, external_modulation_t *ext_mod, uint16_t random_seed, metro_data_t metro) {
 
     uint16_t *buf_ptr_1 = audioGetBlockPointer1(); 
     uint16_t *buf_ptr_2 = audioGetBlockPointer2(); 
@@ -75,7 +82,12 @@ void synthSetup(synth_parameters_t *patch, external_modulation_t *ext_mod, uint1
 
     );
 
+    metro_struct m_s = { metro.getStepNumber };
+    metronome = new (metro_object_buffer) Metronome<AUDIO_BLOCK_SIZE>(buf_ptr_2, m_s);
+
     render_trig = render_trigger;
+
+    stepRecordFlagFunc = metro.getStepRecord;
 
 }
 
@@ -95,7 +107,15 @@ bool synthUpdate() {
 
         delay->setInputBufferPointer(audioGetAdcBufferPointer());
 
-        delay->render();
+        if(stepRecordFlagFunc()) {
+
+            metronome->renderClick();
+
+        } else {
+
+            delay->render();
+
+        }
 
         audioFillOutputBuffer();
 

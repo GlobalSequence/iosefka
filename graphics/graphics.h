@@ -143,6 +143,7 @@ const char* graphicsGetDoubleDash(uint8_t x);
 const char* graphicsGetCharFromID(uint8_t index);
 const char* graphicsBuildCharString(const uint8_t* ids, size_t count, char* outBuffer);
 const char* graphicsGetScopeDiv(uint8_t value);
+const char* graphicsGetLoopGraphic(bool loop);
 
 const char* graphicsGetParamHeader(view_layer_t l, uint8_t index);
 unsigned char* graphicsGetStepIcon(graphic_step_icon_t i);

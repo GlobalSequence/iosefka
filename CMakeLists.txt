@@ -107,6 +107,7 @@ graphics/shapeRenderer/ShapeRenderer.cpp
 graphics/oscilloscope.h
 graphics/oscilloscope.cpp
 
+sequencer/metronome.h
 sequencer/pattern_generator.h
 sequencer/pattern_generator.cpp
 sequencer/p_lock.h  
@@ -115,6 +116,8 @@ sequencer/sequencer.h
 sequencer/sequencer.cpp
 sequencer/seq_poll.h
 sequencer/seq_poll.cpp
+sequencer/step_entry.h
+sequencer/step_entry.cpp
 
 synth/cv.h
 synth/delay.h

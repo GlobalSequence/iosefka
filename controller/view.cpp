@@ -73,13 +73,14 @@ void viewSetLayerContext(view_layer_event_t event) {
 
     switch(event) {
         case EVT_LAYER_SYNTH_1:
-            if(last_layer_event == event) {
-                layer = machine_state.layer == LAYER_SYNTH_1 ? 
-                    LAYER_SYNTH_ENV_SPLIT : LAYER_SYNTH_1;
-            } else {
-                layer = last_synth_1_layer;
-            }
-            last_synth_1_layer = layer;
+            // if(last_layer_event == event) {
+            //     layer = machine_state.layer == LAYER_SYNTH_1 ? 
+            //         LAYER_SYNTH_ENV_SPLIT : LAYER_SYNTH_1;
+            // } else {
+            //     layer = last_synth_1_layer;
+            // }
+            // last_synth_1_layer = layer;
+            layer = LAYER_SYNTH_1;
             break;
         case EVT_LAYER_SYNTH_2:
             layer = LAYER_SYNTH_2;
@@ -191,6 +192,8 @@ void viewSetup() {
     // set a few extra states on startup that aren't set during preset loading
     mode_context[EVT_MODE_SETTINGS] = MODE_SET_SCROLL;
     machine_state.preset_number_selected = machine_state.preset_number_loaded = 0;
+    machine_state.shift_on = false;
+    machine_state.scope_on = false;
 
 }
 
@@ -393,6 +396,12 @@ void viewSetScopeOn(bool on) {
 
 }
 
+void viewSetShiftState(bool on) {
+
+    machine_state.shift_on = on;
+
+}
+
 // ################################
 // GET FUNCTIONS
 // ################################
@@ -486,3 +495,5 @@ uint8_t viewGetPresetCharSelected() { return machine_state.preset_char_selected;
 bool viewPresetSelectedIsPresetLoaded() { return machine_state.preset_number_selected == machine_state.preset_number_loaded; }
 
 bool viewGetScopeOn() { return machine_state.scope_on; }
+
+bool viewGetShiftState() { return machine_state.shift_on; }

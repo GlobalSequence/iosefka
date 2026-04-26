@@ -11,6 +11,198 @@
 #include "controller/settings.h"
 
 // ##########################################################################
+// version 1.0.2 data
+// ##########################################################################
+
+// added new mod destination MOD_DST_MIX_OSCS
+
+typedef enum mod_destinations_v1_0_2_t {
+    
+    v1_0_2_MOD_DST_NONE,
+
+    v1_0_2_MOD_DST_OSC_BOTH_PITCH,
+    v1_0_2_MOD_DST_OSC_BOTH_PITCH_FINE,
+    v1_0_2_MOD_DST_OSC_BOTH_OCTAVE,
+    v1_0_2_MOD_DST_OSC_BOTH_X_MORPH,
+    v1_0_2_MOD_DST_OSC_BOTH_Y_MORPH,
+
+    v1_0_2_MOD_DST_OSC_1_PITCH,
+    v1_0_2_MOD_DST_OSC_1_PITCH_FINE,
+    v1_0_2_MOD_DST_OSC_1_OCTAVE,
+    v1_0_2_MOD_DST_OSC_1_X_MORPH,
+    v1_0_2_MOD_DST_OSC_1_Y_MORPH,
+
+    v1_0_2_MOD_DST_OSC_2_PITCH,
+    v1_0_2_MOD_DST_OSC_2_PITCH_FINE,
+    v1_0_2_MOD_DST_OSC_2_OCTAVE,
+    v1_0_2_MOD_DST_OSC_2_X_MORPH,
+    v1_0_2_MOD_DST_OSC_2_Y_MORPH,
+
+    v1_0_2_MOD_DST_PORTAMENTO,
+    v1_0_2_MOD_DST_PHASE_MOD,
+    v1_0_2_MOD_DST_SYNC,
+    v1_0_2_MOD_DST_BITRATE_REDUCE,
+    v1_0_2_MOD_DST_SAMPLERATE_REDUCE,
+
+    v1_0_2_MOD_DST_MIX_OSC_1_MIX,
+    v1_0_2_MOD_DST_MIX_OSC_2_MIX,
+    v1_0_2_MOD_DST_MIX_NOISE_MIX,
+    v1_0_2_MOD_DST_MIX_OSCS,             // NEW
+
+    v1_0_2_MOD_DST_FILTER_CUTOFF,
+    v1_0_2_MOD_DST_FILTER_RESONANCE,
+    v1_0_2_MOD_DST_FILTER_ENV_AMT,
+    v1_0_2_MOD_DST_FILTER_TYPE,
+    v1_0_2_MOD_DST_FILTER_FM,
+    v1_0_2_MOD_DST_FILTER_TRACKING,
+
+    v1_0_2_MOD_DST_VCA, // drone mode uses this parameter
+
+    v1_0_2_MOD_DST_DELAY_RATE,
+    v1_0_2_MOD_DST_DELAY_FEEDBACK,
+    v1_0_2_MOD_DST_DELAY_AMOUNT,
+    v1_0_2_MOD_DST_DELAY_TYPE,
+    v1_0_2_MOD_DST_DELAY_INPUT,
+    
+    v1_0_2_MOD_DST_ENV_1_ATTACK,
+    v1_0_2_MOD_DST_ENV_1_DECAY,
+    v1_0_2_MOD_DST_ENV_1_SUSTAIN,
+    v1_0_2_MOD_DST_ENV_1_RELEASE,
+    v1_0_2_MOD_DST_ENV_1_AMOUNT,
+    v1_0_2_MOD_DST_ENV_1_LOOP,  
+    v1_0_2_MOD_DST_ENV_1_DST,
+          
+    v1_0_2_MOD_DST_ENV_2_ATTACK,
+    v1_0_2_MOD_DST_ENV_2_DECAY,
+    v1_0_2_MOD_DST_ENV_2_SUSTAIN,
+    v1_0_2_MOD_DST_ENV_2_RELEASE,
+    v1_0_2_MOD_DST_ENV_2_AMOUNT,
+    v1_0_2_MOD_DST_ENV_2_LOOP,
+    v1_0_2_MOD_DST_ENV_2_DST,
+
+    v1_0_2_MOD_DST_ENV_3_ATTACK,
+    v1_0_2_MOD_DST_ENV_3_DECAY,
+    v1_0_2_MOD_DST_ENV_3_SUSTAIN,
+    v1_0_2_MOD_DST_ENV_3_RELEASE,
+    v1_0_2_MOD_DST_ENV_3_AMOUNT,
+    v1_0_2_MOD_DST_ENV_3_LOOP,
+    v1_0_2_MOD_DST_ENV_3_DST,
+
+    v1_0_2_MOD_DST_LFO_1_RATE,
+    v1_0_2_MOD_DST_LFO_1_SHAPE,
+    v1_0_2_MOD_DST_LFO_1_PHASE,
+    v1_0_2_MOD_DST_LFO_1_SYNC,
+    v1_0_2_MOD_DST_LFO_1_AMOUNT,
+    v1_0_2_MOD_DST_LFO_1_DST,
+
+    v1_0_2_MOD_DST_LFO_2_RATE,
+    v1_0_2_MOD_DST_LFO_2_SHAPE,
+    v1_0_2_MOD_DST_LFO_2_PHASE,
+    v1_0_2_MOD_DST_LFO_2_SYNC,
+    v1_0_2_MOD_DST_LFO_2_AMOUNT,
+    v1_0_2_MOD_DST_LFO_2_DST,
+
+    v1_0_2_MOD_DST_LFO_3_RATE,
+    v1_0_2_MOD_DST_LFO_3_SHAPE,
+    v1_0_2_MOD_DST_LFO_3_PHASE,
+    v1_0_2_MOD_DST_LFO_3_SYNC,
+    v1_0_2_MOD_DST_LFO_3_AMOUNT,
+    v1_0_2_MOD_DST_LFO_3_DST, 
+
+    v1_0_2_NUM_MOD_DESTINATIONS
+
+} mod_destinations_v1_0_2_t;
+
+// ##########################################################################
+// version 1.0.1 data
+// ##########################################################################
+
+// _v1_0_1
+
+typedef enum mod_destinations_v1_0_1_t {
+    V1_0_1_MOD_DST_NONE,
+    V1_0_1_MOD_DST_OSC_1_PITCH,
+    V1_0_1_MOD_DST_OSC_1_PITCH_FINE,
+    V1_0_1_MOD_DST_OSC_1_OCTAVE,
+    V1_0_1_MOD_DST_OSC_1_X_MORPH,
+    V1_0_1_MOD_DST_OSC_1_Y_MORPH,
+    V1_0_1_MOD_DST_OSC_2_PITCH,
+    V1_0_1_MOD_DST_OSC_2_PITCH_FINE,
+    V1_0_1_MOD_DST_OSC_2_OCTAVE,
+    V1_0_1_MOD_DST_OSC_2_X_MORPH,
+    V1_0_1_MOD_DST_OSC_2_Y_MORPH,
+    V1_0_1_MOD_DST_PORTAMENTO,
+    V1_0_1_MOD_DST_PHASE_MOD,
+    V1_0_1_MOD_DST_SYNC,
+    V1_0_1_MOD_DST_BITRATE_REDUCE,
+    V1_0_1_MOD_DST_SAMPLERATE_REDUCE,
+    V1_0_1_MOD_DST_MIX_OSC_1_MIX,
+    V1_0_1_MOD_DST_MIX_OSC_2_MIX,
+    V1_0_1_MOD_DST_MIX_NOISE_MIX,
+    V1_0_1_MOD_DST_FILTER_CUTOFF,
+    V1_0_1_MOD_DST_FILTER_RESONANCE,
+    V1_0_1_MOD_DST_FILTER_ENV_AMT,
+    V1_0_1_MOD_DST_FILTER_TYPE,
+    V1_0_1_MOD_DST_FILTER_FM,
+    V1_0_1_MOD_DST_FILTER_TRACKING,
+    V1_0_1_MOD_DST_DELAY_RATE,
+    V1_0_1_MOD_DST_DELAY_FEEDBACK,
+    V1_0_1_MOD_DST_DELAY_AMOUNT,
+    V1_0_1_MOD_DST_DELAY_TYPE,              // NEW
+    V1_0_1_MOD_DST_DELAY_INPUT,             // NEW
+    V1_0_1_MOD_DST_ENV_1_ATTACK,
+    V1_0_1_MOD_DST_ENV_1_DECAY,
+    V1_0_1_MOD_DST_ENV_1_SUSTAIN,
+    V1_0_1_MOD_DST_ENV_1_RELEASE,
+    V1_0_1_MOD_DST_ENV_1_AMOUNT,
+    V1_0_1_MOD_DST_ENV_1_LOOP,             
+    V1_0_1_MOD_DST_ENV_2_ATTACK,
+    V1_0_1_MOD_DST_ENV_2_DECAY,
+    V1_0_1_MOD_DST_ENV_2_SUSTAIN,
+    V1_0_1_MOD_DST_ENV_2_RELEASE,
+    V1_0_1_MOD_DST_ENV_2_AMOUNT,
+    V1_0_1_MOD_DST_ENV_2_LOOP,
+    V1_0_1_MOD_DST_ENV_3_ATTACK,
+    V1_0_1_MOD_DST_ENV_3_DECAY,
+    V1_0_1_MOD_DST_ENV_3_SUSTAIN,
+    V1_0_1_MOD_DST_ENV_3_RELEASE,
+    V1_0_1_MOD_DST_ENV_3_AMOUNT,
+    V1_0_1_MOD_DST_ENV_3_LOOP,
+    V1_0_1_MOD_DST_LFO_1_RATE,
+    V1_0_1_MOD_DST_LFO_1_SHAPE,
+    V1_0_1_MOD_DST_LFO_1_PHASE,
+    V1_0_1_MOD_DST_LFO_1_SYNC,
+    V1_0_1_MOD_DST_LFO_1_AMOUNT,
+    V1_0_1_MOD_DST_LFO_2_RATE,
+    V1_0_1_MOD_DST_LFO_2_SHAPE,
+    V1_0_1_MOD_DST_LFO_2_PHASE,
+    V1_0_1_MOD_DST_LFO_2_SYNC,
+    V1_0_1_MOD_DST_LFO_2_AMOUNT,
+    V1_0_1_MOD_DST_LFO_3_RATE,
+    V1_0_1_MOD_DST_LFO_3_SHAPE,
+    V1_0_1_MOD_DST_LFO_3_PHASE,
+    V1_0_1_MOD_DST_LFO_3_SYNC,
+    V1_0_1_MOD_DST_LFO_3_AMOUNT,
+    V1_0_1_MOD_DST_VCA, // drone mode uses this parameter
+
+    V1_0_1_MOD_DST_ENV_1_DST,
+    V1_0_1_MOD_DST_ENV_2_DST,
+    V1_0_1_MOD_DST_ENV_3_DST,
+    V1_0_1_MOD_DST_LFO_1_DST,
+    V1_0_1_MOD_DST_LFO_2_DST,
+    V1_0_1_MOD_DST_LFO_3_DST,
+
+    V1_0_1_MOD_DST_OSC_BOTH_PITCH,
+    V1_0_1_MOD_DST_OSC_BOTH_PITCH_FINE,
+    V1_0_1_MOD_DST_OSC_BOTH_OCTAVE,
+    V1_0_1_MOD_DST_OSC_BOTH_X_MORPH,
+    V1_0_1_MOD_DST_OSC_BOTH_Y_MORPH,
+
+    V1_0_1_NUM_MOD_DESTINATIONS
+
+} mod_destinations_v1_0_1_t;
+
+// ##########################################################################
 // version 1.0.0 data
 // ##########################################################################
 

@@ -217,6 +217,15 @@ static inline uint8_t U15ShiftRight7(uint16_t value) {
   return value >> 7;
 }
 
+static inline uint8_t S8ClipZeroMax(int8_t value, uint8_t max) {
+  if(value <= 0) {
+    return 0;
+  } else if (value > max) {
+    return max;
+  } 
+  return value;
+}
+
 static inline uint8_t S16ClipU8(int16_t value) {
   return value < 0 ? 0 : (value > 255 ? 255 : value);
 }

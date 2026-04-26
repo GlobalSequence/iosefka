@@ -114,7 +114,22 @@ void setParamValSeqPLock(seq_params_t seq_param, uint8_t index, uint8_t value) {
         case SEQ_PARAM_PROBABILITY:
 
             synth->seq.setStepProbability(step, value);
+
+            break;
         
+        case SEQ_PARAM_TRANSPOSE:
+        case SEQ_PARAM_DIRECTION:
+        case SEQ_PARAM_SWING:
+        case SEQ_PARAM_CLOCK_DIV:
+        case SEQ_PARAM_FIRST_STEP:
+        case SEQ_PARAM_LAST_STEP:
+        case SEQ_PARAM_SCALE:
+        case SEQ_PARAM_DENSITY:
+        case SEQ_PARAM_REPEAT:
+        case SEQ_PARAM_OCTAVE_RANGE:
+            synth->seq.setStepPLockParam(step, MOD_DST_NONE);
+            break;
+
         default:
             break;
 
@@ -289,6 +304,11 @@ uint8_t modifyParamValueModDst(mod_destinations_t *dst, uint8_t value, bool shif
             if(!shift) value = k_osc_scale_vals[param8Bits0To24(value)];
             break;
 
+        case MOD_DST_MIX_OSC_1_MIX:
+
+            if(shift) *dst = MOD_DST_VCA;
+            break;
+
         case MOD_DST_ENV_1_AMOUNT:
         case MOD_DST_ENV_2_AMOUNT:
         case MOD_DST_ENV_3_AMOUNT:
@@ -443,14 +463,14 @@ mod_destinations_t layerLookupModDst(view_layer_t layer, pot_index_t pot) {
                 case POT_3: return MOD_DST_FILTER_TYPE; 
                 case POT_4: return MOD_DST_FILTER_CUTOFF; 
 
-                case POT_5: return MOD_DST_OSC_1_X_MORPH; 
-                case POT_6: return MOD_DST_OSC_2_X_MORPH; 
+                case POT_5: return MOD_DST_SAMPLERATE_REDUCE; 
+                case POT_6: return MOD_DST_DELAY_TYPE; 
                 case POT_7: return MOD_DST_DELAY_RATE; 
                 case POT_8: return MOD_DST_FILTER_FM;
                 case POT_9: return MOD_DST_FILTER_RESONANCE; 
 
-                case POT_10: return MOD_DST_OSC_1_Y_MORPH; 
-                case POT_11: return MOD_DST_OSC_2_Y_MORPH; 
+                case POT_10: return MOD_DST_BITRATE_REDUCE; 
+                case POT_11: return MOD_DST_DELAY_INPUT; 
                 case POT_12: return MOD_DST_DELAY_FEEDBACK; 
                 case POT_13: return MOD_DST_FILTER_TRACKING; 
                 case POT_14: return MOD_DST_FILTER_ENV_AMT; 
@@ -699,6 +719,8 @@ void parameterSetup(synth_state_t *synth_state) {
     render_patch_ptr[MOD_DST_DELAY_AMOUNT] = &render_patch.delay.amount; 
     render_patch_ptr[MOD_DST_DELAY_RATE] = &render_patch.delay.rate;
     render_patch_ptr[MOD_DST_DELAY_FEEDBACK] = &render_patch.delay.feedback; 
+    render_patch_ptr[MOD_DST_DELAY_TYPE] = &render_patch.delay.type;
+    render_patch_ptr[MOD_DST_DELAY_INPUT] = &render_patch.delay.input;  
     render_patch_ptr[MOD_DST_ENV_1_ATTACK] = &render_patch.env[0].attack; 
     render_patch_ptr[MOD_DST_ENV_1_DECAY] = &render_patch.env[0].decay; 
     render_patch_ptr[MOD_DST_ENV_1_SUSTAIN] = &render_patch.env[0].sustain; 
@@ -766,6 +788,8 @@ void parameterSetup(synth_state_t *synth_state) {
     param_ptr[MOD_DST_DELAY_AMOUNT] = &synth->patch.delay.amount; 
     param_ptr[MOD_DST_DELAY_RATE] = &synth->patch.delay.rate;
     param_ptr[MOD_DST_DELAY_FEEDBACK] = &synth->patch.delay.feedback; 
+    param_ptr[MOD_DST_DELAY_TYPE] = &synth->patch.delay.type; 
+    param_ptr[MOD_DST_DELAY_INPUT] = &synth->patch.delay.input; 
     param_ptr[MOD_DST_ENV_1_ATTACK] = &synth->patch.env[0].attack; 
     param_ptr[MOD_DST_ENV_1_DECAY] = &synth->patch.env[0].decay; 
     param_ptr[MOD_DST_ENV_1_SUSTAIN] = &synth->patch.env[0].sustain; 
@@ -1021,3 +1045,4 @@ uint8_t parameterGetUserParameter(uint8_t index) {
     return *user_param[index];
 
 }
+

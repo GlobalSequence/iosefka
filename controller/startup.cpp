@@ -17,6 +17,7 @@
 #include "version/version.h"
 #include "../sequencer/seq_poll.h"
 #include "../sequencer/pattern_generator.h"
+#include "../sequencer/step_entry.h"
 #include "../devices/audio.h"
 #include "../synth/synth.h"
 #include "../common/test.h"
@@ -86,12 +87,20 @@ void startupRun() {
     
     patternGenSetup(&synth_state->seq, &synth_state->pattern_gen, seed);
 
+    stepEntrySetup(&synth_state->seq);
+
     noteQueueSetup(&synth_state->patch.shared.legato, &synth_state->patch.shared.osc_duo);
+
+    metro_data_t metro = {
+        stepEntryGetStepRecord,
+        seqPollGetStepNumber
+    };
 
     synthSetup(
         parameterGetRenderedPatchPointer(),
         settingsGetExternalModulation(),
-        seed
+        seed,
+        metro
     );
 
     checkForRestoreMemoryRequest();

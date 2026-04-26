@@ -136,9 +136,9 @@ synth_storable_t settingsGetInitPatch() {
     
     p.delay.amount              = 0x00;
     p.delay.rate                = 0x80;
-    p.delay.diffusion           = 0x00;
+    p.delay.type                = 0x00;
     p.delay.feedback            = 0x00;
-    p.delay.filter              = 0x00;
+    p.delay.input               = 0xFF;
 
     p.env[0].attack             = 0x00;
     p.env[0].decay              = 0x80;
@@ -249,10 +249,14 @@ synth_storable_t settingsGetInitPatch() {
     st.pattern_gen          = pg;
 
     for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
-        if(i == 13) {
-            st.user_param.destination[i] = MOD_DST_BITRATE_REDUCE;
+        if(i == 11) {
+            st.user_param.destination[i] = MOD_DST_ENV_1_LOOP;
+        } else if (i == 12) {
+            st.user_param.destination[i] = MOD_DST_ENV_2_LOOP;
+        } else if(i == 13) {
+            st.user_param.destination[i] = MOD_DST_ENV_3_LOOP;
         } else if (i == 14) {
-            st.user_param.destination[i] = MOD_DST_SAMPLERATE_REDUCE;
+            st.user_param.destination[i] = MOD_DST_VCA;
         } else {
             st.user_param.destination[i] = MOD_DST_NONE;
         }

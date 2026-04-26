@@ -10,6 +10,7 @@
 #include "midi.h"
 #include "../sequencer/pattern_generator.h"
 #include "../sequencer/p_lock.h"
+#include "../sequencer/step_entry.h"
 
 #include "../graphics/oscilloscope.h"
 
@@ -97,6 +98,7 @@ void pageKeyboard(switch_id_t sw, bool pressed, bool shift) {
     }
 
     noteQueueSubmit(note, velocity, pressed);
+    stepEntrySetLiveRecordStep(note, velocity, pressed);
 
 }
 
@@ -163,6 +165,8 @@ void seqSwitchAction(
 
         bool p_lock_happened = pLockIsEngaged();
 
+        // bool copy_happened = stepEntryDidCopyOccur();
+
         if(!timeout && !ignore_release && !p_lock_happened) {
 
             synth->seq.resetActiveStep(step);
@@ -215,8 +219,13 @@ void pageSequencer(
         case SW_T0:
         
             if(pressed) {
-                if(!shift) setSequencerWindow(false);
-                else synth->seq.shiftByPatternLength(false);
+
+                if(shift) synth->seq.shiftByPatternLength(false);
+                else if(stepEntryIsRotateArmed()) stepEntryRotate(false);
+                else setSequencerWindow(false);
+
+                // if(!shift) setSequencerWindow(false);
+                // else synth->seq.shiftByPatternLength(false);
             }
         
             break;
@@ -224,8 +233,13 @@ void pageSequencer(
         case SW_T1:
         
             if(pressed) {
-                if(!shift) setSequencerWindow(true);
-                else synth->seq.shiftByPatternLength(true);
+
+                if(shift) synth->seq.shiftByPatternLength(true);
+                else if(stepEntryIsRotateArmed()) stepEntryRotate(true);
+                else setSequencerWindow(true);
+
+                // if(!shift) setSequencerWindow(true);
+                // else synth->seq.shiftByPatternLength(true);
             }
         
             break;
@@ -240,14 +254,45 @@ void pageSequencer(
             break;
 
         case SW_T3:
-        
-            if(pressed) patternGenExecute();
+            
+            if(pressed) {
+
+                if(shift) {
+
+                    synth->seq.clearAllSteps();
+                    stepEntryClearAllStepsPLockAndProbability();
+
+                } else {
+
+                    patternGenExecute();
+
+                }
+
+            }
         
             break;
         
         case SW_T4:
 
+            if(pressed) {
 
+                if(pLockIsEnabled()) {
+
+                    uint8_t step = pLockGetOrderFirst() + (viewGetSequencerWindow() * NUMBER_OF_BOTTOM_SWITCHES);
+
+                    synth->new_step = stepEntryCopy(step);
+
+                } else {
+
+                    stepEntryArmRotate(true);
+
+                }
+
+            } else {
+
+                stepEntryArmRotate(false);
+
+            }
 
             break;
     
@@ -510,17 +555,37 @@ void executeNewView(uint8_t num_all_keys_pressed) {
 
 }
 
-void playPressed() {
+void playPressed(bool shift) {
 
     if(!synth->seq.isRunning()) {
 
         synth->seq.run();
         midiEnqueueRealtime(MIDI_START);
+        if(shift) stepEntryRecordStart();
 
     } else {
 
-        synth->seq.stop();
-        midiEnqueueRealtime(MIDI_STOP);
+        bool step_record_running = stepEntryGetStepRecord();
+
+        if(shift) {
+
+            if(!step_record_running) {
+
+                stepEntryRecordStart();
+
+            } else {
+
+                stepEntryRecordStop();
+
+            }
+
+        } else {
+
+            synth->seq.stop();
+            midiEnqueueRealtime(MIDI_STOP);
+            stepEntryRecordStop();
+
+        }
 
     }
 
@@ -679,11 +744,13 @@ void switchActionsTakeInput(
 
         case SW_PLAY:
 
-            if(pressed) playPressed();
+            if(pressed) playPressed(shift);
 
             break;
 
         case SW_SHIFT:
+
+            viewSetShiftState(pressed);
 
             switch(mode) {
 

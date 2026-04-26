@@ -154,6 +154,12 @@ bool seqPollIsExtClockActive() {
 
 }
 
+int16_t seqPollGetStepNumber() {
+
+    return seq->getCurrentStep();
+
+}
+
 // ################################
 // PRIVATE FUNCTION DEFINITIONS
 // ################################

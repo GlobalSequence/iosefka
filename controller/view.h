@@ -158,6 +158,7 @@ typedef struct machine_state_t {
     uint8_t settings_mod_source;
     uint8_t current_user_param;
     bool scope_on;
+    bool shift_on;
 
 } machine_state_t;
 
@@ -189,6 +190,7 @@ void viewSetEncoderTurnedWhileHeld();
 void viewSetPresetCharIndex(uint8_t index);
 void viewSetPresetCharSelected(uint8_t index);
 void viewSetScopeOn(bool on);
+void viewSetShiftState(bool on);
 
 view_change_t viewGetLastViewChange();
 view_page_t viewGetPage();
@@ -212,6 +214,7 @@ uint8_t viewGetPresetCharIndex();
 uint8_t viewGetPresetCharSelected();
 bool viewPresetSelectedIsPresetLoaded(); 
 bool viewGetScopeOn();
+bool viewGetShiftState();
 
 void viewSetLatchSingle(uint8_t index);
 void viewResetLatchSingle(uint8_t index);

@@ -43,6 +43,8 @@ bool seqPollDidTickHappen();
 
 bool seqPollIsExtClockActive();
 
+int16_t seqPollGetStepNumber();
+
 #ifdef __cplusplus
 }
 #endif

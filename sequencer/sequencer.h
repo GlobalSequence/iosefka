@@ -111,6 +111,7 @@ class Sequencer {
         void resetWrittenStep(uint8_t index);
         void setActiveStep(uint8_t index);
         void resetActiveStep(uint8_t index);
+        void clearAllSteps();
 
         void setStepNote(uint8_t index, uint8_t value);
         void setStepLength(uint8_t index, uint8_t value);
@@ -131,6 +132,7 @@ class Sequencer {
         uint8_t getStepVelocity(uint8_t index);
         uint8_t getStepPLockParam(uint8_t index);
         uint8_t getStepPLockValue(uint8_t index); 
+        step_data_t getStepByIndex(uint index) { return pattern_data_.step[index]; }
         
         inline uint16_t getBpm() {return pattern_data_.bpm;}
         inline uint16_t getClockDiv() {return pattern_data_.clock_div;}
@@ -138,12 +140,16 @@ class Sequencer {
         inline uint16_t getTranspose() {return pattern_data_.transpose;}
         inline uint16_t getFirstStep() {return pattern_data_.first_step;}
         inline uint16_t getLastStep() {return pattern_data_.last_step;}
-        inline uint16_t getPatternLength() {return pattern_data_.last_step - pattern_data_.first_step;}
+        inline uint16_t getPatternLength() {return pattern_data_.last_step - pattern_data_.first_step + 1;}
         inline uint16_t getSwingAmt() {return pattern_data_.swing_amt;}
         inline uint8_t getProbability() {return pattern_data_.probability;}
         inline uint8_t getStepProbability(uint8_t index) {return pattern_data_.step[index].step_prob;}
         inline uint8_t getRotation() {return pattern_data_.rotation;}
         inline int getLoopCount() {return loop_count_;}
+
+        uint8_t getTickCounter() { return tick_counter_; }
+        uint8_t getSwingTicksByDivision(uint8_t div, uint8_t swing_amt, uint8_t swing_step) { return swing_ticks_by_division[div][swing_amt][swing_step]; }
+
 
         inline bool probabilityCheck(uint16_t var) {
             return (var >> 8) <= pattern_data_.probability;

@@ -14,11 +14,21 @@ typedef struct delay_inputs_t {
 	uint16_t amount; // should be 8 bit number
     uint16_t length; // should be 16 bit number
 	uint16_t feedback;
-	uint16_t diffusion;
-	uint16_t saturation;
+	// uint16_t diffusion;
+	// uint16_t saturation;
+    uint16_t type;
+	uint16_t input;
 	uint16_t stereo;
 
 } delay_inputs_t;
+
+typedef enum delay_type_t {
+
+    DELAY_TYPE_DEFAULT,
+    DELAY_TYPE_SYNC,
+    DELAY_TYPE_SHORT,
+
+} delay_type_t;
 
 template<size_t size>
 class Delay {
@@ -44,6 +54,8 @@ class Delay {
             last_time_ = time;
             read_position_ = (index_write_ - size - 1) << 8;
 
+            uint8_t in_level = p.input;
+
             for(int i = 0; i < block_size_; i++) {
                 current_time_ += step_;
                 uint32_t readp = read_position_ - (current_time_ >> 4);
@@ -53,6 +65,21 @@ class Delay {
                 
                 // shift right once for mcp3201 extra bit.
                 // TODO: try putting the shift in the DMA callback function, then remove it here
+                int sample = S8S16MULSHIFT8((input_buf_[i] >> 1) - k_sign_offset, in_level);
+                // int sample = (input_buf_[i] >> 1) - k_sign_offset;
+
+                int32_t feedback_sample = S8S16MULSHIFT8(delay_buf_[read_index], p.feedback);
+                int32_t combined_sample = sample + feedback_sample;
+                delay_buf_[index_write_ + i] = combined_sample;
+
+                int32_t output_sample = S8S16MULSHIFT8(delay_buf_[read_index], p.amount) << 1;
+                buf_ptr_[i] = U12CLIPMAXMIN(output_sample + k_sign_offset);
+
+                read_position_ += (1 << 8);
+                
+/*                 // shift right once for mcp3201 extra bit.
+                // TODO: try putting the shift in the DMA callback function, then remove it here
+
                 delay_buf_[index_write_ + i] = (input_buf_[i] >> 1) - k_sign_offset;
 
                 int32_t feedback_sample = S8S16MULSHIFT8(delay_buf_[read_index], p.feedback);
@@ -62,7 +89,7 @@ class Delay {
                 int32_t output_sample = S8S16MULSHIFT8(delay_buf_[read_index], p.amount) << 1;
                 buf_ptr_[i] = U12CLIPMAXMIN(output_sample + k_sign_offset);
 
-                read_position_ += (1 << 8);
+                read_position_ += (1 << 8); */
 
 #else
                 

@@ -302,6 +302,84 @@ const unsigned char small_filled_circle_icon[] = {
     0b00000000,
 };
 
+static const char* mod_dst_strings[] = {
+    [MOD_DST_NONE]                  = "none",
+    [MOD_DST_OSC_1_PITCH]           = "osc 1 pitch c",
+    [MOD_DST_OSC_1_OCTAVE]          = "osc 1 octave",
+    [MOD_DST_OSC_1_X_MORPH]         = "osc 1 x morph",
+    [MOD_DST_OSC_1_Y_MORPH]         = "osc 1 y morph",
+    [MOD_DST_OSC_2_PITCH]           = "osc 2 pitch c",
+    [MOD_DST_OSC_2_OCTAVE]          = "osc 2 octave",
+    [MOD_DST_OSC_2_X_MORPH]         = "osc 2 x morph",
+    [MOD_DST_OSC_2_Y_MORPH]         = "osc 2 y morph",
+    [MOD_DST_PORTAMENTO]            = "portamento",
+    [MOD_DST_PHASE_MOD]             = "phase mod",
+    [MOD_DST_SYNC]                  = "sync",
+    [MOD_DST_BITRATE_REDUCE]        = "brr",
+    [MOD_DST_SAMPLERATE_REDUCE]     = "srr",
+    [MOD_DST_MIX_OSC_1_MIX]         = "mix osc 1 mix",
+    [MOD_DST_MIX_OSC_2_MIX]         = "mix osc 2 mix",
+    [MOD_DST_MIX_NOISE_MIX]         = "mix noise mix",
+    [MOD_DST_FILTER_CUTOFF]         = "filter cutoff",
+    [MOD_DST_FILTER_RESONANCE]      = "filter res",
+    [MOD_DST_FILTER_ENV_AMT]        = "filter env amt",
+    [MOD_DST_FILTER_TYPE]           = "filter type",
+    [MOD_DST_FILTER_FM]             = "filter fm",
+    [MOD_DST_FILTER_TRACKING]       = "filter tracking",
+    [MOD_DST_DELAY_RATE]            = "delay rate",
+    [MOD_DST_DELAY_FEEDBACK]        = "delay feedback",
+    [MOD_DST_DELAY_AMOUNT]          = "delay level",
+    [MOD_DST_DELAY_TYPE]            = "delay type",
+    [MOD_DST_DELAY_INPUT]           = "delay input",
+    [MOD_DST_ENV_1_ATTACK]          = "env 1 attack",
+    [MOD_DST_ENV_1_DECAY]           = "env 1 decay",
+    [MOD_DST_ENV_1_SUSTAIN]         = "env 1 sustain",
+    [MOD_DST_ENV_1_RELEASE]         = "env 1 release",
+    [MOD_DST_ENV_1_LOOP]            = "env 1 loop",
+    [MOD_DST_ENV_1_AMOUNT]          = "env 1 level",
+    [MOD_DST_ENV_2_ATTACK]          = "env 2 attack",
+    [MOD_DST_ENV_2_DECAY]           = "env 2 decay",
+    [MOD_DST_ENV_2_SUSTAIN]         = "env 2 sustain",
+    [MOD_DST_ENV_2_RELEASE]         = "env 2 release",
+    [MOD_DST_ENV_2_LOOP]            = "env 2 loop",
+    [MOD_DST_ENV_2_AMOUNT]          = "env 2 level",
+    [MOD_DST_ENV_3_ATTACK]          = "env 3 attack",
+    [MOD_DST_ENV_3_DECAY]           = "env 3 decay",
+    [MOD_DST_ENV_3_SUSTAIN]         = "env 3 sustain",
+    [MOD_DST_ENV_3_RELEASE]         = "env 3 release",
+    [MOD_DST_ENV_3_LOOP]            = "env 3 loop",
+    [MOD_DST_ENV_3_AMOUNT]          = "env 3 level",
+    [MOD_DST_LFO_1_RATE]            = "lfo 1 rate",
+    [MOD_DST_LFO_1_SHAPE]           = "lfo 1 shape",
+    [MOD_DST_LFO_1_PHASE]           = "lfo 1 phase",
+    [MOD_DST_LFO_1_SYNC]            = "lfo 1 sync",
+    [MOD_DST_LFO_1_AMOUNT]          = "lfo 1 level",
+    [MOD_DST_LFO_2_RATE]            = "lfo 2 rate",
+    [MOD_DST_LFO_2_SHAPE]           = "lfo 2 shape",
+    [MOD_DST_LFO_2_PHASE]           = "lfo 2 phase",
+    [MOD_DST_LFO_2_SYNC]            = "lfo 2 sync",
+    [MOD_DST_LFO_2_AMOUNT]          = "lfo 2 level",
+    [MOD_DST_LFO_3_RATE]            = "lfo 3 rate",
+    [MOD_DST_LFO_3_SHAPE]           = "lfo 3 shape",
+    [MOD_DST_LFO_3_PHASE]           = "lfo 3 phase",
+    [MOD_DST_LFO_3_SYNC]            = "lfo 3 sync",
+    [MOD_DST_LFO_3_AMOUNT]          = "lfo 3 level",
+    [MOD_DST_ENV_1_DST]             = "env 1 dst",
+    [MOD_DST_ENV_2_DST]             = "env 2 dst",
+    [MOD_DST_ENV_3_DST]             = "env 3 dst",
+    [MOD_DST_LFO_1_DST]             = "lfo 1 dst",
+    [MOD_DST_LFO_2_DST]             = "lfo 2 dst",
+    [MOD_DST_LFO_3_DST]             = "lfo 3 dst",
+    [MOD_DST_VCA]                   = "vca",
+    [MOD_DST_OSC_BOTH_PITCH_FINE]   = "oscs pitch f",
+    [MOD_DST_OSC_BOTH_PITCH]        = "oscs pitch c",
+    [MOD_DST_OSC_BOTH_OCTAVE]       = "oscs octave",
+    [MOD_DST_OSC_BOTH_X_MORPH]      = "oscs x morph",
+    [MOD_DST_OSC_BOTH_Y_MORPH]      = "oscs y morph",
+    [MOD_DST_OSC_1_PITCH_FINE]      = "osc 1 pitch f",
+    [MOD_DST_OSC_2_PITCH_FINE]      = "osc 2 pitch f",
+};
+
 const char* graphicsGetLogo() {
 
     return globe_seq_logo;
@@ -558,76 +636,87 @@ unsigned char* graphicsGetPlayIcon() {
 }
 
 const char* graphicsGetModDst(mod_destinations_t dst) {
-    switch (dst) {
-        case MOD_DST_NONE:                  return "none";
-        case MOD_DST_OSC_1_PITCH:           return "osc 1 pitch c";
-        case MOD_DST_OSC_1_OCTAVE:          return "osc 1 octave";
-        case MOD_DST_OSC_1_X_MORPH:         return "osc 1 x morph";
-        case MOD_DST_OSC_1_Y_MORPH:         return "osc 1 y morph";
-        case MOD_DST_OSC_2_PITCH:           return "osc 2 pitch c";
-        case MOD_DST_OSC_2_OCTAVE:          return "osc 2 octave";
-        case MOD_DST_OSC_2_X_MORPH:         return "osc 2 x morph";
-        case MOD_DST_OSC_2_Y_MORPH:         return "osc 2 y morph";
-        case MOD_DST_PORTAMENTO:            return "portamento";
-        case MOD_DST_PHASE_MOD:             return "phase mod";
-        case MOD_DST_SYNC:                  return "sync";
-        case MOD_DST_BITRATE_REDUCE:        return "brr";
-        case MOD_DST_SAMPLERATE_REDUCE:     return "srr";
-        case MOD_DST_MIX_OSC_1_MIX:         return "mix osc 1 mix";
-        case MOD_DST_MIX_OSC_2_MIX:         return "mix osc 2 mix";
-        case MOD_DST_MIX_NOISE_MIX:         return "mix noise mix";
-        case MOD_DST_FILTER_CUTOFF:         return "filter cutoff";
-        case MOD_DST_FILTER_RESONANCE:      return "filter res";
-        case MOD_DST_FILTER_ENV_AMT:        return "filter env amt";
-        case MOD_DST_FILTER_TYPE:           return "filter type";
-        case MOD_DST_FILTER_FM:             return "filter fm";
-        case MOD_DST_FILTER_TRACKING:       return "filter tracking";
-        case MOD_DST_DELAY_RATE:            return "delay rate";
-        case MOD_DST_DELAY_FEEDBACK:        return "delay feedback";
-        case MOD_DST_DELAY_AMOUNT:          return "delay level";
-        case MOD_DST_ENV_1_ATTACK:          return "env 1 attack";
-        case MOD_DST_ENV_1_DECAY:           return "env 1 decay";
-        case MOD_DST_ENV_1_SUSTAIN:         return "env 1 sustain";
-        case MOD_DST_ENV_1_RELEASE:         return "env 1 release";
-        case MOD_DST_ENV_1_LOOP:            return "env 1 loop";
-        case MOD_DST_ENV_1_AMOUNT:          return "env 1 level";
-        case MOD_DST_ENV_2_ATTACK:          return "env 2 attack";
-        case MOD_DST_ENV_2_DECAY:           return "env 2 decay";
-        case MOD_DST_ENV_2_SUSTAIN:         return "env 2 sustain";
-        case MOD_DST_ENV_2_RELEASE:         return "env 2 release";
-        case MOD_DST_ENV_2_LOOP:            return "env 2 loop";
-        case MOD_DST_ENV_2_AMOUNT:          return "env 2 level";
-        case MOD_DST_ENV_3_ATTACK:          return "env 3 attack";
-        case MOD_DST_ENV_3_DECAY:           return "env 3 decay";
-        case MOD_DST_ENV_3_SUSTAIN:         return "env 3 sustain";
-        case MOD_DST_ENV_3_RELEASE:         return "env 3 release";
-        case MOD_DST_ENV_3_LOOP:            return "env 3 loop";
-        case MOD_DST_ENV_3_AMOUNT:          return "env 3 level";
-        case MOD_DST_LFO_1_RATE:            return "lfo 1 rate";
-        case MOD_DST_LFO_1_SHAPE:           return "lfo 1 shape";
-        case MOD_DST_LFO_1_PHASE:           return "lfo 1 phase";
-        case MOD_DST_LFO_1_SYNC:            return "lfo 1 sync";
-        case MOD_DST_LFO_1_AMOUNT:          return "lfo 1 level";
-        case MOD_DST_LFO_2_RATE:            return "lfo 2 rate";
-        case MOD_DST_LFO_2_SHAPE:           return "lfo 2 shape";
-        case MOD_DST_LFO_2_PHASE:           return "lfo 2 phase";
-        case MOD_DST_LFO_2_SYNC:            return "lfo 2 sync";
-        case MOD_DST_LFO_2_AMOUNT:          return "lfo 2 level";
-        case MOD_DST_LFO_3_RATE:            return "lfo 3 rate";
-        case MOD_DST_LFO_3_SHAPE:           return "lfo 3 shape";
-        case MOD_DST_LFO_3_PHASE:           return "lfo 3 phase";
-        case MOD_DST_LFO_3_SYNC:            return "lfo 3 sync";
-        case MOD_DST_LFO_3_AMOUNT:          return "lfo 3 level";
-        case MOD_DST_VCA:                   return "vca";
-        case MOD_DST_OSC_BOTH_PITCH_FINE:   return "oscs pitch f";
-        case MOD_DST_OSC_BOTH_PITCH:        return "oscs pitch c";
-        case MOD_DST_OSC_BOTH_OCTAVE:       return "oscs octave";
-        case MOD_DST_OSC_BOTH_X_MORPH:      return "oscs x morph";
-        case MOD_DST_OSC_BOTH_Y_MORPH:      return "oscs y morph";
-        case MOD_DST_OSC_1_PITCH_FINE:      return "osc 1 pitch f";
-        case MOD_DST_OSC_2_PITCH_FINE:      return "osc 2 pitch f";
-        default:                        return "unused";
+
+    if(dst >= NUM_MOD_DESTINATIONS || dst == MOD_DST_MIX_OSCS) {
+
+        return "unused";
+
+    } else {
+
+        return mod_dst_strings[dst];
+
     }
+
+    // switch (dst) {
+    //     case MOD_DST_NONE:                  return "none";
+    //     case MOD_DST_OSC_1_PITCH:           return "osc 1 pitch c";
+    //     case MOD_DST_OSC_1_OCTAVE:          return "osc 1 octave";
+    //     case MOD_DST_OSC_1_X_MORPH:         return "osc 1 x morph";
+    //     case MOD_DST_OSC_1_Y_MORPH:         return "osc 1 y morph";
+    //     case MOD_DST_OSC_2_PITCH:           return "osc 2 pitch c";
+    //     case MOD_DST_OSC_2_OCTAVE:          return "osc 2 octave";
+    //     case MOD_DST_OSC_2_X_MORPH:         return "osc 2 x morph";
+    //     case MOD_DST_OSC_2_Y_MORPH:         return "osc 2 y morph";
+    //     case MOD_DST_PORTAMENTO:            return "portamento";
+    //     case MOD_DST_PHASE_MOD:             return "phase mod";
+    //     case MOD_DST_SYNC:                  return "sync";
+    //     case MOD_DST_BITRATE_REDUCE:        return "brr";
+    //     case MOD_DST_SAMPLERATE_REDUCE:     return "srr";
+    //     case MOD_DST_MIX_OSC_1_MIX:         return "mix osc 1 mix";
+    //     case MOD_DST_MIX_OSC_2_MIX:         return "mix osc 2 mix";
+    //     case MOD_DST_MIX_NOISE_MIX:         return "mix noise mix";
+    //     case MOD_DST_FILTER_CUTOFF:         return "filter cutoff";
+    //     case MOD_DST_FILTER_RESONANCE:      return "filter res";
+    //     case MOD_DST_FILTER_ENV_AMT:        return "filter env amt";
+    //     case MOD_DST_FILTER_TYPE:           return "filter type";
+    //     case MOD_DST_FILTER_FM:             return "filter fm";
+    //     case MOD_DST_FILTER_TRACKING:       return "filter tracking";
+    //     case MOD_DST_DELAY_RATE:            return "delay rate";
+    //     case MOD_DST_DELAY_FEEDBACK:        return "delay feedback";
+    //     case MOD_DST_DELAY_AMOUNT:          return "delay level";
+    //     case MOD_DST_ENV_1_ATTACK:          return "env 1 attack";
+    //     case MOD_DST_ENV_1_DECAY:           return "env 1 decay";
+    //     case MOD_DST_ENV_1_SUSTAIN:         return "env 1 sustain";
+    //     case MOD_DST_ENV_1_RELEASE:         return "env 1 release";
+    //     case MOD_DST_ENV_1_LOOP:            return "env 1 loop";
+    //     case MOD_DST_ENV_1_AMOUNT:          return "env 1 level";
+    //     case MOD_DST_ENV_2_ATTACK:          return "env 2 attack";
+    //     case MOD_DST_ENV_2_DECAY:           return "env 2 decay";
+    //     case MOD_DST_ENV_2_SUSTAIN:         return "env 2 sustain";
+    //     case MOD_DST_ENV_2_RELEASE:         return "env 2 release";
+    //     case MOD_DST_ENV_2_LOOP:            return "env 2 loop";
+    //     case MOD_DST_ENV_2_AMOUNT:          return "env 2 level";
+    //     case MOD_DST_ENV_3_ATTACK:          return "env 3 attack";
+    //     case MOD_DST_ENV_3_DECAY:           return "env 3 decay";
+    //     case MOD_DST_ENV_3_SUSTAIN:         return "env 3 sustain";
+    //     case MOD_DST_ENV_3_RELEASE:         return "env 3 release";
+    //     case MOD_DST_ENV_3_LOOP:            return "env 3 loop";
+    //     case MOD_DST_ENV_3_AMOUNT:          return "env 3 level";
+    //     case MOD_DST_LFO_1_RATE:            return "lfo 1 rate";
+    //     case MOD_DST_LFO_1_SHAPE:           return "lfo 1 shape";
+    //     case MOD_DST_LFO_1_PHASE:           return "lfo 1 phase";
+    //     case MOD_DST_LFO_1_SYNC:            return "lfo 1 sync";
+    //     case MOD_DST_LFO_1_AMOUNT:          return "lfo 1 level";
+    //     case MOD_DST_LFO_2_RATE:            return "lfo 2 rate";
+    //     case MOD_DST_LFO_2_SHAPE:           return "lfo 2 shape";
+    //     case MOD_DST_LFO_2_PHASE:           return "lfo 2 phase";
+    //     case MOD_DST_LFO_2_SYNC:            return "lfo 2 sync";
+    //     case MOD_DST_LFO_2_AMOUNT:          return "lfo 2 level";
+    //     case MOD_DST_LFO_3_RATE:            return "lfo 3 rate";
+    //     case MOD_DST_LFO_3_SHAPE:           return "lfo 3 shape";
+    //     case MOD_DST_LFO_3_PHASE:           return "lfo 3 phase";
+    //     case MOD_DST_LFO_3_SYNC:            return "lfo 3 sync";
+    //     case MOD_DST_LFO_3_AMOUNT:          return "lfo 3 level";
+    //     case MOD_DST_VCA:                   return "vca";
+    //     case MOD_DST_OSC_BOTH_PITCH_FINE:   return "oscs pitch f";
+    //     case MOD_DST_OSC_BOTH_PITCH:        return "oscs pitch c";
+    //     case MOD_DST_OSC_BOTH_OCTAVE:       return "oscs octave";
+    //     case MOD_DST_OSC_BOTH_X_MORPH:      return "oscs x morph";
+    //     case MOD_DST_OSC_BOTH_Y_MORPH:      return "oscs y morph";
+    //     case MOD_DST_OSC_1_PITCH_FINE:      return "osc 1 pitch f";
+    //     case MOD_DST_OSC_2_PITCH_FINE:      return "osc 2 pitch f";
+    //     default:                        return "unused";
+    // }
 }
 
 const char* graphicsGetUserParamString(mod_destinations_t dst) {
@@ -816,6 +905,14 @@ const char* graphicsGetScopeDiv(uint8_t value) {
     }
 
     return "xx";
+
+}
+
+const char* graphicsGetLoopGraphic(bool loop) {
+
+    if(loop) return "^L";
+    
+    return "\\O";
 
 }
 

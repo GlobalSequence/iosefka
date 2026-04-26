@@ -84,7 +84,7 @@ void patternGenSetup(Sequencer *sequencer, pattern_gen_t *parameter, uint16_t ra
 
 void patternGenExecute() {
 
-    uint8_t len = seq->getPatternLength() + 1;
+    uint8_t len = seq->getPatternLength();
     uint8_t first = seq->getFirstStep();
     uint8_t chance = seq->getProbability();
 
@@ -103,15 +103,22 @@ void patternGenExecute() {
         // generate density
         uint8_t step_length = generateStepLength(len);
 
+
         // determine if step is active
-        bool active = generateActiveStep(chance);
+        bool active;
+        if(seq->getStepProbability(step)) active = true;
+        else active = generateActiveStep(chance);
 
         step_data.note = note;
         step_data.length = step_length;
         step_data.velocity = velocity;
         step_data.step_prob = 0;
 
-        seq->setStepData(step, step_data);
+        seq->setStepNote(step, note);
+        seq->setStepLength(step, step_length);
+        seq->setStepVelocity(step, velocity);
+
+        // seq->setStepData(step, step_data);
         seq->setWrittenStep(step);
         if(active) seq->setActiveStep(step);
         else seq->resetActiveStep(step);
