@@ -258,6 +258,17 @@ const unsigned char play_icon[] = {
     0b00000000
 };
 
+const unsigned char record_icon[] = {
+    0b00111100,
+    0b01111110,
+    0b11111111,
+    0b11111111,
+    0b11111111,
+    0b11111111,
+    0b01111110,
+    0b00111100
+};
+
 const unsigned char active_step_icon[] = {
     0b0000000,
     0b00011000,
@@ -317,9 +328,9 @@ static const char* mod_dst_strings[] = {
     [MOD_DST_SYNC]                  = "sync",
     [MOD_DST_BITRATE_REDUCE]        = "brr",
     [MOD_DST_SAMPLERATE_REDUCE]     = "srr",
-    [MOD_DST_MIX_OSC_1_MIX]         = "mix osc 1 mix",
-    [MOD_DST_MIX_OSC_2_MIX]         = "mix osc 2 mix",
-    [MOD_DST_MIX_NOISE_MIX]         = "mix noise mix",
+    [MOD_DST_MIX_OSC_1_MIX]         = "mixer osc 1",
+    [MOD_DST_MIX_OSC_2_MIX]         = "mixer osc 2",
+    [MOD_DST_MIX_NOISE_MIX]         = "mixer noise",
     [MOD_DST_FILTER_CUTOFF]         = "filter cutoff",
     [MOD_DST_FILTER_RESONANCE]      = "filter res",
     [MOD_DST_FILTER_ENV_AMT]        = "filter env amt",
@@ -632,6 +643,12 @@ unsigned char* graphicsGetSettingsIcon(bool global) {
 unsigned char* graphicsGetPlayIcon() {
 
     return (unsigned char*)play_icon;
+
+}
+
+unsigned char* graphicsGetRecordIcon() {
+
+    return (unsigned char*)record_icon;
 
 }
 

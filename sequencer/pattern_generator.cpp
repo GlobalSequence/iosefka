@@ -86,7 +86,8 @@ void patternGenExecute() {
 
     uint8_t len = seq->getPatternLength();
     uint8_t first = seq->getFirstStep();
-    uint8_t chance = seq->getProbability();
+    // uint8_t chance = seq->getProbability();
+    uint8_t chance = param->chance;
 
     for(int i = 0; i < len; i++) {
 

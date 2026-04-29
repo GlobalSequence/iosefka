@@ -158,10 +158,19 @@ void setParamValSeq(seq_params_t seq_param, uint8_t value, bool shift) {
 
         case SEQ_PARAM_STEP_OCTAVE:
 
-            octave = param8Bits0To9(value);
-            viewSetSeqParamStepOctave(octave);
-            note = viewGetSeqParamStepNote();
-            value = note + (octave * NUMBER_OF_NOTES_PER_OCTAVE);
+            if(!shift) {
+
+                octave = param8Bits0To9(value);
+                viewSetSeqParamStepOctave(octave);
+                note = viewGetSeqParamStepNote();
+                value = note + (octave * NUMBER_OF_NOTES_PER_OCTAVE);
+
+            } else {
+
+                seq_param = SEQ_PARAM_SCALE;
+                value = param8Bits0To1(value);
+
+            }
 
             break;
 
@@ -284,6 +293,10 @@ void setParamValSeq(seq_params_t seq_param, uint8_t value, bool shift) {
             synth->pattern_gen.octave_range = value;
 
             break;
+
+        case SEQ_PARAM_CHANCE:
+            synth->pattern_gen.chance = value;
+            break;
     
         case NUM_SEQ_PARAMS:           
         default:
@@ -372,7 +385,7 @@ seq_params_t layerLookupSeqParam(pot_index_t pot) {
         case POT_8: return SEQ_PARAM_FIRST_STEP;
         case POT_9: return SEQ_PARAM_LAST_STEP;
         case POT_10: return SEQ_PARAM_PROBABILITY;
-        case POT_11: return SEQ_PARAM_SCALE;
+        case POT_11: return SEQ_PARAM_CHANCE;
         case POT_12: return SEQ_PARAM_DENSITY;
         case POT_13: return SEQ_PARAM_REPEAT;
         case POT_14: return SEQ_PARAM_OCTAVE_RANGE;

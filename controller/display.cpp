@@ -13,6 +13,7 @@
 #include "../controller/view.h"
 #include "../controller/settings.h"
 #include "../sequencer/p_lock.h"
+#include "../sequencer/step_entry.h"
 #include "../devices/devices.h"
 #include "../synth/patch.h"
 #include "../common/test.h"
@@ -347,7 +348,8 @@ paramFuncGetGraphic param_func_lfo[k_num_disp_parameters] = {
 paramFuncGetGraphic param_func_seq[k_num_disp_parameters] = {
 
     graphicsGetMidiNote,
-    graphicsPrintNothing, 
+    // graphicsPrintNothing, 
+    graphicsGetSeqScale,
     graphicsGetHexString, 
     graphicsGetHexString, 
     graphicsGetSeqTranspose, 
@@ -359,7 +361,8 @@ paramFuncGetGraphic param_func_seq[k_num_disp_parameters] = {
     graphicsGetHexString, 
 
     graphicsGetHexString, 
-    graphicsGetSeqScale, 
+    // graphicsGetSeqScale, 
+    graphicsGetHexString,
     graphicsGetHexString, 
     graphicsGetSeqRepeat, 
     graphicsGetHexString, 
@@ -559,7 +562,8 @@ inline uint8_t getSeqParamValue(uint8_t index, uint8_t step, bool p_lock) {
         
             break;
 
-        case 1:            
+        case 1:      
+            val = synth->pattern_gen.scale;      
             break;
 
         case 2:
@@ -616,7 +620,8 @@ inline uint8_t getSeqParamValue(uint8_t index, uint8_t step, bool p_lock) {
             break;
 
             case 11:
-            val = synth->pattern_gen.scale;
+            val = synth->pattern_gen.chance;
+            // val = synth->pattern_gen.scale;
             break;
 
             case 12:
@@ -1310,6 +1315,11 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
 
                 if(p_lock) {
                     if(k == 0) drawRectangle(x - 1, y - 1, seq_p_lock_length, seq_p_lock_height, true, WriteMode::ADD);
+                    // the scale is not a parameter locked value so we hide it sneakily like so
+                    if(k == 1) {
+                        val = 0;
+                        func = graphicsGetDoubleDash;
+                    }
                     if(k == k_seq_prob_index) drawRectangle(x - 1, y - 1, k_param_width + 1, k_char_height + 1, true, WriteMode::ADD);
                 }
 
@@ -1682,12 +1692,15 @@ void displayPlayAndExtClk() {
 
     if(synth->seq.isRunning()) {
 
+        unsigned char* run_status = stepEntryGetStepRecord()? graphicsGetRecordIcon() : graphicsGetPlayIcon();
+
         devicesDisplayDrawBitmap(
             k_play_x, 
             k_play_y, 
             k_play_width, 
             k_play_height, 
-            graphicsGetPlayIcon(),
+            // graphicsGetPlayIcon(),
+            run_status,
             WriteMode::INVERT);
 
     }

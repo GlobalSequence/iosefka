@@ -390,6 +390,7 @@ typedef enum seq_params_t {
     SEQ_PARAM_DENSITY,
     SEQ_PARAM_REPEAT,
     SEQ_PARAM_OCTAVE_RANGE,
+    SEQ_PARAM_CHANCE,
 
     NUM_SEQ_PARAMS
 } seq_params_t;

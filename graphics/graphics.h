@@ -149,6 +149,7 @@ const char* graphicsGetParamHeader(view_layer_t l, uint8_t index);
 unsigned char* graphicsGetStepIcon(graphic_step_icon_t i);
 unsigned char* graphicsGetSettingsIcon(bool global);
 unsigned char* graphicsGetPlayIcon();
+unsigned char* graphicsGetRecordIcon();
 const char* graphicsGetModDst(mod_destinations_t dst);
 const char* graphicsGetUserParamString(mod_destinations_t dst);
 const char* graphicsGetEncoderMode(view_mode_t mode);

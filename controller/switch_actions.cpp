@@ -165,9 +165,9 @@ void seqSwitchAction(
 
         bool p_lock_happened = pLockIsEngaged();
 
-        // bool copy_happened = stepEntryDidCopyOccur();
+        bool copy_happened = stepEntryDidCopyOccur();
 
-        if(!timeout && !ignore_release && !p_lock_happened) {
+        if(!timeout && !ignore_release && !p_lock_happened && !copy_happened) {
 
             synth->seq.resetActiveStep(step);
 
