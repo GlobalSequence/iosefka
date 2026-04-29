@@ -2658,7 +2658,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 82.55 109.22 0)
 			(effects
 				(font
@@ -2792,7 +2792,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D8.0mm_P2.50mm_VALUE"
 			(at 157.48 102.87 0)
 			(effects
 				(font
@@ -2861,7 +2861,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D8.0mm_P2.50mm_VALUE"
 			(at 157.48 91.44 0)
 			(effects
 				(font
@@ -3200,7 +3200,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 127 91.44 0)
 			(effects
 				(font
@@ -3678,7 +3678,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 127 102.87 0)
 			(effects
 				(font

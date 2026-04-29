@@ -13573,7 +13573,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u BP"
+		(property "Value" "4.7u NP"
 			(at 39.37 22.86 90)
 			(effects
 				(font
@@ -13581,7 +13581,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 43.18 18.0848 0)
 			(effects
 				(font
@@ -13958,7 +13958,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline_Wide"
+		(property "Footprint" "values_not_refs:TO-92_Inline_Wide"
 			(at 156.21 78.105 0)
 			(effects
 				(font
@@ -14102,7 +14102,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Package_TO_SOT_THT:TO-92_Inline_Wide"
+		(property "Footprint" "values_not_refs:TO-92_Inline_Wide"
 			(at 157.48 111.125 0)
 			(effects
 				(font
@@ -15928,7 +15928,7 @@
 				)
 			)
 		)
-		(property "Value" "1M"
+		(property "Value" "DNP"
 			(at 119.634 68.326 90)
 			(effects
 				(font
@@ -16595,7 +16595,7 @@
 				)
 			)
 		)
-		(property "Value" "30k"
+		(property "Value" "15k"
 			(at 192.278 91.186 90)
 			(effects
 				(font
@@ -17900,7 +17900,7 @@
 				)
 			)
 		)
-		(property "Value" "30k"
+		(property "Value" "15k"
 			(at 192.278 83.566 90)
 			(effects
 				(font
@@ -18420,7 +18420,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u BP"
+		(property "Value" "4.7u NP"
 			(at 39.37 34.29 90)
 			(effects
 				(font
@@ -18428,7 +18428,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 43.18 29.5148 0)
 			(effects
 				(font
@@ -18487,7 +18487,7 @@
 				)
 			)
 		)
-		(property "Value" "15k"
+		(property "Value" "7.5k"
 			(at 192.278 87.376 90)
 			(effects
 				(font
@@ -19058,7 +19058,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u BP"
+		(property "Value" "4.7u NP"
 			(at 39.116 165.354 90)
 			(effects
 				(font
@@ -19066,7 +19066,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 43.18 167.9448 0)
 			(effects
 				(font
@@ -20885,7 +20885,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 39.37 138.43 0)
 			(effects
 				(font
@@ -21763,7 +21763,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u BP"
+		(property "Value" "4.7u NP"
 			(at 99.06 180.34 90)
 			(effects
 				(font
@@ -21771,7 +21771,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 102.87 183.1848 0)
 			(effects
 				(font
@@ -22549,7 +22549,7 @@
 				)
 			)
 		)
-		(property "Value" "4.7u BP"
+		(property "Value" "4.7u NP"
 			(at 101.6 166.37 90)
 			(effects
 				(font
@@ -22557,7 +22557,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D5.0mm_P2.50mm"
+		(property "Footprint" "values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE"
 			(at 105.41 169.2148 0)
 			(effects
 				(font

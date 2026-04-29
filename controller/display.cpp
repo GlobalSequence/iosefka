@@ -1360,6 +1360,15 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
                         else if (k == k_param_brr_i) val = param8Bits0To10(val);
                         else if (k == k_param_del_r_i) if((synth->patch.delay.type >> 6) == 1) val >>= 4;
                         break;
+
+                    case LAYER_ENV:
+                        if(alt) {
+                            if(k == k_param_env_1_sh_i) val = param8Bits0To1(val);
+                            else if(k == k_param_env_2_sh_i) val = param8Bits0To1(val);
+                            else if(k == k_param_env_3_sh_i) val = param8Bits0To1(val);
+                        }
+                        break;
+                    
                     case LAYER_LFO:
                         switch(k) {
 

@@ -147,15 +147,15 @@ synth_storable_t settingsGetInitPatch() {
     p.env[0].loop               = 0x00;
 
     p.env[1].attack             = 0x00;
-    p.env[1].decay              = 0x80;
-    p.env[1].sustain            = 0x80;
-    p.env[1].release            = 0x80;
+    p.env[1].decay              = 0x40;
+    p.env[1].sustain            = 0x00;
+    p.env[1].release            = 0x40;
     p.env[1].loop               = 0x00;
 
     p.env[2].attack             = 0x00;
-    p.env[2].decay              = 0x80;
-    p.env[2].sustain            = 0x80;
-    p.env[2].release            = 0x80;
+    p.env[2].decay              = 0x00;
+    p.env[2].sustain            = 0xFF;
+    p.env[2].release            = 0x00;
     p.env[2].loop               = 0x00;
 
     p.lfo[0].rate               = 0x00;
@@ -233,7 +233,7 @@ synth_storable_t settingsGetInitPatch() {
     pg.scale                = 0x00;
     pg.density              = 0x00;
     pg.repeat               = 0x01;
-    pg.octave_range         = 0x03;
+    pg.octave_range         = 0x01;
     pg.countdown            = 0x00;
     pg.on                   = false;
 
@@ -250,13 +250,13 @@ synth_storable_t settingsGetInitPatch() {
 
     for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
         if(i == 11) {
-            st.user_param.destination[i] = MOD_DST_ENV_1_LOOP;
+            st.user_param.destination[i] = MOD_DST_DELAY_TYPE;
         } else if (i == 12) {
-            st.user_param.destination[i] = MOD_DST_ENV_2_LOOP;
+            st.user_param.destination[i] = MOD_DST_DELAY_INPUT;
         } else if(i == 13) {
-            st.user_param.destination[i] = MOD_DST_ENV_3_LOOP;
+            st.user_param.destination[i] = MOD_DST_BITRATE_REDUCE;
         } else if (i == 14) {
-            st.user_param.destination[i] = MOD_DST_VCA;
+            st.user_param.destination[i] = MOD_DST_SAMPLERATE_REDUCE;
         } else {
             st.user_param.destination[i] = MOD_DST_NONE;
         }
