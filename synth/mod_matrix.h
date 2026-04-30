@@ -62,6 +62,7 @@ class ModMatrix {
         bool vca_drone_mode_;
         uint16_t seed_;
 
+        // uint8_t test_countdown;
 };
 
 #endif

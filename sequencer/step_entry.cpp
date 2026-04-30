@@ -81,9 +81,18 @@ step_data_t stepEntryCopy(uint8_t index) {
 
     copy_occurred = true;
 
-    pattern_data_t* p = seq->getPatternDataPtr();
+    step_data_t step = seq->getStepByIndex(index);
 
-    return p->step[index];
+    // Only copy the note, velocity, length data.
+    step.p_lock_param = 0;
+    step.p_lock_value = 0;
+    step.step_prob = 0;
+
+    return step;
+
+    // pattern_data_t* p = seq->getPatternDataPtr();
+
+    // return p->step[index];
 
 }
 

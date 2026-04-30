@@ -60,6 +60,8 @@ class Voice {
         bool sync_buffer_[AUDIO_BLOCK_SIZE];
         bool dummy_sync_buffer_[AUDIO_BLOCK_SIZE];
 
+        int16_t last_coarse[NUMBER_OF_OSCS];
+
         uint16_t srr_sample_;
         uint srr_count_ = 0;
 

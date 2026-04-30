@@ -165,14 +165,6 @@ void Oscillator::phaseAccumulator2(void)
         uint16_t y2x2b1 = U32Interp8Bit(y2x2b1w1, y2x2b1w2, phase_gradient, not_phase_gradient);
         uint16_t y2x2b2 = U32Interp8Bit(y2x2b2w1, y2x2b2w2, phase_gradient, not_phase_gradient);
 
-        // uint32_t y1x1 = U32MixU32(y1x1b1, y1x1b2, 8, pitch_gradient_);
-        // uint32_t y1x2 = U32MixU32(y1x2b1, y1x2b2, 8, pitch_gradient_);
-        // uint32_t y2x1 = U32MixU32(y2x1b1, y2x1b2, 8, pitch_gradient_);
-        // uint32_t y2x2 = U32MixU32(y2x2b1, y2x2b2, 8, pitch_gradient_);
-        // uint32_t y1x1 = U32MixU32(y1x1b1, y1x1b2, 32, table_gradient);
-        // uint32_t y1x2 = U32MixU32(y1x2b1, y1x2b2, 32, table_gradient);
-        // uint32_t y2x1 = U32MixU32(y2x1b1, y2x1b2, 32, table_gradient);
-        // uint32_t y2x2 = U32MixU32(y2x2b1, y2x2b2, 32, table_gradient);
         uint32_t y1x1 = U32MixU32(y1x1b1, y1x1b2, 32, smooth_table_gradient_);
         uint32_t y1x2 = U32MixU32(y1x2b1, y1x2b2, 32, smooth_table_gradient_);
         uint32_t y2x1 = U32MixU32(y2x1b1, y2x1b2, 32, smooth_table_gradient_);

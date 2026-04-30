@@ -357,8 +357,10 @@ paramFuncGetGraphic param_func_seq[k_num_disp_parameters] = {
     graphicsGetSeqDirection, 
     graphicsGetHexString, 
     graphicsGetSeqClkDiv, 
-    graphicsGetHexString, 
-    graphicsGetHexString, 
+    // graphicsGetDecString, 
+    // graphicsGetDecString, 
+    graphicsGetDecStringU8, 
+    graphicsGetDecStringU8, 
 
     graphicsGetHexString, 
     // graphicsGetSeqScale, 
@@ -603,11 +605,11 @@ inline uint8_t getSeqParamValue(uint8_t index, uint8_t step, bool p_lock) {
             break;
 
             case 8:
-            val = synth->seq.getFirstStep();
+            val = synth->seq.getFirstStep() + 1;
             break;
 
             case 9:
-            val = synth->seq.getLastStep();
+            val = synth->seq.getLastStep() + 1;
             break;
 
             case 10:

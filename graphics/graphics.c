@@ -403,6 +403,15 @@ const char* graphicsGetHexString(uint8_t index) {
 
 }
 
+// This function exists because the paramFuncGetGraphic() function only accepts uint8_t
+// additionally, the only parameters that use this function look best with a "0" in front of all
+// single-digit base-10 integers, so I'm just adding that here too. 
+const char* graphicsGetDecStringU8(uint8_t index) {
+
+    return index < 10? graphicsGetHexString(index) : graphicsGetDecString(index);
+
+}
+
 const char* graphicsGetDecString(int index) {
 
     return decimal_table[index];

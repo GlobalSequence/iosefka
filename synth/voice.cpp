@@ -26,7 +26,7 @@ void Voice::renderOscillators()
         osc_[1].reset();
     }
 
-    int16_t base_pitch = p.pitch_value + p.pitch_increment;
+    int32_t base_pitch = p.pitch_value + p.pitch_increment;
     if ((p.pitch_increment > 0) ^ (base_pitch < p.pitch_target))
     {
         base_pitch = p.pitch_target;
@@ -55,7 +55,6 @@ void Voice::renderOscillators()
         uint32_t i1 = osc_increments[coarse];
         uint32_t i2 = osc_increments[coarse + 1];
         uint32_t increment = (((i2 - i1) * fine) >> 8) + i1;
-        uint8_t pitch_gradient = coarse % SEMITONES_PER_OCTAVE; 
 
         if (i == 0)
         {

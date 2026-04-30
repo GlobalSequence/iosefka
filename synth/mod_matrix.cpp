@@ -51,7 +51,7 @@ void ModMatrix::triggerNoteOn(uint8_t note, uint8_t velocity, bool trigger) {
 
     v_i->pitch_target = note << 8;
     uint8_t portamento = v_i->portamento;
-    int16_t delta = v_i->pitch_target - v_i->pitch_value;
+    int32_t delta = v_i->pitch_target - v_i->pitch_value;
     int32_t increment = (res_env_portamento_increments[portamento >> 1]);
     v_i->pitch_increment = (delta * increment) >> 16;
 

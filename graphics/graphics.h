@@ -125,6 +125,7 @@ const char* graphicsGetLogo();
 
 const char* graphicsGetHexString(uint8_t index);
 const char* graphicsGetDecString(int index);
+const char* graphicsGetDecStringU8(uint8_t index);
 const char* graphicsGetSeqNote(uint8_t index);
 const char* graphicsGetSeqOctave(uint8_t index);
 const char* graphicsGetSeqTranspose(uint8_t index);

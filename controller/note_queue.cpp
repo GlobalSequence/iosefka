@@ -34,6 +34,7 @@ void noteQueueSetup(uint8_t* legato, uint8_t* osc_duo) {
 void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on) {
 
     note_data_t note_data;
+    bool legato_on = *legato_ptr;
 
     // MIDI notes get the raw note on/off messages without any legato tricks
     addToQueueMidi(note, velocity, on);
@@ -54,7 +55,7 @@ void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on) {
                 after.note, 
                 after.velocity, 
                 true,    
-                *legato_ptr? !legato : true
+                legato_on? !legato : true
             };
 
             addToQueue(note_data);
@@ -71,23 +72,31 @@ void noteQueueSubmit(uint8_t note, uint8_t velocity, bool on) {
     } else {
 
         const note_entry_t before = noteStack.mostRecentNote();
+
+        const note_entry_t least = noteStack.leastRecentNote();
         
         noteStack.noteOff(note);
         
         const note_entry_t after = noteStack.mostRecentNote(); 
 
-        bool add = false;
+        bool add = true;
 
         if(noteStack.size() == 0) {
 
-            add = true;
             note_data = {note, 0, 0, 0};
 
-            
-        } else if (*legato_ptr && !*duo_ptr) {
+        } else if(*duo_ptr && least.note == note){
 
-            add = true;
             note_data = {after.note, last_on_velocity, true, false};
+            bass_note = after.note;
+            
+        } else if (legato_on) {
+            
+            note_data = {after.note, last_on_velocity, true, false};
+
+        } else {
+
+            add = false;
 
         }
 

@@ -818,7 +818,6 @@ void switchActionsTakeInput(
                 
 
             }
-            TEST_PRINT_ONE_NL(viewGetLayer())
 
             break;
 
