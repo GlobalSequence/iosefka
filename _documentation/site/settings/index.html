@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Settings - Iosefka Manual</title>
+    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+    <link href="../css/print-site.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Settings", url: "#_top", children: [
+              {title: "List of Parametric Settings", url: "#list-of-parametric-settings" },
+              {title: "Using the Settings menu", url: "#using-the-settings-menu" },
+              {title: "Presets", url: "#presets" },
+          ]},
+        ];
+
+    </script>
+    <script src="../js/base.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../search/main.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../supplemental/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../supplemental/" class="btn btn-xs btn-link">
+        Supplemental Information
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../sequencer/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../sequencer/" class="btn btn-xs btn-link">
+        The Sequencer
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h1 id="settings"><strong>Settings</strong></h1>
+<p>To navigate to the Settings View, hold the <strong><em>Shift switch</em></strong> and press the <strong><em>Sequencer switch</em></strong>.</p>
+<p>The Settings View allows for the configuration of global and preset-specific settings. From here, you can control the processing of MIDI messages, set patch-specific controls, initialize a preset, and enable the Oscilloscope.</p>
+<p>This section describes the different settings in the Settings menu and how to control them. For this section it is assumed that you are in the settings menu.</p>
+<h3 id="list-of-parametric-settings">List of Parametric Settings</h3>
+<p>This table contains the settings within the settings menu, a short description, the default value, and whether the parameter is Global (affects all presets) or Preset Specific. </p>
+<p>Links are included to sections with more in-depth descriptions.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Setting</strong></th>
+<th><strong>Description</strong></th>
+<th>Default value</th>
+<th>Global or Preset Specific</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preset Number</td>
+<td>Select the preset number that will be <a href="#loading-a-preset">loaded</a> or <a href="#saving-a-preset">saved</a> to</td>
+<td>1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Preset Name</td>
+<td>Where the preset name is displayed and <a href="#editing-a-preset">edited</a></td>
+<td>The name of Preset 1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Channel</td>
+<td>Selects the MIDI channel that Iosefka will receive messages from.*</td>
+<td>1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Src:</td>
+<td>Select the MIDI Modulation source here to select the Modulation Destination setting below will affect.**</td>
+<td>Velo</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>Mod Destination</td>
+<td>Select the Modulation Destination that the Modulation Source above affects**</td>
+<td>None</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>Legato</td>
+<td>Toggles Legato on/off. With legato on, envelopes are not retriggered when new notes are pressed</td>
+<td>On</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>Osc Duo</td>
+<td>Toggles Osc Duo on/off. This is a paraphonic mode, giving the ability to play a separate note with each oscillator</td>
+<td>Off</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>VCA Velo</td>
+<td>Toggles VCA Velocity on/off. Turning this setting off decouples the Velocity Mod Source from the VCA, so any entered notes will always be at full Velocity</td>
+<td>On</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>Clock RX</td>
+<td>Toggles MIDI Clock Receive on/off. With this setting off, Iosefka will ignore external clock messages and run only on the internal sequencer clock*</td>
+<td>On</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Trnsprt RX</td>
+<td>Toggles MIDI Transport messages on/off. With this setting off, Iosefka will ignore external Play and Stop MIDI messages*</td>
+<td>On</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Pgm Chg RX</td>
+<td>Toggles MIDI Program Change Receive on/off. With this setting off, Iosefka will ignore external Program Change messages*</td>
+<td>On</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Latch</td>
+<td>Toggles Parameter Latch on/off. With Latch enabled, Parameters will not change until the corresponding <strong><em>Potentiometer</em></strong> is near the parameter value. This prevents a parameter from 'jumping' to a value drastically different than the current value</td>
+<td>Off</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>P.B. Dpth</td>
+<td>Selects the Pitch Bend Depth in musical semitones. The value set will be +/- this number. For example, a setting of '1' means that the pitch bend will be +1 and -1 semitones at the extremes</td>
+<td>1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Switches <strong><em>OLED Display</em></strong> to <a href="../supplemental/#oscilloscope">Oscilloscope</a></td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Init (Shift)</td>
+<td>When shift is held, this setting initializes the preset to the 'factory' default. This is the default preset for all presets.</td>
+<td>N/A</td>
+<td>Preset</td>
+</tr>
+</tbody>
+</table>
+<p>* More information can be found in the <a href="../midi/">MIDI Implementation</a> section
+** A list of Mod Destinations can be found in the <a href="./supplemental#modulation-destinations">Modulation Destinations</a> section</p>
+<h3 id="using-the-settings-menu">Using the Settings menu</h3>
+<p>When first visiting the Settings menu after starting up the machine, the <strong><em>Data rotary encoder</em></strong> is in the <strong>Settings Scroll Mode</strong> which controls scrolling through the Settings menu items, indicated by the circle icon on the left of the <strong><em>OLED Display</em></strong>. Pressing down on the <strong><em>Data rotary encoder switch</em></strong>, does different things depending on the setting:</p>
+<ul>
+<li>For settings with numbers or text to the right, the <strong><em>Data rotary encoder</em></strong> now switches <strong>Modes</strong> and increments/decrements the value of the setting. Horizontal parallel lines will appear above and below the setting name to indicate that the setting is being edited.</li>
+<li>To return to the Settings Scroll Mode, click the <strong><em>Data rotary encoder switch</em></strong> again.</li>
+<li>For settings related to Presets, and settings related to Mod Source/Destination, the horizontal lines will encompass two lines, indicating that those settings are related. The selected setting is indicated by the circle icon on the left.</li>
+<li>For settings with square checkboxes, the <strong><em>Data rotary encoder switch</em></strong> will toggle that item on and off.</li>
+<li>Some Settings menu items such as the Preset Name entry, enabling the Oscilloscope, and Initializing a Preset have slightly different control types. Those will be explained in their own sections.</li>
+</ul>
+<p>To minimize redundancy, in the rest of the Settings section, the term "scroll to and select" will be used to describe scrolling to the menu item while in <strong>Settings Scroll Mode</strong> and selecting the setting using the <strong><em>Data rotary encoder switch</em></strong>.</p>
+<h3 id="presets">Presets</h3>
+<p>Iosefka contains 64 presets which allow for the saving of every machine Parameter, including sequencer Parameters and steps.</p>
+<h4 id="selecting-a-preset">Selecting a preset</h4>
+<p>To save or load a preset of your choice, scroll to and select "preset" or press the <strong>Preset <em>Key Switch</em></strong> which enables the <strong>Preset Mode</strong> ("preset" will be outlined as in the picture below), and turn the <strong><em>Data rotary encoder</em></strong> to the preset number of your choosing.</p>
+<p>The currently loaded preset is indicated by a "&gt;&gt;" next to the name "preset".</p>
+<p><strong>Note that the preset number is in decimal not hexadecimal</strong>.</p>
+<h4 id="saving-a-preset">Saving a Preset</h4>
+<p>With the preset number that you wish to save selected, ready the save state of the machine by pressing the <strong>Save <em>Key switch</em></strong>. This brings up the following screen on the <strong><em>OLED Display</em></strong>.</p>
+<p>If you are certain that you are ready to save, execute the save by holding the <strong>Shift switch</strong> and pressing the <strong>Save <em>Key switch</em></strong> again. The machine confirms that the preset has been saved with this screen.</p>
+<h4 id="loading-a-preset">Loading a Preset</h4>
+<p>With the preset number that you wish to load selected, ready the load state of the machine by pressing the <strong>Load <em>Key switch</em></strong>. This brings up the following screen on the <strong><em>OLED Display</em></strong>.</p>
+<p>If you are certain that you are ready to load, execute the load by holding the <strong>Shift switch</strong> and pressing the <strong>Load <em>Key switch</em></strong> again. The machine confirms that the preset has been loaded with this screen.</p>
+<h4 id="editing-the-preset-name">Editing the Preset name</h4>
+<p>Each preset can have an 8 character name which is loaded on startup and can be seen when selecting a preset.</p>
+<p>Navigate to and select the row beneath "preset". This row will be blank if no preset name has been entered. A highlighted square will appear, and you can select the alphanumeric character with the <strong><em>Data rotary encoder</em></strong>. For ease of use, only lowercase letters, numbers, and "." "-" characters will appear.</p>
+<p>To move to the next character, hold the <strong><em>Shift Switch</em></strong> and turn the <strong><em>Data rotary encoder</em></strong>. Do this multiple times to scan through multiple characters. To save the Preset name, you must save the Preset.</p>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../supplemental/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../supplemental/" class="btn btn-xs btn-link">
+        Supplemental Information
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../sequencer/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../sequencer/" class="btn btn-xs btn-link">
+        The Sequencer
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="None">Windmill Dark</a> theme by None (noraj).</p>
+</footer>
+
+</body>
+</html>

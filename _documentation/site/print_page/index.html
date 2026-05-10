@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Print Site - Iosefka Manual</title>
+    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+    <link href="../css/print-site.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '/';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "1 Overview", url: "#_top", children: [
+          ]},
+          {title: "2 Operation", url: "#operation", children: [
+          ]},
+          {title: "3 The Synthesizer", url: "#synthesizer", children: [
+          ]},
+          {title: "4 The Sequencer", url: "#sequencer", children: [
+          ]},
+          {title: "5 Settings", url: "#settings", children: [
+          ]},
+          {title: "6 Supplemental Information", url: "#supplemental", children: [
+          ]},
+          {title: "7 Midi Implementation", url: "#midi", children: [
+          ]},
+          {title: "8 Credits and Acknowledgements", url: "#credits", children: [
+          ]},
+          {title: "9 Build Guide", url: "#build_guide", children: [
+          ]},
+        ];
+
+    </script>
+    <script src="../js/base.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../search/main.js"></script> 
+
+        <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            remove_material_navigation();remove_mkdocs_theme_navigation();generate_toc();
+        })
+        </script>
+        </head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+
+    <div id="print-site-page" class="print-site-enumerate-headings print-site-enumerate-figures">
+        <section class="print-page">
+            <div id="print-page-toc" data-toc-depth="3">
+                <nav role='navigation' class='print-page-toc-nav'>
+                <h1 class='print-page-toc-title'>Table of Contents</h1>
+                </nav>
+            </div>
+        </section>
+        <section class="print-page" id="index" heading-number="1"><h1 id="index-overview"><strong>Overview</strong></h1>
+<h2 id="index-hardware">Hardware</h2>
+<p>Hardware components listed in the manual will be referred to by their name as listed below. When hardware components are listed in the manual, they will appear in <strong><em>Bold and Italic</em></strong></p>
+<p><img alt="hardware_overview_front" src="../assets/hardware_overview_front.jpg" /></p>
+<p><img alt="hardware_overview_side" src="../assets/hardware_overview_side.jpg" /></p>
+<ol>
+<li><strong><em>OLED Display</em></strong></li>
+<li><strong><em>Data Rotary Encoder</em></strong> - (with switch when pressing down on shaft)</li>
+<li><strong><em>Shift switch</em></strong></li>
+<li><strong><em>Play/Stop switch</em></strong></li>
+<li><strong><em>Layer LEDs</em></strong></li>
+<li><strong><em>View switches</em></strong></li>
+<li><strong><em>Page LEDs</em></strong></li>
+<li><strong><em>Key switches</em></strong></li>
+<li><strong><em>Potentiometers</em></strong></li>
+<li><strong><em>Volume knob</em></strong></li>
+<li><strong><em>Output Audio jack</em></strong></li>
+<li><strong><em>External Input Audio Jack</em></strong></li>
+<li><strong><em>Filter tracking tuning trimpot</em></strong></li>
+<li><strong><em>Filter offset trimpot</em></strong></li>
+<li><strong><em>MIDI Output jack</em></strong></li>
+<li><strong><em>MIDI Input jack</em></strong></li>
+<li><strong><em>Power supply jack</em></strong> - (9v DC - Center positive)</li>
+</ol>
+<h2 id="index-synthesizer-block-diagram">Synthesizer Block Diagram</h2>
+<p><img alt="iosefka_audio_block_diagram" src="../assets/iosefka_audio_block_diagram.jpg" /></p>
+<p><img alt="iosefka_modulation_block_diagram_and_key" src="../assets/iosefka_modulation_block_diagram_and_key.jpg" /></p>
+<h2 id="index-specification">Specification</h2>
+<p>Iosefka is a hybrid digital analog monophonic synthesizer consisting of the following parts:</p>
+<p><strong>Digital audio:</strong></p>
+<ul>
+<li>2x wavetable oscillators, capable of interpolated morphing waveforms in the X and Y dimension along 256 hand-picked waveforms in a 16x16 layout</li>
+<li>White noise generator</li>
+<li>Sample-rate reduction and Bit-rate reduction effects</li>
+<li>Loopback digital delay fed from VCA output with feedback and adjustable rate from &gt;3 ms to ~683 ms</li>
+</ul>
+<p><strong>Analog audio:</strong></p>
+<ul>
+<li>V2140 based analog pole-mixing resonant voltage controlled filter with audio rate frequency modulation selectable between:<ul>
+<li>2 pole low pass</li>
+<li>4 pole low pass</li>
+<li>2 pole high pass</li>
+<li>2 pole band pass</li>
+</ul>
+</li>
+<li>LM13700 based voltage controlled amplifier</li>
+<li>External audio input direct into analog section and digital delay</li>
+</ul>
+<p><strong>Step sequencer:</strong></p>
+<ul>
+<li>32 step, 24 PPQ performance step sequencer</li>
+<li>Parameterized sequence generator including step chance, length, octave range, and musical scale</li>
+<li>Controls for swing, direction, clock division, first and last step, probability</li>
+<li>Per step Parameter locks for:<ul>
+<li>Note value</li>
+<li>Step length</li>
+<li>Velocity value</li>
+<li>Step Probability</li>
+<li>Single audio Parameter</li>
+</ul>
+</li>
+<li>Per step mutes</li>
+</ul>
+<p><strong>Modulation matrix to all audio Parameters:</strong></p>
+<ul>
+<li>3x ADSR envelope generators (converted to control voltage for analog modules)</li>
+<li>3x Low frequency oscillators (converted to control voltage for analog modules)</li>
+<li>Velocity control</li>
+<li>Aftertouch control</li>
+<li>Mod Wheel control</li>
+<li>Breath Control</li>
+<li>Pitch Bend Control</li>
+</ul>
+<p><strong>MIDI Implementation:</strong></p>
+<ul>
+<li><strong>MIDI RX</strong><ul>
+<li>Note and velocity values</li>
+<li>Realtime messages: clock tick, start, stop</li>
+<li>CC messages for all audio Parameters (see implementation chart)</li>
+<li>Modulation control of velocity, aftertouch, mod-wheel</li>
+<li>Pitch bend with configurable bend range from 1 to 12 semitones</li>
+<li>Program change (coming soon)</li>
+</ul>
+</li>
+<li><strong>MIDI TX</strong><ul>
+<li>Note and velocity values (from keyboard and sequencer)</li>
+<li>Realtime messages: clock tick, start, stop</li>
+</ul>
+</li>
+</ul>
+<p><strong>Patch storage:</strong></p>
+<ul>
+<li>Store 64 patches of all audio and sequencer Parameters</li>
+<li>Store global MIDI and machine settings</li>
+</ul>
+<p><strong>Oscilloscope:</strong></p>
+<ul>
+<li>Oscillator phase locked oscilloscope with four 'time' divisions (sample divisions) between 512 to 128 samples.</li>
+</ul></section><section class="print-page" id="operation" heading-number="2"><h1 id="operation-operation"><strong>Operation</strong></h1>
+<h2 id="operation-powering-the-device">Powering the device</h2>
+<p>Iosefka requires a <strong>9v DC center-positive</strong> power supply. It is preferable to use a linear power supply (such as the one outlined in the BOM) instead of a switching power supply, in order to reduce noise.</p>
+<p>The unit does not have a built-in on/off switch, so operation begins when the power supply is plugged in and ends when it is unplugged.</p>
+<h2 id="operation-plugging-into-an-external-audio-source">Plugging into an external audio source</h2>
+<p>Iosefka provides line level mono output. Simply plug a ¼" cable into Iosefka's <strong><em>Output Audio jack</em></strong> and plug the other end into your mixer or audio interface, adjusting the volume with the <strong><em>Volume knob</em></strong> as needed.</p>
+<p>Iosefka does not have a headphone output. It is not advised to plug headphones directly into Iosefka's <strong><em>Output Audio Jack</em></strong>.</p>
+<h2 id="operation-playing-sounds">Playing Sounds</h2>
+<p>You can play sounds on Iosefka in a variety of ways. Most of these ways will be elaborated on in their own sections, but as a basic rundown:</p>
+<h3 id="operation-playing-sounds-with-the-built-in-keyboard">Playing sounds with the built-in keyboard</h3>
+<p>When the <strong>Kbd Page</strong> is active (by pressing the <strong>Synth 1</strong>, <strong>Synth 2</strong>, <strong>Envelope</strong>, or <strong>LFO <em>View switches</em></strong>), the 13 <strong><em>Key Switches</em></strong> play chromatic musical semitones. The lower 8 switches represent white keys and the upper 5 switches represent black keys.</p>
+<p>Furthermore, in the <strong>Synth 1</strong> and <strong>Synth 2 Views</strong>, the <strong>Keyboard Octave Mode</strong> is active, allowing for selecting between octave 2 through 7 of the 128 MIDI standard notes with the <strong><em>Data rotary encoder</em></strong>.</p>
+<h3 id="operation-playing-sounds-with-the-sequencer">Playing sounds with the Sequencer</h3>
+<p>You can just let the synth play itself by pressing the <strong><em>Play/Stop switch</em></strong>, provided that there is an active sequencer Pattern.</p>
+<p>More information on the Sequencer can be found in the <a href="#sequencer">Sequencer</a> section of this document.</p>
+<h3 id="operation-playing-sounds-via-midi">Playing sounds via MIDI</h3>
+<p>Iosefka comes with robust MIDI implementation according to the MIDI 1.0 standard. You can plug in any device that produces MIDI Note messages like a keyboard or a computer with a DAW into the <strong><em>MIDI Input Jack</em></strong> in the back of the device. Just make sure that the MIDI Channel in the <strong>Settings View</strong> matches the MIDI channel of your MIDI output device.</p>
+<p>More information can be found in the <a href="#midi">MIDI Implementation</a> section of this document.</p>
+<h3 id="operation-just-let-it-drone-my-dude">Just let it drone my dude</h3>
+<p>By disabling the VCA, Iosefka becomes a drone synthesizer, so it's constantly playing sound. From the <strong>Synth 1 Layer</strong>, press the <strong><em>Shift Switch</em></strong> and turn the <strong><em>Mix 1 Potentiometer</em></strong> above the "00" value to open the VCA to enter drone mode. Turning the value to "FF" will turn drone mode to full VCA gain.</p>
+<p>When the VCA parameter it 00, the VCA is fully closed and will only open with Envelope 3.</p>
+<h2 id="operation-the-oled-display-and-leds">The <em>OLED Display</em> and <em>LEDs</em></h2>
+<p>The combination of the <strong><em>OLED Display</em></strong> and the eight <strong><em>LEDs</em></strong> on Iosefka are meant to give thorough visual feedback on the machine's control state, known as the <strong>View</strong> (more on the <strong>View</strong> in the section below). Learning this combination is crucial to the workflow of the machine.</p>
+<p>Most changes on the physical interface will be reflected somehow on the <strong><em>OLED Display</em></strong>. For example, when you turn a <strong><em>Potentiometer</em></strong>, a value relating to the placement of that potentiometer will change on the <strong><em>OLED Display</em></strong>. For example, turn the top left <strong><em>Potenetiometer</em></strong> and you'll see the number in the top left of the <strong><em>OLED Display</em></strong> change. Knowing that the currently lit <strong><em>Layer LED</em></strong> corresponds to the 15 numbers currently showing on the <strong><em>OLED Display</em></strong> will help you know which Parameters those numbers represent.</p>
+<p>A detailed description of the different screens shown on the <strong><em>OLED Display</em></strong> and <strong><em>LEDs</em></strong> is provided in the <a href="#supplemental-view-charts">View Charts</a> section of this document.</p>
+<h3 id="operation-oled-display">OLED Display</h3>
+<h4 id="operation-a-note-on-the-use-of-hexadecimal">A note on the use of hexadecimal</h4>
+<p>The display on Iosefka is 128x64 pixels. This plus the admittedly tiny size of the screen means that every character counts. </p>
+<p>Because of this, most numerical values controlled by a <strong><em>Potentiometer</em></strong> are displayed in hexadecimal, a base 16 number system, instead of the standard base 10 decimal number system. This is actually how many musical trackers display numerical values as well.</p>
+<p>Moreover, Iosefka reads the <strong><em>Potentiometers</em></strong> at 8-bit resolution, meaning the voltage from the potentiometer is read as:</p>
+<ul>
+<li>All the way down: 0 (0x00 in hexadecimal)</li>
+<li>All the way up: 255 (0xFF in hexadecimal)</li>
+<li>Halfway: 128 (0x80 in hexadecimal)</li>
+</ul>
+<p>In brief, instead of counting like this:</p>
+<ul>
+<li><strong>0-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20 … 251-252-253-254-255</strong></li>
+</ul>
+<p>The Parameter values count like this:</p>
+<ul>
+<li><strong>0-1-2-3-4-5-6-7-8-9-A-B-C-D-E-F-10-11-12-13-14 … FB-FC-FD-FE-FF</strong></li>
+</ul>
+<h4 id="operation-values-that-are-displayed-in-decimal">Values that are displayed in decimal</h4>
+<p>All numerical values controlled by the <strong><em>Data Rotary Encoder</em></strong> show as decimal values (...9, 10, 11...), as well as the following values on the <strong>Sequencer View</strong>:
+- Length
+- First Step
+- Last Step</p>
+<h4 id="operation-bipolar-values">Bipolar values</h4>
+<p>Because of the aforementioned issue with space allotted to Parameter values, adding a negative "-" symbol would break the visual convention and hog screen space. As a compromise, bipolar values are displayed as positive hexadecimal values. For example, the values for the "- Level +" Parameters for the Modulation Sources are displayed as 0 to FF, but are in reality -80 to 7F, with 0 as the center value.</p>
+<p>To be clear (or more confusing, I don't know):
+- How it looks on the screen (positive hexadecimal): 
+    - Value range: 00 - FF
+    - The center value: 80
+- How it works internally:
+    - Value range: -128 - 127
+    - The center value: 0</p>
+<p>Bipolar values are mentioned in all parameters where they apply, and link back here for reference.</p>
+<h4 id="operation-hanging-screens">Hanging screens</h4>
+<p>A Hanging Screen is a screen which shows for just a few seconds, like showing the <strong>Mode</strong> when a <strong>View</strong> is changed, or any time the <strong><em>Data rotary encoder</em></strong> is turned. To view this screen for longer, hold down the <strong><em>Data rotary encoder</em></strong> switch by pressing down on the shaft. The Hanging Screen will persist for as long as the screen is held (plus a few seconds).</p>
+<h4 id="operation-display-off-timer">Display Off Timer</h4>
+<p>To maintain the longevity of the <strong><em>OLED Display</em></strong>, it will automatically turn off after 5 minutes if none of the physical components are changed (like turning a <strong><em>Potentiometer</em></strong>), or if the sequencer is not running, or if there are no incoming MIDI messages.</p>
+<h3 id="operation-leds">LEDs</h3>
+<p>As mentioned above, the <strong><em>Layer LEDs</em></strong> and <strong><em>Page LEDs</em></strong> give visual feedback to the respective <strong>Layer</strong> and <strong>Page</strong> in the device's current <strong>View</strong>, described below.</p>
+<h2 id="operation-the-view"><strong>The View</strong></h2>
+<p>The total state of the physical user interface is called the <strong>View</strong>. The <strong>View</strong> consists of three physical sections:</p>
+<ul>
+<li><strong>Pages</strong> - The functions of the 13 <strong><em>Key switches</em></strong> on the control board</li>
+<li><strong>Layers</strong> - The Parameters controlled by the 15 <strong><em>Potentiometers</em></strong> on the control board</li>
+<li><strong>Modes</strong> - The data selectable by the single <strong><em>Data rotary encoder</em></strong> on the control board</li>
+</ul>
+<p>Therefore, the <strong>View</strong> is determined by which state the <strong>Page</strong>, <strong>Layer</strong>, and <strong>Mode</strong> is currently set on the device. The OLED Display as well as the <strong><em>Layer LEDs</em></strong> and <strong><em>Page LEDs</em></strong> give visual feedback on which <strong>View</strong> is currently active.</p>
+<h3 id="operation-changing-the-view">Changing the View</h3>
+<p>The View can be changed with the five <strong><em>View switches</em></strong> on the bottom left of the control board.</p>
+<p>To see a list of all the <strong>Views</strong>, visit the <a href="#supplemental-view-charts">View Charts</a> section of this document.</p>
+<h3 id="operation-page">Page</h3>
+<p>The function performed by each of the 13 <strong><em>Key switches</em></strong> is determined by which <strong>Page</strong> is currently active. The currently lit <strong><em>Page LED</em></strong> indicates the current page, and the function of that specific <strong><em>Key Switch</em></strong> is either:</p>
+<ul>
+<li><strong>Key Page</strong> - A musical semitone in the layout of a standard piano keyboard</li>
+<li><strong>Seq Page</strong> - The first line of text beneath the <strong><em>Key switch</em></strong></li>
+<li><strong>Set Page</strong> - the second line of text beneath the <strong><em>Key switch</em></strong></li>
+</ul>
+<p>The image below illustrates how the <strong><em>Page LEDs</em></strong> indicate what each switch does. The orange sections indicate Sequencer functions and the green indicates Settings functions.</p>
+<p><img alt="page_reference" src="../assets/page_reference.jpg" /></p>
+<p>To see a list of all the <strong>Pages</strong> and their corresponding <strong><em>Key switch</em></strong> functions, visit the <a href="#supplemental-page-switch-function-chart">Page Switch Function Chart</a> section of this document.</p>
+<h3 id="operation-layer">Layer</h3>
+<p>Before delving into the Layer explanation, a definition: A <em>Parameter</em> in the context of this document is any value that is changeable with a <strong><em>Potentiometer</em></strong>.</p>
+<p>The <strong>Layer</strong> is the state which determines which parameter is controlled by one of the fifteen <strong><em>Potentiometers</em></strong> on Iosefka's control board. The <strong>Layers</strong> are arranged in a way that represents aspects of the synthesizer from a big-picture perspective. For example, the <strong>Synth 1 Layer</strong> contains the parameters for the oscillators, mixer and filter, while the <strong>Synth 2 Layer</strong> contains additional synthesizer effects (with a few parameters that are shared with Layer 1). All parameters on the <strong>Envelope</strong> and <strong>LFO Layers</strong> are dedicated to those respective Modulation Sources.</p>
+<p>The <strong><em>Layer LED</em></strong> that is currently lit indicates which Parameter name beneath the <strong><em>Potentiometer</em></strong> is currently active. To elaborate, in the image below, note the corresponding color over the <strong><em>Layer LEDs</em></strong> to the Parameter name beneath the <strong><em>Potentiometer</em></strong>. This applies to every Parameter beneath the <strong><em>Potentiometers</em></strong> on the control board e.g. top left <strong><em>Layer LED</em></strong> (Indicating <strong>Synth 1 Layer</strong>) = top left Parameter, etc.</p>
+<p><img alt="layer_reference_1" src="../assets/layer_reference_1.jpg" /></p>
+<p><strong>Note:</strong> If only one Parameter name appears in a row, that means that Parameter is active for either layer in that row. For example in the below image, the Parameter "X Wave" is active when the active <strong>Layer</strong> is either <strong>Synth 1</strong> or <strong>Synth 2</strong>.</p>
+<p><img alt="layer_reference_2" src="../assets/layer_reference_2.jpg" /></p>
+<p>To see a list of all the <strong>Layers</strong> and their corresponding <strong><em>Potentiometer</em></strong> Parameters, visit the <a href="#supplemental-layer-parameter-control-chart">Layer Parameter Control Chart</a> section of this document.</p>
+<h3 id="operation-mode">Mode</h3>
+<p>The <strong><em>Data rotary encoder</em></strong> is responsible for handling the input of specific data values depending on which <strong>Page</strong> or <strong>Layer</strong> is currently active, as well as several other contexts. The state which determines the data being handled by the <strong><em>Data rotary encoder</em></strong> is called the <strong>Mode</strong>.</p>
+<p>The <strong>Mode</strong> controls things like the octave of the notes played on the keyboard, the modulation destination of all Modulators, the BPM of the Sequencer, etc.</p>
+<p>On all <strong>Views</strong> except for the <strong>Settings View</strong>, the current <strong>Mode</strong> can be viewed in a few different ways:</p>
+<ul>
+<li>Pressing down on the <strong><em>Data rotary encoder</em></strong> shaft to actuate the switch</li>
+<li>Switching the <strong>View</strong></li>
+<li>Turning the <strong><em>Data rotary encoder</em></strong></li>
+</ul>
+<p>To see a list of all the <strong>Modes</strong>, their contexts, and how to view them, visit the <a href="#supplemental-mode-encoder-data-chart">Mode Encoder Data Chart</a> section of this document.</p></section><section class="print-page" id="synthesizer" heading-number="3"><h1 id="synthesizer-the-synthesizer"><strong>The Synthesizer</strong></h1>
+<h2 id="synthesizer-digital-audio">Digital Audio</h2>
+<p>Iosefka's sound generation begins in the Microcontroller, where the oscillators and noise generator are mixed together and then sent out of the DAC for analog processing.</p>
+<h3 id="synthesizer-oscillators">Oscillators</h3>
+<p>Iosefka has two identical morphing wavetable oscillators with 256 waveforms, spread out over a 16x16 grid, and can be controlled using the X Wave and Y Wave Parameters for each oscillator separately. A list of the wavetables can be viewed in the <a href="#supplemental-wavetable-chart">Wavetable Chart</a> section of this document.</p>
+<p>There are additional sound design options such as:</p>
+<ul>
+<li>Pitch modulation options:</li>
+<li>Frequency modulation</li>
+<li>Portamento (glide)</li>
+<li>Cross modulation options from Osc 1 to Osc 2:</li>
+<li>Phase modulation</li>
+<li>Oscillator sync</li>
+</ul>
+<p>Each oscillator has additional controls for scale, tuning, and octave, allowing for a very wide range of sounds when used with or without the sound design options listed above.</p>
+<p><strong>Parameters (for each oscillator):</strong></p>
+<div class="joplin-table-wrapper"><table><thead><tr><th><p><strong>Parameter name</strong></p></th><th><p><strong>Function</strong></p></th></tr><tr><th><p>Scale/Pitch</p></th><th><ul><li>Scale (normal operation): Tunes the oscillator by -1 octave to ~+1 octave by semitones</li><li>Pitch (holding shift and turning <strong>Potentiometer</strong>): Tunes the oscillator by -1 octave to ~+1 octave smoothly</li></ul><p>This is a <a href="#synthesizer-operation.md-bipolar-values">Bipolar value</a></p></th></tr><tr><th><p>Octave</p></th><th><p>Choosing one of four octaves</p></th></tr><tr><th><p>X Wave</p></th><th><p>Select a wavetable along the X axis</p></th></tr><tr><th><p>Y Wave</p></th><th><p>Select a wavetable along the Y axis</p></th></tr></thead></table></div>
+
+<p><strong>Parameters (shared by both oscillators):</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter name</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Portamento</td>
+<td>Also known as 'glide' - the amount of time it takes for one note to slide to the next when played</td>
+</tr>
+<tr>
+<td>Phase Mod (Phase Modulation)</td>
+<td>Phase modulation where Osc 1 is modulator and Osc 2 is carrier</td>
+</tr>
+<tr>
+<td>Sync</td>
+<td>Oscillator sync where Osc 2 resets whenever Osc 1 completes a cycle</td>
+</tr>
+<tr>
+<td><strong>Parameters (shared by both oscillators and noise generator)</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Parameter name</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SRR (Sample-rate Reduction)</td>
+<td></td>
+</tr>
+<tr>
+<td>BRR (Bit-rate Reduction)</td>
+<td></td>
+</tr>
+<tr>
+<td>### Noise Generator</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Along with the oscillators, there is a white noise generator.</p>
+<p><strong>Parameters:</strong></p>
+<p>none</p>
+<h3 id="synthesizer-mixer">Mixer</h3>
+<p>Both oscillators and noise generator are fed into the mixer, which controls the level of each of the three, before leaving the digital domain for the filter.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter name</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mix 1</td>
+<td>Level of Oscillator 1</td>
+</tr>
+<tr>
+<td>Mix 2</td>
+<td>Level of Oscillator 2</td>
+</tr>
+<tr>
+<td>Mix Noise</td>
+<td>Level of Noise Generator</td>
+</tr>
+</tbody>
+</table>
+<h3 id="synthesizer-digital-delay">Digital Delay</h3>
+<p>The post-VCA output of Iosefka feeds back into a 12-bit ADC, sampled at 48khz, which is then used as a digital delay. The digital delay can be given extremely short (~3ms) for interesting sound sculpting, or much longer (~683ms) for a more traditional delay effect.</p>
+<p>The digital delay's audio is produced by a separate DAC and is then mixed back into the VCA output.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter name</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D. Level (Delay Level)</td>
+<td>Volume of the delay</td>
+</tr>
+<tr>
+<td>D. Rate (Delay Rate)</td>
+<td>Amount of time between delay input and output.</td>
+</tr>
+<tr>
+<td>D. Fdbk (Delay Feedback)</td>
+<td>Amount of delay fed back into itself</td>
+</tr>
+<tr>
+<td>D. Type (Delay Type)</td>
+<td>Select between the following:<br><br>- 00 - Unclocked delay between ~3ms to ~683ms<br>- 01 - Clocked delay - Multiple divisions of sequencer or MIDI clock. Note that the clocked delay cannot exceed the delay buffer length of ~683ms. Clocked intervals above this will be shorter, and not clock accurate.<br>- 02 - Short delay - ~3ms to ~95ms. See the <a href="#synthesizer-fun-with-short-delays">Fun with Short Delays</a> section below for things you can do with this type  <br>- 03 - Unclocked delay - You read that right, 00 and 03 are the same thing!</td>
+</tr>
+<tr>
+<td>D. Input (Delay Input)</td>
+<td>Level of the delay input</td>
+</tr>
+</tbody>
+</table>
+<h4 id="synthesizer-fun-with-short-delays">Fun with Short Delays</h4>
+<p>You can build the following delay based effects using the short delay and different modulation types:</p>
+<ul>
+<li><strong>Flanger</strong> - Set a very short delay time with high feedback and LFO on Delay Rate</li>
+<li><strong>Chorus</strong> - Set a medium delay time with lower feedback and an LFO on the delay rate (set the LFO depth a bit lower)</li>
+<li><strong>Comb Filter/Karplus Strong-like effects</strong> - Set the Delay Rate to C0, and assign the Note Modulation Source to Delay Rate. This will, by design, track the notes on the keyboard and play musically, but due to limitations in the delay feedback and the rubber banding effect of changing delay rates, it's not a 1:1 recreation of these effects.</li>
+</ul>
+<h2 id="synthesizer-analog-audio">Analog Audio</h2>
+<h3 id="synthesizer-filter">Filter</h3>
+<p>The heart of the analog filter is the Sound Semiconductor V2140 chip. It is an OTA based pole mixing filter producing a very clean and controlled sound. The filter cutoff has its own Parameter for key tracking, which the filter is capable of doing easily across 5+ octaves.</p>
+<p>The filter is configurable between four types:</p>
+<ul>
+<li>2-pole low pass</li>
+<li>4-pole low pass</li>
+<li>2-pole high pass</li>
+<li>2-pole band pass</li>
+</ul>
+<p>The resonance of this filter has been tweaked to get just-very-loud-enough to where one should find themselves find themselves satisfied in case they want to go a little overboard.</p>
+<p>The filter output is then fed back into the filter cutoff CV path for audio-rate frequency modulation with a Parameter to control the intensity of the modulation applied. In moderate amounts, this adds an almost overdrive or distortion to the sound. In high amounts, and at high resonance, this becomes absolute audio chaos, if you're into that sort of thing. When the Parameter is turned all the way down, the frequency modulation is not applied and therefore not audible.</p>
+<p>Envelope 2 is hard-wired to the filter cutoff, and there is a Parameter dedicated to bipolar envelope amount.</p>
+<p><strong>Parameters:</strong></p>
+<div class="joplin-table-wrapper"><table><thead><tr><th><p><strong>Parameter name</strong></p></th><th><p><strong>Function</strong></p></th></tr><tr><th><p>Cutoff</p></th><th><p>The point at which frequencies begin to become attenuated</p></th></tr><tr><th><p>Resonance</p></th><th><p>The amount of emphasis given to the audio at the cutoff point</p></th></tr><tr><th><p>F. Env. Level (Filter Envelope Level)</p></th><th><p>How much of Envelope 2 is applied to the filter cutoff amount. This is a <a href="#synthesizer-operation.md-bipolar-values">Bipolar value</a></p><p>Note: Holding shift and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0. This is a quick way to turn the modulation 'off'</p></th></tr><tr><th><p>F. Type (Filter Type)</p></th><th><p>Selecting between the four filter types:</p><ul><li>2 Pole Low Pass</li><li>4 Pole Low Pass</li><li>2 Pole High Pass</li><li>2 Pole Band Pass</li></ul></th></tr><tr><th><p>F. FM (Filter Frequency Modulation)</p></th><th><p>The amount of audio rate modulation fed from the filter output back into the filter cutoff</p></th></tr><tr><th><p>F. Track (Filter Tracking)</p></th><th><p>The amount of note tracking applied to the filter. When turned up all the way, the filter can be played just like an oscillator.</p></th></tr></thead></table></div>
+
+<h3 id="synthesizer-amplifier">Amplifier</h3>
+<p>The voltage controlled amplifier is based around the venerable LM13700 dual OTA chip. The amplifier provides a linear response with a 'vintage' sound.</p>
+<p>It can be configured to a 'drone' mode where the amplifier is opened partially (allowing for amplitude modulation effects), or all the way, providing the full volume of the filter output.</p>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter name</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCA</td>
+<td>Controls how much the filter output is attenuated.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="synthesizer-external-input">External Input</h3>
+<p>External audio can be fed into the external input in the back of the synthesizer, allowing for line level signals to be processed by both the analog audio block (filter and VCA) and also the digital delay.</p>
+<p><strong>Note</strong>: The external audio will only be heard when the VCA is open, so to hear the external audio, the synthesizer must be actively playing notes, or the VCA must be in drone mode. To that end, to use Iosefka purely as an analog/digital processor, here are some suggestions:</p>
+<ul>
+<li>Put the VCA in <a href="#synthesizer-_w149zp55xs8w">drone mode</a></li>
+<li>Turn down Mix 1, Mix 2, and Mix noise</li>
+<li>Now you should be hearing only the external input playing, allowing you to process audio with the filter, amplitude modulation, and the delay effects</li>
+</ul>
+<p><strong>Note</strong>: The gain of the external input is fixed, so the audio level fed into the input must be adjusted externally.</p>
+<p><strong>Parameters (none)</strong></p>
+<h2 id="synthesizer-modulation-sources">Modulation Sources</h2>
+<p>All synthesizer Parameters are modulatable using the modulation sources on Iosefka (and then some!). <strong>Sequencer Layer</strong> Parameters cannot be modulated via the mod sources, but the LFOs are syncable to the internal and external clock, so there's that!</p>
+<p>Here is a list of the <a href="#supplemental-modulation-destinations">Modulation Destinations</a>.</p>
+<h3 id="synthesizer-envelopes">Envelopes</h3>
+<p>Three ADSR envelopes with responses from snappy during short durations to long arcing response times when turned up.</p>
+<p>All three envelopes are freely assignable to any modulation destination. Additionally, Envelope 2 is hard-wired to the Filter Cutoff, and Envelope 3 is hard-wired to the VCA.</p>
+<p>As an example, if Envelope 2's destination is set to Mix Noise, it shares the Attack, Decay, Sustain, and Release time of the filter envelope, but the envelope amount for Mix Noise is independent of the envelope amount for Filter Cutoff. The same applies for Envelope 3.</p>
+<p><strong>Parameters:</strong></p>
+<p>(These Parameters apply to all 3 Envelopes)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter name</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Attack</td>
+<td>Envelope onset time</td>
+</tr>
+<tr>
+<td>Decay ( + Loop)</td>
+<td>The amount of time from the end of the attack phase to settle into the sustain phase<br>Holding <strong><em>Shift switch</em></strong> and turning the <strong><em>Potentiometer</em></strong> will enable the Looping Envelope, causing the envelope to begin the Attack phase as soon as it finishes the Release phase.</td>
+</tr>
+<tr>
+<td>Sustain</td>
+<td>The volume of the note as it is held (following the attack and decay phase)</td>
+</tr>
+<tr>
+<td>Release</td>
+<td>The amount of time until the volume fades to 0 after a Note-Off event happens</td>
+</tr>
+<tr>
+<td>- Level +</td>
+<td>Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a <a href="#operation-bipolar-values">Bipolar value</a><br>Holding <strong><em>Shift switch</em></strong> and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0. This is a quick way to turn the modulation 'off'</td>
+</tr>
+</tbody>
+</table>
+<h3 id="synthesizer-lfos-low-frequency-oscillators">LFOs (Low Frequency Oscillators)</h3>
+<p>Three LFOs with a variety of waveforms. The LFOs can all independently be synced to the sequencer clock, as well as reset during Note-On messages.</p>
+<p>The LFO modulation itself is bipolar, meaning that the value of the Modulation Destination will swing above and below the Parameter value at an equal depth. For example, let's say the Portamento Parameter was turned up to "80" on the <strong><em>OLED Display</em></strong> and you applied the LFO to Portamento, turning the "- Level +" up to "C0". This means that the LFO is ranging from "80 - 40" to "80 + 40".</p>
+<p><strong>Parameters:</strong></p>
+<p>(These Parameters apply to all 3 LFOs)</p>
+<table>
+<thead>
+<tr>
+<th><strong>Parameter name</strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rate</td>
+<td>The speed of the LFO's oscillation. When the LFO is synced to the Sequencer Clock, this Parameter becomes a time-division of the clock</td>
+</tr>
+<tr>
+<td>Shape</td>
+<td>The shape of the LFO wave: triangle, saw, square, sine, and sample-hold</td>
+</tr>
+<tr>
+<td>Phase</td>
+<td>The offset of the wave, control where the wave begins and ends</td>
+</tr>
+<tr>
+<td>Reset/Sync</td>
+<td>This Parameter controls whether LFO Reset and/or Sync are turned on. When Reset is on, the LFO restarts whenever a Note-On event happens</td>
+</tr>
+<tr>
+<td>- Level +</td>
+<td>Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a <a href="#operation-bipolar-values">Bipolar value</a><br>Note: Holding shift and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0. This is a quick way to turn the modulation 'off'</td>
+</tr>
+</tbody>
+</table>
+<h3 id="synthesizer-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</h3>
+<p>When in the <strong>Envelope View</strong> or <strong>LFO View</strong>, pressing the respective <strong><em>View switch</em></strong> repeatedly will cycle through the <strong>Mode</strong> for that mod source's destination.</p>
+<p>For example, in the <strong>Envelope View</strong>, pressing the <strong>Envelope <em>Key switch</em></strong> will highlight the number on the left hand side of the <strong>OLED Display</strong>, indicating which Envelope number's modulation destination is selectable.</p>
+<p>You can then use the <strong><em>Data Rotary Encoder</em></strong> to select the <a href="#supplemental-modulation-destinations">Modulation Destination</a>.</p>
+<h4 id="synthesizer-velocity">Velocity</h4>
+<p>Velocity is a control of how much of a Parameter is applied depending on how 'hard' a note was hit. This effect emulates the way that a piano key is louder the harder it is pressed. Most modern keyboards have a velocity control. The sequencer also has a velocity Parameter.</p>
+<p>Velocity controls two Parameters: The VCA, and one freely selectable Modulation Destination.</p>
+<p><strong>Parameters:</strong></p>
+<p>None</p>
+<h4 id="synthesizer-mod-wheel">Mod Wheel</h4>
+<p>Along with Velocity controls, most modern MIDI controllers have a Mod Wheel. Mod wheel is only controllable via MIDI.</p>
+<p><strong>Parameters:</strong></p>
+<p>None</p>
+<h4 id="synthesizer-aftertouch">Aftertouch</h4>
+<p>Aftertouch allows you to control a Modulation Destination with the pressure applied to the key after it has been pressed. Consult your favorite MIDI controller's manual to learn more!</p>
+<p><strong>Parameters:</strong></p>
+<p>None</p>
+<h4 id="synthesizer-note">Note</h4>
+<p>The amount of modulation is set depending on which note is being played. The higher the note, the greater the modulation. This can be reversed with the "note mod" setting in the Settings menu.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li>Note + or - (in the settings menu) controls the bipolar behavior of the Note Modulation Source. This is set in the Settings Menu:</li>
+<li>Note +: controls the Modulation Destination positively, higher notes is a <strong>higher</strong> parameter value and vice versa.</li>
+<li>Note -: controls the Modulation Destination negatively, higher notes is a <strong>lower</strong> parameter value and vice versa.</li>
+</ul>
+<h4 id="synthesizer-breath-control">Breath Control</h4>
+<p>For those with MIDI wind controllers, breath control is a Modulation Source. As of the writing of this manual, I've never seen anyone use one in person, but I hope that changes some day!</p>
+<h4 id="synthesizer-pitch-bend">Pitch Bend</h4>
+<p>Pitch Bend is a MIDI controllable effect which applies exclusively to the pitch of Oscillator 1 and Oscillator 2. You can adjust the Pitch Bend Depth from the <strong>Settings View</strong> with a range of 1 to 12 semitones.</p>
+<p><strong>Parameters:</strong></p>
+<p>None</p></section><section class="print-page" id="sequencer" heading-number="4"><h1 id="sequencer-the-sequencer"><strong>The Sequencer</strong></h1>
+<p>Iosefka contains a 32 step sequencer with an emphasis on live performance, allowing for precise input, or automatically generated Patterns.</p>
+<p>A Pattern is the current arrangement of steps in the sequencer. Every Preset has its own pattern.</p>
+<p>The sequencer has a range from 30 to 300 BPM (beats per minute) and operates at 24 PPQ (parts per quarternote) to match incoming MIDI clock ticks.</p>
+<h2 id="sequencer-sequencer-parameters">Sequencer Parameters</h2>
+<p>These are the Parameters available in the <strong>Sequencer View</strong>, specifically the <strong>Sequencer Layer.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter name</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Note</td>
+<td>- Generator off: Controls the note that is set when Enabling a step<br>- Generator on: Sets the base note of the generated sequence<br>- Parameter lock: Changes the current selected step note</td>
+</tr>
+<tr>
+<td>Octave</td>
+<td>- Generator off: Controls the octave of the note set when Enabling a step<br>- Generator on: Sets the base octave of the generated sequence<br>- Parameter lock: Changes the current selected step octave</td>
+</tr>
+<tr>
+<td>Scale</td>
+<td>The musical mode generated by the Generator<br><br>- ma - Major scale<br>- mi - Minor scale</td>
+</tr>
+<tr>
+<td>Length</td>
+<td>- Normal operation: Controls the length of the next enabled step note<br>- Parameter lock: Changes the current selected step length*</td>
+</tr>
+<tr>
+<td>Velocity</td>
+<td>- Normal operation: Controls the velocity of the next enabled step<br>- Parameter lock: Changes the current selected step velocity</td>
+</tr>
+<tr>
+<td>Transpose</td>
+<td>Musically adjusts the notes played in the sequence by -12 to +12 semitones.<br><br>Note: This is a bipolar value, but displays with negative and positive hex values, ranging from -C (meaning -12) to +C ( meaning +12)<br><br>Note: Holding <strong><em>Shift key</em></strong> will snap this Parameter to -C, 0, or +C depending on <strong><em>Potentiometer</em></strong> position, intended for performance purposes</td>
+</tr>
+<tr>
+<td>Direction</td>
+<td>Sets the direction that the sequence plays from the first note to the last note as such:<br><br>- fw - Forward, notes play from first note to last note, then repeat<br>- bw - Backward, notes play from last note to first note, then repeat<br>- p1 - Ping pong 1, notes play from first note to last note, then reverse direction, repeat<br>- p2 - Ping pong 2, notes play from first note to last note, then reverse direction, repeat, but the first and last note play twice. With this setting, sequences play an even number of steps forward and backward.</td>
+</tr>
+<tr>
+<td>Swing</td>
+<td>Sets the rhythmic swing, dividing the 12 clock ticks between every two halfnotes:<br><br>- 00 - No swing, each first and second quarternote have a 1:1 ratio of clock ticks<br>- 01 - Light swing, each first and second quarternote have a 7:5 ratio of clock ticks<br>- 02 - Medium swing, each first and second quarternote have a 2:1 ratio of clock ticks<br>- 03 - Heavy swing, each first and second quarternote have a 3:1 ratio of clock ticks</td>
+</tr>
+<tr>
+<td>Clock Div.</td>
+<td>Multiplies or divides the number of ticks per quarternote, making the sequence slower or faster:<br><br>- *8 - Sequence is 8 times slower<br>- *4 - Sequence is 4 times slower<br>- *2 - Sequence is 2 times slower<br>- *d - Sequence is 1.5 times slower<br>- /1 - Sequence is normal speed<br>- /2 - Sequence is twice as fast</td>
+</tr>
+<tr>
+<td>First Step</td>
+<td>Selects the first step of the 32 steps played by the sequencer<br><br>When a Pattern is automatically generated, the generated Pattern will start and this step and end at the Last Step Parameter<br><br>Cannot exceed the step selected by the Last Step Parameter.*</td>
+</tr>
+<tr>
+<td>Last Step</td>
+<td>Selects the last step of the 32 steps played by the sequencer.<br><br>When a Pattern is automatically generated, the generated Pattern will start and this step and end at the First Step Parameter<br><br>Cannot precede the step selected by the First Step Parameter*</td>
+</tr>
+<tr>
+<td>Probability</td>
+<td>- Normal Operation: Each step, a random number between 00 and FF is generated. If the Probability value is greater than this random number, and this step is active, the step plays. Higher number = greater chance an active step is triggered<br>- Parameter Lock: If the parameter locked Probability value is 00, the probability will be set to whatever the Normal Operation probability is set to. If the Parameter Locked Probability is "01" - FF, this will be the probability for that individual step.</td>
+</tr>
+<tr>
+<td>G. Chance</td>
+<td>When a Pattern is generated, a random number between 00 and FF is generated for each step. If the G. Chance value is greater than this number, a step is generated. Higher number = greater number of steps generated<br><br>Ignored for steps with Probability Parameter Locked above a value of 00</td>
+</tr>
+<tr>
+<td>G. Length</td>
+<td>The length of step notes in a generated Pattern. At 00, all notes are 1 step long. At 07, all notes are 4 steps long. Every value between 00 and 07 is a weighted preference between shorter step notes and longer step notes</td>
+</tr>
+<tr>
+<td>G. Repeat</td>
+<td>When the generator is on, the number of times a Pattern repeats before a new Pattern is generated. Note that this value is displayed as Hexadecimal</td>
+</tr>
+<tr>
+<td>G. Octave</td>
+<td>Similar to G. Length, this selects the octave range from the Octave parameter based on a weighted table</td>
+</tr>
+</tbody>
+</table>
+<p>*Values are displayed in Decimal from "01" through "32"</p>
+<h2 id="sequencer-programming-patterns">Programming Patterns</h2>
+<h3 id="sequencer-step-data">Step Data</h3>
+<p>Each of the 32 Steps in the sequencer contain their own configurable Parameters, as shown in the Parameter list above. These are:</p>
+<ul>
+<li>Note (including octave)</li>
+<li>Length</li>
+<li>Velocity</li>
+<li>Parameter Lock Destination</li>
+<li>Parameter Lock Value</li>
+<li>Active</li>
+<li>Enabled</li>
+</ul>
+<p>Each time a step occurs, the step will behave based on the combination of all of these values. The values can either be set manually by changing the Parameters using the <strong><em>Potentiometers</em></strong> before and <a href="#sequencer-manual-programming">manually programming</a> the step, or the values will be automatically set for all notes when a Pattern is <a href="#sequencer-generative-programming">automatically generated</a>.</p>
+<h4 id="sequencer-step-play-states">Step Play States</h4>
+<p>Every step can be in one of three Play States:</p>
+<ul>
+<li><strong>Step On</strong> - This step will play (if it passes a Probability check)</li>
+<li><strong>Step Mute</strong> - This step will not play, but contains Step Data</li>
+<li><strong>Step Off</strong> - This step will not play, and there is no Step Data</li>
+</ul>
+<h3 id="sequencer-manual-programming">Manual Programming</h3>
+<p>With the <strong>Seq Page</strong> active, a Pattern can be readily programmed into Iosefka's Sequencer.</p>
+<h4 id="sequencer-setting-step-play-states-with-1-8-key-switches">Setting Step Play States with 1 - 8 <em>Key Switches</em></h4>
+<p>The <strong>1 - 8 <em>Key switches</em></strong> set the Play State of each respective step according to the current <a href="#sequencer-step-sections">Step Section</a>. The action taken by said switches is as follows:</p>
+<ul>
+<li>If <strong>Step Off</strong>, pressing the <strong><em>Key switch</em></strong> will put the step into the <strong>Step On</strong> state. The step will adopt the Step Data determined by the Sequencer Parameters</li>
+<li>If <strong>Step On</strong>, pressing the <strong><em>Key switch</em></strong> will put the step into the <strong>Step Mute</strong> state. The Step Data is retained</li>
+<li>If <strong>Step Mute</strong>, pressing the <strong><em>Key switch</em></strong> will put the step into the <strong>Step On</strong> state</li>
+<li>If the <strong>Step On</strong> or <strong>Step Mute</strong>, pressing the <strong><em>Shift switch</em></strong> and the <strong><em>Key switch</em></strong> will put the step into the <strong>Step Off</strong> state, erasing Step Data</li>
+</ul>
+<h4 id="sequencer-step-sections">Step Sections</h4>
+<p>Eight steps can be programmed at a time using the 1 - 8 <strong><em>Key switches</em></strong> while on the <strong>Seq Page</strong>. To select which 8 steps can be programmed, you must toggle through the four Sections using the <strong>Section Up</strong> and <strong>Section Down <em>Key switches</em></strong>. The white horizontal line above steps 1 - 16, and below steps 17 - 32, display which section of 8 steps is currently programmable.</p>
+<p>With the white line in this position, the <strong>1 - 8 <em>Key switches</em></strong> program steps 1 - 8.</p>
+<p>With the white line in this position, the <strong>1 - 8 <em>Key switches</em></strong> program steps 24 - 32.</p>
+<h3 id="sequencer-live-step-recording">Live Step Recording</h3>
+<p>Hold the <strong><em>Shift Switch</em></strong> and press the <strong><em>Play Switch</em></strong> to enter Step Record. A metronome will play and a record icon will appear on the <strong><em>OLED Display</em></strong>.</p>
+<p>While Step Record is active, entering notes via the <strong><em>Key Switches</em></strong>, or notes entered via MIDI input will be recorded into the sequencer. Entered steps will replace existing Steps on the same Step number.</p>
+<p>The Sequencer Direction will also be set to FORWARD when enabling Step Record. If the Sequencer Direction is set to any other direction, it must manually be set back to the original Direction after exiting Step Record. Like in normal operation, the sequencer will loop from the first step to the last step.</p>
+<p>Press Play again to exit Step Record.</p>
+<p>Note that delay effects will cease while Step Record is active, but will be enabled when exiting Step Record.</p>
+<h3 id="sequencer-generative-programming">Generative Programming</h3>
+<p>When a Pattern is generated, it will erase and rewrite over all steps within the First Step and Last Step Parameters (Be mindful when using the generator as to not erase Patterns you want to keep!) The pattern is randomly generated, but within the bounds of the <a href="#sequencer-sequencer-parameters">Sequencer Parameters</a> relating to the Generator.</p>
+<p>When generating a new pattern, the Step Probability and Parameter Locks are maintained for all generated Steps. Steps containing Step Probability above a value of 0 will be generated as Active Steps.</p>
+<h4 id="sequencer-running-generation">Running Generation</h4>
+<p>Running generation will occur as long as the Generator is 'On'. This is set using the <strong>Generator On/Off <em>Key Switch</em></strong>, and is visually indicated by the "Gen" icon in the top-right of the <strong><em>OLED Display</em></strong> while in the <strong>Sequencer View</strong>.</p>
+<p>The G. Repeat Parameter determines the number of times a Pattern plays before a new pattern is generated. The remaining number of repeats before a Pattern is Generated can be seen at the top left of the <strong><em>OLED Display</em></strong> when in the <strong>Sequencer View</strong>.</p>
+<p><em>Oh no, the Generator created a killer pattern that I want to keep but it's going to be erased after this final repeat!!!</em> Fret not. Turning the Generator off by pressing the <strong>Generator On/Off <em>Key switch</em></strong> will prevent automatic rewriting of the pattern.</p>
+<h4 id="sequencer-immediate-generation">Immediate Generation</h4>
+<p>Pressing the <strong>Generate New <em>Key switch</em></strong> will immediately generate a new pattern regardless of the state of the Generator, number of repeats remaining, etc.</p>
+<h3 id="sequencer-parameter-locking">Parameter Locking</h3>
+<p>Step Data can be adjusted for steps that are already set using Parameter Locking. Press and hold one or more of the <strong>1 - 8 <em>Key switches</em></strong> corresponding to the step in the desired Step Section. In the <strong><em>OLED Display</em></strong>, you will see several Parameters light up, indicating the Step Data Parameters that are Parameter Lock-able.</p>
+<h4 id="sequencer-parameter-locks-of-synth-parameters">Parameter Locks of Synth Parameters</h4>
+<p>A single synthesizer parameter can be applied per-step. The previous step's Parameter Lock will be canceled by the one for the next step. </p>
+<p>To set the synthesizer Parameter Lock parameter, use <a href="#sequencer-supplemental-layer-decoupling">Layer Decoupling</a> on the layer with the parameter you'd like to lock like so:
+- Layer Decouple to the layer with the parameter you will be locking
+- Press and hold a step, then change the parameter</p>
+<h4 id="sequencer-removing-parameter-locks">Removing Parameter Locks</h4>
+<p>To remove the parameter lock for any step: While on the <strong>Sequencer Layer</strong> hold the <strong><em>1 - 8 Key Switch</em></strong> that contains the parameter lock you want to erase, and turn any <strong><em>Potentiometer</em></strong> whose corresponding parameter isn't lit on the <strong><em>OLED Display</em></strong>. Specifically these are the following: Transpose, Direction, Swing, Clock Div, First Step, Last Step, G. Chance, G. Length, G. Repeat, and G. Octave.</p>
+<h3 id="sequencer-additional-features">Additional features</h3>
+<h4 id="sequencer-section-jumping">Section jumping</h4>
+<p>By holding the <strong><em>Shift switch</em></strong> and pressing the <strong><em>Section Up</em></strong> and <strong><em>Section Down Key switches</em></strong>, you are able to shift the first and last steps by the count of the overall pattern length. This allows you to play different sections as if they were different parts of a song.</p>
+<p>For example, if your first step is step 1, and your last step is step 8 (making a pattern length of 8), by pressing the <strong><em>Shift switch</em></strong> and the <strong><em>Section Up Key switch</em></strong>, the first step becomes 9 and the last step becomes 16. </p>
+<p>Section jumping is designed to maintain the relative note in the sequence, so your song doesn't 'break' if you section jump mid-pattern. </p>
+<p>We are limited to the 32 steps of the sequencer, so we can only section jump in pattern lengths of 16 or less. I could describe how this works exhaustively, but just play around with this feature and you'll see what it can/can't do. </p>
+<h4 id="sequencer-pattern-rotation">Pattern Rotation</h4>
+<p>By holding the <strong><em>Copy Switch</em></strong> and pressing the <strong><em>Section -</em></strong> or <strong><em>Section + Switches</em></strong>, you can rotate the steps in the pattern from the First Step to the Last Step.</p>
+<p>If the First Step is Step 1, and the Last Step is Step 8 (for example), a Pattern Rotation using the <strong><em>Copy Switch</em></strong> and the <strong><em>Section + Switch</em></strong> will shift all Step Data forward by one Step, and replace the First Step with the Last Step. Vice Versa if pressing the  <strong><em>Section - Switch</em></strong>. All other steps will not be rotated.</p>
+<p>If the First Step is Step 1, the Last Step is Step 32, and the <strong><em>Switches</em></strong> mentioned above are pressed, the entire pattern will rotate in the respective direction.</p>
+<h4 id="sequencer-pattern-clear">Pattern Clear</h4>
+<p>Holding the <strong><em>Shift Switch</em></strong> and pressing the <strong><em>Gen New Switch</em></strong> will clear the entire pattern, erasing all steps and associated Probability and Parameter Lock data.</p>
+<h4 id="sequencer-step-copy">Step Copy</h4>
+<p>By holding the <strong><em>Key Switch</em></strong> for any step and pressing the <strong><em>Copy Switch</em></strong>, the Step Data will be copied to the Sequencer Parameters (excluding Probability and Parameter Lock data), so that the next written step will have the copied step's Note, Velocity, and Length.</p>
+<p>Specifically, when you execute a step copy, you will see the data of the copied Step in the Sequencer Layer parameters. There's no clipboard or paste function.</p></section><section class="print-page" id="settings" heading-number="5"><h1 id="settings-settings"><strong>Settings</strong></h1>
+<p>To navigate to the Settings View, hold the <strong><em>Shift switch</em></strong> and press the <strong><em>Sequencer switch</em></strong>.</p>
+<p>The Settings View allows for the configuration of global and preset-specific settings. From here, you can control the processing of MIDI messages, set patch-specific controls, initialize a preset, and enable the Oscilloscope.</p>
+<p>This section describes the different settings in the Settings menu and how to control them. For this section it is assumed that you are in the settings menu.</p>
+<h3 id="settings-list-of-parametric-settings">List of Parametric Settings</h3>
+<p>This table contains the settings within the settings menu, a short description, the default value, and whether the parameter is Global (affects all presets) or Preset Specific. </p>
+<p>Links are included to sections with more in-depth descriptions.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Setting</strong></th>
+<th><strong>Description</strong></th>
+<th>Default value</th>
+<th>Global or Preset Specific</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Preset Number</td>
+<td>Select the preset number that will be <a href="#settings-loading-a-preset">loaded</a> or <a href="#settings-saving-a-preset">saved</a> to</td>
+<td>1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Preset Name</td>
+<td>Where the preset name is displayed and <a href="#settings-editing-a-preset">edited</a></td>
+<td>The name of Preset 1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Channel</td>
+<td>Selects the MIDI channel that Iosefka will receive messages from.*</td>
+<td>1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Src:</td>
+<td>Select the MIDI Modulation source here to select the Modulation Destination setting below will affect.**</td>
+<td>Velo</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>Mod Destination</td>
+<td>Select the Modulation Destination that the Modulation Source above affects**</td>
+<td>None</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>Legato</td>
+<td>Toggles Legato on/off. With legato on, envelopes are not retriggered when new notes are pressed</td>
+<td>On</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>Osc Duo</td>
+<td>Toggles Osc Duo on/off. This is a paraphonic mode, giving the ability to play a separate note with each oscillator</td>
+<td>Off</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>VCA Velo</td>
+<td>Toggles VCA Velocity on/off. Turning this setting off decouples the Velocity Mod Source from the VCA, so any entered notes will always be at full Velocity</td>
+<td>On</td>
+<td>Preset</td>
+</tr>
+<tr>
+<td>Clock RX</td>
+<td>Toggles MIDI Clock Receive on/off. With this setting off, Iosefka will ignore external clock messages and run only on the internal sequencer clock*</td>
+<td>On</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Trnsprt RX</td>
+<td>Toggles MIDI Transport messages on/off. With this setting off, Iosefka will ignore external Play and Stop MIDI messages*</td>
+<td>On</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Pgm Chg RX</td>
+<td>Toggles MIDI Program Change Receive on/off. With this setting off, Iosefka will ignore external Program Change messages*</td>
+<td>On</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Latch</td>
+<td>Toggles Parameter Latch on/off. With Latch enabled, Parameters will not change until the corresponding <strong><em>Potentiometer</em></strong> is near the parameter value. This prevents a parameter from 'jumping' to a value drastically different than the current value</td>
+<td>Off</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>P.B. Dpth</td>
+<td>Selects the Pitch Bend Depth in musical semitones. The value set will be +/- this number. For example, a setting of '1' means that the pitch bend will be +1 and -1 semitones at the extremes</td>
+<td>1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Scope</td>
+<td>Switches <strong><em>OLED Display</em></strong> to <a href="#supplemental-oscilloscope">Oscilloscope</a></td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td>Init (Shift)</td>
+<td>When shift is held, this setting initializes the preset to the 'factory' default. This is the default preset for all presets.</td>
+<td>N/A</td>
+<td>Preset</td>
+</tr>
+</tbody>
+</table>
+<p>* More information can be found in the <a href="#midi">MIDI Implementation</a> section
+** A list of Mod Destinations can be found in the <a href="#settings-supplemental-modulation-destinations">Modulation Destinations</a> section</p>
+<h3 id="settings-using-the-settings-menu">Using the Settings menu</h3>
+<p>When first visiting the Settings menu after starting up the machine, the <strong><em>Data rotary encoder</em></strong> is in the <strong>Settings Scroll Mode</strong> which controls scrolling through the Settings menu items, indicated by the circle icon on the left of the <strong><em>OLED Display</em></strong>. Pressing down on the <strong><em>Data rotary encoder switch</em></strong>, does different things depending on the setting:</p>
+<ul>
+<li>For settings with numbers or text to the right, the <strong><em>Data rotary encoder</em></strong> now switches <strong>Modes</strong> and increments/decrements the value of the setting. Horizontal parallel lines will appear above and below the setting name to indicate that the setting is being edited.</li>
+<li>To return to the Settings Scroll Mode, click the <strong><em>Data rotary encoder switch</em></strong> again.</li>
+<li>For settings related to Presets, and settings related to Mod Source/Destination, the horizontal lines will encompass two lines, indicating that those settings are related. The selected setting is indicated by the circle icon on the left.</li>
+<li>For settings with square checkboxes, the <strong><em>Data rotary encoder switch</em></strong> will toggle that item on and off.</li>
+<li>Some Settings menu items such as the Preset Name entry, enabling the Oscilloscope, and Initializing a Preset have slightly different control types. Those will be explained in their own sections.</li>
+</ul>
+<p>To minimize redundancy, in the rest of the Settings section, the term "scroll to and select" will be used to describe scrolling to the menu item while in <strong>Settings Scroll Mode</strong> and selecting the setting using the <strong><em>Data rotary encoder switch</em></strong>.</p>
+<h3 id="settings-presets">Presets</h3>
+<p>Iosefka contains 64 presets which allow for the saving of every machine Parameter, including sequencer Parameters and steps.</p>
+<h4 id="settings-selecting-a-preset">Selecting a preset</h4>
+<p>To save or load a preset of your choice, scroll to and select "preset" or press the <strong>Preset <em>Key Switch</em></strong> which enables the <strong>Preset Mode</strong> ("preset" will be outlined as in the picture below), and turn the <strong><em>Data rotary encoder</em></strong> to the preset number of your choosing.</p>
+<p>The currently loaded preset is indicated by a "&gt;&gt;" next to the name "preset".</p>
+<p><strong>Note that the preset number is in decimal not hexadecimal</strong>.</p>
+<h4 id="settings-saving-a-preset">Saving a Preset</h4>
+<p>With the preset number that you wish to save selected, ready the save state of the machine by pressing the <strong>Save <em>Key switch</em></strong>. This brings up the following screen on the <strong><em>OLED Display</em></strong>.</p>
+<p>If you are certain that you are ready to save, execute the save by holding the <strong>Shift switch</strong> and pressing the <strong>Save <em>Key switch</em></strong> again. The machine confirms that the preset has been saved with this screen.</p>
+<h4 id="settings-loading-a-preset">Loading a Preset</h4>
+<p>With the preset number that you wish to load selected, ready the load state of the machine by pressing the <strong>Load <em>Key switch</em></strong>. This brings up the following screen on the <strong><em>OLED Display</em></strong>.</p>
+<p>If you are certain that you are ready to load, execute the load by holding the <strong>Shift switch</strong> and pressing the <strong>Load <em>Key switch</em></strong> again. The machine confirms that the preset has been loaded with this screen.</p>
+<h4 id="settings-editing-the-preset-name">Editing the Preset name</h4>
+<p>Each preset can have an 8 character name which is loaded on startup and can be seen when selecting a preset.</p>
+<p>Navigate to and select the row beneath "preset". This row will be blank if no preset name has been entered. A highlighted square will appear, and you can select the alphanumeric character with the <strong><em>Data rotary encoder</em></strong>. For ease of use, only lowercase letters, numbers, and "." "-" characters will appear.</p>
+<p>To move to the next character, hold the <strong><em>Shift Switch</em></strong> and turn the <strong><em>Data rotary encoder</em></strong>. Do this multiple times to scan through multiple characters. To save the Preset name, you must save the Preset.</p></section><section class="print-page" id="supplemental" heading-number="6"><h1 id="supplemental-supplemental-information"><strong>Supplemental Information</strong></h1>
+<h2 id="supplemental-view-charts">View Charts</h2>
+<p>These charts represent the default <strong>Layers</strong>, <strong>Pages</strong>, and <strong>Modes</strong> upon device startup. These three can be changed depending on the <strong>View</strong>, and sometimes persist beyond <strong>View</strong> changes. For example, if the <strong>Mode</strong> is changed in the <strong>Settings View</strong>, that mode will persist when leaving and returning to the <strong>Settings View</strong>.</p>
+<table>
+<thead>
+<tr>
+<th><strong>View Name</strong></th>
+<th><strong>Accessing this View</strong></th>
+<th><strong>Layers</strong></th>
+<th><strong>Pages</strong></th>
+<th><strong>Modes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Synth 1</td>
+<td><strong>Synth 1 View switch_</strong>*</td>
+<td><a href="#supplemental-synth-1">Synth 1</a></td>
+<td><a href="#supplemental-kbd">Kbd</a></td>
+<td><a href="#supplemental-kbd-oct-keyboard-octave">kbd oct (Keyboard Octave)</a></td>
+</tr>
+<tr>
+<td>Synth 2</td>
+<td><strong>Synth 2/User <em>View switch</em></strong></td>
+<td><a href="#supplemental-synth-2">Synth 2</a></td>
+<td><a href="#supplemental-kbd">Kbd</a></td>
+<td><a href="#supplemental-kbd-oct-keyboard-octave">kbd oct (Keyboard Octave)</a></td>
+</tr>
+<tr>
+<td>User</td>
+<td><strong><em>Shift switch</em></strong> + <strong>Synth 2/User <em>View switch</em></strong></td>
+<td><a href="#supplemental-user">User</a></td>
+<td><a href="#supplemental-kbd">Kbd</a></td>
+<td><a href="#supplemental-kbd-oct-keyboard-octave">kbd oct (Keyboard Octave)</a></td>
+</tr>
+<tr>
+<td>Envelope</td>
+<td><strong>Envelope <em>View switch</em></strong></td>
+<td><a href="#supplemental-envelope">Envelope</a></td>
+<td><a href="#supplemental-kbd">Kbd</a></td>
+<td><a href="#supplemental-envelope-1-2-3">Envelope 1, 2, 3</a></td>
+</tr>
+<tr>
+<td>LFO</td>
+<td><strong>LFO <em>View switch</em></strong></td>
+<td><a href="#supplemental-lfo">LFO</a></td>
+<td><a href="#supplemental-kbd">Kbd</a></td>
+<td><a href="#supplemental-lfo-1-2-3">LFO 1, 2, 3</a></td>
+</tr>
+<tr>
+<td>Sequencer</td>
+<td><strong>Sequencer <em>View switch</em></strong></td>
+<td><a href="#supplemental-sequencer">Sequencer</a></td>
+<td><a href="#supplemental-seq">Seq</a></td>
+<td><a href="#supplemental-seq-bpm-sequencer-bpm">seq bpm (Sequencer BPM)</a></td>
+</tr>
+<tr>
+<td>Settings</td>
+<td><strong><em>Shift switch</em></strong> + <strong>Sequencer <em>View switch</em></strong></td>
+<td>N/A**</td>
+<td><a href="#supplemental-set">Set</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>*Hitting this switch multiple times toggles between Synth 1 View and Synth Env View. Whichever View was active when leaving the View by hitting another <strong><em>View switch</em></strong> will be the view that is active when hitting the <strong>Synth 1/Synth Env <em>View switch</em></strong> again. Iosefka always starts up in Synth 1 View.</p>
+<p>** When in the Settings View, the most recent layer from the previous view remains active.</p>
+<h2 id="supplemental-page-switch-function-chart">Page Switch Function Chart</h2>
+<h3 id="supplemental-kbd">Kbd</h3>
+<table>
+<thead>
+<tr>
+<th><strong><em>Key switch</em></strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All <strong><em>Key switches</em></strong></td>
+<td>1 octave + 1 note, in the layout of a piano keyboard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supplemental-seq">Seq</h3>
+<table>
+<thead>
+<tr>
+<th><strong><em>Key switch</em></strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section -</strong></td>
+<td>Jogs through the <a href="#sequencer-step-sections">Step Sections</a> counting down in steps. If the <strong><em>Shift Switch</em></strong> is held, a <a href="#sequencer-section-jumping">Section Jump</a> downward occurs. If the <strong><em>Copy Switch</em></strong> is held, a</td>
+</tr>
+<tr>
+<td><strong>Section +</strong></td>
+<td>Jogs through the <a href="#sequencer-step-sections">Step Sections</a> counting down</td>
+</tr>
+<tr>
+<td><strong>Generator On/Off</strong></td>
+<td>Enables/Disables the Generator for <a href="#sequencer-running-generation">Running Generation</a></td>
+</tr>
+<tr>
+<td><strong>Generate New</strong></td>
+<td>Generates a Pattern via <a href="#sequencer-immediate-generation">Immediate Generation</a></td>
+</tr>
+<tr>
+<td><strong>1 - 8</strong></td>
+<td>Programs the step corresponding to the current <a href="#sequencer-step-sections">Step Section</a><br>See <a href="#sequencer-manual-programming">Manual Programming</a> subsection for an in-depth description of using these switches to program a Pattern in the Sequencer</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supplemental-set">Set</h3>
+<table>
+<thead>
+<tr>
+<th>Key switch</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Save</td>
+<td>- Pressing once readies the Save state <br>  - Pressing Shift key plus Save Key switch while in Save state saves to the current preset</td>
+</tr>
+<tr>
+<td>Load</td>
+<td>- Pressing once readies the Load state <br>  - Pressing Shift key plus Save Key switch while in Load state saves to the current preset</td>
+</tr>
+<tr>
+<td>Preset</td>
+<td>Sets the Mode to Preset Select</td>
+</tr>
+<tr>
+<td>Channel Select</td>
+<td>Sets the Mode to Channel Select</td>
+</tr>
+<tr>
+<td>Velocity Dst.</td>
+<td>Sets the Mode to Velocity Destination Select</td>
+</tr>
+<tr>
+<td>Mod Wheel Dst.</td>
+<td>Sets the Mode to Mod Wheel Destination Select</td>
+</tr>
+<tr>
+<td>Aftertouch Dst.</td>
+<td>Sets the Mode to Aftertouch Destination Select</td>
+</tr>
+<tr>
+<td>Clock Rx</td>
+<td>Enables Clock Receive from the input MIDI source</td>
+</tr>
+<tr>
+<td>Transport Rx</td>
+<td>Enables Transport Receive from the input MIDI source</td>
+</tr>
+<tr>
+<td>Pitch Bend Depth</td>
+<td>Sets the Mode to Pitch Bend Depth Select</td>
+</tr>
+<tr>
+<td>Param Latch</td>
+<td>Toggles the <a href="#operation-parameter-latching">parameter latching</a> function on/off</td>
+</tr>
+</tbody>
+</table>
+<h2 id="supplemental-layer-parameter-control-chart">Layer Parameter Control Chart</h2>
+<p>In the photos below, the text for each parameter below the <strong><em>Potentiometer</em></strong> is highlighted respective to the current layer. </p>
+<p>See "Parameters" sections in <a href="#synthesizer">The Synthesizer</a> and <a href="#sequencer">The Sequencer</a> for in-depth explanations on these Parameters</p>
+<h3 id="supplemental-synth-1">Synth 1</h3>
+<p><img alt="layer_syn1" src="../assets/layer_syn1.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Note/Pitch (Oscillator 1)</td>
+<td>Note/Pitch (Oscillator 2)</td>
+<td>Portamento</td>
+<td>Mix 1</td>
+<td>Cutoff</td>
+</tr>
+<tr>
+<td>X Wave (Oscillator 1)</td>
+<td>X Wave (Oscillator 2)</td>
+<td>Phase Mod</td>
+<td>Mix 2</td>
+<td>Resonance</td>
+</tr>
+<tr>
+<td>Y Wave (Oscillator 1)</td>
+<td>Y Wave (Oscillator 2)</td>
+<td>Osc Sync</td>
+<td>Mix Noise</td>
+<td>F. Env. Level</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supplemental-synth-2">Synth 2</h3>
+<p><img alt="layer_syn2" src="../assets/layer_syn2.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Octave<br>(Oscillator 1)</td>
+<td>Octave<br>(Oscillator 2)</td>
+<td>D. Level</td>
+<td>F. Type</td>
+<td>Cutoff</td>
+</tr>
+<tr>
+<td>SRR</td>
+<td>D. Type</td>
+<td>D. Rate</td>
+<td>F. FM</td>
+<td>Resonance</td>
+</tr>
+<tr>
+<td>BRR</td>
+<td>D. Input</td>
+<td>D. Fdbk</td>
+<td>F. Track</td>
+<td>F. Env. Level</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supplemental-user">User</h3>
+<p>See <a href="#supplemental-user-parameters">User Parameters</a> section for how to access and set User Parameters.</p>
+<h3 id="supplemental-envelope">Envelope</h3>
+<p><img alt="layer_env" src="../assets/layer_env.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Attack (Envelope 1)</td>
+<td>Decay<br>(Envelope 1)</td>
+<td>Sustain<br>(Envelope 1)</td>
+<td>Release<br>(Envelope 1)</td>
+<td>- Level +<br>(Envelope 1)</td>
+</tr>
+<tr>
+<td>Attack (Envelope 2)</td>
+<td>Decay<br>(Envelope 2)</td>
+<td>Sustain<br>(Envelope 2)</td>
+<td>Release<br>(Envelope 2)</td>
+<td>- Level +<br>(Envelope 2)</td>
+</tr>
+<tr>
+<td>Attack (Envelope 3)</td>
+<td>Decay<br>(Envelope 3)</td>
+<td>Sustain<br>(Envelope 3)</td>
+<td>Release<br>(Envelope 3)</td>
+<td>- Level +<br>(Envelope 3)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supplemental-lfo">LFO</h3>
+<p><img alt="layer_lfo" src="../assets/layer_lfo.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rate<br>(LFO 1)</td>
+<td>Shape<br>(LFO 1)</td>
+<td>Phase<br>(LFO 1)</td>
+<td>Reset/Sync  <br>(LFO 1)</td>
+<td>- Level +<br>(LFO 1)</td>
+</tr>
+<tr>
+<td>Rate<br>(LFO 2)</td>
+<td>Shape<br>(LFO 2)</td>
+<td>Phase<br>(LFO 2)</td>
+<td>Reset/Sync  <br>(LFO 2)</td>
+<td>- Level +<br>(LFO 2)</td>
+</tr>
+<tr>
+<td>Rate<br>(LFO 3)</td>
+<td>Shape<br>(LFO 3)</td>
+<td>Phase<br>(LFO 3)</td>
+<td>Reset/Sync  <br>(LFO 3)</td>
+<td>- Level +<br>(LFO 3)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="supplemental-sequencer">Sequencer</h3>
+<p><img alt="layer_seq" src="../assets/layer_seq.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Note</td>
+<td>Octave/Scale</td>
+<td>Length</td>
+<td>Velocity</td>
+<td>Transpose</td>
+</tr>
+<tr>
+<td>Direction</td>
+<td>Swing</td>
+<td>Clock Div.</td>
+<td>First Step</td>
+<td>Last Step</td>
+</tr>
+<tr>
+<td>Probability</td>
+<td>G. Chance</td>
+<td>G. Length</td>
+<td>G. Repeat</td>
+<td>G. Octave</td>
+</tr>
+</tbody>
+</table>
+<h2 id="supplemental-mode-encoder-data-list">Mode Encoder Data List</h2>
+<h3 id="supplemental-kbd-oct-keyboard-octave">kbd oct (Keyboard Octave)</h3>
+<p>Sets octave played the <strong><em>Key switches</em></strong> on the <strong>Kbd Page</strong> in a five octave range from 2 - 7.</p>
+<p><em>Why 2 - 7 and not 0 - 9 for more octaves?</em> This is so that the Synthesizer Octave Parameters are still useful.</p>
+<h3 id="supplemental-seq-bpm-sequencer-bpm">seq bpm (Sequencer BPM)</h3>
+<p>Sets the Sequencer speed from 30 - 300 BPM (beats per minute).</p>
+<h3 id="supplemental-preset-preset-number">preset (Preset Number)</h3>
+<p>Selects from the 64 presets on Iosefka. Note that the number counts from 1 - 64, note hexadecimal.</p>
+<h3 id="supplemental-channel-midi-channel">channel (MIDI Channel)</h3>
+<p>Selects from MIDI channel 1 - 16.</p>
+<p>Incoming MIDI messages such as Note On, Note Off, Velocity, CC, Mod Wheel, Aftertouch, which are sent to this channel will take effect according to machine settings. All messages of those types on other channels will be ignored.</p>
+<h3 id="supplemental-modulation-destination-modes">Modulation Destination Modes</h3>
+<p>In these <strong>Modes</strong>, the <strong>Data rotary encoder</strong> is used to select the <a href="#supplemental-modulation-destinations">Modulation Destination</a> assigned to the respective Modulation Source.</p>
+<p>The options are the same for every <strong>Mode</strong> below, as all modulation sources have access to all modulation destinations.</p>
+<h4 id="supplemental-mod-destination-jump">Mod Destination Jump</h4>
+<p>When selecting a Mod Destination for a Mod Source, there are dozens to choose from. The destinations have been grouped in the UI to be relevant to which erm... 'module' the Mod Destination is a part of.</p>
+<p>When Pressing and Holding the <strong><em>Encoder Switch</em></strong> while turning the <strong><em>Rotary Encoder</em></strong>, the selected Mod Destination will jump to the first parameter per each group of relevant parameters, for easier navigation of the Mod Destinations. The below table shows the Mod Destinations jumped to when performing this action.</p>
+<table>
+<thead>
+<tr>
+<th>             </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none          </td>
+</tr>
+<tr>
+<td>oscs pitch c  </td>
+</tr>
+<tr>
+<td>osc 1 pitch c</td>
+</tr>
+<tr>
+<td>osc 2 pitch c</td>
+</tr>
+<tr>
+<td>portamento    </td>
+</tr>
+<tr>
+<td>mixer osc 1  </td>
+</tr>
+<tr>
+<td>filter cutoff</td>
+</tr>
+<tr>
+<td>vca          </td>
+</tr>
+<tr>
+<td>delay rate    </td>
+</tr>
+<tr>
+<td>env 1 rate    </td>
+</tr>
+<tr>
+<td>env 2 rate    </td>
+</tr>
+<tr>
+<td>env 3 rate    </td>
+</tr>
+<tr>
+<td>lfo 1 rate    </td>
+</tr>
+<tr>
+<td>lfo 2 rate    </td>
+</tr>
+<tr>
+<td>lfo 3 rate    </td>
+</tr>
+</tbody>
+</table>
+<h4 id="supplemental-envelope-1-2-3">Envelope 1, 2, 3</h4>
+<p>For the Envelopes. To see how to select these modes, refer to the <a href="#operation-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
+<h4 id="supplemental-lfo-1-2-3">LFO 1, 2, 3</h4>
+<p>For the LFOs. To see how to select these modes, refer to the <a href="#operation-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
+<h4 id="supplemental-vel-velocity">vel (Velocity)</h4>
+<p>For Velocity from both the Sequencer steps and the incoming MIDI notes</p>
+<h4 id="supplemental-mw-mod-wheel">m.w. (Mod Wheel)</h4>
+<p>For Mod Wheel messages coming from the MIDI input</p>
+<h4 id="supplemental-at-aftertouch">a.t. (Aftertouch)</h4>
+<p>For Channel Aftertouch messages coming from the MIDI input</p>
+<h2 id="supplemental-user-parameters">User Parameters</h2>
+<p>For performance, and overall ease of use, users are able to assign fifteen synthesizer parameters on the <strong>User Parameter Layer</strong>. Every Preset can have its own user parameters. </p>
+<p>By default, there are user parameters that are already set. These are parameters that require the use of the <strong><em>Shift Switch</em></strong> on their respective layers. The <strong><em>Potentiometer</em></strong> assigned to these default User Parameters are:
+- 12: Envelope 1 Loop
+- 13: Envelope 2 Loop
+- 14: Envelope 3 Loop
+- 15: VCA Level</p>
+<p>Note: Sequencer parameters cannot be set as user parameters. </p>
+<h4 id="supplemental-navigating-to-user-parameters-view">Navigating to User Parameters View</h4>
+<p>Navigate to the <strong>User Parameter Layer</strong> by holding the <strong><em>Shift switch</em></strong> and pressing the <strong><em>Synth 2 switch</em></strong>. </p>
+<h4 id="supplemental-selecting-the-potentiometer-the-user-parameter-is-assigned-to">Selecting the Potentiometer the User Parameter is assigned to</h4>
+<p>Select the Potentiometer which will be assigned a parameter by holding the <strong><em>Shift switch</em></strong> and turning the <strong><em>Data rotary encoder</em></strong>. A box will be drawn around the currently selected parameter.</p>
+<h4 id="supplemental-selecting-the-user-parameter">Selecting the User Parameter</h4>
+<p>From here, turning the <strong><em>Data rotary encoder</em></strong> selects the parameter which can be assigned. The parameter value of the current preset will be shown. Note: Changing the parameter value here will change the value on the respective layer and vice versa.</p>
+<p>Some parameters cannot be assigned, and are indicated by a "--" in place of the parameter value when that parameter is selected. This is how all parameters appear on a new Preset.</p>
+<h2 id="supplemental-layer-decoupling">Layer Decoupling</h2>
+<p>Using Layer Decoupling, you can do like the following:
+- Enter synthesizer parameter locks to sequencer steps
+- Live step record while tweaking Sequencer parameters</p>
+<p>To do this: 
+- Press and hold the <strong><em>View Switch</em></strong> of the layer you'd like to maintain
+- Press the <strong><em>View Switch</em></strong> of the <strong>Page</strong> and <strong>Mode</strong> you'd like to use</p>
+<p>For example, press and hold the <strong><em>Synth 1 View Switch</em></strong>, then press the <strong><em>Seq View Switch</em></strong>. You will see the <strong><em>Seq Page LED</em></strong> light up and the Sequencer BPM Mode Hanging Display. </p>
+<h2 id="supplemental-wavetable-chart">Wavetable Chart</h2>
+<p>Below is a chart of wavetables in Iosefka. The wavetables are represented by X values horizontally and Y values vertically, meaning that when you turn the <strong>X Wave <em>Potentiometer</em></strong>, you are scanning the chart below from left to right, and when you turn the <strong><em>Y Wave Potentiometer</em></strong>, you are scanning the table from top to bottom.</p>
+<p>The wavetables are arranged in the machine such that each Y value wavetable represents a different type of instrument/timbre/synthesis, and each X value is a variation of that timbre.</p>
+<p><img alt="waves_cropped" src="../assets/waves_cropped.jpg" /></p>
+<p>The wavetables represented by the chart above:</p>
+<ol>
+<li>Metallized saw wave (1-8), notched saw wave (9-16)</li>
+<li>Metallized square wave (1-8), PWM square wave (9-16)</li>
+<li>Triangle wave experimentations</li>
+<li>Frequency modulated sine (1-8), sine with increasing octaves (9-16)</li>
+<li>Drawbar organ tones</li>
+<li>Piano (1-8), e piano (9-16)</li>
+<li>Clarinet (1-5), Oboe (6-10), saxophone (11-16)</li>
+<li>Violin (1-8), cello (9-16)</li>
+<li>Electric guitar (1-8), acoustic guitar (9-16)</li>
+<li>Asst. wavetables from Mutable Instruments Plaits</li>
+<li>Asst. bell sounds</li>
+<li>Asst. harmonically-rich wavetables</li>
+<li>Formant synthesis wavetables from Mutable Instruments Braids</li>
+<li>PPG waveforms</li>
+<li>Yamaha-style OPL FM chip waveforms</li>
+<li>Assorted Ensoniq wavetables</li>
+</ol>
+<p>A higher quality version of the chart below can be found here.</p>
+<h2 id="supplemental-modulation-destinations">Modulation Destinations</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Destination name</strong></th>
+<th><strong>Affected Parameter(s)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None</td>
+<td>None</td>
+</tr>
+<tr>
+<td>oscs pitch c</td>
+<td>Both Oscillators Coarse Pitch across 8 octaves</td>
+</tr>
+<tr>
+<td>oscs pitch f</td>
+<td>Both Oscillators Fine Pitch across 2 semitones</td>
+</tr>
+<tr>
+<td>oscs octave</td>
+<td>Both Oscillators Octave</td>
+</tr>
+<tr>
+<td>oscs x morph</td>
+<td>Both Oscillators X Wave</td>
+</tr>
+<tr>
+<td>oscs y morph</td>
+<td>Both Oscillators Y Wave</td>
+</tr>
+<tr>
+<td>osc 1 pitch c</td>
+<td>Oscillator 1 coarse pitch across 8 octaves</td>
+</tr>
+<tr>
+<td>osc 1 pitch f</td>
+<td>Oscillator 1 fine pitch across 2 semitones (for vibrato like effects)</td>
+</tr>
+<tr>
+<td>osc 1 octave</td>
+<td>Oscillator 1 octave</td>
+</tr>
+<tr>
+<td>osc 1 x morph</td>
+<td>Oscillator 1 X Wave</td>
+</tr>
+<tr>
+<td>osc 1 y morph</td>
+<td>Oscillator 1 Y Wave</td>
+</tr>
+<tr>
+<td>osc 2 pitch c</td>
+<td>Oscillator 2 coarse pitch across 8 octaves</td>
+</tr>
+<tr>
+<td>osc 2 pitch f</td>
+<td>Oscillator 2 fine pitch across 2 semitones (for vibrato like effects)</td>
+</tr>
+<tr>
+<td>osc 2 octave</td>
+<td>Oscillator 2 octave</td>
+</tr>
+<tr>
+<td>osc 2 x morph</td>
+<td>Oscillator 2 X Wave</td>
+</tr>
+<tr>
+<td>osc 2 y morph</td>
+<td>Oscillator 2 Y Wave</td>
+</tr>
+<tr>
+<td>portamento</td>
+<td>Portamento</td>
+</tr>
+<tr>
+<td>phase mod</td>
+<td>Phase Modulation</td>
+</tr>
+<tr>
+<td>sync</td>
+<td>Oscillator sync</td>
+</tr>
+<tr>
+<td>brr</td>
+<td>Bit-rate Reduction</td>
+</tr>
+<tr>
+<td>srr</td>
+<td>Sample-rate reduction</td>
+</tr>
+<tr>
+<td>mixer osc 1</td>
+<td>Oscillator 1 Mixer Level</td>
+</tr>
+<tr>
+<td>mixer osc 2</td>
+<td>Oscillator 2 Mixer Level</td>
+</tr>
+<tr>
+<td>mixer noise</td>
+<td>Noise Generator Mixer Level</td>
+</tr>
+<tr>
+<td>unused</td>
+<td>Unused (for now)</td>
+</tr>
+<tr>
+<td>filter cutoff</td>
+<td>Filter Cutoff</td>
+</tr>
+<tr>
+<td>filter res</td>
+<td>Filter Resonance</td>
+</tr>
+<tr>
+<td>filter env amt</td>
+<td>Filter Envelope Level</td>
+</tr>
+<tr>
+<td>filter type</td>
+<td>Filter Type</td>
+</tr>
+<tr>
+<td>filter fm</td>
+<td>Filter Frequency Modulation</td>
+</tr>
+<tr>
+<td>filter tracking</td>
+<td>Filter Tracking</td>
+</tr>
+<tr>
+<td>vca</td>
+<td>VCA Level</td>
+</tr>
+<tr>
+<td>delay rate</td>
+<td>Delay Rate</td>
+</tr>
+<tr>
+<td>delay feedback</td>
+<td>Delay Feedback</td>
+</tr>
+<tr>
+<td>delay level</td>
+<td>Delay Level</td>
+</tr>
+<tr>
+<td>delay type</td>
+<td>Delay Type</td>
+</tr>
+<tr>
+<td>delay input</td>
+<td>Delay Input Level</td>
+</tr>
+<tr>
+<td>env 1 attack</td>
+<td>Envelope 1 Attack</td>
+</tr>
+<tr>
+<td>env 1 decay</td>
+<td>Envelope 1 Decay</td>
+</tr>
+<tr>
+<td>env 1 sustain</td>
+<td>Envelope 1 Sustain</td>
+</tr>
+<tr>
+<td>env 1 release</td>
+<td>Envelope 1 Release</td>
+</tr>
+<tr>
+<td>env 1 level</td>
+<td>Envelope 1 Level</td>
+</tr>
+<tr>
+<td>env 1 loop</td>
+<td>Envelope 1 Loop</td>
+</tr>
+<tr>
+<td>env 1 dst</td>
+<td>Envelope 1 Destination</td>
+</tr>
+<tr>
+<td>env 2 attack</td>
+<td>Envelope 2 Attack</td>
+</tr>
+<tr>
+<td>env 2 decay</td>
+<td>Envelope 2 Decay</td>
+</tr>
+<tr>
+<td>env 2 sustain</td>
+<td>Envelope 2 Sustain</td>
+</tr>
+<tr>
+<td>env 2 release</td>
+<td>Envelope 2 Release</td>
+</tr>
+<tr>
+<td>env 2 level</td>
+<td>Envelope 2 Level</td>
+</tr>
+<tr>
+<td>env 2 loop</td>
+<td>Envelope 2 Loop</td>
+</tr>
+<tr>
+<td>env 2 dst</td>
+<td>Envelope 2 Destination</td>
+</tr>
+<tr>
+<td>env 3 attack</td>
+<td>Envelope 3 Attack</td>
+</tr>
+<tr>
+<td>env 3 decay</td>
+<td>Envelope 3 Decay</td>
+</tr>
+<tr>
+<td>env 3 sustain</td>
+<td>Envelope 3 Sustain</td>
+</tr>
+<tr>
+<td>env 3 release</td>
+<td>Envelope 3 Release</td>
+</tr>
+<tr>
+<td>env 3 level</td>
+<td>Envelope 3 Level</td>
+</tr>
+<tr>
+<td>env 3 loop</td>
+<td>Envelope 3 Loop</td>
+</tr>
+<tr>
+<td>env 3 dst</td>
+<td>Envelope 3 Destination</td>
+</tr>
+<tr>
+<td>lfo 1 rate</td>
+<td>LFO 1 Rate</td>
+</tr>
+<tr>
+<td>lfo 1 shape</td>
+<td>LFO 1 Shape</td>
+</tr>
+<tr>
+<td>lfo 1 phase</td>
+<td>LFO 1 Phase</td>
+</tr>
+<tr>
+<td>lfo 1 sync</td>
+<td>LFO 1 Reset/Sync</td>
+</tr>
+<tr>
+<td>lfo 1 level</td>
+<td>LFO 1 Level</td>
+</tr>
+<tr>
+<td>lfo 1 dst</td>
+<td>LFO 1 Destination</td>
+</tr>
+<tr>
+<td>lfo 2 rate</td>
+<td>LFO 2 Rate</td>
+</tr>
+<tr>
+<td>lfo 2 shape</td>
+<td>LFO 2 Shape</td>
+</tr>
+<tr>
+<td>lfo 2 phase</td>
+<td>LFO 2 Phase</td>
+</tr>
+<tr>
+<td>lfo 2 sync</td>
+<td>LFO 2 Reset/Sync</td>
+</tr>
+<tr>
+<td>lfo 2 level</td>
+<td>LFO 2 Level</td>
+</tr>
+<tr>
+<td>lfo 2 dst</td>
+<td>LFO 2 Destination</td>
+</tr>
+<tr>
+<td>lfo 3 rate</td>
+<td>LFO 3 Rate</td>
+</tr>
+<tr>
+<td>lfo 3 shape</td>
+<td>LFO 3 Shape</td>
+</tr>
+<tr>
+<td>lfo 3 phase</td>
+<td>LFO 3 Phase</td>
+</tr>
+<tr>
+<td>lfo 3 sync</td>
+<td>LFO 3 Reset/Sync</td>
+</tr>
+<tr>
+<td>lfo 3 level</td>
+<td>LFO 3 Level</td>
+</tr>
+<tr>
+<td>lfo 3 dst</td>
+<td>LFO 3 Destination</td>
+</tr>
+</tbody>
+</table>
+<h2 id="supplemental-oscilloscope">Oscilloscope</h2>
+<p>Users can view the VCA output waveform of the synthesizer using the oscilloscope. The audio is fed back into Iosefka's processor using the same buffer as the delay. The delay output is not displayed in the oscilloscope.</p>
+<p>The oscilloscope captures the output waveform in real time and displays them to the user from one of four user selected magnifications. The magnification value shown on the <strong><em>OLED Display</em></strong> shows how zoomed in the oscilloscope is, relative to the samples captured. To best see lower notes, a value of 1x is best. To see higher notes, a value of 8x is best.</p>
+<table>
+<thead>
+<tr>
+<th>Magnification value</th>
+<th>Sample size</th>
+<th>Sample division (display every n samples)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1x</td>
+<td>1024</td>
+<td>8</td>
+</tr>
+<tr>
+<td>2x</td>
+<td>512</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4x</td>
+<td>256</td>
+<td>2</td>
+</tr>
+<tr>
+<td>8x</td>
+<td>128</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The oscilloscope is phase-locked to oscillator 1, meaning that the waveform <em>should</em> stay in the same place on the screen regardless of the pitch of the note that's playing. This is done by triggering a reset of the oscillator's capture window when oscillator 1's phase overflows, as indicated by the oscillator sync buffer. </p>
+<p>The phase will not appear locked with the audio in the following scenarios:
+- Oscillator 1 and 2 pitch are dissonant
+- Oscillator 1 is low or off, and Oscillator 2 or resonant filter is the primary audio source
+- Oscillator 1's pitch is lower than the magnification can capture in one screen (if the waveform is 'larger' than will fit in one screen)</p>
+<p>Only 128 discrete points are rendered for each 'frame' of the oscilloscope, meaning that harmonically rich waveforms, or viewing higher pitches on lower magnifications will make the oscilloscope appear more 'broken up'. While the solution would be to draw a line between each discrete point, this is not possible due to processor limitations. I tried folks. </p></section><section class="print-page" id="midi" heading-number="7"><h1 id="midi-midi-implementation"><strong>MIDI Implementation</strong></h1>
+<h2 id="midi-midi-input">MIDI Input</h2>
+<h3 id="midi-midi-rx-messages">MIDI Rx Messages</h3>
+<table>
+<thead>
+<tr>
+<th>Message Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clock</td>
+<td>Receives 24 PPQ MIDI clock to sync with Sequencer and other clock-dependent systems</td>
+</tr>
+<tr>
+<td>Transport Start</td>
+<td>Starts the Sequencer <br>(same function as pressing the <strong><em>Play switch</em></strong> when Sequencer is OFF)</td>
+</tr>
+<tr>
+<td>Transport Stop</td>
+<td>Stops the Sequencer <br>(same function as pressing the <strong><em>Play switch</em></strong> when Sequencer is ON)</td>
+</tr>
+<tr>
+<td>Program Change</td>
+<td>Loads the selected Preset* <br>(limited to number of Presets on Iosefka)</td>
+</tr>
+<tr>
+<td>CC (Continuous Controller)</td>
+<td>Changes the specified parameter on the device* <br>(See <a href="#midi-midi-cc-continuous-controller-chart">MIDI CC (Continuous Controller) chart</a>)</td>
+</tr>
+<tr>
+<td>Pitch Bend</td>
+<td>Adjusts the oscillator pitch according to the amount of bend applied*</td>
+</tr>
+</tbody>
+</table>
+<p>*<em>Iosefka must be set to the same MIDI Channel as the transmitting device for these messages to be received</em></p>
+<h3 id="midi-midi-cc-continuous-controller-chart">MIDI CC (Continuous Controller) chart</h3>
+<table>
+<thead>
+<tr>
+<th><strong>CC Number</strong></th>
+<th><strong>Parameter</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Mod Wheel</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Breath Control</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Pitch (Oscillator 1)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Octave (Oscillator 1)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>X Wave (Oscillator 1)</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Y Wave (Oscillator 1)</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Pitch (Oscillator 2)</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Octave (Oscillator 2)</td>
+</tr>
+<tr>
+<td>16</td>
+<td>X Wave (Oscillator 2)</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Y Wave (Oscillator 2)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Portamento</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Phase Modulation</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Oscillator Sync</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Mix 1 (Oscillator 1 Mixer Level)</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Mix 2 (Oscillator 2 Mixer Level)</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Mix Noise (Noise Generator Mixer Level)</td>
+</tr>
+<tr>
+<td>74</td>
+<td>Filter Cutoff</td>
+</tr>
+<tr>
+<td>71</td>
+<td>Filter Resonance</td>
+</tr>
+<tr>
+<td>72</td>
+<td>Filter Type</td>
+</tr>
+<tr>
+<td>73</td>
+<td>Filter FM</td>
+</tr>
+<tr>
+<td>76</td>
+<td>Filter Tracking</td>
+</tr>
+<tr>
+<td>75</td>
+<td>Filter Envelope Level</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Attack (Envelope 1)</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Decay (Envelope 1)</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Sustain (Envelope 1)</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Release (Envelope 1)</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Modulation Level (Envelope 1)</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Attack (Envelope 2)</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Decay (Envelope 2)</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Sustain (Envelope 2)</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Release (Envelope 2)</td>
+</tr>
+<tr>
+<td>34</td>
+<td>Modulation Level (Envelope 2)</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Attack (Envelope 3)</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Decay (Envelope 3)</td>
+</tr>
+<tr>
+<td>37</td>
+<td>Sustain (Envelope 3)</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Release (Envelope 3)</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Modulation Level (Envelope 3)</td>
+</tr>
+<tr>
+<td>40</td>
+<td>Rate (LFO 1)</td>
+</tr>
+<tr>
+<td>41</td>
+<td>Shape (LFO 1)</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Phase (LFO 1)</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Reset/Sync (LFO 1)</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Modulation Level (LFO 1)</td>
+</tr>
+<tr>
+<td>45</td>
+<td>Rate (LFO 2)</td>
+</tr>
+<tr>
+<td>46</td>
+<td>Shape (LFO 2)</td>
+</tr>
+<tr>
+<td>47</td>
+<td>Phase (LFO 2)</td>
+</tr>
+<tr>
+<td>48</td>
+<td>Reset/Sync (LFO 2)</td>
+</tr>
+<tr>
+<td>49</td>
+<td>Modulation Level (LFO 2)</td>
+</tr>
+<tr>
+<td>50</td>
+<td>Rate (LFO 3)</td>
+</tr>
+<tr>
+<td>51</td>
+<td>Shape (LFO 3)</td>
+</tr>
+<tr>
+<td>52</td>
+<td>Phase (LFO 3)</td>
+</tr>
+<tr>
+<td>53</td>
+<td>Reset/Sync (LFO 3)</td>
+</tr>
+<tr>
+<td>54</td>
+<td>Modulation Level (LFO 3)</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Modulation Destination (Envelope 1)</td>
+</tr>
+<tr>
+<td>56</td>
+<td>Modulation Destination (Envelope 2)</td>
+</tr>
+<tr>
+<td>57</td>
+<td>Modulation Destination (Envelope 3)</td>
+</tr>
+<tr>
+<td>58</td>
+<td>Modulation Destination (LFO 1)</td>
+</tr>
+<tr>
+<td>59</td>
+<td>Modulation Destination (LFO 2)</td>
+</tr>
+<tr>
+<td>60</td>
+<td>Modulation Destination (LFO 3)</td>
+</tr>
+<tr>
+<td>61</td>
+<td>Delay Rate</td>
+</tr>
+<tr>
+<td>62</td>
+<td>Delay Feedback</td>
+</tr>
+<tr>
+<td>63</td>
+<td>Delay Level</td>
+</tr>
+</tbody>
+</table></section><section class="print-page" id="credits" heading-number="8"><h1 id="credits-credits-and-acknowledgements"><strong>Credits and Acknowledgements</strong></h1>
+<p>Iosefka is created by Cory Oleson under the title Global Sequence.</p>
+<p>Iosefka would not be possible without the explicit help of many helpful anonymous strangers on the internet, and the implicit assistance of countless open source projects on the internet.</p>
+<p>An extra special shout out goes to Frédéric Meslin of Fred's Lab and Èmilie Gillet of the late Mutable Instruments. Also for Maffez's version of the 2140 pole mixing filter which was very helpful alongside Sound Semiconductor's documentation. </p>
+<p>This synthesizer is fully open source under the GPL-3.0 license.</p></section><section class="print-page" id="build_guide" heading-number="9"><h1 id="build_guide-build-guide"><strong>Build Guide</strong></h1>
+<p>This will walk you through the step-by-step process of populating the Iosefka PCB using components from the <a href="#build_guide-todo:addbom">Bill of Materials</a>, as well as uploading the firmware to the microcontroller. </p>
+<h2 id="build_guide-disclaimer">Disclaimer!</h2>
+<p>We are not responsible for any accidents that arise during the build process. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.</p>
+<h2 id="build_guide-tools">Tools</h2>
+<p><strong>Required</strong></p>
+<ul>
+<li>Soldering Iron</li>
+<li>Solder (leaded or lead free, you do you)</li>
+<li>Wire cutters</li>
+<li>Small phillips screwdriver</li>
+<li>Small flathead screwdriver
+<img alt="Tools - Required" src="../assets/IMG_2191.webp" /></li>
+</ul>
+<p><strong>Optional (but recommended)</strong> </p>
+<ul>
+<li>"Helping hands" clips for soldering (pictured in two different sizes)</li>
+<li>Soldering flux paste</li>
+<li>Electronics tweezers</li>
+<li>Desoldering wick</li>
+<li>(not pictured) Painter's tape</li>
+<li>(not pictured) Rubber bands</li>
+<li>(not pictured) Rubbing alcohol</li>
+<li>(not pictured) Q-tips or microfiber rag 
+<img alt="Tools - Optional" src="../assets/IMG_2192.webp" /></li>
+</ul>
+<h2 id="build_guide-step-0-flashing-the-raspberry-pi-pico">Step 0: Flashing the Raspberry Pi Pico</h2>
+<p>Flashing the firmware to the Raspberry Pi Pico is easy.</p>
+<ul>
+<li>Download the iosefka.uf2 file TODO: LINK TO FILE HERE</li>
+<li>Plug a micro USB cable into the Raspberry Pi Pico</li>
+<li>Press the BOOTSEL pin on the Pico</li>
+<li>With the BOOTSEL pin held down, plug the USB cable into the computer</li>
+<li>The Raspberry Pi Pico will appear as a drive on your computer</li>
+<li>Drag and drop the iosefka.uf2 file directly into the drive</li>
+</ul>
+<h2 id="build_guide-control-board">Control Board</h2>
+<p>First, populate the IC sockets. Some people put the sockets on later, but I prefer to put them on first when no other components are in the way. Up to you!</p>
+<p><img alt="cb_1_sockets" src="../assets/cb_1_sockets.webp" /></p>
+<p><strong>Important!</strong> Make sure that the scallop in the socket lines up with the crescent shape on the PCB silkscreen. </p>
+<p><img alt="Control Board - IC direction" src="../assets/IMG_2131.webp" /></p>
+<p>You can run a rubber band along the IC sockets to hold them in place when soldering them in upside down. Painters tape also works well.</p>
+<p><img alt="Control Board - Rubber Band Top" src="../assets/IMG_2132.webp" /></p>
+<p><img alt="Control Board - Rubber Band Bottom" src="../assets/IMG_2134.webp" /></p>
+<p>Note on LED Direction: The long leg of the LED is the anode (+) which goes into the round hole, the short leg is the cathode (-) which goes into the square hole. </p>
+<p><img alt="Control Board - LED Direction" src="../assets/IMG_2139.webp" /></p>
+<p>Kinda hard to tell, but the cathode side of the LED is flat, which helps to make sure that you put it in the correct way.</p>
+<p><img alt="Control Board - LED Flat side" src="../assets/IMG_2140.webp" /></p>
+<p>Place the diodes (this includes the LEDs).</p>
+<p><img alt="cb_3_diodes" src="../assets/cb_3_diodes.webp" /></p>
+<p>Place the resistors. </p>
+<p><strong>IMPORTANT!</strong> Don't place the 470 Ohm resistors that go under the OLED on the top side of the board! Those go underneath.</p>
+<p><img alt="cb_4_resistors" src="../assets/cb_4_resistors.webp" /></p>
+<p>Place the capacitors.</p>
+<p><img alt="cb_5_caps" src="../assets/cb_5_caps.webp" /></p>
+<p>Place the switches. Press them down so they're flush with the PCB before soldering. Also place the encoder. </p>
+<p><img alt="cb_6_sw" src="../assets/cb_6_sw.webp" /></p>
+<p>Place the potentiometers. It's kind of tricky, I like to put one of the anchors in, then guide the three pins in, and then press the second anchor in with my thumb. Also, up to you but I don't solder the anchors. God forbid we have to remove one or more of these one day. </p>
+<p>I've also placed the encoder in at this point.</p>
+<p><img alt="cb_7_pots" src="../assets/cb_7_pots.webp" /></p>
+<p>Now place the resistors on the underside of the board. When you cut the leads on these, cut them as short as possible, so they don't touch the OLED when it is in place.</p>
+<p><img alt="cb_8_resistors" src="../assets/cb_8_resistors.webp" /></p>
+<p>Place the MIDI sockets. Hold them in place with some tape or a rubber band if necessary.</p>
+<p><img alt="cb_9_midi" src="../assets/cb_9_midi.webp" /></p>
+<p>Place the pin headers and solder them on the top of the board. Here I'm holding the headers in place and in alignment with some painter's tape.</p>
+<p><img alt="cb_10_pins" src="../assets/cb_10_pins.webp" /></p>
+<p>If the OLED comes with pin headers already soldered in, then solder the pin headers straight into the board.</p>
+<p><img alt="cb_11_oled" src="../assets/cb_11_oled.webp" /></p>
+<p>Since you're soldering some components on the top side of the control board, some unsightly flux residue may occur. You can get it off with some rubbing alcohol. Thus far, I have not removed any silkscreen this way, but might be a good idea to do a small test swab to see if it's safe depending on where you get your board fab'd. </p>
+<p><img alt="Control Board - Removing Flux" src="../assets/IMG_2148.webp" /></p>
+<p>Ain't it beautiful? If you purchased a cap for the encoder, you can christen the control board with it now.</p>
+<p><img alt="Control Board - Complete" src="../assets/IMG_2149.webp" /></p>
+<h2 id="build_guide-motherboard">Motherboard</h2>
+<p>As above, so below. Place the DIP sockets first.</p>
+<p><img alt="mb_1_sockets" src="../assets/mb_1_sockets.webp" /></p>
+<p><strong>Note:</strong> Make sure that the MCP4822 and MCP3201 sockets are facing each other as in this picture. The MCP3201 socket (and consequently the MCP3201 chip lol) faces down.</p>
+<p><img alt="mb_2_sockets" src="../assets/mb_2_sockets.webp" /></p>
+<p>I highly recommend putting the female pin headers in next, as I use painters tape to secure the pin headers to the PCB before soldering, which gets a bit harder if there are a bunch of resistors and caps in the way.</p>
+<p><strong>Note:</strong> These are the short-pinned female pin headers. The long pinned ones will be used further down in the build guide. </p>
+<p>I also place the audio jacks and the barrel jack for the power for the same reasons. It's easier to hold them in place when the board is not populated.</p>
+<p><img alt="mb_3_headers" src="../assets/mb_3_headers.webp" /></p>
+<p>Place the resistors and diodes. I did the resistors and diodes in one go cuz there's like 3 diodes.</p>
+<p>NOTE: Ignore the resistor marked as DNP (do not place) on the PCB. This is from an older version and not in use. This resistor is marked as DNP on the PCB, you can't miss it. </p>
+<p><img alt="mb_4_resistors" src="../assets/mb_4_resistors.webp" /></p>
+<p>Place the ceramic caps. Ignore the fact that all my 100nf caps are the floppy circular kind. I got a billion of them in bulk. </p>
+<p><img alt="mb_5_caps" src="../assets/mb_5_caps.webp" /></p>
+<p>Place the electrolytic caps. Long pin goes into the black side, short pin goes into the white side. </p>
+<p><img alt="mb_6_elec_caps" src="../assets/mb_6_elec_caps.webp" /></p>
+<p>Now for the miscellaneous components along the top.</p>
+<p><img alt="mb_7_misc" src="../assets/mb_7_misc.webp" /></p>
+<p>Let's do a quick power test now. Insert the LT1054 IC and the Raspberry Pi Pico board. </p>
+<p><strong>!IMPORTANT!:</strong> Before plugging in the power adapter, make sure that the motherboard is NOT on a metal or conductive surface. Ideally, the PCB should be suspended. </p>
+<p>Plug the power supply into the barrel jack.</p>
+<p><img alt="mb_8_test1" src="../assets/mb_8_test1.webp" /></p>
+<p>With a multimeter, find the CD4051 socket in the bottom right of the motherboard and put the black lead on the ground pin (GREEN), and use the red lead to test the +5v and -5v pins pictured below.</p>
+<p><img alt="mb_9_test2" src="../assets/mb_9_test2.webp" /></p>
+<p>Find the 24LC256 socket (above the Raspberry Pi Pico). Again with the multimeter, put the black lead on the ground pin and the red lead on pin 8, see picture below.</p>
+<p><img alt="mb_10_test3" src="../assets/mb_10_test3.webp" /></p>
+<p>If the power is supplied in the way listed in the two pictures above, proceed to place the ICs, microcontroller, and breakout boards <a href="#build_guide-breakout-boards">(see section below for soldering breakout boards and microcontroller)</a>. Brings a tear to yer eye. </p>
+<p><img alt="Motherboard - Components Placed" src="../assets/IMG_2172.webp" /></p>
+<h2 id="build_guide-breakout-boards">Breakout Boards</h2>
+<p>Time for some SMD soldering folks! For both the LM13700 and SSI2140, the instructions are the same.</p>
+<p><strong>Note:</strong> The SMD instructions here are by no means comprehensive, I recommend one of the many helpful YouTube videos on soldering SMD chips. It's not as intimidating as it sounds, but it's more than I think is appropriate to type out in the build guide.  </p>
+<p><strong>Note:</strong> There is a spot on the Motherboard PCB where you can solder the SMD components directly, but I prefer breakout boards for easy future maintenance if necessary. Up to you.</p>
+<p>First, apply some flux to the pins on each corner of the breakout. </p>
+<p><img alt="Breakout - Flux Corners" src="../assets/IMG_2166.webp" /></p>
+<p>Place the IC making sure that the first pin is in the correct corner, as indicated by the small circle on the IC, and the arrow on the breakout.</p>
+<p><img alt="Breakout - Placing IC" src="../assets/IMG_2167.webp" /></p>
+<p>Apply solder to the two pins with flux. </p>
+<p>Apply flux to all the other pins and solder them, ensuring that there is no solder bridges.</p>
+<p>Then make sure to remove all the extra flux with rubbing alcohol and a q-tip or microfiber rag.</p>
+<p><img alt="Breakout - Soldering Pins" src="../assets/IMG_2168.webp" /></p>
+<p>For both the microcontroller and the breakout boards, it is helpful to secure the pin headers by resting them on a breadboard, and then putting the components on top as pictured below. I don't recommend pressing the pins into the breadboard, as it may affect the pins' vertical alignment.
+<img alt="Breakout - Breadboard Alignment" src="../assets/IMG_2169.webp" /></p>
+<p>Solder the corner of one side first, ensuring that the pins are as vertical as possible. You can use this single solder point to align both pin headers. For example, if  you solder the one corner and the pin headers are slanted, you can reheat the single solder joint while aligning the board with your finger on top, then let the solder cool. The pins should now stay aligned while you solder the rest in. </p>
+<p><img alt="Breakout - Soldering Corners" src="../assets/IMG_2170.webp" /></p>
+<p>Solder the rest!</p>
+<p><img alt="Breakout - Soldering Pins" src="../assets/IMG_2171.webp" /></p>
+<h2 id="build_guide-assembling-the-boards">Assembling the Boards</h2>
+<p>On the Control Board, put the hex screws through the top side and screw the spacers into the bottom side by hand. Hand-tight is fine, don't go damaging your board now.</p>
+<p><img alt="Assembly - Hex Screw and Spacers" src="../assets/IMG_2179.webp" /></p>
+<p>All screws/spacers in.</p>
+<p><img alt="Assembly - Hex Screws and Spacers All" src="../assets/IMG_2180.webp" /></p>
+<p>In the Bottom Board (with the Iosefka logo), screw in the screws and the plastic nuts, leaving some slack in the screw, so that the screw can turn when connecting boards. </p>
+<p><img alt="Assembly - Bottom Screw and Spacers" src="../assets/IMG_2181.webp" /></p>
+<p>Iosefka uses two female pin headers as spacers to connect the pins that lead from the Motherboard to the Control Board. The standard female pin headers don't have pins long enough, and the long-pinned pin headers are too long, so we have to compromise by cutting the pins on the long-pinned ones. </p>
+<p>In this picture, I've put the female pin headers side by side with the male pin header to show the length that the leads need to be cut to.</p>
+<p><img alt="Assembly - Pin Comparison" src="../assets/IMG_2174.webp" /></p>
+<p>Really, you can eyeball it. As long as the cut pins are roughly the length of the male pin header. A few millimeters short or long should be fine. However, if you want to be thorough, you can put the male pin header atop the female one, and use a marker to trace along the bottom of the male pin header to see where you should cut. Cut slightly above the marked line.</p>
+<p><img alt="Assembly - Marking Pins" src="../assets/IMG_2175.webp" /></p>
+<p>As you can see, it's not perfect, but it works just fine!</p>
+<p><img alt="Assembly - Cut Pins" src="../assets/IMG_2178.webp" /></p>
+<p>Place the pin headers in the pin sockets on the control board.</p>
+<p><img alt="Assembly - Pin header" src="../assets/IMG_2182.webp" /></p>
+<p>Attach the Control Board to the Motherboard by placing the male pin headers into the female pin headers.</p>
+<p><img alt="Assembly - Attaching Control Board to Motherboard" src="../assets/IMG_2183.webp" /></p>
+<p>Align the Bottom Board with the Motherboard and screw the screws into the Control Board spacers.</p>
+<p><img alt="Assembly - Screwing Bottom Board to Motherboard" src="../assets/IMG_2184.webp" /></p>
+<p>Go nuts and place rubber feet wherever the hell you want. Just make sure there's four of 'em! </p>
+<p><img alt="Assembly - Placing Rubber Feet" src="../assets/IMG_2185.webp" /></p>
+<p>Behold your work!</p>
+<p><img alt="Assembly - Complete" src="../assets/IMG_2186.webp" /></p>
+<p>At this point, you should be able to plug in your Iosefka model and it will power up. If it is the first time, you will see the presets being loaded and then the Synth 1 View screen. </p>
+<p>If you plug the synth into a speaker and hit one of the keyboard switches and hear sound, that's a great sign! If the sound gets quieter over time (the VCA envelope closing), then you know that part works. Lastly, if you play with the Filter Cutoff parameter and the sound changes, you're 99% of the way there! </p>
+<p>Lastly, we just need some...</p>
+<h2 id="build_guide-calibration">Calibration</h2>
+<p>The two trimpots on the back of the synth are for:
+ - Filter Cutoff Offset - ensuring that the filter is in the correct frequency range
+ - Filter Tracking - Making sure that the filter plays musically across a certain octave range</p>
+<p><img alt="Calibration - Setting Offset and Trim" src="../assets/IMG_2189.webp" /></p>
+<h3 id="build_guide-cutoff-calibration">Cutoff Calibration</h3>
+<p>The filter on Iosefka ranges between roughly 20Hz to 20kHz. You can use an oscilloscope to calibrate the cutoff, but we can also just calibrate this by ear using the self-resonance. 
+With the synth on:</p>
+<ul>
+<li>Navigate to the Synth 1 View<ul>
+<li>Turn down Mix 1, Mix 2, and Mix Noise parameters to 00</li>
+<li>Turn Cutoff to 00</li>
+<li>Turn Resonance to FF</li>
+</ul>
+</li>
+<li>Navigate to Synth 1 View<ul>
+<li>Hold shift and turn the VCA Parameter to FF </li>
+</ul>
+</li>
+<li>Navigate to the Synth 2 View<ul>
+<li>Ensure the F. Type parameter is L4</li>
+<li>Turn the F. Track parameter to 00 </li>
+</ul>
+</li>
+</ul>
+<p>You should now hear a sine wave from the filter self-oscillating. Looking directly at the back of the synth (like in the pic above), turn the Offset trimpot to the left until the sound is too low to hear. Now if you turn the Cutoff parameter to FF, and you still hear a super high pitch, turn the Offset trimpot to the right until the sound is too high pitch to hear, then turn it just a smidge more if you're 30 or older. </p>
+<h3 id="build_guide-tracking-calibration">Tracking Calibration</h3>
+<p>We will now use the built-in sequencer on Iosefka to test the tracking across 5 octaves. We will enter 6 octaves in the sequencer just to see if we get lucky. </p>
+<p>A musical tuner will help us with this one
+With the synth on:</p>
+<ul>
+<li>Navigate to the Synth 1 View<ul>
+<li>Turn down Mix 1, Mix 2, and Mix Noise parameters to 00</li>
+<li>Turn Cutoff to 40 </li>
+<li>Turn Resonance to FF</li>
+</ul>
+</li>
+<li>Navigate to Synth 1 View<ul>
+<li>Hold shift and turn the VCA Parameter to FF </li>
+</ul>
+</li>
+<li>Navigate to the Synth 2 View<ul>
+<li>Ensure the F. Type parameter is L4</li>
+<li>Turn the F. Track parameter to FF (Make sure it's on FF not 00!)</li>
+</ul>
+</li>
+</ul>
+<p>At this point, you should hear the sequencer self-oscillating in perpetuity. Make sure it's loud enough so that your neighbors can hear its glory!</p>
+<ul>
+<li>Navigate to the Sequencer view <ul>
+<li>Make sure that the Sequencer pattern is empty. If it is not, load a blank preset, which should have an empty pattern and start from the top.</li>
+<li>Turn the First Step parameter to 00</li>
+<li>Turn the Last Step parameter to 05</li>
+<li>Turn the Clock Div parameter to *8</li>
+<li>Turn the Octave parameter so that the note in the top left of the OLED Display reads "C1"</li>
+<li>Hit Key Switch 1 to place a step with the value C1 on step 1  </li>
+<li>Repeat the last two steps turning the Octave parameter so that it reads "C2", then hitting Key switch 2, and so on until the you place C6 by hitting Key switch 6. You should now have a sequence of 6 steps ascending one octave per step. </li>
+</ul>
+</li>
+<li>Press the Play switch. You should now hear the sequencer playing a sequence ascending by roughly 1 octave. </li>
+<li>Turn the Tracking trimpot in either direction until the sequence comes into tune. Each note should represent one musical octave.</li>
+</ul>
+<p><img alt="Calibration - Sequencer Steps" src="../assets/IMG_2188.webp" /></p></section></div><style>.print-site-enumerate-headings #index > h1:before { content: '1 ' }
+
+                .print-site-enumerate-headings #index h2:before { content: '1.' counter(counter-index-2) ' ' }
+                .print-site-enumerate-headings #index h2 {  counter-reset: counter-index-3 ;  counter-increment: counter-index-2 }
+            
+                .print-site-enumerate-headings #index h3:before { content: '1.' counter(counter-index-2) '.' counter(counter-index-3) ' ' }
+                .print-site-enumerate-headings #index h3 {  counter-increment: counter-index-3 }
+            
+.print-site-enumerate-headings #operation > h1:before { content: '2 ' }
+
+                .print-site-enumerate-headings #operation h2:before { content: '2.' counter(counter-operation-2) ' ' }
+                .print-site-enumerate-headings #operation h2 {  counter-reset: counter-operation-3 ;  counter-increment: counter-operation-2 }
+            
+                .print-site-enumerate-headings #operation h3:before { content: '2.' counter(counter-operation-2) '.' counter(counter-operation-3) ' ' }
+                .print-site-enumerate-headings #operation h3 {  counter-increment: counter-operation-3 }
+            
+.print-site-enumerate-headings #synthesizer > h1:before { content: '3 ' }
+
+                .print-site-enumerate-headings #synthesizer h2:before { content: '3.' counter(counter-synthesizer-2) ' ' }
+                .print-site-enumerate-headings #synthesizer h2 {  counter-reset: counter-synthesizer-3 ;  counter-increment: counter-synthesizer-2 }
+            
+                .print-site-enumerate-headings #synthesizer h3:before { content: '3.' counter(counter-synthesizer-2) '.' counter(counter-synthesizer-3) ' ' }
+                .print-site-enumerate-headings #synthesizer h3 {  counter-increment: counter-synthesizer-3 }
+            
+.print-site-enumerate-headings #sequencer > h1:before { content: '4 ' }
+
+                .print-site-enumerate-headings #sequencer h2:before { content: '4.' counter(counter-sequencer-2) ' ' }
+                .print-site-enumerate-headings #sequencer h2 {  counter-reset: counter-sequencer-3 ;  counter-increment: counter-sequencer-2 }
+            
+                .print-site-enumerate-headings #sequencer h3:before { content: '4.' counter(counter-sequencer-2) '.' counter(counter-sequencer-3) ' ' }
+                .print-site-enumerate-headings #sequencer h3 {  counter-increment: counter-sequencer-3 }
+            
+.print-site-enumerate-headings #settings > h1:before { content: '5 ' }
+
+                .print-site-enumerate-headings #settings h2:before { content: '5.' counter(counter-settings-2) ' ' }
+                .print-site-enumerate-headings #settings h2 {  counter-reset: counter-settings-3 ;  counter-increment: counter-settings-2 }
+            
+                .print-site-enumerate-headings #settings h3:before { content: '5.' counter(counter-settings-2) '.' counter(counter-settings-3) ' ' }
+                .print-site-enumerate-headings #settings h3 {  counter-increment: counter-settings-3 }
+            
+.print-site-enumerate-headings #supplemental > h1:before { content: '6 ' }
+
+                .print-site-enumerate-headings #supplemental h2:before { content: '6.' counter(counter-supplemental-2) ' ' }
+                .print-site-enumerate-headings #supplemental h2 {  counter-reset: counter-supplemental-3 ;  counter-increment: counter-supplemental-2 }
+            
+                .print-site-enumerate-headings #supplemental h3:before { content: '6.' counter(counter-supplemental-2) '.' counter(counter-supplemental-3) ' ' }
+                .print-site-enumerate-headings #supplemental h3 {  counter-increment: counter-supplemental-3 }
+            
+.print-site-enumerate-headings #midi > h1:before { content: '7 ' }
+
+                .print-site-enumerate-headings #midi h2:before { content: '7.' counter(counter-midi-2) ' ' }
+                .print-site-enumerate-headings #midi h2 {  counter-reset: counter-midi-3 ;  counter-increment: counter-midi-2 }
+            
+                .print-site-enumerate-headings #midi h3:before { content: '7.' counter(counter-midi-2) '.' counter(counter-midi-3) ' ' }
+                .print-site-enumerate-headings #midi h3 {  counter-increment: counter-midi-3 }
+            
+.print-site-enumerate-headings #credits > h1:before { content: '8 ' }
+
+                .print-site-enumerate-headings #credits h2:before { content: '8.' counter(counter-credits-2) ' ' }
+                .print-site-enumerate-headings #credits h2 {  counter-reset: counter-credits-3 ;  counter-increment: counter-credits-2 }
+            
+                .print-site-enumerate-headings #credits h3:before { content: '8.' counter(counter-credits-2) '.' counter(counter-credits-3) ' ' }
+                .print-site-enumerate-headings #credits h3 {  counter-increment: counter-credits-3 }
+            
+.print-site-enumerate-headings #build_guide > h1:before { content: '9 ' }
+
+                .print-site-enumerate-headings #build_guide h2:before { content: '9.' counter(counter-build_guide-2) ' ' }
+                .print-site-enumerate-headings #build_guide h2 {  counter-reset: counter-build_guide-3 ;  counter-increment: counter-build_guide-2 }
+            
+                .print-site-enumerate-headings #build_guide h3:before { content: '9.' counter(counter-build_guide-2) '.' counter(counter-build_guide-3) ' ' }
+                .print-site-enumerate-headings #build_guide h3 {  counter-increment: counter-build_guide-3 }
+            </style>
+
+  <br>
+    
+
+    <br>
+</div>
+
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="None">Windmill Dark</a> theme by None (noraj).</p>
+</footer>
+
+</body>
+</html>

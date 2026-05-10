@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Build Guide - Iosefka Manual</title>
+    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+    <link href="../css/print-site.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Build Guide", url: "#_top", children: [
+              {title: "Disclaimer!", url: "#disclaimer" },
+              {title: "Tools", url: "#tools" },
+              {title: "Step 0: Flashing the Raspberry Pi Pico", url: "#step-0-flashing-the-raspberry-pi-pico" },
+              {title: "Control Board", url: "#control-board" },
+              {title: "Motherboard", url: "#motherboard" },
+              {title: "Breakout Boards", url: "#breakout-boards" },
+              {title: "Assembling the Boards", url: "#assembling-the-boards" },
+              {title: "Calibration", url: "#calibration" },
+          ]},
+        ];
+
+    </script>
+    <script src="../js/base.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../search/main.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav">
+      <a href="../credits/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../credits/" class="btn btn-xs btn-link">
+        Credits and Acknowledgements
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h1 id="build-guide"><strong>Build Guide</strong></h1>
+<p>This will walk you through the step-by-step process of populating the Iosefka PCB using components from the <a href="TODO:ADDBOM">Bill of Materials</a>, as well as uploading the firmware to the microcontroller. </p>
+<h2 id="disclaimer">Disclaimer!</h2>
+<p>We are not responsible for any accidents that arise during the build process. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.</p>
+<h2 id="tools">Tools</h2>
+<p><strong>Required</strong></p>
+<ul>
+<li>Soldering Iron</li>
+<li>Solder (leaded or lead free, you do you)</li>
+<li>Wire cutters</li>
+<li>Small phillips screwdriver</li>
+<li>Small flathead screwdriver
+<img alt="Tools - Required" src="../assets/IMG_2191.webp" /></li>
+</ul>
+<p><strong>Optional (but recommended)</strong> </p>
+<ul>
+<li>"Helping hands" clips for soldering (pictured in two different sizes)</li>
+<li>Soldering flux paste</li>
+<li>Electronics tweezers</li>
+<li>Desoldering wick</li>
+<li>(not pictured) Painter's tape</li>
+<li>(not pictured) Rubber bands</li>
+<li>(not pictured) Rubbing alcohol</li>
+<li>(not pictured) Q-tips or microfiber rag 
+<img alt="Tools - Optional" src="../assets/IMG_2192.webp" /></li>
+</ul>
+<h2 id="step-0-flashing-the-raspberry-pi-pico">Step 0: Flashing the Raspberry Pi Pico</h2>
+<p>Flashing the firmware to the Raspberry Pi Pico is easy.</p>
+<ul>
+<li>Download the iosefka.uf2 file TODO: LINK TO FILE HERE</li>
+<li>Plug a micro USB cable into the Raspberry Pi Pico</li>
+<li>Press the BOOTSEL pin on the Pico</li>
+<li>With the BOOTSEL pin held down, plug the USB cable into the computer</li>
+<li>The Raspberry Pi Pico will appear as a drive on your computer</li>
+<li>Drag and drop the iosefka.uf2 file directly into the drive</li>
+</ul>
+<h2 id="control-board">Control Board</h2>
+<p>First, populate the IC sockets. Some people put the sockets on later, but I prefer to put them on first when no other components are in the way. Up to you!</p>
+<p><img alt="cb_1_sockets" src="../assets/cb_1_sockets.webp" /></p>
+<p><strong>Important!</strong> Make sure that the scallop in the socket lines up with the crescent shape on the PCB silkscreen. </p>
+<p><img alt="Control Board - IC direction" src="../assets/IMG_2131.webp" /></p>
+<p>You can run a rubber band along the IC sockets to hold them in place when soldering them in upside down. Painters tape also works well.</p>
+<p><img alt="Control Board - Rubber Band Top" src="../assets/IMG_2132.webp" /></p>
+<p><img alt="Control Board - Rubber Band Bottom" src="../assets/IMG_2134.webp" /></p>
+<p>Note on LED Direction: The long leg of the LED is the anode (+) which goes into the round hole, the short leg is the cathode (-) which goes into the square hole. </p>
+<p><img alt="Control Board - LED Direction" src="../assets/IMG_2139.webp" /></p>
+<p>Kinda hard to tell, but the cathode side of the LED is flat, which helps to make sure that you put it in the correct way.</p>
+<p><img alt="Control Board - LED Flat side" src="../assets/IMG_2140.webp" /></p>
+<p>Place the diodes (this includes the LEDs).</p>
+<p><img alt="cb_3_diodes" src="../assets/cb_3_diodes.webp" /></p>
+<p>Place the resistors. </p>
+<p><strong>IMPORTANT!</strong> Don't place the 470 Ohm resistors that go under the OLED on the top side of the board! Those go underneath.</p>
+<p><img alt="cb_4_resistors" src="../assets/cb_4_resistors.webp" /></p>
+<p>Place the capacitors.</p>
+<p><img alt="cb_5_caps" src="../assets/cb_5_caps.webp" /></p>
+<p>Place the switches. Press them down so they're flush with the PCB before soldering. Also place the encoder. </p>
+<p><img alt="cb_6_sw" src="../assets/cb_6_sw.webp" /></p>
+<p>Place the potentiometers. It's kind of tricky, I like to put one of the anchors in, then guide the three pins in, and then press the second anchor in with my thumb. Also, up to you but I don't solder the anchors. God forbid we have to remove one or more of these one day. </p>
+<p>I've also placed the encoder in at this point.</p>
+<p><img alt="cb_7_pots" src="../assets/cb_7_pots.webp" /></p>
+<p>Now place the resistors on the underside of the board. When you cut the leads on these, cut them as short as possible, so they don't touch the OLED when it is in place.</p>
+<p><img alt="cb_8_resistors" src="../assets/cb_8_resistors.webp" /></p>
+<p>Place the MIDI sockets. Hold them in place with some tape or a rubber band if necessary.</p>
+<p><img alt="cb_9_midi" src="../assets/cb_9_midi.webp" /></p>
+<p>Place the pin headers and solder them on the top of the board. Here I'm holding the headers in place and in alignment with some painter's tape.</p>
+<p><img alt="cb_10_pins" src="../assets/cb_10_pins.webp" /></p>
+<p>If the OLED comes with pin headers already soldered in, then solder the pin headers straight into the board.</p>
+<p><img alt="cb_11_oled" src="../assets/cb_11_oled.webp" /></p>
+<p>Since you're soldering some components on the top side of the control board, some unsightly flux residue may occur. You can get it off with some rubbing alcohol. Thus far, I have not removed any silkscreen this way, but might be a good idea to do a small test swab to see if it's safe depending on where you get your board fab'd. </p>
+<p><img alt="Control Board - Removing Flux" src="../assets/IMG_2148.webp" /></p>
+<p>Ain't it beautiful? If you purchased a cap for the encoder, you can christen the control board with it now.</p>
+<p><img alt="Control Board - Complete" src="../assets/IMG_2149.webp" /></p>
+<h2 id="motherboard">Motherboard</h2>
+<p>As above, so below. Place the DIP sockets first.</p>
+<p><img alt="mb_1_sockets" src="../assets/mb_1_sockets.webp" /></p>
+<p><strong>Note:</strong> Make sure that the MCP4822 and MCP3201 sockets are facing each other as in this picture. The MCP3201 socket (and consequently the MCP3201 chip lol) faces down.</p>
+<p><img alt="mb_2_sockets" src="../assets/mb_2_sockets.webp" /></p>
+<p>I highly recommend putting the female pin headers in next, as I use painters tape to secure the pin headers to the PCB before soldering, which gets a bit harder if there are a bunch of resistors and caps in the way.</p>
+<p><strong>Note:</strong> These are the short-pinned female pin headers. The long pinned ones will be used further down in the build guide. </p>
+<p>I also place the audio jacks and the barrel jack for the power for the same reasons. It's easier to hold them in place when the board is not populated.</p>
+<p><img alt="mb_3_headers" src="../assets/mb_3_headers.webp" /></p>
+<p>Place the resistors and diodes. I did the resistors and diodes in one go cuz there's like 3 diodes.</p>
+<p>NOTE: Ignore the resistor marked as DNP (do not place) on the PCB. This is from an older version and not in use. This resistor is marked as DNP on the PCB, you can't miss it. </p>
+<p><img alt="mb_4_resistors" src="../assets/mb_4_resistors.webp" /></p>
+<p>Place the ceramic caps. Ignore the fact that all my 100nf caps are the floppy circular kind. I got a billion of them in bulk. </p>
+<p><img alt="mb_5_caps" src="../assets/mb_5_caps.webp" /></p>
+<p>Place the electrolytic caps. Long pin goes into the black side, short pin goes into the white side. </p>
+<p><img alt="mb_6_elec_caps" src="../assets/mb_6_elec_caps.webp" /></p>
+<p>Now for the miscellaneous components along the top.</p>
+<p><img alt="mb_7_misc" src="../assets/mb_7_misc.webp" /></p>
+<p>Let's do a quick power test now. Insert the LT1054 IC and the Raspberry Pi Pico board. </p>
+<p><strong>!IMPORTANT!:</strong> Before plugging in the power adapter, make sure that the motherboard is NOT on a metal or conductive surface. Ideally, the PCB should be suspended. </p>
+<p>Plug the power supply into the barrel jack.</p>
+<p><img alt="mb_8_test1" src="../assets/mb_8_test1.webp" /></p>
+<p>With a multimeter, find the CD4051 socket in the bottom right of the motherboard and put the black lead on the ground pin (GREEN), and use the red lead to test the +5v and -5v pins pictured below.</p>
+<p><img alt="mb_9_test2" src="../assets/mb_9_test2.webp" /></p>
+<p>Find the 24LC256 socket (above the Raspberry Pi Pico). Again with the multimeter, put the black lead on the ground pin and the red lead on pin 8, see picture below.</p>
+<p><img alt="mb_10_test3" src="../assets/mb_10_test3.webp" /></p>
+<p>If the power is supplied in the way listed in the two pictures above, proceed to place the ICs, microcontroller, and breakout boards <a href="#breakout-boards">(see section below for soldering breakout boards and microcontroller)</a>. Brings a tear to yer eye. </p>
+<p><img alt="Motherboard - Components Placed" src="../assets/IMG_2172.webp" /></p>
+<h2 id="breakout-boards">Breakout Boards</h2>
+<p>Time for some SMD soldering folks! For both the LM13700 and SSI2140, the instructions are the same.</p>
+<p><strong>Note:</strong> The SMD instructions here are by no means comprehensive, I recommend one of the many helpful YouTube videos on soldering SMD chips. It's not as intimidating as it sounds, but it's more than I think is appropriate to type out in the build guide.  </p>
+<p><strong>Note:</strong> There is a spot on the Motherboard PCB where you can solder the SMD components directly, but I prefer breakout boards for easy future maintenance if necessary. Up to you.</p>
+<p>First, apply some flux to the pins on each corner of the breakout. </p>
+<p><img alt="Breakout - Flux Corners" src="../assets/IMG_2166.webp" /></p>
+<p>Place the IC making sure that the first pin is in the correct corner, as indicated by the small circle on the IC, and the arrow on the breakout.</p>
+<p><img alt="Breakout - Placing IC" src="../assets/IMG_2167.webp" /></p>
+<p>Apply solder to the two pins with flux. </p>
+<p>Apply flux to all the other pins and solder them, ensuring that there is no solder bridges.</p>
+<p>Then make sure to remove all the extra flux with rubbing alcohol and a q-tip or microfiber rag.</p>
+<p><img alt="Breakout - Soldering Pins" src="../assets/IMG_2168.webp" /></p>
+<p>For both the microcontroller and the breakout boards, it is helpful to secure the pin headers by resting them on a breadboard, and then putting the components on top as pictured below. I don't recommend pressing the pins into the breadboard, as it may affect the pins' vertical alignment.
+<img alt="Breakout - Breadboard Alignment" src="../assets/IMG_2169.webp" /></p>
+<p>Solder the corner of one side first, ensuring that the pins are as vertical as possible. You can use this single solder point to align both pin headers. For example, if  you solder the one corner and the pin headers are slanted, you can reheat the single solder joint while aligning the board with your finger on top, then let the solder cool. The pins should now stay aligned while you solder the rest in. </p>
+<p><img alt="Breakout - Soldering Corners" src="../assets/IMG_2170.webp" /></p>
+<p>Solder the rest!</p>
+<p><img alt="Breakout - Soldering Pins" src="../assets/IMG_2171.webp" /></p>
+<h2 id="assembling-the-boards">Assembling the Boards</h2>
+<p>On the Control Board, put the hex screws through the top side and screw the spacers into the bottom side by hand. Hand-tight is fine, don't go damaging your board now.</p>
+<p><img alt="Assembly - Hex Screw and Spacers" src="../assets/IMG_2179.webp" /></p>
+<p>All screws/spacers in.</p>
+<p><img alt="Assembly - Hex Screws and Spacers All" src="../assets/IMG_2180.webp" /></p>
+<p>In the Bottom Board (with the Iosefka logo), screw in the screws and the plastic nuts, leaving some slack in the screw, so that the screw can turn when connecting boards. </p>
+<p><img alt="Assembly - Bottom Screw and Spacers" src="../assets/IMG_2181.webp" /></p>
+<p>Iosefka uses two female pin headers as spacers to connect the pins that lead from the Motherboard to the Control Board. The standard female pin headers don't have pins long enough, and the long-pinned pin headers are too long, so we have to compromise by cutting the pins on the long-pinned ones. </p>
+<p>In this picture, I've put the female pin headers side by side with the male pin header to show the length that the leads need to be cut to.</p>
+<p><img alt="Assembly - Pin Comparison" src="../assets/IMG_2174.webp" /></p>
+<p>Really, you can eyeball it. As long as the cut pins are roughly the length of the male pin header. A few millimeters short or long should be fine. However, if you want to be thorough, you can put the male pin header atop the female one, and use a marker to trace along the bottom of the male pin header to see where you should cut. Cut slightly above the marked line.</p>
+<p><img alt="Assembly - Marking Pins" src="../assets/IMG_2175.webp" /></p>
+<p>As you can see, it's not perfect, but it works just fine!</p>
+<p><img alt="Assembly - Cut Pins" src="../assets/IMG_2178.webp" /></p>
+<p>Place the pin headers in the pin sockets on the control board.</p>
+<p><img alt="Assembly - Pin header" src="../assets/IMG_2182.webp" /></p>
+<p>Attach the Control Board to the Motherboard by placing the male pin headers into the female pin headers.</p>
+<p><img alt="Assembly - Attaching Control Board to Motherboard" src="../assets/IMG_2183.webp" /></p>
+<p>Align the Bottom Board with the Motherboard and screw the screws into the Control Board spacers.</p>
+<p><img alt="Assembly - Screwing Bottom Board to Motherboard" src="../assets/IMG_2184.webp" /></p>
+<p>Go nuts and place rubber feet wherever the hell you want. Just make sure there's four of 'em! </p>
+<p><img alt="Assembly - Placing Rubber Feet" src="../assets/IMG_2185.webp" /></p>
+<p>Behold your work!</p>
+<p><img alt="Assembly - Complete" src="../assets/IMG_2186.webp" /></p>
+<p>At this point, you should be able to plug in your Iosefka model and it will power up. If it is the first time, you will see the presets being loaded and then the Synth 1 View screen. </p>
+<p>If you plug the synth into a speaker and hit one of the keyboard switches and hear sound, that's a great sign! If the sound gets quieter over time (the VCA envelope closing), then you know that part works. Lastly, if you play with the Filter Cutoff parameter and the sound changes, you're 99% of the way there! </p>
+<p>Lastly, we just need some...</p>
+<h2 id="calibration">Calibration</h2>
+<p>The two trimpots on the back of the synth are for:
+ - Filter Cutoff Offset - ensuring that the filter is in the correct frequency range
+ - Filter Tracking - Making sure that the filter plays musically across a certain octave range</p>
+<p><img alt="Calibration - Setting Offset and Trim" src="../assets/IMG_2189.webp" /></p>
+<h3 id="cutoff-calibration">Cutoff Calibration</h3>
+<p>The filter on Iosefka ranges between roughly 20Hz to 20kHz. You can use an oscilloscope to calibrate the cutoff, but we can also just calibrate this by ear using the self-resonance. 
+With the synth on:</p>
+<ul>
+<li>Navigate to the Synth 1 View<ul>
+<li>Turn down Mix 1, Mix 2, and Mix Noise parameters to 00</li>
+<li>Turn Cutoff to 00</li>
+<li>Turn Resonance to FF</li>
+</ul>
+</li>
+<li>Navigate to Synth 1 View<ul>
+<li>Hold shift and turn the VCA Parameter to FF </li>
+</ul>
+</li>
+<li>Navigate to the Synth 2 View<ul>
+<li>Ensure the F. Type parameter is L4</li>
+<li>Turn the F. Track parameter to 00 </li>
+</ul>
+</li>
+</ul>
+<p>You should now hear a sine wave from the filter self-oscillating. Looking directly at the back of the synth (like in the pic above), turn the Offset trimpot to the left until the sound is too low to hear. Now if you turn the Cutoff parameter to FF, and you still hear a super high pitch, turn the Offset trimpot to the right until the sound is too high pitch to hear, then turn it just a smidge more if you're 30 or older. </p>
+<h3 id="tracking-calibration">Tracking Calibration</h3>
+<p>We will now use the built-in sequencer on Iosefka to test the tracking across 5 octaves. We will enter 6 octaves in the sequencer just to see if we get lucky. </p>
+<p>A musical tuner will help us with this one
+With the synth on:</p>
+<ul>
+<li>Navigate to the Synth 1 View<ul>
+<li>Turn down Mix 1, Mix 2, and Mix Noise parameters to 00</li>
+<li>Turn Cutoff to 40 </li>
+<li>Turn Resonance to FF</li>
+</ul>
+</li>
+<li>Navigate to Synth 1 View<ul>
+<li>Hold shift and turn the VCA Parameter to FF </li>
+</ul>
+</li>
+<li>Navigate to the Synth 2 View<ul>
+<li>Ensure the F. Type parameter is L4</li>
+<li>Turn the F. Track parameter to FF (Make sure it's on FF not 00!)</li>
+</ul>
+</li>
+</ul>
+<p>At this point, you should hear the sequencer self-oscillating in perpetuity. Make sure it's loud enough so that your neighbors can hear its glory!</p>
+<ul>
+<li>Navigate to the Sequencer view <ul>
+<li>Make sure that the Sequencer pattern is empty. If it is not, load a blank preset, which should have an empty pattern and start from the top.</li>
+<li>Turn the First Step parameter to 00</li>
+<li>Turn the Last Step parameter to 05</li>
+<li>Turn the Clock Div parameter to *8</li>
+<li>Turn the Octave parameter so that the note in the top left of the OLED Display reads "C1"</li>
+<li>Hit Key Switch 1 to place a step with the value C1 on step 1  </li>
+<li>Repeat the last two steps turning the Octave parameter so that it reads "C2", then hitting Key switch 2, and so on until the you place C6 by hitting Key switch 6. You should now have a sequence of 6 steps ascending one octave per step. </li>
+</ul>
+</li>
+<li>Press the Play switch. You should now hear the sequencer playing a sequence ascending by roughly 1 octave. </li>
+<li>Turn the Tracking trimpot in either direction until the sequence comes into tune. Each note should represent one musical octave.</li>
+</ul>
+<p><img alt="Calibration - Sequencer Steps" src="../assets/IMG_2188.webp" /></p>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav">
+      <a href="../credits/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../credits/" class="btn btn-xs btn-link">
+        Credits and Acknowledgements
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="None">Windmill Dark</a> theme by None (noraj).</p>
+</footer>
+
+</body>
+</html>

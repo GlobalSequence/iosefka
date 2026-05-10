@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="None">
+    
+    
+    <link rel="shortcut icon" href="./img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Iosefka Manual</title>
+    <link href="./css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="./css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="./css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/highlight.css">
+    <link href="css/print-site.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/bootstrap-3.3.7.min.js"></script>
+    <script src="./js/highlight.pack.js"></script>
+    
+      <script src="./js/elasticlunr.min.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '.';
+      var is_top_frame = (window === window.parent);
+        
+        var pageToc = [
+          {title: "Overview", url: "#_top", children: [
+              {title: "Hardware", url: "#hardware" },
+              {title: "Synthesizer Block Diagram", url: "#synthesizer-block-diagram" },
+              {title: "Specification", url: "#specification" },
+          ]},
+        ];
+
+    </script>
+    <script src="./js/base.js"></script>
+      <script src="js/print-site.js"></script>
+      <script src="search/main.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+<nav class="navbar wm-page-top-frame">
+  <div class="container-fluid wm-top-container">
+    
+    <div class="wm-top-tool pull-right wm-vcenter">
+      <form class="dropdown wm-vcentered" id="wm-search-form" action="./search.html">
+        
+        <button id="wm-search-show" class="btn btn-sm btn-default" type="submit"
+          ><i class="fa fa-search" aria-hidden="true"></i></button>
+
+        <div class="input-group input-group-sm wm-top-search">
+          <input type="text" name="q" class="form-control" id="mkdocs-search-query" placeholder="Search" autocomplete="off">
+          <span class="input-group-btn" role="search">
+            
+            <button class="btn btn-default dropdown-toggle collapse" data-toggle="dropdown" type="button"><span class="caret"></span></button>
+            <ul id="mkdocs-search-results" class="dropdown-menu dropdown-menu-right"></ul>
+            <button id="wm-search-go" class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    
+    <div class="wm-top-tool wm-vcenter pull-right wm-small-left">
+      <button id="wm-toc-button" type="button" class="btn btn-sm btn-default wm-vcentered"><i class="fa fa-th-list" aria-hidden="true"></i></button>
+    </div>
+
+    
+    
+
+    
+    <a href="" class="wm-top-brand wm-top-link wm-vcenter">
+      
+      <div class="wm-top-title">
+        Iosefka Manual<br>
+        
+      </div>
+    </a>
+  </div>
+</nav>
+
+  <div id="main-content" class="wm-page-top-frame">
+    
+<nav class="wm-toc-pane">
+  
+  <ul class="wm-toctree">
+        <li class="wm-toc-li wm-toc-lev1 "><a href="" class="wm-article-link wm-toc-text">Overview</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="operation/" class="wm-article-link wm-toc-text">Operation</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="synthesizer/" class="wm-article-link wm-toc-text">The Synthesizer</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="sequencer/" class="wm-article-link wm-toc-text">The Sequencer</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="settings/" class="wm-article-link wm-toc-text">Settings</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="supplemental/" class="wm-article-link wm-toc-text">Supplemental Information</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="midi/" class="wm-article-link wm-toc-text">Midi Implementation</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="credits/" class="wm-article-link wm-toc-text">Credits and Acknowledgements</a>
+</li>
+        <li class="wm-toc-li wm-toc-lev1 "><a href="build_guide/" class="wm-article-link wm-toc-text">Build Guide</a>
+</li>
+  </ul>
+</nav>
+
+    <div class="wm-content-pane">
+      <iframe class="wm-article" name="article"></iframe>
+    </div>
+  </div>
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="operation/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="operation/" class="btn btn-xs btn-link">
+        Operation
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h1 id="overview"><strong>Overview</strong></h1>
+<h2 id="hardware">Hardware</h2>
+<p>Hardware components listed in the manual will be referred to by their name as listed below. When hardware components are listed in the manual, they will appear in <strong><em>Bold and Italic</em></strong></p>
+<p><img alt="hardware_overview_front" src="assets/hardware_overview_front.jpg" /></p>
+<p><img alt="hardware_overview_side" src="assets/hardware_overview_side.jpg" /></p>
+<ol>
+<li><strong><em>OLED Display</em></strong></li>
+<li><strong><em>Data Rotary Encoder</em></strong> - (with switch when pressing down on shaft)</li>
+<li><strong><em>Shift switch</em></strong></li>
+<li><strong><em>Play/Stop switch</em></strong></li>
+<li><strong><em>Layer LEDs</em></strong></li>
+<li><strong><em>View switches</em></strong></li>
+<li><strong><em>Page LEDs</em></strong></li>
+<li><strong><em>Key switches</em></strong></li>
+<li><strong><em>Potentiometers</em></strong></li>
+<li><strong><em>Volume knob</em></strong></li>
+<li><strong><em>Output Audio jack</em></strong></li>
+<li><strong><em>External Input Audio Jack</em></strong></li>
+<li><strong><em>Filter tracking tuning trimpot</em></strong></li>
+<li><strong><em>Filter offset trimpot</em></strong></li>
+<li><strong><em>MIDI Output jack</em></strong></li>
+<li><strong><em>MIDI Input jack</em></strong></li>
+<li><strong><em>Power supply jack</em></strong> - (9v DC - Center positive)</li>
+</ol>
+<h2 id="synthesizer-block-diagram">Synthesizer Block Diagram</h2>
+<p><img alt="iosefka_audio_block_diagram" src="assets/iosefka_audio_block_diagram.jpg" /></p>
+<p><img alt="iosefka_modulation_block_diagram_and_key" src="assets/iosefka_modulation_block_diagram_and_key.jpg" /></p>
+<h2 id="specification">Specification</h2>
+<p>Iosefka is a hybrid digital analog monophonic synthesizer consisting of the following parts:</p>
+<p><strong>Digital audio:</strong></p>
+<ul>
+<li>2x wavetable oscillators, capable of interpolated morphing waveforms in the X and Y dimension along 256 hand-picked waveforms in a 16x16 layout</li>
+<li>White noise generator</li>
+<li>Sample-rate reduction and Bit-rate reduction effects</li>
+<li>Loopback digital delay fed from VCA output with feedback and adjustable rate from &gt;3 ms to ~683 ms</li>
+</ul>
+<p><strong>Analog audio:</strong></p>
+<ul>
+<li>V2140 based analog pole-mixing resonant voltage controlled filter with audio rate frequency modulation selectable between:<ul>
+<li>2 pole low pass</li>
+<li>4 pole low pass</li>
+<li>2 pole high pass</li>
+<li>2 pole band pass</li>
+</ul>
+</li>
+<li>LM13700 based voltage controlled amplifier</li>
+<li>External audio input direct into analog section and digital delay</li>
+</ul>
+<p><strong>Step sequencer:</strong></p>
+<ul>
+<li>32 step, 24 PPQ performance step sequencer</li>
+<li>Parameterized sequence generator including step chance, length, octave range, and musical scale</li>
+<li>Controls for swing, direction, clock division, first and last step, probability</li>
+<li>Per step Parameter locks for:<ul>
+<li>Note value</li>
+<li>Step length</li>
+<li>Velocity value</li>
+<li>Step Probability</li>
+<li>Single audio Parameter</li>
+</ul>
+</li>
+<li>Per step mutes</li>
+</ul>
+<p><strong>Modulation matrix to all audio Parameters:</strong></p>
+<ul>
+<li>3x ADSR envelope generators (converted to control voltage for analog modules)</li>
+<li>3x Low frequency oscillators (converted to control voltage for analog modules)</li>
+<li>Velocity control</li>
+<li>Aftertouch control</li>
+<li>Mod Wheel control</li>
+<li>Breath Control</li>
+<li>Pitch Bend Control</li>
+</ul>
+<p><strong>MIDI Implementation:</strong></p>
+<ul>
+<li><strong>MIDI RX</strong><ul>
+<li>Note and velocity values</li>
+<li>Realtime messages: clock tick, start, stop</li>
+<li>CC messages for all audio Parameters (see implementation chart)</li>
+<li>Modulation control of velocity, aftertouch, mod-wheel</li>
+<li>Pitch bend with configurable bend range from 1 to 12 semitones</li>
+<li>Program change (coming soon)</li>
+</ul>
+</li>
+<li><strong>MIDI TX</strong><ul>
+<li>Note and velocity values (from keyboard and sequencer)</li>
+<li>Realtime messages: clock tick, start, stop</li>
+</ul>
+</li>
+</ul>
+<p><strong>Patch storage:</strong></p>
+<ul>
+<li>Store 64 patches of all audio and sequencer Parameters</li>
+<li>Store global MIDI and machine settings</li>
+</ul>
+<p><strong>Oscilloscope:</strong></p>
+<ul>
+<li>Oscillator phase locked oscilloscope with four 'time' divisions (sample divisions) between 512 to 128 samples.</li>
+</ul>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="operation/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="operation/" class="btn btn-xs btn-link">
+        Operation
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="None">Windmill Dark</a> theme by None (noraj).</p>
+</footer>
+
+</body>
+</html>
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2026-05-10 17:37:32.729516+00:00
+-->

@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Supplemental Information - Iosefka Manual</title>
+    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+    <link href="../css/print-site.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Supplemental Information", url: "#_top", children: [
+              {title: "View Charts", url: "#view-charts" },
+              {title: "Page Switch Function Chart", url: "#page-switch-function-chart" },
+              {title: "Layer Parameter Control Chart", url: "#layer-parameter-control-chart" },
+              {title: "Mode Encoder Data List", url: "#mode-encoder-data-list" },
+              {title: "User Parameters", url: "#user-parameters" },
+              {title: "Layer Decoupling", url: "#layer-decoupling" },
+              {title: "Wavetable Chart", url: "#wavetable-chart" },
+              {title: "Modulation Destinations", url: "#modulation-destinations" },
+              {title: "Oscilloscope", url: "#oscilloscope" },
+          ]},
+        ];
+
+    </script>
+    <script src="../js/base.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../search/main.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../midi/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../midi/" class="btn btn-xs btn-link">
+        Midi Implementation
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../settings/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../settings/" class="btn btn-xs btn-link">
+        Settings
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h1 id="supplemental-information"><strong>Supplemental Information</strong></h1>
+<h2 id="view-charts">View Charts</h2>
+<p>These charts represent the default <strong>Layers</strong>, <strong>Pages</strong>, and <strong>Modes</strong> upon device startup. These three can be changed depending on the <strong>View</strong>, and sometimes persist beyond <strong>View</strong> changes. For example, if the <strong>Mode</strong> is changed in the <strong>Settings View</strong>, that mode will persist when leaving and returning to the <strong>Settings View</strong>.</p>
+<table>
+<thead>
+<tr>
+<th><strong>View Name</strong></th>
+<th><strong>Accessing this View</strong></th>
+<th><strong>Layers</strong></th>
+<th><strong>Pages</strong></th>
+<th><strong>Modes</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Synth 1</td>
+<td><strong>Synth 1 View switch_</strong>*</td>
+<td><a href="#synth-1">Synth 1</a></td>
+<td><a href="#kbd">Kbd</a></td>
+<td><a href="#kbd-oct-keyboard-octave">kbd oct (Keyboard Octave)</a></td>
+</tr>
+<tr>
+<td>Synth 2</td>
+<td><strong>Synth 2/User <em>View switch</em></strong></td>
+<td><a href="#synth-2">Synth 2</a></td>
+<td><a href="#kbd">Kbd</a></td>
+<td><a href="#kbd-oct-keyboard-octave">kbd oct (Keyboard Octave)</a></td>
+</tr>
+<tr>
+<td>User</td>
+<td><strong><em>Shift switch</em></strong> + <strong>Synth 2/User <em>View switch</em></strong></td>
+<td><a href="#user">User</a></td>
+<td><a href="#kbd">Kbd</a></td>
+<td><a href="#kbd-oct-keyboard-octave">kbd oct (Keyboard Octave)</a></td>
+</tr>
+<tr>
+<td>Envelope</td>
+<td><strong>Envelope <em>View switch</em></strong></td>
+<td><a href="#envelope">Envelope</a></td>
+<td><a href="#kbd">Kbd</a></td>
+<td><a href="#envelope-1-2-3">Envelope 1, 2, 3</a></td>
+</tr>
+<tr>
+<td>LFO</td>
+<td><strong>LFO <em>View switch</em></strong></td>
+<td><a href="#lfo">LFO</a></td>
+<td><a href="#kbd">Kbd</a></td>
+<td><a href="#lfo-1-2-3">LFO 1, 2, 3</a></td>
+</tr>
+<tr>
+<td>Sequencer</td>
+<td><strong>Sequencer <em>View switch</em></strong></td>
+<td><a href="#sequencer">Sequencer</a></td>
+<td><a href="#seq">Seq</a></td>
+<td><a href="#seq-bpm-sequencer-bpm">seq bpm (Sequencer BPM)</a></td>
+</tr>
+<tr>
+<td>Settings</td>
+<td><strong><em>Shift switch</em></strong> + <strong>Sequencer <em>View switch</em></strong></td>
+<td>N/A**</td>
+<td><a href="#set">Set</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>*Hitting this switch multiple times toggles between Synth 1 View and Synth Env View. Whichever View was active when leaving the View by hitting another <strong><em>View switch</em></strong> will be the view that is active when hitting the <strong>Synth 1/Synth Env <em>View switch</em></strong> again. Iosefka always starts up in Synth 1 View.</p>
+<p>** When in the Settings View, the most recent layer from the previous view remains active.</p>
+<h2 id="page-switch-function-chart">Page Switch Function Chart</h2>
+<h3 id="kbd">Kbd</h3>
+<table>
+<thead>
+<tr>
+<th><strong><em>Key switch</em></strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All <strong><em>Key switches</em></strong></td>
+<td>1 octave + 1 note, in the layout of a piano keyboard</td>
+</tr>
+</tbody>
+</table>
+<h3 id="seq">Seq</h3>
+<table>
+<thead>
+<tr>
+<th><strong><em>Key switch</em></strong></th>
+<th><strong>Function</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Section -</strong></td>
+<td>Jogs through the <a href="../sequencer/#step-sections">Step Sections</a> counting down in steps. If the <strong><em>Shift Switch</em></strong> is held, a <a href="../sequencer/#section-jumping">Section Jump</a> downward occurs. If the <strong><em>Copy Switch</em></strong> is held, a</td>
+</tr>
+<tr>
+<td><strong>Section +</strong></td>
+<td>Jogs through the <a href="../sequencer/#step-sections">Step Sections</a> counting down</td>
+</tr>
+<tr>
+<td><strong>Generator On/Off</strong></td>
+<td>Enables/Disables the Generator for <a href="../sequencer/#running-generation">Running Generation</a></td>
+</tr>
+<tr>
+<td><strong>Generate New</strong></td>
+<td>Generates a Pattern via <a href="../sequencer/#immediate-generation">Immediate Generation</a></td>
+</tr>
+<tr>
+<td><strong>1 - 8</strong></td>
+<td>Programs the step corresponding to the current <a href="../sequencer/#step-sections">Step Section</a><br>See <a href="../sequencer/#manual-programming">Manual Programming</a> subsection for an in-depth description of using these switches to program a Pattern in the Sequencer</td>
+</tr>
+</tbody>
+</table>
+<h3 id="set">Set</h3>
+<table>
+<thead>
+<tr>
+<th>Key switch</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Save</td>
+<td>- Pressing once readies the Save state <br>  - Pressing Shift key plus Save Key switch while in Save state saves to the current preset</td>
+</tr>
+<tr>
+<td>Load</td>
+<td>- Pressing once readies the Load state <br>  - Pressing Shift key plus Save Key switch while in Load state saves to the current preset</td>
+</tr>
+<tr>
+<td>Preset</td>
+<td>Sets the Mode to Preset Select</td>
+</tr>
+<tr>
+<td>Channel Select</td>
+<td>Sets the Mode to Channel Select</td>
+</tr>
+<tr>
+<td>Velocity Dst.</td>
+<td>Sets the Mode to Velocity Destination Select</td>
+</tr>
+<tr>
+<td>Mod Wheel Dst.</td>
+<td>Sets the Mode to Mod Wheel Destination Select</td>
+</tr>
+<tr>
+<td>Aftertouch Dst.</td>
+<td>Sets the Mode to Aftertouch Destination Select</td>
+</tr>
+<tr>
+<td>Clock Rx</td>
+<td>Enables Clock Receive from the input MIDI source</td>
+</tr>
+<tr>
+<td>Transport Rx</td>
+<td>Enables Transport Receive from the input MIDI source</td>
+</tr>
+<tr>
+<td>Pitch Bend Depth</td>
+<td>Sets the Mode to Pitch Bend Depth Select</td>
+</tr>
+<tr>
+<td>Param Latch</td>
+<td>Toggles the <a href="../operation/#parameter-latching">parameter latching</a> function on/off</td>
+</tr>
+</tbody>
+</table>
+<h2 id="layer-parameter-control-chart">Layer Parameter Control Chart</h2>
+<p>In the photos below, the text for each parameter below the <strong><em>Potentiometer</em></strong> is highlighted respective to the current layer. </p>
+<p>See "Parameters" sections in <a href="../synthesizer/">The Synthesizer</a> and <a href="../sequencer/">The Sequencer</a> for in-depth explanations on these Parameters</p>
+<h3 id="synth-1">Synth 1</h3>
+<p><img alt="layer_syn1" src="../assets/layer_syn1.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Note/Pitch (Oscillator 1)</td>
+<td>Note/Pitch (Oscillator 2)</td>
+<td>Portamento</td>
+<td>Mix 1</td>
+<td>Cutoff</td>
+</tr>
+<tr>
+<td>X Wave (Oscillator 1)</td>
+<td>X Wave (Oscillator 2)</td>
+<td>Phase Mod</td>
+<td>Mix 2</td>
+<td>Resonance</td>
+</tr>
+<tr>
+<td>Y Wave (Oscillator 1)</td>
+<td>Y Wave (Oscillator 2)</td>
+<td>Osc Sync</td>
+<td>Mix Noise</td>
+<td>F. Env. Level</td>
+</tr>
+</tbody>
+</table>
+<h3 id="synth-2">Synth 2</h3>
+<p><img alt="layer_syn2" src="../assets/layer_syn2.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Octave<br>(Oscillator 1)</td>
+<td>Octave<br>(Oscillator 2)</td>
+<td>D. Level</td>
+<td>F. Type</td>
+<td>Cutoff</td>
+</tr>
+<tr>
+<td>SRR</td>
+<td>D. Type</td>
+<td>D. Rate</td>
+<td>F. FM</td>
+<td>Resonance</td>
+</tr>
+<tr>
+<td>BRR</td>
+<td>D. Input</td>
+<td>D. Fdbk</td>
+<td>F. Track</td>
+<td>F. Env. Level</td>
+</tr>
+</tbody>
+</table>
+<h3 id="user">User</h3>
+<p>See <a href="#user-parameters">User Parameters</a> section for how to access and set User Parameters.</p>
+<h3 id="envelope">Envelope</h3>
+<p><img alt="layer_env" src="../assets/layer_env.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Attack (Envelope 1)</td>
+<td>Decay<br>(Envelope 1)</td>
+<td>Sustain<br>(Envelope 1)</td>
+<td>Release<br>(Envelope 1)</td>
+<td>- Level +<br>(Envelope 1)</td>
+</tr>
+<tr>
+<td>Attack (Envelope 2)</td>
+<td>Decay<br>(Envelope 2)</td>
+<td>Sustain<br>(Envelope 2)</td>
+<td>Release<br>(Envelope 2)</td>
+<td>- Level +<br>(Envelope 2)</td>
+</tr>
+<tr>
+<td>Attack (Envelope 3)</td>
+<td>Decay<br>(Envelope 3)</td>
+<td>Sustain<br>(Envelope 3)</td>
+<td>Release<br>(Envelope 3)</td>
+<td>- Level +<br>(Envelope 3)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lfo">LFO</h3>
+<p><img alt="layer_lfo" src="../assets/layer_lfo.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rate<br>(LFO 1)</td>
+<td>Shape<br>(LFO 1)</td>
+<td>Phase<br>(LFO 1)</td>
+<td>Reset/Sync  <br>(LFO 1)</td>
+<td>- Level +<br>(LFO 1)</td>
+</tr>
+<tr>
+<td>Rate<br>(LFO 2)</td>
+<td>Shape<br>(LFO 2)</td>
+<td>Phase<br>(LFO 2)</td>
+<td>Reset/Sync  <br>(LFO 2)</td>
+<td>- Level +<br>(LFO 2)</td>
+</tr>
+<tr>
+<td>Rate<br>(LFO 3)</td>
+<td>Shape<br>(LFO 3)</td>
+<td>Phase<br>(LFO 3)</td>
+<td>Reset/Sync  <br>(LFO 3)</td>
+<td>- Level +<br>(LFO 3)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sequencer">Sequencer</h3>
+<p><img alt="layer_seq" src="../assets/layer_seq.jpg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Note</td>
+<td>Octave/Scale</td>
+<td>Length</td>
+<td>Velocity</td>
+<td>Transpose</td>
+</tr>
+<tr>
+<td>Direction</td>
+<td>Swing</td>
+<td>Clock Div.</td>
+<td>First Step</td>
+<td>Last Step</td>
+</tr>
+<tr>
+<td>Probability</td>
+<td>G. Chance</td>
+<td>G. Length</td>
+<td>G. Repeat</td>
+<td>G. Octave</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mode-encoder-data-list">Mode Encoder Data List</h2>
+<h3 id="kbd-oct-keyboard-octave">kbd oct (Keyboard Octave)</h3>
+<p>Sets octave played the <strong><em>Key switches</em></strong> on the <strong>Kbd Page</strong> in a five octave range from 2 - 7.</p>
+<p><em>Why 2 - 7 and not 0 - 9 for more octaves?</em> This is so that the Synthesizer Octave Parameters are still useful.</p>
+<h3 id="seq-bpm-sequencer-bpm">seq bpm (Sequencer BPM)</h3>
+<p>Sets the Sequencer speed from 30 - 300 BPM (beats per minute).</p>
+<h3 id="preset-preset-number">preset (Preset Number)</h3>
+<p>Selects from the 64 presets on Iosefka. Note that the number counts from 1 - 64, note hexadecimal.</p>
+<h3 id="channel-midi-channel">channel (MIDI Channel)</h3>
+<p>Selects from MIDI channel 1 - 16.</p>
+<p>Incoming MIDI messages such as Note On, Note Off, Velocity, CC, Mod Wheel, Aftertouch, which are sent to this channel will take effect according to machine settings. All messages of those types on other channels will be ignored.</p>
+<h3 id="modulation-destination-modes">Modulation Destination Modes</h3>
+<p>In these <strong>Modes</strong>, the <strong>Data rotary encoder</strong> is used to select the <a href="#modulation-destinations">Modulation Destination</a> assigned to the respective Modulation Source.</p>
+<p>The options are the same for every <strong>Mode</strong> below, as all modulation sources have access to all modulation destinations.</p>
+<h4 id="mod-destination-jump">Mod Destination Jump</h4>
+<p>When selecting a Mod Destination for a Mod Source, there are dozens to choose from. The destinations have been grouped in the UI to be relevant to which erm... 'module' the Mod Destination is a part of.</p>
+<p>When Pressing and Holding the <strong><em>Encoder Switch</em></strong> while turning the <strong><em>Rotary Encoder</em></strong>, the selected Mod Destination will jump to the first parameter per each group of relevant parameters, for easier navigation of the Mod Destinations. The below table shows the Mod Destinations jumped to when performing this action.</p>
+<table>
+<thead>
+<tr>
+<th>             </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none          </td>
+</tr>
+<tr>
+<td>oscs pitch c  </td>
+</tr>
+<tr>
+<td>osc 1 pitch c</td>
+</tr>
+<tr>
+<td>osc 2 pitch c</td>
+</tr>
+<tr>
+<td>portamento    </td>
+</tr>
+<tr>
+<td>mixer osc 1  </td>
+</tr>
+<tr>
+<td>filter cutoff</td>
+</tr>
+<tr>
+<td>vca          </td>
+</tr>
+<tr>
+<td>delay rate    </td>
+</tr>
+<tr>
+<td>env 1 rate    </td>
+</tr>
+<tr>
+<td>env 2 rate    </td>
+</tr>
+<tr>
+<td>env 3 rate    </td>
+</tr>
+<tr>
+<td>lfo 1 rate    </td>
+</tr>
+<tr>
+<td>lfo 2 rate    </td>
+</tr>
+<tr>
+<td>lfo 3 rate    </td>
+</tr>
+</tbody>
+</table>
+<h4 id="envelope-1-2-3">Envelope 1, 2, 3</h4>
+<p>For the Envelopes. To see how to select these modes, refer to the <a href="../operation/#selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
+<h4 id="lfo-1-2-3">LFO 1, 2, 3</h4>
+<p>For the LFOs. To see how to select these modes, refer to the <a href="../operation/#selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
+<h4 id="vel-velocity">vel (Velocity)</h4>
+<p>For Velocity from both the Sequencer steps and the incoming MIDI notes</p>
+<h4 id="mw-mod-wheel">m.w. (Mod Wheel)</h4>
+<p>For Mod Wheel messages coming from the MIDI input</p>
+<h4 id="at-aftertouch">a.t. (Aftertouch)</h4>
+<p>For Channel Aftertouch messages coming from the MIDI input</p>
+<h2 id="user-parameters">User Parameters</h2>
+<p>For performance, and overall ease of use, users are able to assign fifteen synthesizer parameters on the <strong>User Parameter Layer</strong>. Every Preset can have its own user parameters. </p>
+<p>By default, there are user parameters that are already set. These are parameters that require the use of the <strong><em>Shift Switch</em></strong> on their respective layers. The <strong><em>Potentiometer</em></strong> assigned to these default User Parameters are:
+- 12: Envelope 1 Loop
+- 13: Envelope 2 Loop
+- 14: Envelope 3 Loop
+- 15: VCA Level</p>
+<p>Note: Sequencer parameters cannot be set as user parameters. </p>
+<h4 id="navigating-to-user-parameters-view">Navigating to User Parameters View</h4>
+<p>Navigate to the <strong>User Parameter Layer</strong> by holding the <strong><em>Shift switch</em></strong> and pressing the <strong><em>Synth 2 switch</em></strong>. </p>
+<h4 id="selecting-the-potentiometer-the-user-parameter-is-assigned-to">Selecting the Potentiometer the User Parameter is assigned to</h4>
+<p>Select the Potentiometer which will be assigned a parameter by holding the <strong><em>Shift switch</em></strong> and turning the <strong><em>Data rotary encoder</em></strong>. A box will be drawn around the currently selected parameter.</p>
+<h4 id="selecting-the-user-parameter">Selecting the User Parameter</h4>
+<p>From here, turning the <strong><em>Data rotary encoder</em></strong> selects the parameter which can be assigned. The parameter value of the current preset will be shown. Note: Changing the parameter value here will change the value on the respective layer and vice versa.</p>
+<p>Some parameters cannot be assigned, and are indicated by a "--" in place of the parameter value when that parameter is selected. This is how all parameters appear on a new Preset.</p>
+<h2 id="layer-decoupling">Layer Decoupling</h2>
+<p>Using Layer Decoupling, you can do like the following:
+- Enter synthesizer parameter locks to sequencer steps
+- Live step record while tweaking Sequencer parameters</p>
+<p>To do this: 
+- Press and hold the <strong><em>View Switch</em></strong> of the layer you'd like to maintain
+- Press the <strong><em>View Switch</em></strong> of the <strong>Page</strong> and <strong>Mode</strong> you'd like to use</p>
+<p>For example, press and hold the <strong><em>Synth 1 View Switch</em></strong>, then press the <strong><em>Seq View Switch</em></strong>. You will see the <strong><em>Seq Page LED</em></strong> light up and the Sequencer BPM Mode Hanging Display. </p>
+<h2 id="wavetable-chart">Wavetable Chart</h2>
+<p>Below is a chart of wavetables in Iosefka. The wavetables are represented by X values horizontally and Y values vertically, meaning that when you turn the <strong>X Wave <em>Potentiometer</em></strong>, you are scanning the chart below from left to right, and when you turn the <strong><em>Y Wave Potentiometer</em></strong>, you are scanning the table from top to bottom.</p>
+<p>The wavetables are arranged in the machine such that each Y value wavetable represents a different type of instrument/timbre/synthesis, and each X value is a variation of that timbre.</p>
+<p><img alt="waves_cropped" src="../assets/waves_cropped.jpg" /></p>
+<p>The wavetables represented by the chart above:</p>
+<ol>
+<li>Metallized saw wave (1-8), notched saw wave (9-16)</li>
+<li>Metallized square wave (1-8), PWM square wave (9-16)</li>
+<li>Triangle wave experimentations</li>
+<li>Frequency modulated sine (1-8), sine with increasing octaves (9-16)</li>
+<li>Drawbar organ tones</li>
+<li>Piano (1-8), e piano (9-16)</li>
+<li>Clarinet (1-5), Oboe (6-10), saxophone (11-16)</li>
+<li>Violin (1-8), cello (9-16)</li>
+<li>Electric guitar (1-8), acoustic guitar (9-16)</li>
+<li>Asst. wavetables from Mutable Instruments Plaits</li>
+<li>Asst. bell sounds</li>
+<li>Asst. harmonically-rich wavetables</li>
+<li>Formant synthesis wavetables from Mutable Instruments Braids</li>
+<li>PPG waveforms</li>
+<li>Yamaha-style OPL FM chip waveforms</li>
+<li>Assorted Ensoniq wavetables</li>
+</ol>
+<p>A higher quality version of the chart below can be found here.</p>
+<h2 id="modulation-destinations">Modulation Destinations</h2>
+<table>
+<thead>
+<tr>
+<th><strong>Destination name</strong></th>
+<th><strong>Affected Parameter(s)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>None</td>
+<td>None</td>
+</tr>
+<tr>
+<td>oscs pitch c</td>
+<td>Both Oscillators Coarse Pitch across 8 octaves</td>
+</tr>
+<tr>
+<td>oscs pitch f</td>
+<td>Both Oscillators Fine Pitch across 2 semitones</td>
+</tr>
+<tr>
+<td>oscs octave</td>
+<td>Both Oscillators Octave</td>
+</tr>
+<tr>
+<td>oscs x morph</td>
+<td>Both Oscillators X Wave</td>
+</tr>
+<tr>
+<td>oscs y morph</td>
+<td>Both Oscillators Y Wave</td>
+</tr>
+<tr>
+<td>osc 1 pitch c</td>
+<td>Oscillator 1 coarse pitch across 8 octaves</td>
+</tr>
+<tr>
+<td>osc 1 pitch f</td>
+<td>Oscillator 1 fine pitch across 2 semitones (for vibrato like effects)</td>
+</tr>
+<tr>
+<td>osc 1 octave</td>
+<td>Oscillator 1 octave</td>
+</tr>
+<tr>
+<td>osc 1 x morph</td>
+<td>Oscillator 1 X Wave</td>
+</tr>
+<tr>
+<td>osc 1 y morph</td>
+<td>Oscillator 1 Y Wave</td>
+</tr>
+<tr>
+<td>osc 2 pitch c</td>
+<td>Oscillator 2 coarse pitch across 8 octaves</td>
+</tr>
+<tr>
+<td>osc 2 pitch f</td>
+<td>Oscillator 2 fine pitch across 2 semitones (for vibrato like effects)</td>
+</tr>
+<tr>
+<td>osc 2 octave</td>
+<td>Oscillator 2 octave</td>
+</tr>
+<tr>
+<td>osc 2 x morph</td>
+<td>Oscillator 2 X Wave</td>
+</tr>
+<tr>
+<td>osc 2 y morph</td>
+<td>Oscillator 2 Y Wave</td>
+</tr>
+<tr>
+<td>portamento</td>
+<td>Portamento</td>
+</tr>
+<tr>
+<td>phase mod</td>
+<td>Phase Modulation</td>
+</tr>
+<tr>
+<td>sync</td>
+<td>Oscillator sync</td>
+</tr>
+<tr>
+<td>brr</td>
+<td>Bit-rate Reduction</td>
+</tr>
+<tr>
+<td>srr</td>
+<td>Sample-rate reduction</td>
+</tr>
+<tr>
+<td>mixer osc 1</td>
+<td>Oscillator 1 Mixer Level</td>
+</tr>
+<tr>
+<td>mixer osc 2</td>
+<td>Oscillator 2 Mixer Level</td>
+</tr>
+<tr>
+<td>mixer noise</td>
+<td>Noise Generator Mixer Level</td>
+</tr>
+<tr>
+<td>unused</td>
+<td>Unused (for now)</td>
+</tr>
+<tr>
+<td>filter cutoff</td>
+<td>Filter Cutoff</td>
+</tr>
+<tr>
+<td>filter res</td>
+<td>Filter Resonance</td>
+</tr>
+<tr>
+<td>filter env amt</td>
+<td>Filter Envelope Level</td>
+</tr>
+<tr>
+<td>filter type</td>
+<td>Filter Type</td>
+</tr>
+<tr>
+<td>filter fm</td>
+<td>Filter Frequency Modulation</td>
+</tr>
+<tr>
+<td>filter tracking</td>
+<td>Filter Tracking</td>
+</tr>
+<tr>
+<td>vca</td>
+<td>VCA Level</td>
+</tr>
+<tr>
+<td>delay rate</td>
+<td>Delay Rate</td>
+</tr>
+<tr>
+<td>delay feedback</td>
+<td>Delay Feedback</td>
+</tr>
+<tr>
+<td>delay level</td>
+<td>Delay Level</td>
+</tr>
+<tr>
+<td>delay type</td>
+<td>Delay Type</td>
+</tr>
+<tr>
+<td>delay input</td>
+<td>Delay Input Level</td>
+</tr>
+<tr>
+<td>env 1 attack</td>
+<td>Envelope 1 Attack</td>
+</tr>
+<tr>
+<td>env 1 decay</td>
+<td>Envelope 1 Decay</td>
+</tr>
+<tr>
+<td>env 1 sustain</td>
+<td>Envelope 1 Sustain</td>
+</tr>
+<tr>
+<td>env 1 release</td>
+<td>Envelope 1 Release</td>
+</tr>
+<tr>
+<td>env 1 level</td>
+<td>Envelope 1 Level</td>
+</tr>
+<tr>
+<td>env 1 loop</td>
+<td>Envelope 1 Loop</td>
+</tr>
+<tr>
+<td>env 1 dst</td>
+<td>Envelope 1 Destination</td>
+</tr>
+<tr>
+<td>env 2 attack</td>
+<td>Envelope 2 Attack</td>
+</tr>
+<tr>
+<td>env 2 decay</td>
+<td>Envelope 2 Decay</td>
+</tr>
+<tr>
+<td>env 2 sustain</td>
+<td>Envelope 2 Sustain</td>
+</tr>
+<tr>
+<td>env 2 release</td>
+<td>Envelope 2 Release</td>
+</tr>
+<tr>
+<td>env 2 level</td>
+<td>Envelope 2 Level</td>
+</tr>
+<tr>
+<td>env 2 loop</td>
+<td>Envelope 2 Loop</td>
+</tr>
+<tr>
+<td>env 2 dst</td>
+<td>Envelope 2 Destination</td>
+</tr>
+<tr>
+<td>env 3 attack</td>
+<td>Envelope 3 Attack</td>
+</tr>
+<tr>
+<td>env 3 decay</td>
+<td>Envelope 3 Decay</td>
+</tr>
+<tr>
+<td>env 3 sustain</td>
+<td>Envelope 3 Sustain</td>
+</tr>
+<tr>
+<td>env 3 release</td>
+<td>Envelope 3 Release</td>
+</tr>
+<tr>
+<td>env 3 level</td>
+<td>Envelope 3 Level</td>
+</tr>
+<tr>
+<td>env 3 loop</td>
+<td>Envelope 3 Loop</td>
+</tr>
+<tr>
+<td>env 3 dst</td>
+<td>Envelope 3 Destination</td>
+</tr>
+<tr>
+<td>lfo 1 rate</td>
+<td>LFO 1 Rate</td>
+</tr>
+<tr>
+<td>lfo 1 shape</td>
+<td>LFO 1 Shape</td>
+</tr>
+<tr>
+<td>lfo 1 phase</td>
+<td>LFO 1 Phase</td>
+</tr>
+<tr>
+<td>lfo 1 sync</td>
+<td>LFO 1 Reset/Sync</td>
+</tr>
+<tr>
+<td>lfo 1 level</td>
+<td>LFO 1 Level</td>
+</tr>
+<tr>
+<td>lfo 1 dst</td>
+<td>LFO 1 Destination</td>
+</tr>
+<tr>
+<td>lfo 2 rate</td>
+<td>LFO 2 Rate</td>
+</tr>
+<tr>
+<td>lfo 2 shape</td>
+<td>LFO 2 Shape</td>
+</tr>
+<tr>
+<td>lfo 2 phase</td>
+<td>LFO 2 Phase</td>
+</tr>
+<tr>
+<td>lfo 2 sync</td>
+<td>LFO 2 Reset/Sync</td>
+</tr>
+<tr>
+<td>lfo 2 level</td>
+<td>LFO 2 Level</td>
+</tr>
+<tr>
+<td>lfo 2 dst</td>
+<td>LFO 2 Destination</td>
+</tr>
+<tr>
+<td>lfo 3 rate</td>
+<td>LFO 3 Rate</td>
+</tr>
+<tr>
+<td>lfo 3 shape</td>
+<td>LFO 3 Shape</td>
+</tr>
+<tr>
+<td>lfo 3 phase</td>
+<td>LFO 3 Phase</td>
+</tr>
+<tr>
+<td>lfo 3 sync</td>
+<td>LFO 3 Reset/Sync</td>
+</tr>
+<tr>
+<td>lfo 3 level</td>
+<td>LFO 3 Level</td>
+</tr>
+<tr>
+<td>lfo 3 dst</td>
+<td>LFO 3 Destination</td>
+</tr>
+</tbody>
+</table>
+<h2 id="oscilloscope">Oscilloscope</h2>
+<p>Users can view the VCA output waveform of the synthesizer using the oscilloscope. The audio is fed back into Iosefka's processor using the same buffer as the delay. The delay output is not displayed in the oscilloscope.</p>
+<p>The oscilloscope captures the output waveform in real time and displays them to the user from one of four user selected magnifications. The magnification value shown on the <strong><em>OLED Display</em></strong> shows how zoomed in the oscilloscope is, relative to the samples captured. To best see lower notes, a value of 1x is best. To see higher notes, a value of 8x is best.</p>
+<table>
+<thead>
+<tr>
+<th>Magnification value</th>
+<th>Sample size</th>
+<th>Sample division (display every n samples)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1x</td>
+<td>1024</td>
+<td>8</td>
+</tr>
+<tr>
+<td>2x</td>
+<td>512</td>
+<td>4</td>
+</tr>
+<tr>
+<td>4x</td>
+<td>256</td>
+<td>2</td>
+</tr>
+<tr>
+<td>8x</td>
+<td>128</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The oscilloscope is phase-locked to oscillator 1, meaning that the waveform <em>should</em> stay in the same place on the screen regardless of the pitch of the note that's playing. This is done by triggering a reset of the oscillator's capture window when oscillator 1's phase overflows, as indicated by the oscillator sync buffer. </p>
+<p>The phase will not appear locked with the audio in the following scenarios:
+- Oscillator 1 and 2 pitch are dissonant
+- Oscillator 1 is low or off, and Oscillator 2 or resonant filter is the primary audio source
+- Oscillator 1's pitch is lower than the magnification can capture in one screen (if the waveform is 'larger' than will fit in one screen)</p>
+<p>Only 128 discrete points are rendered for each 'frame' of the oscilloscope, meaning that harmonically rich waveforms, or viewing higher pitches on lower magnifications will make the oscilloscope appear more 'broken up'. While the solution would be to draw a line between each discrete point, this is not possible due to processor limitations. I tried folks. </p>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../midi/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../midi/" class="btn btn-xs btn-link">
+        Midi Implementation
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../settings/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../settings/" class="btn btn-xs btn-link">
+        Settings
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="None">Windmill Dark</a> theme by None (noraj).</p>
+</footer>
+
+</body>
+</html>
