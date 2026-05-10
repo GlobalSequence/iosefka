@@ -350,7 +350,8 @@ paramFuncGetGraphic param_func_seq[k_num_disp_parameters] = {
     graphicsGetMidiNote,
     // graphicsPrintNothing, 
     graphicsGetSeqScale,
-    graphicsGetHexString, 
+    // graphicsGetHexString, 
+    graphicsGetDecStringU8,
     graphicsGetHexString, 
     graphicsGetSeqTranspose, 
 
@@ -571,9 +572,9 @@ inline uint8_t getSeqParamValue(uint8_t index, uint8_t step, bool p_lock) {
         case 2:
 
             if(!p_lock) {
-                val = synth->new_step.length;
+                val = synth->new_step.length + 1;
             } else {
-                val = synth->seq.getStepLength(step);
+                val = synth->seq.getStepLength(step) + 1;
             }
 
             break;

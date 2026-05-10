@@ -4919,7 +4919,7 @@
 			)
 		)
 	)
-	(global_label "PIN_ENCODER_B"
+	(global_label "PIN_ENCODER_A"
 		(shape input)
 		(at 43.18 110.49 180)
 		(fields_autoplaced yes)
@@ -4931,7 +4931,7 @@
 		)
 		(uuid "18ef2bcf-a07c-41a4-a422-f1e1df89dc3c")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 25.0153 110.49 0)
+			(at 25.1967 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5095,7 +5095,7 @@
 			)
 		)
 	)
-	(global_label "PIN_ENCODER_A"
+	(global_label "PIN_ENCODER_B"
 		(shape input)
 		(at 236.22 86.36 180)
 		(fields_autoplaced yes)
@@ -5557,7 +5557,7 @@
 			)
 		)
 	)
-	(global_label "PIN_ENCODER_A"
+	(global_label "PIN_ENCODER_B"
 		(shape input)
 		(at 43.18 107.95 180)
 		(fields_autoplaced yes)
@@ -5569,7 +5569,7 @@
 		)
 		(uuid "aa892813-8282-4183-9f67-a435501ea803")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 25.1967 107.95 0)
+			(at 25.0153 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5755,7 +5755,7 @@
 			)
 		)
 	)
-	(global_label "PIN_ENCODER_B"
+	(global_label "PIN_ENCODER_A"
 		(shape input)
 		(at 236.22 88.9 180)
 		(fields_autoplaced yes)

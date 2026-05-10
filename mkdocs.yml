@@ -1,0 +1,15 @@
+site_name: Iosefka Manual
+nav:
+- Overview: index.md
+- Operation: operation.md
+- The Synthesizer: synthesizer.md
+- The Sequencer: sequencer.md
+- Settings: settings.md
+- Supplemental Information: supplemental.md
+- Midi Implementation: midi.md
+- Credits and Acknowledgements: credits.md
+- Build Guide: build_guide.md
+theme: windmill-dark
+plugins:
+- search
+- print-site

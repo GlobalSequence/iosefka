@@ -58,15 +58,13 @@ void Voice::renderOscillators()
 
         if (i == 0)
         {
-            osc_[0].render2(increment, coarse, dummy_phase_mod_buffer_, 0, no_sync_, sync_buffer_, osc_1_buffer_);
-            // osc_[0].render(increment, octave, pitch_gradient, dummy_phase_mod_buffer_, 0, no_sync_, sync_buffer_, osc_1_buffer_);
+            osc_[0].render(increment, coarse, dummy_phase_mod_buffer_, 0, no_sync_, sync_buffer_, osc_1_buffer_);
         }
         else
         {
             bool* sync_select;
             sync_select = p.sync == true? sync_buffer_ : no_sync_;
-            osc_[1].render2(increment, coarse, osc_1_buffer_, p.phase_mod, sync_select, dummy_sync_buffer_, osc_2_buffer_);
-            // osc_[1].render(increment, octave, pitch_gradient, osc_1_buffer_, p.phase_mod, sync_select, dummy_sync_buffer_, osc_2_buffer_);
+            osc_[1].render(increment, coarse, osc_1_buffer_, p.phase_mod, sync_select, dummy_sync_buffer_, osc_2_buffer_);
         }
     }
     

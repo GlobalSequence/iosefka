@@ -24,32 +24,7 @@ class Oscillator
 public:
     Oscillator(void) {}
 
-    inline void render(uint32_t inc, uint8_t octave, uint8_t pitch_index, uint32_t *fm_buffer, uint8_t fm_amount, bool *sync_in, bool *sync_out, uint32_t *buffer)
-    {
-        inc_ = inc;
-        if(octave < BANDLIMIT_OCTAVE_FLOOR) {
-            octave_base_ = 0; 
-            octave_next_ = 0;
-        } else {
-            octave_base_ = octave - BANDLIMIT_OCTAVE_FLOOR;
-            octave_next_ = octave_base_ + 1;
-        } 
-        
-        if(octave_next_ >= NUM_BL_WAVETABLES) {
-            octave_next_ = NUM_BL_WAVETABLES - 1;
-        }
-
-        pitch_gradient_ = pitch_index;
-        fm_buffer_ = fm_buffer;
-        fm_amount_ = fm_amount;
-        sync_in_ = sync_in;
-        sync_out_ = sync_out;
-        buffer_ = buffer;
-
-        phaseAccumulator();
-    }
-
-    inline void render2(uint32_t inc, uint8_t pitch, uint32_t *fm_buffer, uint8_t fm_amount, bool *sync_in, bool *sync_out, uint32_t *buffer)
+    inline void render(uint32_t inc, uint8_t pitch, uint32_t *fm_buffer, uint8_t fm_amount, bool *sync_in, bool *sync_out, uint32_t *buffer)
     {
         inc_ = inc;
 
@@ -85,7 +60,7 @@ public:
         sync_out_ = sync_out;
         buffer_ = buffer;
 
-        phaseAccumulator2();
+        phaseAccumulator();
     }
 
     void setXMorph(uint8_t input);
@@ -117,7 +92,6 @@ private:
     bool *sync_out_;
 
     void phaseAccumulator(void);
-    void phaseAccumulator2(void);
 
     MovingAverage32 phaseModSmooth;
     MovingAverage32 blTableSmooth;

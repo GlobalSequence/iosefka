@@ -36,11 +36,11 @@ static void pio_irq_handler() {
 void encoderIrqHandler() {
     // Test if irq 0 was raised
     if (pio->irq & 1) {
-        encoder_pulse_count_ = encoder_pulse_count_ + 1;
+        encoder_pulse_count_ = encoder_pulse_count_ - 1;
     }
     // Test if irq 1 was raised
     if (pio->irq & 2) {
-        encoder_pulse_count_ = encoder_pulse_count_ - 1;
+        encoder_pulse_count_ = encoder_pulse_count_ + 1;
     }
     pio0_hw->irq = 3;
 }

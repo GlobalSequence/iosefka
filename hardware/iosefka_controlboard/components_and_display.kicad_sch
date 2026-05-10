@@ -3635,7 +3635,7 @@
 			)
 		)
 	)
-	(global_label "PIN_ENCODER_A"
+	(global_label "PIN_ENCODER_B"
 		(shape output)
 		(at 48.26 58.42 0)
 		(fields_autoplaced yes)
@@ -3647,7 +3647,7 @@
 		)
 		(uuid "4ad08e28-b160-40c5-9b14-8e150e7cd9a0")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 66.2433 58.42 0)
+			(at 66.4247 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3657,7 +3657,7 @@
 			)
 		)
 	)
-	(global_label "PIN_ENCODER_B"
+	(global_label "PIN_ENCODER_A"
 		(shape output)
 		(at 40.64 58.42 180)
 		(fields_autoplaced yes)
@@ -3669,7 +3669,7 @@
 		)
 		(uuid "518a9b4c-5aac-4b78-a1c2-8063b6dc3637")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 22.4753 58.42 0)
+			(at 22.6567 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
