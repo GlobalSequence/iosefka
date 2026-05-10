@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Midi Implementation - Iosefka Manual</title>
+    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+    <link href="../css/print-site.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "MIDI Implementation", url: "#_top", children: [
+              {title: "MIDI Input", url: "#midi-input" },
+          ]},
+        ];
+
+    </script>
+    <script src="../js/base.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../search/main.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../credits/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../credits/" class="btn btn-xs btn-link">
+        Credits and Acknowledgements
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../supplemental/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../supplemental/" class="btn btn-xs btn-link">
+        Supplemental Information
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h1 id="midi-implementation"><strong>MIDI Implementation</strong></h1>
+<h2 id="midi-input">MIDI Input</h2>
+<h3 id="midi-rx-messages">MIDI Rx Messages</h3>
+<table>
+<thead>
+<tr>
+<th>Message Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Clock</td>
+<td>Receives 24 PPQ MIDI clock to sync with Sequencer and other clock-dependent systems</td>
+</tr>
+<tr>
+<td>Transport Start</td>
+<td>Starts the Sequencer <br>(same function as pressing the <strong><em>Play switch</em></strong> when Sequencer is OFF)</td>
+</tr>
+<tr>
+<td>Transport Stop</td>
+<td>Stops the Sequencer <br>(same function as pressing the <strong><em>Play switch</em></strong> when Sequencer is ON)</td>
+</tr>
+<tr>
+<td>Program Change</td>
+<td>Loads the selected Preset* <br>(limited to number of Presets on Iosefka)</td>
+</tr>
+<tr>
+<td>CC (Continuous Controller)</td>
+<td>Changes the specified parameter on the device* <br>(See <a href="#midi-cc-continuous-controller-chart">MIDI CC (Continuous Controller) chart</a>)</td>
+</tr>
+<tr>
+<td>Pitch Bend</td>
+<td>Adjusts the oscillator pitch according to the amount of bend applied*</td>
+</tr>
+</tbody>
+</table>
+<p>*<em>Iosefka must be set to the same MIDI Channel as the transmitting device for these messages to be received</em></p>
+<h3 id="midi-cc-continuous-controller-chart">MIDI CC (Continuous Controller) chart</h3>
+<table>
+<thead>
+<tr>
+<th><strong>CC Number</strong></th>
+<th><strong>Parameter</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Mod Wheel</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Breath Control</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Pitch (Oscillator 1)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Octave (Oscillator 1)</td>
+</tr>
+<tr>
+<td>12</td>
+<td>X Wave (Oscillator 1)</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Y Wave (Oscillator 1)</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Pitch (Oscillator 2)</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Octave (Oscillator 2)</td>
+</tr>
+<tr>
+<td>16</td>
+<td>X Wave (Oscillator 2)</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Y Wave (Oscillator 2)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Portamento</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Phase Modulation</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Oscillator Sync</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Mix 1 (Oscillator 1 Mixer Level)</td>
+</tr>
+<tr>
+<td>21</td>
+<td>Mix 2 (Oscillator 2 Mixer Level)</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Mix Noise (Noise Generator Mixer Level)</td>
+</tr>
+<tr>
+<td>74</td>
+<td>Filter Cutoff</td>
+</tr>
+<tr>
+<td>71</td>
+<td>Filter Resonance</td>
+</tr>
+<tr>
+<td>72</td>
+<td>Filter Type</td>
+</tr>
+<tr>
+<td>73</td>
+<td>Filter FM</td>
+</tr>
+<tr>
+<td>76</td>
+<td>Filter Tracking</td>
+</tr>
+<tr>
+<td>75</td>
+<td>Filter Envelope Level</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Attack (Envelope 1)</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Decay (Envelope 1)</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Sustain (Envelope 1)</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Release (Envelope 1)</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Modulation Level (Envelope 1)</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Attack (Envelope 2)</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Decay (Envelope 2)</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Sustain (Envelope 2)</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Release (Envelope 2)</td>
+</tr>
+<tr>
+<td>34</td>
+<td>Modulation Level (Envelope 2)</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Attack (Envelope 3)</td>
+</tr>
+<tr>
+<td>36</td>
+<td>Decay (Envelope 3)</td>
+</tr>
+<tr>
+<td>37</td>
+<td>Sustain (Envelope 3)</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Release (Envelope 3)</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Modulation Level (Envelope 3)</td>
+</tr>
+<tr>
+<td>40</td>
+<td>Rate (LFO 1)</td>
+</tr>
+<tr>
+<td>41</td>
+<td>Shape (LFO 1)</td>
+</tr>
+<tr>
+<td>42</td>
+<td>Phase (LFO 1)</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Reset/Sync (LFO 1)</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Modulation Level (LFO 1)</td>
+</tr>
+<tr>
+<td>45</td>
+<td>Rate (LFO 2)</td>
+</tr>
+<tr>
+<td>46</td>
+<td>Shape (LFO 2)</td>
+</tr>
+<tr>
+<td>47</td>
+<td>Phase (LFO 2)</td>
+</tr>
+<tr>
+<td>48</td>
+<td>Reset/Sync (LFO 2)</td>
+</tr>
+<tr>
+<td>49</td>
+<td>Modulation Level (LFO 2)</td>
+</tr>
+<tr>
+<td>50</td>
+<td>Rate (LFO 3)</td>
+</tr>
+<tr>
+<td>51</td>
+<td>Shape (LFO 3)</td>
+</tr>
+<tr>
+<td>52</td>
+<td>Phase (LFO 3)</td>
+</tr>
+<tr>
+<td>53</td>
+<td>Reset/Sync (LFO 3)</td>
+</tr>
+<tr>
+<td>54</td>
+<td>Modulation Level (LFO 3)</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Modulation Destination (Envelope 1)</td>
+</tr>
+<tr>
+<td>56</td>
+<td>Modulation Destination (Envelope 2)</td>
+</tr>
+<tr>
+<td>57</td>
+<td>Modulation Destination (Envelope 3)</td>
+</tr>
+<tr>
+<td>58</td>
+<td>Modulation Destination (LFO 1)</td>
+</tr>
+<tr>
+<td>59</td>
+<td>Modulation Destination (LFO 2)</td>
+</tr>
+<tr>
+<td>60</td>
+<td>Modulation Destination (LFO 3)</td>
+</tr>
+<tr>
+<td>61</td>
+<td>Delay Rate</td>
+</tr>
+<tr>
+<td>62</td>
+<td>Delay Feedback</td>
+</tr>
+<tr>
+<td>63</td>
+<td>Delay Level</td>
+</tr>
+</tbody>
+</table>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../credits/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../credits/" class="btn btn-xs btn-link">
+        Credits and Acknowledgements
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href="../supplemental/" class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href="../supplemental/" class="btn btn-xs btn-link">
+        Supplemental Information
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="None">Windmill Dark</a> theme by None (noraj).</p>
+</footer>
+
+</body>
+</html>

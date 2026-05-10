@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Operation - Iosefka Manual</title>
+    <link href="../css/bootstrap-3.3.7.min.css" rel="stylesheet">
+    <link href="../css/font-awesome-4.7.0.css" rel="stylesheet">
+    <link href="../css/base.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/highlight.css">
+    <link href="../css/print-site.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="../js/jquery-3.2.1.min.js"></script>
+    <script src="../js/bootstrap-3.3.7.min.js"></script>
+    <script src="../js/highlight.pack.js"></script>
+    
+    <base target="_top">
+    <script>
+      var base_url = '..';
+      var is_top_frame = false;
+        
+        var pageToc = [
+          {title: "Operation", url: "#_top", children: [
+              {title: "Powering the device", url: "#powering-the-device" },
+              {title: "Plugging into an external audio source", url: "#plugging-into-an-external-audio-source" },
+              {title: "Playing Sounds", url: "#playing-sounds" },
+              {title: "The OLED Display and LEDs", url: "#the-oled-display-and-leds" },
+              {title: "The View", url: "#the-view" },
+          ]},
+        ];
+
+    </script>
+    <script src="../js/base.js"></script>
+      <script src="../js/print-site.js"></script>
+      <script src="../search/main.js"></script> 
+</head>
+
+<body>
+<script>
+if (is_top_frame) { $('body').addClass('wm-top-page'); }
+</script>
+
+
+
+<div class="container-fluid wm-page-content">
+  <a name="_top"></a>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../synthesizer/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../synthesizer/" class="btn btn-xs btn-link">
+        The Synthesizer
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href=".." class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href=".." class="btn btn-xs btn-link">
+        Overview
+      </a>
+    </div>
+    
+  </div>
+
+    
+
+    <h1 id="operation"><strong>Operation</strong></h1>
+<h2 id="powering-the-device">Powering the device</h2>
+<p>Iosefka requires a <strong>9v DC center-positive</strong> power supply. It is preferable to use a linear power supply (such as the one outlined in the BOM) instead of a switching power supply, in order to reduce noise.</p>
+<p>The unit does not have a built-in on/off switch, so operation begins when the power supply is plugged in and ends when it is unplugged.</p>
+<h2 id="plugging-into-an-external-audio-source">Plugging into an external audio source</h2>
+<p>Iosefka provides line level mono output. Simply plug a ¼" cable into Iosefka's <strong><em>Output Audio jack</em></strong> and plug the other end into your mixer or audio interface, adjusting the volume with the <strong><em>Volume knob</em></strong> as needed.</p>
+<p>Iosefka does not have a headphone output. It is not advised to plug headphones directly into Iosefka's <strong><em>Output Audio Jack</em></strong>.</p>
+<h2 id="playing-sounds">Playing Sounds</h2>
+<p>You can play sounds on Iosefka in a variety of ways. Most of these ways will be elaborated on in their own sections, but as a basic rundown:</p>
+<h3 id="playing-sounds-with-the-built-in-keyboard">Playing sounds with the built-in keyboard</h3>
+<p>When the <strong>Kbd Page</strong> is active (by pressing the <strong>Synth 1</strong>, <strong>Synth 2</strong>, <strong>Envelope</strong>, or <strong>LFO <em>View switches</em></strong>), the 13 <strong><em>Key Switches</em></strong> play chromatic musical semitones. The lower 8 switches represent white keys and the upper 5 switches represent black keys.</p>
+<p>Furthermore, in the <strong>Synth 1</strong> and <strong>Synth 2 Views</strong>, the <strong>Keyboard Octave Mode</strong> is active, allowing for selecting between octave 2 through 7 of the 128 MIDI standard notes with the <strong><em>Data rotary encoder</em></strong>.</p>
+<h3 id="playing-sounds-with-the-sequencer">Playing sounds with the Sequencer</h3>
+<p>You can just let the synth play itself by pressing the <strong><em>Play/Stop switch</em></strong>, provided that there is an active sequencer Pattern.</p>
+<p>More information on the Sequencer can be found in the <a href="../sequencer/">Sequencer</a> section of this document.</p>
+<h3 id="playing-sounds-via-midi">Playing sounds via MIDI</h3>
+<p>Iosefka comes with robust MIDI implementation according to the MIDI 1.0 standard. You can plug in any device that produces MIDI Note messages like a keyboard or a computer with a DAW into the <strong><em>MIDI Input Jack</em></strong> in the back of the device. Just make sure that the MIDI Channel in the <strong>Settings View</strong> matches the MIDI channel of your MIDI output device.</p>
+<p>More information can be found in the <a href="../midi/">MIDI Implementation</a> section of this document.</p>
+<h3 id="just-let-it-drone-my-dude">Just let it drone my dude</h3>
+<p>By disabling the VCA, Iosefka becomes a drone synthesizer, so it's constantly playing sound. From the <strong>Synth 1 Layer</strong>, press the <strong><em>Shift Switch</em></strong> and turn the <strong><em>Mix 1 Potentiometer</em></strong> above the "00" value to open the VCA to enter drone mode. Turning the value to "FF" will turn drone mode to full VCA gain.</p>
+<p>When the VCA parameter it 00, the VCA is fully closed and will only open with Envelope 3.</p>
+<h2 id="the-oled-display-and-leds">The <em>OLED Display</em> and <em>LEDs</em></h2>
+<p>The combination of the <strong><em>OLED Display</em></strong> and the eight <strong><em>LEDs</em></strong> on Iosefka are meant to give thorough visual feedback on the machine's control state, known as the <strong>View</strong> (more on the <strong>View</strong> in the section below). Learning this combination is crucial to the workflow of the machine.</p>
+<p>Most changes on the physical interface will be reflected somehow on the <strong><em>OLED Display</em></strong>. For example, when you turn a <strong><em>Potentiometer</em></strong>, a value relating to the placement of that potentiometer will change on the <strong><em>OLED Display</em></strong>. For example, turn the top left <strong><em>Potenetiometer</em></strong> and you'll see the number in the top left of the <strong><em>OLED Display</em></strong> change. Knowing that the currently lit <strong><em>Layer LED</em></strong> corresponds to the 15 numbers currently showing on the <strong><em>OLED Display</em></strong> will help you know which Parameters those numbers represent.</p>
+<p>A detailed description of the different screens shown on the <strong><em>OLED Display</em></strong> and <strong><em>LEDs</em></strong> is provided in the <a href="../supplemental/#view-charts">View Charts</a> section of this document.</p>
+<h3 id="oled-display">OLED Display</h3>
+<h4 id="a-note-on-the-use-of-hexadecimal">A note on the use of hexadecimal</h4>
+<p>The display on Iosefka is 128x64 pixels. This plus the admittedly tiny size of the screen means that every character counts. </p>
+<p>Because of this, most numerical values controlled by a <strong><em>Potentiometer</em></strong> are displayed in hexadecimal, a base 16 number system, instead of the standard base 10 decimal number system. This is actually how many musical trackers display numerical values as well.</p>
+<p>Moreover, Iosefka reads the <strong><em>Potentiometers</em></strong> at 8-bit resolution, meaning the voltage from the potentiometer is read as:</p>
+<ul>
+<li>All the way down: 0 (0x00 in hexadecimal)</li>
+<li>All the way up: 255 (0xFF in hexadecimal)</li>
+<li>Halfway: 128 (0x80 in hexadecimal)</li>
+</ul>
+<p>In brief, instead of counting like this:</p>
+<ul>
+<li><strong>0-1-2-3-4-5-6-7-8-9-10-11-12-13-14-15-16-17-18-19-20 … 251-252-253-254-255</strong></li>
+</ul>
+<p>The Parameter values count like this:</p>
+<ul>
+<li><strong>0-1-2-3-4-5-6-7-8-9-A-B-C-D-E-F-10-11-12-13-14 … FB-FC-FD-FE-FF</strong></li>
+</ul>
+<h4 id="values-that-are-displayed-in-decimal">Values that are displayed in decimal</h4>
+<p>All numerical values controlled by the <strong><em>Data Rotary Encoder</em></strong> show as decimal values (...9, 10, 11...), as well as the following values on the <strong>Sequencer View</strong>:
+- Length
+- First Step
+- Last Step</p>
+<h4 id="bipolar-values">Bipolar values</h4>
+<p>Because of the aforementioned issue with space allotted to Parameter values, adding a negative "-" symbol would break the visual convention and hog screen space. As a compromise, bipolar values are displayed as positive hexadecimal values. For example, the values for the "- Level +" Parameters for the Modulation Sources are displayed as 0 to FF, but are in reality -80 to 7F, with 0 as the center value.</p>
+<p>To be clear (or more confusing, I don't know):
+- How it looks on the screen (positive hexadecimal): 
+    - Value range: 00 - FF
+    - The center value: 80
+- How it works internally:
+    - Value range: -128 - 127
+    - The center value: 0</p>
+<p>Bipolar values are mentioned in all parameters where they apply, and link back here for reference.</p>
+<h4 id="hanging-screens">Hanging screens</h4>
+<p>A Hanging Screen is a screen which shows for just a few seconds, like showing the <strong>Mode</strong> when a <strong>View</strong> is changed, or any time the <strong><em>Data rotary encoder</em></strong> is turned. To view this screen for longer, hold down the <strong><em>Data rotary encoder</em></strong> switch by pressing down on the shaft. The Hanging Screen will persist for as long as the screen is held (plus a few seconds).</p>
+<h4 id="display-off-timer">Display Off Timer</h4>
+<p>To maintain the longevity of the <strong><em>OLED Display</em></strong>, it will automatically turn off after 5 minutes if none of the physical components are changed (like turning a <strong><em>Potentiometer</em></strong>), or if the sequencer is not running, or if there are no incoming MIDI messages.</p>
+<h3 id="leds">LEDs</h3>
+<p>As mentioned above, the <strong><em>Layer LEDs</em></strong> and <strong><em>Page LEDs</em></strong> give visual feedback to the respective <strong>Layer</strong> and <strong>Page</strong> in the device's current <strong>View</strong>, described below.</p>
+<h2 id="the-view"><strong>The View</strong></h2>
+<p>The total state of the physical user interface is called the <strong>View</strong>. The <strong>View</strong> consists of three physical sections:</p>
+<ul>
+<li><strong>Pages</strong> - The functions of the 13 <strong><em>Key switches</em></strong> on the control board</li>
+<li><strong>Layers</strong> - The Parameters controlled by the 15 <strong><em>Potentiometers</em></strong> on the control board</li>
+<li><strong>Modes</strong> - The data selectable by the single <strong><em>Data rotary encoder</em></strong> on the control board</li>
+</ul>
+<p>Therefore, the <strong>View</strong> is determined by which state the <strong>Page</strong>, <strong>Layer</strong>, and <strong>Mode</strong> is currently set on the device. The OLED Display as well as the <strong><em>Layer LEDs</em></strong> and <strong><em>Page LEDs</em></strong> give visual feedback on which <strong>View</strong> is currently active.</p>
+<h3 id="changing-the-view">Changing the View</h3>
+<p>The View can be changed with the five <strong><em>View switches</em></strong> on the bottom left of the control board.</p>
+<p>To see a list of all the <strong>Views</strong>, visit the <a href="../supplemental/#view-charts">View Charts</a> section of this document.</p>
+<h3 id="page">Page</h3>
+<p>The function performed by each of the 13 <strong><em>Key switches</em></strong> is determined by which <strong>Page</strong> is currently active. The currently lit <strong><em>Page LED</em></strong> indicates the current page, and the function of that specific <strong><em>Key Switch</em></strong> is either:</p>
+<ul>
+<li><strong>Key Page</strong> - A musical semitone in the layout of a standard piano keyboard</li>
+<li><strong>Seq Page</strong> - The first line of text beneath the <strong><em>Key switch</em></strong></li>
+<li><strong>Set Page</strong> - the second line of text beneath the <strong><em>Key switch</em></strong></li>
+</ul>
+<p>The image below illustrates how the <strong><em>Page LEDs</em></strong> indicate what each switch does. The orange sections indicate Sequencer functions and the green indicates Settings functions.</p>
+<p><img alt="page_reference" src="../assets/page_reference.jpg" /></p>
+<p>To see a list of all the <strong>Pages</strong> and their corresponding <strong><em>Key switch</em></strong> functions, visit the <a href="../supplemental/#page-switch-function-chart">Page Switch Function Chart</a> section of this document.</p>
+<h3 id="layer">Layer</h3>
+<p>Before delving into the Layer explanation, a definition: A <em>Parameter</em> in the context of this document is any value that is changeable with a <strong><em>Potentiometer</em></strong>.</p>
+<p>The <strong>Layer</strong> is the state which determines which parameter is controlled by one of the fifteen <strong><em>Potentiometers</em></strong> on Iosefka's control board. The <strong>Layers</strong> are arranged in a way that represents aspects of the synthesizer from a big-picture perspective. For example, the <strong>Synth 1 Layer</strong> contains the parameters for the oscillators, mixer and filter, while the <strong>Synth 2 Layer</strong> contains additional synthesizer effects (with a few parameters that are shared with Layer 1). All parameters on the <strong>Envelope</strong> and <strong>LFO Layers</strong> are dedicated to those respective Modulation Sources.</p>
+<p>The <strong><em>Layer LED</em></strong> that is currently lit indicates which Parameter name beneath the <strong><em>Potentiometer</em></strong> is currently active. To elaborate, in the image below, note the corresponding color over the <strong><em>Layer LEDs</em></strong> to the Parameter name beneath the <strong><em>Potentiometer</em></strong>. This applies to every Parameter beneath the <strong><em>Potentiometers</em></strong> on the control board e.g. top left <strong><em>Layer LED</em></strong> (Indicating <strong>Synth 1 Layer</strong>) = top left Parameter, etc.</p>
+<p><img alt="layer_reference_1" src="../assets/layer_reference_1.jpg" /></p>
+<p><strong>Note:</strong> If only one Parameter name appears in a row, that means that Parameter is active for either layer in that row. For example in the below image, the Parameter "X Wave" is active when the active <strong>Layer</strong> is either <strong>Synth 1</strong> or <strong>Synth 2</strong>.</p>
+<p><img alt="layer_reference_2" src="../assets/layer_reference_2.jpg" /></p>
+<p>To see a list of all the <strong>Layers</strong> and their corresponding <strong><em>Potentiometer</em></strong> Parameters, visit the <a href="../supplemental/#layer-parameter-control-chart">Layer Parameter Control Chart</a> section of this document.</p>
+<h3 id="mode">Mode</h3>
+<p>The <strong><em>Data rotary encoder</em></strong> is responsible for handling the input of specific data values depending on which <strong>Page</strong> or <strong>Layer</strong> is currently active, as well as several other contexts. The state which determines the data being handled by the <strong><em>Data rotary encoder</em></strong> is called the <strong>Mode</strong>.</p>
+<p>The <strong>Mode</strong> controls things like the octave of the notes played on the keyboard, the modulation destination of all Modulators, the BPM of the Sequencer, etc.</p>
+<p>On all <strong>Views</strong> except for the <strong>Settings View</strong>, the current <strong>Mode</strong> can be viewed in a few different ways:</p>
+<ul>
+<li>Pressing down on the <strong><em>Data rotary encoder</em></strong> shaft to actuate the switch</li>
+<li>Switching the <strong>View</strong></li>
+<li>Turning the <strong><em>Data rotary encoder</em></strong></li>
+</ul>
+<p>To see a list of all the <strong>Modes</strong>, their contexts, and how to view them, visit the <a href="../supplemental/#mode-encoder-data-chart">Mode Encoder Data Chart</a> section of this document.</p>
+
+  <br>
+    
+
+    
+    
+      
+    
+
+  <div class="row wm-article-nav-buttons" role="navigation" aria-label="navigation">
+    
+    <div class="wm-article-nav pull-right">
+      <a href="../synthesizer/" class="btn btn-xs btn-default pull-right">
+        Next
+        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+      </a>
+      <a href="../synthesizer/" class="btn btn-xs btn-link">
+        The Synthesizer
+      </a>
+    </div>
+    
+    <div class="wm-article-nav">
+      <a href=".." class="btn btn-xs btn-default pull-left">
+        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+        Previous</a><a href=".." class="btn btn-xs btn-link">
+        Overview
+      </a>
+    </div>
+    
+  </div>
+
+    <br>
+</div>
+
+<footer class="col-md-12 wm-page-content">
+  <p>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a> using <a href="None">Windmill Dark</a> theme by None (noraj).</p>
+</footer>
+
+</body>
+</html>
