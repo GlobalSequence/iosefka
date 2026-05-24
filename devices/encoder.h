@@ -17,6 +17,11 @@ bool encoderAdvanced();
 int encoderGetValue();
 int encoderGetCountRaw();
 
+void encoderGetPins(uint8_t pin_a);
+void encoderCallback(uint gpio, uint32_t events);
+bool encoderDidEventOccur();
+int encoderGetDirectionValue();
+
 #ifdef __cplusplus
 }
 #endif

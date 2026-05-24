@@ -149,7 +149,7 @@ void devicesSetup()
     // encoder setup + PIO
     // ################
 
-    encoderSetup(PIO_ENCODER, PIO_ENCODER_STATE_MACHINE, PIN_ENCODER_A);
+/*     encoderSetup(PIO_ENCODER, PIO_ENCODER_STATE_MACHINE, PIN_ENCODER_A);
 
     // Configure pins as input with pullup
     pio_gpio_init(PIO_ENCODER, PIN_ENCODER_A);
@@ -173,7 +173,20 @@ void devicesSetup()
     // Note: the program starts after the jump table -> initial_pc = 16
     pio_sm_init(PIO_ENCODER, PIO_ENCODER_STATE_MACHINE, 16, &c_e);
     // Enable th sm
-    pio_sm_set_enabled(PIO_ENCODER, PIO_ENCODER_STATE_MACHINE, true); 
+    pio_sm_set_enabled(PIO_ENCODER, PIO_ENCODER_STATE_MACHINE, true);  */
+
+    gpio_init(PIN_ENCODER_A);
+    gpio_set_dir(PIN_ENCODER_A,GPIO_IN);
+    gpio_pull_up(PIN_ENCODER_A);
+
+    gpio_init(PIN_ENCODER_B);
+    gpio_set_dir(PIN_ENCODER_B,GPIO_IN);
+    gpio_pull_up(PIN_ENCODER_B);
+
+    encoderGetPins(PIN_ENCODER_A);
+
+    gpio_set_irq_enabled_with_callback(PIN_ENCODER_A, GPIO_IRQ_EDGE_FALL, true, &encoderCallback);
+	gpio_set_irq_enabled(PIN_ENCODER_B, GPIO_IRQ_EDGE_FALL, true);
 
     // ################
     // pwm setup
@@ -334,14 +347,14 @@ uint16_t devicesMuxSelectAndRead(uint8_t adc_input, uint8_t mux_input)
 
 bool devicesEncoderAdvanced()
 {
-
-    return encoderAdvanced();
+    // return encoderAdvanced();
+    return encoderDidEventOccur();
 }
 
 int8_t devicesEncoderGetValue()
 {
-
-    return encoderGetValue();
+    // return encoderGetValue();
+    return encoderGetDirectionValue();
 }
 
 // ################

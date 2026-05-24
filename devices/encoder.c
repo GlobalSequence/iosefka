@@ -82,3 +82,90 @@ int encoderGetValue() {
 int encoderGetCountRaw() {
     return encoder_pulse_count_;
 }
+
+// NEW ENCODER CODE
+// NEW ENCODER CODE
+// NEW ENCODER CODE
+// NEW ENCODER CODE
+
+static uint8_t enc_pin_a, enc_pin_b;
+static bool event_occurred;
+static int dir_val;
+
+void encoderGetPins(uint8_t pin_a) {
+
+    enc_pin_a = pin_a;
+    enc_pin_b = enc_pin_a + 1;
+
+}
+
+// code provided by u/mostly_megan on Reddit
+void encoderCallback(uint gpio, uint32_t events) {
+
+	uint32_t gpio_state = 0;
+
+	gpio_state = (gpio_get_all() >> enc_pin_a) & 0b011;  	// get all GPIO them mask out all but bits 10, 11, 12
+													// This will need to change to match which GPIO pins are being used.
+
+	
+	static bool ccw_fall = 0;  //bool used when falling edge is triggered
+	static bool cw_fall = 0;
+	
+	uint8_t enc_value = 0;
+	enc_value = (gpio_state & 0x03);
+
+	
+	if (gpio == enc_pin_a) 
+	{
+		if ((!cw_fall) && (enc_value == 0b10)) // cw_fall is set to TRUE when phase A interrupt is triggered
+			cw_fall = 1; 
+
+		if ((ccw_fall) && (enc_value == 0b00)) // if ccw_fall is already set to true from a previous B phase trigger, the ccw event will be triggered 
+		{
+			cw_fall = 0;
+			ccw_fall = 0;
+
+            event_occurred = true;
+            dir_val = 1;
+		}
+
+	}	
+
+
+	if (gpio == enc_pin_b) 
+	{
+		if ((!ccw_fall) && (enc_value == 0b01)) //ccw leading edge is true
+			ccw_fall = 1;
+
+		if ((cw_fall) && (enc_value == 0b00)) //cw trigger
+		{
+			cw_fall = 0;
+			ccw_fall = 0;
+
+            event_occurred = true;
+            dir_val = -1;
+		}
+
+	}
+	
+
+}
+
+bool encoderDidEventOccur() {
+
+    if(event_occurred) {
+        
+        event_occurred = false;
+        return true;
+
+    }
+
+    return false;
+
+}
+
+int encoderGetDirectionValue() {
+
+    return dir_val;
+
+}
