@@ -286,7 +286,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <li>Switching the <strong>View</strong></li>
 <li>Turning the <strong><em>Data rotary encoder</em></strong></li>
 </ul>
-<p>To see a list of all the <strong>Modes</strong>, their contexts, and how to view them, visit the <a href="#supplemental-mode-encoder-data-chart">Mode Encoder Data Chart</a> section of this document.</p></section><section class="print-page" id="synthesizer" heading-number="3"><h1 id="synthesizer-the-synthesizer"><strong>The Synthesizer</strong></h1>
+<p>To see a list of all the <strong>Modes</strong>, their contexts, and how to view them, visit the <a href="#supplemental-mode-encoder-data-list">Mode Encoder Data List</a> section of this document.</p></section><section class="print-page" id="synthesizer" heading-number="3"><h1 id="synthesizer-the-synthesizer"><strong>The Synthesizer</strong></h1>
 <h2 id="synthesizer-digital-audio">Digital Audio</h2>
 <p>Iosefka's sound generation begins in the Microcontroller, where the oscillators and noise generator are mixed together and then sent out of the DAC for analog processing.</p>
 <h3 id="synthesizer-oscillators">Oscillators</h3>
@@ -460,7 +460,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>External audio can be fed into the external input in the back of the synthesizer, allowing for line level signals to be processed by both the analog audio block (filter and VCA) and also the digital delay.</p>
 <p><strong>Note</strong>: The external audio will only be heard when the VCA is open, so to hear the external audio, the synthesizer must be actively playing notes, or the VCA must be in drone mode. To that end, to use Iosefka purely as an analog/digital processor, here are some suggestions:</p>
 <ul>
-<li>Put the VCA in <a href="#synthesizer-_w149zp55xs8w">drone mode</a></li>
+<li>Put the VCA in <a href="#operation-just-let-it-drone-my-dude">drone mode</a></li>
 <li>Turn down Mix 1, Mix 2, and Mix noise</li>
 <li>Now you should be hearing only the external input playing, allowing you to process audio with the filter, amplitude modulation, and the delay effects</li>
 </ul>
@@ -704,7 +704,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>Step Data can be adjusted for steps that are already set using Parameter Locking. Press and hold one or more of the <strong>1 - 8 <em>Key switches</em></strong> corresponding to the step in the desired Step Section. In the <strong><em>OLED Display</em></strong>, you will see several Parameters light up, indicating the Step Data Parameters that are Parameter Lock-able.</p>
 <h4 id="sequencer-parameter-locks-of-synth-parameters">Parameter Locks of Synth Parameters</h4>
 <p>A single synthesizer parameter can be applied per-step. The previous step's Parameter Lock will be canceled by the one for the next step. </p>
-<p>To set the synthesizer Parameter Lock parameter, use <a href="#sequencer-supplemental-layer-decoupling">Layer Decoupling</a> on the layer with the parameter you'd like to lock like so:
+<p>To set the synthesizer Parameter Lock parameter, use <a href="#supplemental-layer-decoupling">Layer Decoupling</a> on the layer with the parameter you'd like to lock like so:
 - Layer Decouple to the layer with the parameter you will be locking
 - Press and hold a step, then change the parameter</p>
 <h4 id="sequencer-removing-parameter-locks">Removing Parameter Locks</h4>
@@ -748,7 +748,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td>Preset Name</td>
-<td>Where the preset name is displayed and <a href="#settings-editing-a-preset">edited</a></td>
+<td>Where the preset name is displayed and <a href="#settings-editing-the-preset-name">edited</a></td>
 <td>The name of Preset 1</td>
 <td>Global</td>
 </tr>
@@ -833,7 +833,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tbody>
 </table>
 <p>* More information can be found in the <a href="#midi">MIDI Implementation</a> section
-** A list of Mod Destinations can be found in the <a href="#settings-supplemental-modulation-destinations">Modulation Destinations</a> section</p>
+** A list of Mod Destinations can be found in the <a href="#supplemental-modulation-destinations">Modulation Destinations</a> section</p>
 <h3 id="settings-using-the-settings-menu">Using the Settings menu</h3>
 <p>When first visiting the Settings menu after starting up the machine, the <strong><em>Data rotary encoder</em></strong> is in the <strong>Settings Scroll Mode</strong> which controls scrolling through the Settings menu items, indicated by the circle icon on the left of the <strong><em>OLED Display</em></strong>. Pressing down on the <strong><em>Data rotary encoder switch</em></strong>, does different things depending on the setting:</p>
 <ul>
@@ -1026,7 +1026,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td>Param Latch</td>
-<td>Toggles the <a href="#operation-parameter-latching">parameter latching</a> function on/off</td>
+<td>Toggles the Parameter Latch function on/off. See the <a href="#settings-list-of-parameteric-settings">List of Parametric Settings</a></td>
 </tr>
 </tbody>
 </table>
@@ -1292,9 +1292,9 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tbody>
 </table>
 <h4 id="supplemental-envelope-1-2-3">Envelope 1, 2, 3</h4>
-<p>For the Envelopes. To see how to select these modes, refer to the <a href="#operation-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
+<p>For the Envelopes. To see how to select these modes, refer to the <a href="#synthesizer-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
 <h4 id="supplemental-lfo-1-2-3">LFO 1, 2, 3</h4>
-<p>For the LFOs. To see how to select these modes, refer to the <a href="#operation-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
+<p>For the LFOs. To see how to select these modes, refer to the <a href="#synthesizer-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
 <h4 id="supplemental-vel-velocity">vel (Velocity)</h4>
 <p>For Velocity from both the Sequencer steps and the incoming MIDI notes</p>
 <h4 id="supplemental-mw-mod-wheel">m.w. (Mod Wheel)</h4>
