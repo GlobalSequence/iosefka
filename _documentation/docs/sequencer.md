@@ -110,7 +110,7 @@ Step Data can be adjusted for steps that are already set using Parameter Locking
 #### Parameter Locks of Synth Parameters
 A single synthesizer parameter can be applied per-step. The previous step's Parameter Lock will be canceled by the one for the next step. 
 
-To set the synthesizer Parameter Lock parameter, use [Layer Decoupling](./supplemental#layer-decoupling) on the layer with the parameter you'd like to lock like so:
+To set the synthesizer Parameter Lock parameter, use [Layer Decoupling](./supplemental.md#layer-decoupling) on the layer with the parameter you'd like to lock like so:
 - Layer Decouple to the layer with the parameter you will be locking
 - Press and hold a step, then change the parameter
 

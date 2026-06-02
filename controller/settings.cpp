@@ -158,52 +158,63 @@ synth_storable_t settingsGetInitPatch() {
     p.env[2].release            = 0x00;
     p.env[2].loop               = 0x00;
 
-    p.lfo[0].rate               = 0x00;
+    p.lfo[0].rate               = 0x40;
     p.lfo[0].shape              = 0x00;
     p.lfo[0].sync               = 0x00;
     p.lfo[0].phase              = 0x00;
 
-    p.lfo[1].rate               = 0x00;
+    p.lfo[1].rate               = 0x80;
     p.lfo[1].shape              = 0x00;
     p.lfo[1].sync               = 0x00;
     p.lfo[1].phase              = 0x00;
 
-    p.lfo[2].rate               = 0x00;
+    p.lfo[2].rate               = 0xC0;
     p.lfo[2].shape              = 0x00;
     p.lfo[2].sync               = 0x00;
     p.lfo[2].phase              = 0x00;
     
-    p.mod[0].destination        = 0x00; // env 1
+    // env 1
+    p.mod[0].destination        = MOD_DST_OSC_BOTH_X_MORPH; 
     p.mod[0].amount             = 0x80;
 
-    p.mod[1].destination        = 0x00; // env 2
+    // env 2
+    p.mod[1].destination        = MOD_DST_OSC_BOTH_PITCH; 
     p.mod[1].amount             = 0x80;
 
-    p.mod[2].destination        = 0x00; // env 3
+    // env 3
+    p.mod[2].destination        = MOD_DST_PHASE_MOD; 
     p.mod[2].amount             = 0x80;
 
-    p.mod[3].destination        = 0x00; // lfo 1
+    // lfo 1
+    p.mod[3].destination        = MOD_DST_OSC_BOTH_Y_MORPH; 
     p.mod[3].amount             = 0x80;
 
-    p.mod[4].destination        = 0x00; // lfo 2
+    // lfo 2
+    p.mod[4].destination        = MOD_DST_FILTER_CUTOFF; 
     p.mod[4].amount             = 0x80;
 
-    p.mod[5].destination        = 0x00; // lfo 3
+    // lfo 3
+    p.mod[5].destination        = MOD_DST_OSC_BOTH_PITCH_FINE; 
     p.mod[5].amount             = 0x80;
 
-    p.mod[6].destination        = 0x00; // velocity
+    // velocity
+    p.mod[6].destination        = 0x00; 
     p.mod[6].amount             = 0x80;
 
-    p.mod[7].destination        = 0x00; // mod wheel
+    // mod wheel
+    p.mod[7].destination        = MOD_DST_LFO_3_AMOUNT; 
     p.mod[7].amount             = 0x80;
 
-    p.mod[8].destination        = 0x00; // aftertouch
+    // aftertouch
+    p.mod[8].destination        = 0x00; 
     p.mod[8].amount             = 0x80;
 
-    p.mod[9].destination        = 0x00; // note
+    // note
+    p.mod[9].destination        = 0x00; 
     p.mod[9].amount             = 0x80;
 
-    p.mod[10].destination       = 0x00; // breath control
+    // breath control
+    p.mod[10].destination       = 0x00; 
     p.mod[10].amount            = 0x80;
 
     // step data;

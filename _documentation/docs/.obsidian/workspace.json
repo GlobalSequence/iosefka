@@ -1,0 +1,225 @@
+{
+  "main": {
+    "id": "27f8112900d17d4d",
+    "type": "split",
+    "children": [
+      {
+        "id": "af2bf660c3797d3e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "0589347eeb2fd047",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "settings.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "settings"
+            }
+          },
+          {
+            "id": "4a2e3ee83b5c2360",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "credits.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "credits"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "1eb89712bb5c4511",
+    "type": "split",
+    "children": [
+      {
+        "id": "5c539fe1672ecbac",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d7db2b56e0052718",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "7adbdb39a10f67b9",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "drone",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "5d336fbe571353c1",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "7035538aced94366",
+    "type": "split",
+    "children": [
+      {
+        "id": "9e945e01c9ad0450",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "10b502ef07153558",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "credits.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for credits"
+            }
+          },
+          {
+            "id": "6f47e22b7992d9ae",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "credits.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from credits"
+            }
+          },
+          {
+            "id": "437517e6563291e7",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "eca5f8b4abbeb823",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "756520a652e047e0",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "credits.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of credits"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "4a2e3ee83b5c2360",
+  "lastOpenFiles": [
+    "settings.md",
+    "supplemental.md",
+    "sequencer.md",
+    "operation.md",
+    "synthesizer.md",
+    "credits.md",
+    "midi.md",
+    "index.md",
+    "assets/old/layer_syn_env.jpg",
+    "assets/old",
+    "assets/New folder",
+    "assets/iosefka.webp",
+    "assets/IMG_2584.webp",
+    "build_guide.md",
+    "assets/l_synth1.webp",
+    "assets/screen_save_complete.webp",
+    "assets/screen_save.webp",
+    "assets/l_lfo.webp",
+    "assets/l_user.webp",
+    "assets/l_env.webp",
+    "assets/l_synth2.webp"
+  ]
+}

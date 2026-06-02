@@ -2,7 +2,8 @@
 
 This will walk you through the step-by-step process of populating the Iosefka PCB using components from the [Bill of Materials](TODO:ADDBOM), as well as uploading the firmware to the microcontroller. 
 
-##Disclaimer!
+*Note: This guide was made using an older version of the PCB. The only differences are a few of the component values (follow values on your PCB and you'll be fine), the omission of the 1M resistor which is now DNP (do not place) on the new PCB, some silk screen labels on the control board, and the addition of the 6th spacer between the Switch Keys.*
+## Disclaimer!
 We are not responsible for any accidents that arise during the build process. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.
 
 ## Tools
@@ -97,9 +98,18 @@ Place the pin headers and solder them on the top of the board. Here I'm holding 
 
 ![cb_10_pins](assets/cb_10_pins.webp)
 
-If the OLED comes with pin headers already soldered in, then solder the pin headers straight into the board.
 
-![cb_11_oled](assets/cb_11_oled.webp)
+Use 2M Screws for the OLED screen, and fasten the nuts on the underside. The nuts might get caught on the pin header, if so, twist the screw itself and the nuts will spin into place. If the OLED comes with pin headers already soldered in, then solder the pin headers straight into the board.
+
+*Note 1: The nuts are shorter than the plastic piece on the pin header. If this is undesirable, you can double up on the nuts on the underside of the display.*
+
+*Note 2: The holes for the screws are larger than the M2 screws, this is because these OLED displays are not at all standardized so the screw holes on your display may vary in width and vertical placement from another one.*
+
+![[IMG_2567.webp]]
+
+Fasten the OLED in place after soldering it in.
+
+![[IMG_2568.webp]]
 
 Since you're soldering some components on the top side of the control board, some unsightly flux residue may occur. You can get it off with some rubbing alcohol. Thus far, I have not removed any silkscreen this way, but might be a good idea to do a small test swab to see if it's safe depending on where you get your board fab'd. 
 

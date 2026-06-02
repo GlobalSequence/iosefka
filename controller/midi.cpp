@@ -77,10 +77,19 @@ enum CCParamNames
     CC_DELAY_RATE = 61,
     CC_DELAY_FEEDBACK = 62,
     CC_DELAY_AMOUNT = 63,
-    CC_DELAY_DIFFUSION = 64,
-    CC_DELAY_FILTER = 65,
-    CC_DELAY_STEREO = 66,
-
+    CC_DELAY_TYPE = 64,
+    CC_DELAY_INPUT = 65,
+    // CC_OSCS_PITCH_COARSE = 80,
+    // CC_OSCS_PITCH_FINE = 81,
+    // CC_OSCS_OCTAVE = 82,
+    // CC_OSCS_X_WAVE = 83,
+    // CC_OSCS_Y_WAVE = 84,
+    CC_BRR = 85,
+    CC_SRR = 86,
+    CC_VCA = 87,
+    CC_ENV_1_LOOP = 88,
+    CC_ENV_2_LOOP = 89,
+    CC_ENV_3_LOOP = 90,
     NUMBER_OF_MIDI_CCS
 };
 
@@ -132,12 +141,28 @@ uint8_t shift7BitValueTo8Bits(uint8_t val) {
 
 void ccParser(uint8_t cc_number, uint8_t value) {
 
-    shift7BitValueTo8Bits(value);
+    uint8_t value_8b = shift7BitValueTo8Bits(value);
 
     mod_destinations_t dst;
 
     switch(cc_number){
-        case CC_MOD_WHEEL: dst = (mod_destinations_t)synth->patch.mod[MOD_SRC_MOD_WHEEL].destination; break;
+        case CC_MOD_WHEEL: 
+            dst = (mod_destinations_t)synth->patch.mod[MOD_SRC_MOD_WHEEL].destination; 
+            // Mod wheel only does positive modulation for mod destinations
+            switch(dst) {
+                case MOD_DST_ENV_1_AMOUNT:
+                case MOD_DST_ENV_2_AMOUNT:
+                case MOD_DST_ENV_3_AMOUNT:
+                case MOD_DST_LFO_1_AMOUNT:
+                case MOD_DST_LFO_2_AMOUNT:
+                case MOD_DST_LFO_3_AMOUNT:
+                case MOD_DST_FILTER_ENV_AMT:
+                    value_8b = value + 0x80;
+                    break;
+                default: break;
+            }
+
+            break;
         case CC_BREATH_CONTROL: dst = (mod_destinations_t)synth->patch.mod[MOD_SRC_BREATH].destination; break;
         case CC_OSC_1_PITCH: dst = MOD_DST_OSC_1_PITCH; break;
         case CC_OSC_1_OCTAVE: dst = MOD_DST_OSC_1_OCTAVE; break;
@@ -190,19 +215,32 @@ void ccParser(uint8_t cc_number, uint8_t value) {
         case CC_LFO_1_AMOUNT: dst = MOD_DST_LFO_1_AMOUNT; break;
         case CC_LFO_2_AMOUNT: dst = MOD_DST_LFO_2_AMOUNT; break;
         case CC_LFO_3_AMOUNT: dst = MOD_DST_LFO_3_AMOUNT; break;
-        // case CC_ENV_1_DST: dst = MOD_DST_ENV_1_DST; break;
-        // case CC_ENV_2_DST: dst = MOD_DST_ENV_2_DST; break;
-        // case CC_ENV_3_DST: dst = MOD_DST_ENV_3_DST; break;
-        // case CC_LFO_1_DST: dst = MOD_DST_LFO_1_DST; break;
-        // case CC_LFO_2_DST: dst = MOD_DST_LFO_2_DST; break;
-        // case CC_LFO_3_DST: dst = MOD_DST_LFO_3_DST; break;
-        // case CC_DELAY_RATE: dst = MOD_DST_DELAY_RATE; break;
+        case CC_ENV_1_DST: dst = MOD_DST_ENV_1_DST; break;
+        case CC_ENV_2_DST: dst = MOD_DST_ENV_2_DST; break;
+        case CC_ENV_3_DST: dst = MOD_DST_ENV_3_DST; break;
+        case CC_LFO_1_DST: dst = MOD_DST_LFO_1_DST; break;
+        case CC_LFO_2_DST: dst = MOD_DST_LFO_2_DST; break;
+        case CC_LFO_3_DST: dst = MOD_DST_LFO_3_DST; break;
+        case CC_DELAY_RATE: dst = MOD_DST_DELAY_RATE; break;
         case CC_DELAY_FEEDBACK: dst = MOD_DST_DELAY_FEEDBACK; break;
         case CC_DELAY_AMOUNT: dst = MOD_DST_DELAY_AMOUNT; break;
+        case CC_DELAY_TYPE: dst = MOD_DST_DELAY_TYPE; break;
+        case CC_DELAY_INPUT: dst = MOD_DST_DELAY_INPUT; break;
+        // case CC_OSCS_PITCH_COARSE: dst = MOD_DST_OSC_BOTH_PITCH; break; // These are only handled internally and will not respond to ext. messages
+        // case CC_OSCS_PITCH_FINE: dst = MOD_DST_OSC_BOTH_PITCH_FINE; break;
+        // case CC_OSCS_OCTAVE: dst = MOD_DST_OSC_BOTH_OCTAVE; break;
+        // case CC_OSCS_X_WAVE: dst = MOD_DST_OSC_BOTH_X_MORPH; break;
+        // case CC_OSCS_Y_WAVE: dst = MOD_DST_OSC_BOTH_Y_MORPH; break;
+        case CC_BRR: dst = MOD_DST_BITRATE_REDUCE; break;
+        case CC_SRR: dst = MOD_DST_SAMPLERATE_REDUCE; break;
+        case CC_VCA: dst = MOD_DST_VCA; break;
+        case CC_ENV_1_LOOP: dst = MOD_DST_ENV_1_LOOP; break;
+        case CC_ENV_2_LOOP: dst = MOD_DST_ENV_2_LOOP; break;
+        case CC_ENV_3_LOOP: dst = MOD_DST_ENV_3_LOOP; break;
         default: break;
     }
 
-    parameterSetValueByModDst(dst, value);
+    parameterSetValueByModDst(dst, value_8b);
 
 }
 

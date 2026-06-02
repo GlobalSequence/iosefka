@@ -4,7 +4,6 @@ bool ModMatrix::lfo_reset_sync[4][2] {
     {false, false}, {true, false}, {false, true}, {true, true}
 };
 
-// uint16_t ModMatrix::clock_sync_div_val[] = {256, 192, 128, 96, 64, 48, 32, 24, 16, 12, 8, 6, 4, 3, 2, 1};
 uint16_t ModMatrix::clock_sync_div_val[] = {576, 288, 192, 96, 72, 48, 36, 24, 18, 12, 9, 6, 4, 3, 2, 1};
 
 ModMatrix::ModMatrix(
@@ -99,9 +98,9 @@ void ModMatrix::triggerNoteOff(uint8_t note) {
 
 void ModMatrix::loadSources() {
 
-    mod_source_[MOD_SRC_ENV_1] = env_[0].Render() >> 4;
-    mod_source_[MOD_SRC_ENV_2] = env_[1].Render() >> 4;
-    mod_source_[MOD_SRC_ENV_3] = env_[2].Render() >> 4;
+    mod_source_[MOD_SRC_ENV_1] = env_[0].Render() >> 5;
+    mod_source_[MOD_SRC_ENV_2] = env_[1].Render() >> 5;
+    mod_source_[MOD_SRC_ENV_3] = env_[2].Render() >> 5;
     mod_source_[MOD_SRC_LFO_1] = LFORender(&lfo_[0]);
     mod_source_[MOD_SRC_LFO_2] = LFORender(&lfo_[1]);
     mod_source_[MOD_SRC_LFO_3] = LFORender(&lfo_[2]);
@@ -127,9 +126,9 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_OSC_1_PITCH] = 2048;
     dst_[MOD_DST_OSC_2_PITCH] = 2048;
     dst_[MOD_DST_OSC_BOTH_PITCH] = 2048;
-    dst_[MOD_DST_OSC_1_PITCH_FINE] = 0;
-    dst_[MOD_DST_OSC_2_PITCH_FINE] = 0;
-    dst_[MOD_DST_OSC_BOTH_PITCH_FINE] = 0;
+    dst_[MOD_DST_OSC_1_PITCH_FINE] = 2048;
+    dst_[MOD_DST_OSC_2_PITCH_FINE] = 2048;
+    dst_[MOD_DST_OSC_BOTH_PITCH_FINE] = 2048;
 
     dst_[MOD_DST_OSC_1_OCTAVE] = patch_->osc[0].octave << 4;
     dst_[MOD_DST_OSC_2_OCTAVE] = patch_->osc[1].octave << 4;
@@ -168,16 +167,6 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_ENV_3_SUSTAIN] =   patch_->env[2].sustain << 4;
     dst_[MOD_DST_ENV_3_RELEASE] =   patch_->env[2].release << 4;
     dst_[MOD_DST_ENV_3_LOOP] =      patch_->env[2].loop << 4;
-
-    // int16_t *lfo_parameters = &dst_[MOD_DST_LFO_1_RATE];
-    // for (uint8_t i = 0; i < NUMBER_OF_LFOS; ++i)
-    // {
-    //     *lfo_parameters++ = patch_->lfo[i].rate << 4;
-    //     *lfo_parameters++ = patch_->lfo[i].shape << 4;
-    //     *lfo_parameters++ = patch_->lfo[i].phase << 4;
-    //     *lfo_parameters++ = patch_->lfo[i].sync << 4;
-    //     lfo_parameters += 1;
-    // }
 
     dst_[MOD_DST_LFO_1_RATE] = patch_->lfo[0].rate << 4;
     dst_[MOD_DST_LFO_1_SHAPE] = patch_->lfo[0].shape << 4;
@@ -232,7 +221,6 @@ void ModMatrix::processModulation() {
 
         int16_t amount = bipolarParameter(mod_amount_[i]) << 1;
         int16_t source = mod_source_[i];
-        // uint8_t destination = U8CLIPMAX(NUM_MOD_DESTINATIONS, patch_->mod[i].destination);
         uint8_t destination = mod_destination_[i];
         int16_t modulation = dst_[destination];
 
@@ -300,31 +288,37 @@ void ModMatrix::updateDestinations()
     uint16_t pb_range = (ext_mod_->pitch_bend_depth_send + 1) << 8;
     int16_t pitch_bend_scaled = linearScale(pb, 8192, pb_range);
 
+    int16_t osc_both_coarse = dst_[MOD_DST_OSC_BOTH_PITCH] - 2048;
+    int16_t osc_both_fine = bipolarParameter((dst_[MOD_DST_OSC_BOTH_PITCH_FINE]) >> 4) * 4;
+    int16_t osc_both_octave = dst_[MOD_DST_OSC_BOTH_OCTAVE] - 2048;
 
     v_i->osc_pitch_mod[0] = 
-        ((dst_[MOD_DST_OSC_1_PITCH] - 2048) + (dst_[MOD_DST_OSC_BOTH_PITCH] - 2048)) << 3;
+        ((dst_[MOD_DST_OSC_1_PITCH] - 2048) + osc_both_coarse) << 3;
     v_i->osc_scale[0] = 
         ((bipolarParameter(patch_->osc[0].scale) * 2) * 12) + 
         bipolarParameter((dst_[MOD_DST_OSC_1_PITCH_FINE]) >> 4) * 2 + 
-        bipolarParameter((dst_[MOD_DST_OSC_BOTH_PITCH_FINE]) >> 4) * 4 + 
+        osc_both_fine + 
         pitch_bend_scaled;
     v_i->osc_octave[0] = 
-        U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_OCTAVE] + (dst_[MOD_DST_OSC_BOTH_OCTAVE]) - 2048) >> 10; 
+        U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_OCTAVE] + osc_both_octave) >> 10; 
 
     v_i->osc_pitch_mod[1] = 
-        ((dst_[MOD_DST_OSC_2_PITCH] - 2048) + (dst_[MOD_DST_OSC_BOTH_PITCH] - 2048)) << 3;
+        ((dst_[MOD_DST_OSC_2_PITCH] - 2048) + osc_both_coarse) << 3;
     v_i->osc_scale[1] = 
         ((bipolarParameter(patch_->osc[1].scale) * 2) * 12) + 
         bipolarParameter((dst_[MOD_DST_OSC_2_PITCH_FINE]) >> 4) * 2 +
-        bipolarParameter((dst_[MOD_DST_OSC_BOTH_PITCH_FINE]) >> 4) * 4 +  
+        osc_both_fine +  
         pitch_bend_scaled;
     v_i->osc_octave[1] = 
-        U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_OCTAVE] + (dst_[MOD_DST_OSC_BOTH_OCTAVE] - 2048)) >> 10; 
+        U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_OCTAVE] + osc_both_octave) >> 10; 
 
-    v_i->x_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_X_MORPH] + (dst_[MOD_DST_OSC_BOTH_X_MORPH] - 2048)) >> 4;
-    v_i->y_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_Y_MORPH] + (dst_[MOD_DST_OSC_BOTH_Y_MORPH] - 2048)) >> 4;
-    v_i->x_morph[1] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_X_MORPH] + (dst_[MOD_DST_OSC_BOTH_X_MORPH] - 2048)) >> 4;
-    v_i->y_morph[1] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_Y_MORPH] + (dst_[MOD_DST_OSC_BOTH_Y_MORPH] - 2048)) >> 4;
+    int16_t osc_both_x_morph = dst_[MOD_DST_OSC_BOTH_X_MORPH] - 2048;
+    int16_t osc_both_y_morph = dst_[MOD_DST_OSC_BOTH_Y_MORPH] - 2048;
+
+    v_i->x_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_X_MORPH] + osc_both_x_morph) >> 4;
+    v_i->y_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_Y_MORPH] + osc_both_y_morph) >> 4;
+    v_i->x_morph[1] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_X_MORPH] + osc_both_x_morph) >> 4;
+    v_i->y_morph[1] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_Y_MORPH] + osc_both_y_morph) >> 4;
 
     v_i->portamento = dst_[MOD_DST_PORTAMENTO] >> 5;
     v_i->phase_mod = dst_[MOD_DST_PHASE_MOD] >> 4;
@@ -395,13 +389,18 @@ void ModMatrix::updateDestinations()
         LFOSetSync(&lfo_[i], lfo_sync);
         LFOSetReset(&lfo_[i], lfo_reset);
 
-        uint16_t sync_div_val = clock_sync_div_val[lfo_parameters[0] >> 8];
+        // get the value of the wav_res_env_expo table backwards
+        uint8_t lfo_table_index = 255 - (lfo_parameters[0] >> 4);
+        // turn the exponential table into logarithmic, or the other way around... whatever lol
+        uint16_t lfo_non_sync_inc = (255 - wav_res_env_expo[lfo_table_index]) << 4;
 
+        uint16_t sync_div_val = clock_sync_div_val[lfo_parameters[0] >> 8];
         uint32_t lfo_sync_inc = getClockDivValue12Bits(clock_period, sync_div_val);
 
         LFOUpdate(
             &lfo_[i], 
-            LFOGetSync(&lfo_[i]) == false? lfo_parameters[0] + 1 : lfo_sync_inc,
+            // LFOGetSync(&lfo_[i]) == false? lfo_parameters[0] + 1 : lfo_sync_inc,
+            lfo_sync == false? lfo_non_sync_inc : lfo_sync_inc,
             param8Bits0To4(lfo_parameters[1] >> 4),
             lfo_parameters[2] >> 4,
             0,

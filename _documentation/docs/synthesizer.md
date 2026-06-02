@@ -120,7 +120,7 @@ External audio can be fed into the external input in the back of the synthesizer
 
 **Note**: The external audio will only be heard when the VCA is open, so to hear the external audio, the synthesizer must be actively playing notes, or the VCA must be in drone mode. To that end, to use Iosefka purely as an analog/digital processor, here are some suggestions:
 
-- Put the VCA in [drone mode](#_w149zp55xs8w)
+- Put the VCA in [drone mode](./operation.md#just-let-it-drone-my-dude)
 - Turn down Mix 1, Mix 2, and Mix noise
 - Now you should be hearing only the external input playing, allowing you to process audio with the filter, amplitude modulation, and the delay effects
 

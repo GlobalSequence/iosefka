@@ -142,9 +142,7 @@ The **_Layer LED_** that is currently lit indicates which Parameter name beneath
 
 ![layer_reference_1](assets/layer_reference_1.jpg)
 
-**Note:** If only one Parameter name appears in a row, that means that Parameter is active for either layer in that row. For example in the below image, the Parameter "X Wave" is active when the active **Layer** is either **Synth 1** or **Synth 2**.
-
-![layer_reference_2](assets/layer_reference_2.jpg)
+**Note:** If only one Parameter name appears in a row beneath the ***Potentiometer***, that means that Parameter is active for either layer in that row. For example in the below image, the parameter "Cutoff" is in effect when the active **Layer** is either **Synth 1** or **Synth 2**.
 
 To see a list of all the **Layers** and their corresponding **_Potentiometer_** Parameters, visit the [Layer Parameter Control Chart](./supplemental.md#layer-parameter-control-chart) section of this document.
 
@@ -160,4 +158,4 @@ On all **Views** except for the **Settings View**, the current **Mode** can be v
 - Switching the **View**
 - Turning the **_Data rotary encoder_**
 
-To see a list of all the **Modes**, their contexts, and how to view them, visit the [Mode Encoder Data Chart](./supplemental.md#mode-encoder-data-chart) section of this document.
+To see a list of all the **Modes**, their contexts, and how to view them, visit the [Mode Encoder Data List](./supplemental.md#mode-encoder-data-list) section of this document.

@@ -11,16 +11,19 @@ extern "C"
 {
 #endif
 
-void encoderSetup(PIO pio_n, uint sm_n, uint pin);
-void encoderIrqHandler();
-bool encoderAdvanced();
-int encoderGetValue();
-int encoderGetCountRaw();
-
 void encoderGetPins(uint8_t pin_a);
 void encoderCallback(uint gpio, uint32_t events);
 bool encoderDidEventOccur();
 int encoderGetDirectionValue();
+
+// DEPRECATED
+/* 
+void encoderSetup(PIO pio_n, uint sm_n, uint pin);
+void encoderIrqHandler();
+bool encoderAdvanced();
+int encoderGetValue();
+int encoderGetCountRaw(); 
+*/
 
 #ifdef __cplusplus
 }

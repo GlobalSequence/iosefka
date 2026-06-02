@@ -12,7 +12,7 @@ Links are included to sections with more in-depth descriptions.
 | **Setting**     | **Description**                                                                                                                                                                                                                                          | Default value        | Global or Preset Specific |
 | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------- |
 | Preset Number   | Select the preset number that will be [loaded](#loading-a-preset) or [saved](#saving-a-preset) to                                                                                                                                                        | 1                    | Global                    |
-| Preset Name     | Where the preset name is displayed and [edited](#editing-a-preset)                                                                                                                                                                                       | The name of Preset 1 | Global                    |
+| Preset Name     | Where the preset name is displayed and [edited](#editing-the-preset-name)                                                                                                                                                                                | The name of Preset 1 | Global                    |
 | Channel         | Selects the MIDI channel that Iosefka will receive messages from.\*                                                                                                                                                                                      | 1                    | Global                    |
 | Src:            | Select the MIDI Modulation source here to select the Modulation Destination setting below will affect.\**                                                                                                                                                | Velo                 | Preset                    |
 | Mod Destination | Select the Modulation Destination that the Modulation Source above affects\**                                                                                                                                                                            | None                 | Preset                    |
@@ -28,7 +28,7 @@ Links are included to sections with more in-depth descriptions.
 | Init (Shift)    | When shift is held, this setting initializes the preset to the 'factory' default. This is the default preset for all presets.                                                                                                                            | N/A                  | Preset                    |
 
 \* More information can be found in the [MIDI Implementation](./midi.md) section
-\** A list of Mod Destinations can be found in the [Modulation Destinations](./supplemental#modulation-destinations) section
+\** A list of Mod Destinations can be found in the [Modulation Destinations](./supplemental.md#modulation-destinations) section
 ### Using the Settings menu
 
 When first visiting the Settings menu after starting up the machine, the **_Data rotary encoder_** is in the **Settings Scroll Mode** which controls scrolling through the Settings menu items, indicated by the circle icon on the left of the **_OLED Display_**. Pressing down on the **_Data rotary encoder switch_**, does different things depending on the setting:
@@ -57,11 +57,14 @@ The currently loaded preset is indicated by a ">>" next to the name "preset".
 
 With the preset number that you wish to save selected, ready the save state of the machine by pressing the **Save _Key switch_**. This brings up the following screen on the **_OLED Display_**.
 
+![Screen Save](assets/screen_save.webp)
+
 If you are certain that you are ready to save, execute the save by holding the **Shift switch** and pressing the **Save _Key switch_** again. The machine confirms that the preset has been saved with this screen.
 
+![Screen Save Complete](assets/screen_save_complete.webp)
 #### Loading a Preset
 
-With the preset number that you wish to load selected, ready the load state of the machine by pressing the **Load _Key switch_**. This brings up the following screen on the **_OLED Display_**.
+With the preset number that you wish to load selected, ready the load state of the machine by pressing the **Load _Key switch_**. This brings up the Load screen on the **_OLED Display_** (same screen in as [Saving a Preset](#saving-a-preset), but 'save' is replaced with 'load').
 
 If you are certain that you are ready to load, execute the load by holding the **Shift switch** and pressing the **Load _Key switch_** again. The machine confirms that the preset has been loaded with this screen.
 

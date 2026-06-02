@@ -87,32 +87,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
             </div>
         </section>
         <section class="print-page" id="index" heading-number="1"><h1 id="index-overview"><strong>Overview</strong></h1>
-<h2 id="index-hardware">Hardware</h2>
-<p>Hardware components listed in the manual will be referred to by their name as listed below. When hardware components are listed in the manual, they will appear in <strong><em>Bold and Italic</em></strong></p>
-<p><img alt="hardware_overview_front" src="../assets/hardware_overview_front.jpg" /></p>
-<p><img alt="hardware_overview_side" src="../assets/hardware_overview_side.jpg" /></p>
-<ol>
-<li><strong><em>OLED Display</em></strong></li>
-<li><strong><em>Data Rotary Encoder</em></strong> - (with switch when pressing down on shaft)</li>
-<li><strong><em>Shift switch</em></strong></li>
-<li><strong><em>Play/Stop switch</em></strong></li>
-<li><strong><em>Layer LEDs</em></strong></li>
-<li><strong><em>View switches</em></strong></li>
-<li><strong><em>Page LEDs</em></strong></li>
-<li><strong><em>Key switches</em></strong></li>
-<li><strong><em>Potentiometers</em></strong></li>
-<li><strong><em>Volume knob</em></strong></li>
-<li><strong><em>Output Audio jack</em></strong></li>
-<li><strong><em>External Input Audio Jack</em></strong></li>
-<li><strong><em>Filter tracking tuning trimpot</em></strong></li>
-<li><strong><em>Filter offset trimpot</em></strong></li>
-<li><strong><em>MIDI Output jack</em></strong></li>
-<li><strong><em>MIDI Input jack</em></strong></li>
-<li><strong><em>Power supply jack</em></strong> - (9v DC - Center positive)</li>
-</ol>
-<h2 id="index-synthesizer-block-diagram">Synthesizer Block Diagram</h2>
-<p><img alt="iosefka_audio_block_diagram" src="../assets/iosefka_audio_block_diagram.jpg" /></p>
-<p><img alt="iosefka_modulation_block_diagram_and_key" src="../assets/iosefka_modulation_block_diagram_and_key.jpg" /></p>
+<p><img alt="Iosefka" src="../assets/iosefka.webp" /></p>
 <h2 id="index-specification">Specification</h2>
 <p>Iosefka is a hybrid digital analog monophonic synthesizer consisting of the following parts:</p>
 <p><strong>Digital audio:</strong></p>
@@ -184,7 +159,33 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p><strong>Oscilloscope:</strong></p>
 <ul>
 <li>Oscillator phase locked oscilloscope with four 'time' divisions (sample divisions) between 512 to 128 samples.</li>
-</ul></section><section class="print-page" id="operation" heading-number="2"><h1 id="operation-operation"><strong>Operation</strong></h1>
+</ul>
+<h2 id="index-hardware">Hardware</h2>
+<p>Hardware components listed in the manual will be referred to by their name as listed below. When hardware components are listed in the manual, they will appear in <strong><em>Bold and Italic</em></strong></p>
+<p><img alt="hardware_overview_front" src="../assets/hardware_overview_front.jpg" /></p>
+<p><img alt="hardware_overview_side" src="../assets/hardware_overview_side.jpg" /></p>
+<ol>
+<li><strong><em>OLED Display</em></strong></li>
+<li><strong><em>Data Rotary Encoder</em></strong> - (with switch when pressing down on shaft)</li>
+<li><strong><em>Shift switch</em></strong></li>
+<li><strong><em>Play/Stop switch</em></strong></li>
+<li><strong><em>Layer LEDs</em></strong></li>
+<li><strong><em>View switches</em></strong></li>
+<li><strong><em>Page LEDs</em></strong></li>
+<li><strong><em>Key switches</em></strong></li>
+<li><strong><em>Potentiometers</em></strong></li>
+<li><strong><em>Volume knob</em></strong></li>
+<li><strong><em>Output Audio jack</em></strong></li>
+<li><strong><em>External Input Audio Jack</em></strong></li>
+<li><strong><em>Filter tracking tuning trimpot</em></strong></li>
+<li><strong><em>Filter offset trimpot</em></strong></li>
+<li><strong><em>MIDI Output jack</em></strong></li>
+<li><strong><em>MIDI Input jack</em></strong></li>
+<li><strong><em>Power supply jack</em></strong> - (9v DC - Center positive)</li>
+</ol>
+<h2 id="index-synthesizer-block-diagram">Synthesizer Block Diagram</h2>
+<p><img alt="Block Diagram - Audio" src="../assets/block_diagram_audio.png" /></p>
+<p><img alt="Block Diagram Mod Sources and Key" src="../assets/block_diagram_mod_sources_and_key.png" /></p></section><section class="print-page" id="operation" heading-number="2"><h1 id="operation-operation"><strong>Operation</strong></h1>
 <h2 id="operation-powering-the-device">Powering the device</h2>
 <p>Iosefka requires a <strong>9v DC center-positive</strong> power supply. It is preferable to use a linear power supply (such as the one outlined in the BOM) instead of a switching power supply, in order to reduce noise.</p>
 <p>The unit does not have a built-in on/off switch, so operation begins when the power supply is plugged in and ends when it is unplugged.</p>
@@ -274,8 +275,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>The <strong>Layer</strong> is the state which determines which parameter is controlled by one of the fifteen <strong><em>Potentiometers</em></strong> on Iosefka's control board. The <strong>Layers</strong> are arranged in a way that represents aspects of the synthesizer from a big-picture perspective. For example, the <strong>Synth 1 Layer</strong> contains the parameters for the oscillators, mixer and filter, while the <strong>Synth 2 Layer</strong> contains additional synthesizer effects (with a few parameters that are shared with Layer 1). All parameters on the <strong>Envelope</strong> and <strong>LFO Layers</strong> are dedicated to those respective Modulation Sources.</p>
 <p>The <strong><em>Layer LED</em></strong> that is currently lit indicates which Parameter name beneath the <strong><em>Potentiometer</em></strong> is currently active. To elaborate, in the image below, note the corresponding color over the <strong><em>Layer LEDs</em></strong> to the Parameter name beneath the <strong><em>Potentiometer</em></strong>. This applies to every Parameter beneath the <strong><em>Potentiometers</em></strong> on the control board e.g. top left <strong><em>Layer LED</em></strong> (Indicating <strong>Synth 1 Layer</strong>) = top left Parameter, etc.</p>
 <p><img alt="layer_reference_1" src="../assets/layer_reference_1.jpg" /></p>
-<p><strong>Note:</strong> If only one Parameter name appears in a row, that means that Parameter is active for either layer in that row. For example in the below image, the Parameter "X Wave" is active when the active <strong>Layer</strong> is either <strong>Synth 1</strong> or <strong>Synth 2</strong>.</p>
-<p><img alt="layer_reference_2" src="../assets/layer_reference_2.jpg" /></p>
+<p><strong>Note:</strong> If only one Parameter name appears in a row beneath the <strong><em>Potentiometer</em></strong>, that means that Parameter is active for either layer in that row. For example in the below image, the parameter "Cutoff" is in effect when the active <strong>Layer</strong> is either <strong>Synth 1</strong> or <strong>Synth 2</strong>.</p>
 <p>To see a list of all the <strong>Layers</strong> and their corresponding <strong><em>Potentiometer</em></strong> Parameters, visit the <a href="#supplemental-layer-parameter-control-chart">Layer Parameter Control Chart</a> section of this document.</p>
 <h3 id="operation-mode">Mode</h3>
 <p>The <strong><em>Data rotary encoder</em></strong> is responsible for handling the input of specific data values depending on which <strong>Page</strong> or <strong>Layer</strong> is currently active, as well as several other contexts. The state which determines the data being handled by the <strong><em>Data rotary encoder</em></strong> is called the <strong>Mode</strong>.</p>
@@ -286,7 +286,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <li>Switching the <strong>View</strong></li>
 <li>Turning the <strong><em>Data rotary encoder</em></strong></li>
 </ul>
-<p>To see a list of all the <strong>Modes</strong>, their contexts, and how to view them, visit the <a href="#supplemental-mode-encoder-data-chart">Mode Encoder Data Chart</a> section of this document.</p></section><section class="print-page" id="synthesizer" heading-number="3"><h1 id="synthesizer-the-synthesizer"><strong>The Synthesizer</strong></h1>
+<p>To see a list of all the <strong>Modes</strong>, their contexts, and how to view them, visit the <a href="#supplemental-mode-encoder-data-list">Mode Encoder Data List</a> section of this document.</p></section><section class="print-page" id="synthesizer" heading-number="3"><h1 id="synthesizer-the-synthesizer"><strong>The Synthesizer</strong></h1>
 <h2 id="synthesizer-digital-audio">Digital Audio</h2>
 <p>Iosefka's sound generation begins in the Microcontroller, where the oscillators and noise generator are mixed together and then sent out of the DAC for analog processing.</p>
 <h3 id="synthesizer-oscillators">Oscillators</h3>
@@ -460,7 +460,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>External audio can be fed into the external input in the back of the synthesizer, allowing for line level signals to be processed by both the analog audio block (filter and VCA) and also the digital delay.</p>
 <p><strong>Note</strong>: The external audio will only be heard when the VCA is open, so to hear the external audio, the synthesizer must be actively playing notes, or the VCA must be in drone mode. To that end, to use Iosefka purely as an analog/digital processor, here are some suggestions:</p>
 <ul>
-<li>Put the VCA in <a href="#synthesizer-_w149zp55xs8w">drone mode</a></li>
+<li>Put the VCA in <a href="#operation-just-let-it-drone-my-dude">drone mode</a></li>
 <li>Turn down Mix 1, Mix 2, and Mix noise</li>
 <li>Now you should be hearing only the external input playing, allowing you to process audio with the filter, amplitude modulation, and the delay effects</li>
 </ul>
@@ -704,7 +704,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>Step Data can be adjusted for steps that are already set using Parameter Locking. Press and hold one or more of the <strong>1 - 8 <em>Key switches</em></strong> corresponding to the step in the desired Step Section. In the <strong><em>OLED Display</em></strong>, you will see several Parameters light up, indicating the Step Data Parameters that are Parameter Lock-able.</p>
 <h4 id="sequencer-parameter-locks-of-synth-parameters">Parameter Locks of Synth Parameters</h4>
 <p>A single synthesizer parameter can be applied per-step. The previous step's Parameter Lock will be canceled by the one for the next step. </p>
-<p>To set the synthesizer Parameter Lock parameter, use <a href="#sequencer-supplemental-layer-decoupling">Layer Decoupling</a> on the layer with the parameter you'd like to lock like so:
+<p>To set the synthesizer Parameter Lock parameter, use <a href="#supplemental-layer-decoupling">Layer Decoupling</a> on the layer with the parameter you'd like to lock like so:
 - Layer Decouple to the layer with the parameter you will be locking
 - Press and hold a step, then change the parameter</p>
 <h4 id="sequencer-removing-parameter-locks">Removing Parameter Locks</h4>
@@ -748,7 +748,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td>Preset Name</td>
-<td>Where the preset name is displayed and <a href="#settings-editing-a-preset">edited</a></td>
+<td>Where the preset name is displayed and <a href="#settings-editing-the-preset-name">edited</a></td>
 <td>The name of Preset 1</td>
 <td>Global</td>
 </tr>
@@ -833,7 +833,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tbody>
 </table>
 <p>* More information can be found in the <a href="#midi">MIDI Implementation</a> section
-** A list of Mod Destinations can be found in the <a href="#settings-supplemental-modulation-destinations">Modulation Destinations</a> section</p>
+** A list of Mod Destinations can be found in the <a href="#supplemental-modulation-destinations">Modulation Destinations</a> section</p>
 <h3 id="settings-using-the-settings-menu">Using the Settings menu</h3>
 <p>When first visiting the Settings menu after starting up the machine, the <strong><em>Data rotary encoder</em></strong> is in the <strong>Settings Scroll Mode</strong> which controls scrolling through the Settings menu items, indicated by the circle icon on the left of the <strong><em>OLED Display</em></strong>. Pressing down on the <strong><em>Data rotary encoder switch</em></strong>, does different things depending on the setting:</p>
 <ul>
@@ -852,9 +852,11 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p><strong>Note that the preset number is in decimal not hexadecimal</strong>.</p>
 <h4 id="settings-saving-a-preset">Saving a Preset</h4>
 <p>With the preset number that you wish to save selected, ready the save state of the machine by pressing the <strong>Save <em>Key switch</em></strong>. This brings up the following screen on the <strong><em>OLED Display</em></strong>.</p>
+<p><img alt="Screen Save" src="../assets/screen_save.webp" /></p>
 <p>If you are certain that you are ready to save, execute the save by holding the <strong>Shift switch</strong> and pressing the <strong>Save <em>Key switch</em></strong> again. The machine confirms that the preset has been saved with this screen.</p>
+<p><img alt="Screen Save Complete" src="../assets/screen_save_complete.webp" /></p>
 <h4 id="settings-loading-a-preset">Loading a Preset</h4>
-<p>With the preset number that you wish to load selected, ready the load state of the machine by pressing the <strong>Load <em>Key switch</em></strong>. This brings up the following screen on the <strong><em>OLED Display</em></strong>.</p>
+<p>With the preset number that you wish to load selected, ready the load state of the machine by pressing the <strong>Load <em>Key switch</em></strong>. This brings up the Load screen on the <strong><em>OLED Display</em></strong> (same screen in as <a href="#settings-saving-a-preset">Saving a Preset</a>, but 'save' is replaced with 'load').</p>
 <p>If you are certain that you are ready to load, execute the load by holding the <strong>Shift switch</strong> and pressing the <strong>Load <em>Key switch</em></strong> again. The machine confirms that the preset has been loaded with this screen.</p>
 <h4 id="settings-editing-the-preset-name">Editing the Preset name</h4>
 <p>Each preset can have an 8 character name which is loaded on startup and can be seen when selecting a preset.</p>
@@ -1024,7 +1026,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td>Param Latch</td>
-<td>Toggles the <a href="#operation-parameter-latching">parameter latching</a> function on/off</td>
+<td>Toggles the Parameter Latch function on/off. See the <a href="#settings-list-of-parametric-settings">List of Parametric Settings</a></td>
 </tr>
 </tbody>
 </table>
@@ -1032,7 +1034,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>In the photos below, the text for each parameter below the <strong><em>Potentiometer</em></strong> is highlighted respective to the current layer. </p>
 <p>See "Parameters" sections in <a href="#synthesizer">The Synthesizer</a> and <a href="#sequencer">The Sequencer</a> for in-depth explanations on these Parameters</p>
 <h3 id="supplemental-synth-1">Synth 1</h3>
-<p><img alt="layer_syn1" src="../assets/layer_syn1.jpg" /></p>
+<p><img alt="Layer_Synth1" src="../assets/l_synth1.webp" /></p>
 <table>
 <thead>
 <tr>
@@ -1048,7 +1050,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <td>Note/Pitch (Oscillator 1)</td>
 <td>Note/Pitch (Oscillator 2)</td>
 <td>Portamento</td>
-<td>Mix 1</td>
+<td>Mix 1, shift = VCA</td>
 <td>Cutoff</td>
 </tr>
 <tr>
@@ -1068,7 +1070,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tbody>
 </table>
 <h3 id="supplemental-synth-2">Synth 2</h3>
-<p><img alt="layer_syn2" src="../assets/layer_syn2.jpg" /></p>
+<p><img alt="Layer_Synth2" src="../assets/l_synth2.webp" /></p>
 <table>
 <thead>
 <tr>
@@ -1105,11 +1107,13 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </table>
 <h3 id="supplemental-user">User</h3>
 <p>See <a href="#supplemental-user-parameters">User Parameters</a> section for how to access and set User Parameters.</p>
+<p><img alt="Layer_User" src="../assets/l_user.webp" /></p>
 <h3 id="supplemental-envelope">Envelope</h3>
-<p><img alt="layer_env" src="../assets/layer_env.jpg" /></p>
+<p><img alt="Layer_Env" src="../assets/l_env.webp" /></p>
 <table>
 <thead>
 <tr>
+<th></th>
 <th></th>
 <th></th>
 <th></th>
@@ -1120,29 +1124,32 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <tbody>
 <tr>
 <td>Attack (Envelope 1)</td>
-<td>Decay<br>(Envelope 1)</td>
+<td>Decay, Shift = Loop<br>(Envelope 1)</td>
 <td>Sustain<br>(Envelope 1)</td>
 <td>Release<br>(Envelope 1)</td>
 <td>- Level +<br>(Envelope 1)</td>
+<td></td>
 </tr>
 <tr>
 <td>Attack (Envelope 2)</td>
-<td>Decay<br>(Envelope 2)</td>
+<td>Decay, Shift = Loop<br>(Envelope 2)</td>
 <td>Sustain<br>(Envelope 2)</td>
 <td>Release<br>(Envelope 2)</td>
 <td>- Level +<br>(Envelope 2)</td>
+<td></td>
 </tr>
 <tr>
 <td>Attack (Envelope 3)</td>
-<td>Decay<br>(Envelope 3)</td>
+<td>Decay, Shift = Loop<br>(Envelope 3)</td>
 <td>Sustain<br>(Envelope 3)</td>
 <td>Release<br>(Envelope 3)</td>
 <td>- Level +<br>(Envelope 3)</td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <h3 id="supplemental-lfo">LFO</h3>
-<p><img alt="layer_lfo" src="../assets/layer_lfo.jpg" /></p>
+<p><img alt="Layer_LFO" src="../assets/l_lfo.webp" /></p>
 <table>
 <thead>
 <tr>
@@ -1178,7 +1185,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tbody>
 </table>
 <h3 id="supplemental-sequencer">Sequencer</h3>
-<p><img alt="layer_seq" src="../assets/layer_seq.jpg" /></p>
+<p><img alt="Layer_Seq" src="../assets/l_sequencer.webp" /></p>
 <table>
 <thead>
 <tr>
@@ -1285,9 +1292,9 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tbody>
 </table>
 <h4 id="supplemental-envelope-1-2-3">Envelope 1, 2, 3</h4>
-<p>For the Envelopes. To see how to select these modes, refer to the <a href="#operation-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
+<p>For the Envelopes. To see how to select these modes, refer to the <a href="#synthesizer-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
 <h4 id="supplemental-lfo-1-2-3">LFO 1, 2, 3</h4>
-<p>For the LFOs. To see how to select these modes, refer to the <a href="#operation-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
+<p>For the LFOs. To see how to select these modes, refer to the <a href="#synthesizer-selecting-envelope-and-lfo-modulation-destinations">Selecting Envelope and LFO modulation destinations</a> section.</p>
 <h4 id="supplemental-vel-velocity">vel (Velocity)</h4>
 <p>For Velocity from both the Sequencer steps and the incoming MIDI notes</p>
 <h4 id="supplemental-mw-mod-wheel">m.w. (Mod Wheel)</h4>
@@ -1986,13 +1993,84 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <td>63</td>
 <td>Delay Level</td>
 </tr>
+<tr>
+<td>64</td>
+<td>Delay Type</td>
+</tr>
+<tr>
+<td>65</td>
+<td>Delay Input Level</td>
+</tr>
+<tr>
+<td>85</td>
+<td>Bitrate Reduction</td>
+</tr>
+<tr>
+<td>86</td>
+<td>Samplerate Reduction</td>
+</tr>
+<tr>
+<td>87</td>
+<td>VCA level (Drone mode on above 1)</td>
+</tr>
+<tr>
+<td>88</td>
+<td>Loop (Envelope 1)</td>
+</tr>
+<tr>
+<td>89</td>
+<td>Loop (Envelope 2)</td>
+</tr>
+<tr>
+<td>90</td>
+<td>Loop (Envelope 3)</td>
+</tr>
 </tbody>
-</table></section><section class="print-page" id="credits" heading-number="8"><h1 id="credits-credits-and-acknowledgements"><strong>Credits and Acknowledgements</strong></h1>
+</table></section><section class="print-page" id="credits" heading-number="8"><h1 id="credits-credits-acknowledgements-and-more"><strong>Credits, Acknowledgements, and More</strong></h1>
+<h2 id="credits-credits-and-acknowledgements">Credits and Acknowledgements</h2>
 <p>Iosefka is created by Cory Oleson under the title Global Sequence.</p>
 <p>Iosefka would not be possible without the explicit help of many helpful anonymous strangers on the internet, and the implicit assistance of countless open source projects on the internet.</p>
 <p>An extra special shout out goes to Frédéric Meslin of Fred's Lab and Èmilie Gillet of the late Mutable Instruments. Also for Maffez's version of the 2140 pole mixing filter which was very helpful alongside Sound Semiconductor's documentation. </p>
-<p>This synthesizer is fully open source under the GPL-3.0 license.</p></section><section class="print-page" id="build_guide" heading-number="9"><h1 id="build_guide-build-guide"><strong>Build Guide</strong></h1>
+<p>This synthesizer is fully open source under the GPL-3.0 license.</p>
+<h2 id="credits-a-note-on-the-use-of-artificial-intelligence">A Note on the Use of Artificial Intelligence</h2>
+<h3 id="credits-what-ai-was-used-for-in-this-project">What AI was used for in this project</h3>
+<ul>
+<li>As an aide to answer general programming questions relating to design patterns, both C and C++ languages, Git/GitHub, interpreting some open source code, etc.</li>
+<li>Assistance understanding DSP concepts</li>
+<li>As a way of creating and editing large enums and arrays from existing values</li>
+<li>Occasionally detecting errors in code</li>
+<li>The one line of ASM for the phase overflow flag used in the oscillator sync functionality</li>
+<li>Generating the text that goes into every .h, .c, and .cpp file, with the basic includes at the top. Example:</li>
+</ul>
+<pre><code>#ifndef EXAMPLE_H  
+#define EXAMPLE_H  
+
+#include &lt;stdio.h&gt;  
+#include &quot;pico/stdlib.h&quot;  
+
+#ifdef __cplusplus  
+extern &quot;C&quot;  
+{  
+#endif  
+
+// C header here  
+
+#ifdef __cplusplus  
+}  
+#endif  
+
+#endif
+</code></pre>
+<h3 id="credits-what-ai-was-not-used-for-in-this-project">What AI was NOT used for in this project</h3>
+<ul>
+<li>Vibe coding - No whole functions, classes, or files were written by AI tools </li>
+<li>The concept, architecture, or structure of the synthesizer itself</li>
+<li>Any of the hardware design and layout</li>
+<li>Writing the manual</li>
+<li>... and for better or for worse, I believe it shows.</li>
+</ul></section><section class="print-page" id="build_guide" heading-number="9"><h1 id="build_guide-build-guide"><strong>Build Guide</strong></h1>
 <p>This will walk you through the step-by-step process of populating the Iosefka PCB using components from the <a href="#build_guide-todo:addbom">Bill of Materials</a>, as well as uploading the firmware to the microcontroller. </p>
+<p><em>Note: This guide was made using an older version of the PCB. The only differences are a few of the component values (follow values on your PCB and you'll be fine), the omission of the 1M resistor which is now DNP (do not place) on the new PCB, some silk screen labels on the control board, and the addition of the 6th spacer between the Switch Keys.</em></p>
 <h2 id="build_guide-disclaimer">Disclaimer!</h2>
 <p>We are not responsible for any accidents that arise during the build process. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.</p>
 <h2 id="build_guide-tools">Tools</h2>
@@ -2057,8 +2135,12 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p><img alt="cb_9_midi" src="../assets/cb_9_midi.webp" /></p>
 <p>Place the pin headers and solder them on the top of the board. Here I'm holding the headers in place and in alignment with some painter's tape.</p>
 <p><img alt="cb_10_pins" src="../assets/cb_10_pins.webp" /></p>
-<p>If the OLED comes with pin headers already soldered in, then solder the pin headers straight into the board.</p>
-<p><img alt="cb_11_oled" src="../assets/cb_11_oled.webp" /></p>
+<p>Use 2M Screws for the OLED screen, and fasten the nuts on the underside. The nuts might get caught on the pin header, if so, twist the screw itself and the nuts will spin into place. If the OLED comes with pin headers already soldered in, then solder the pin headers straight into the board.</p>
+<p><em>Note 1: The nuts are shorter than the plastic piece on the pin header. If this is undesirable, you can double up on the nuts on the underside of the display.</em></p>
+<p><em>Note 2: The holes for the screws are larger than the M2 screws, this is because these OLED displays are not at all standardized so the screw holes on your display may vary in width and vertical placement from another one.</em></p>
+<p>![[IMG_2567.webp]]</p>
+<p>Fasten the OLED in place after soldering it in.</p>
+<p>![[IMG_2568.webp]]</p>
 <p>Since you're soldering some components on the top side of the control board, some unsightly flux residue may occur. You can get it off with some rubbing alcohol. Thus far, I have not removed any silkscreen this way, but might be a good idea to do a small test swab to see if it's safe depending on where you get your board fab'd. </p>
 <p><img alt="Control Board - Removing Flux" src="../assets/IMG_2148.webp" /></p>
 <p>Ain't it beautiful? If you purchased a cap for the encoder, you can christen the control board with it now.</p>

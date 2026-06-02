@@ -38,19 +38,19 @@ These charts represent the default **Layers**, **Pages**, and **Modes** upon dev
 
 ### Set
 
-| Key switch | Function |
+| Key switch | Function                                                                                                                               |
 | --- | --- |
-| Save |  - Pressing once readies the Save state <br>  - Pressing Shift key plus Save Key switch while in Save state saves to the current preset |
-| Load |  - Pressing once readies the Load state <br>  - Pressing Shift key plus Save Key switch while in Load state saves to the current preset |
-| Preset | Sets the Mode to Preset Select |
-| Channel Select | Sets the Mode to Channel Select |
-| Velocity Dst. | Sets the Mode to Velocity Destination Select |
-| Mod Wheel Dst. | Sets the Mode to Mod Wheel Destination Select |
-| Aftertouch Dst. | Sets the Mode to Aftertouch Destination Select |
-| Clock Rx | Enables Clock Receive from the input MIDI source |
-| Transport Rx | Enables Transport Receive from the input MIDI source |
-| Pitch Bend Depth | Sets the Mode to Pitch Bend Depth Select |
-| Param Latch | Toggles the [parameter latching](./operation.md#parameter-latching) function on/off |
+| Save | - Pressing once readies the Save state <br>  - Pressing Shift key plus Save Key switch while in Save state saves to the current preset |
+| Load | - Pressing once readies the Load state <br>  - Pressing Shift key plus Save Key switch while in Load state saves to the current preset |
+| Preset | Sets the Mode to Preset Select                                                                                                         |
+| Channel Select | Sets the Mode to Channel Select                                                                                                        |
+| Velocity Dst. | Sets the Mode to Velocity Destination Select                                                                                           |
+| Mod Wheel Dst. | Sets the Mode to Mod Wheel Destination Select                                                                                          |
+| Aftertouch Dst. | Sets the Mode to Aftertouch Destination Select                                                                                         |
+| Clock Rx | Enables Clock Receive from the input MIDI source                                                                                       |
+| Transport Rx | Enables Transport Receive from the input MIDI source                                                                                   |
+| Pitch Bend Depth | Sets the Mode to Pitch Bend Depth Select                                                                                               |
+| Param Latch | Toggles the Parameter Latch function on/off. See the [List of Parametric Settings](./settings.md#list-of-parametric-settings)          |
 
 
 ## Layer Parameter Control Chart
@@ -59,16 +59,19 @@ In the photos below, the text for each parameter below the **_Potentiometer_** i
 See "Parameters" sections in [The Synthesizer](./synthesizer.md) and [The Sequencer](./sequencer.md) for in-depth explanations on these Parameters
 
 ### Synth 1
-![layer_syn1](assets/layer_syn1.jpg)
 
-|                           |                           |            |           |               |
-| ------------------------- | ------------------------- | ---------- | --------- | ------------- |
-| Note/Pitch (Oscillator 1) | Note/Pitch (Oscillator 2) | Portamento | Mix 1     | Cutoff        |
-| X Wave (Oscillator 1)     | X Wave (Oscillator 2)     | Phase Mod  | Mix 2     | Resonance     |
-| Y Wave (Oscillator 1)     | Y Wave (Oscillator 2)     | Osc Sync   | Mix Noise | F. Env. Level |
+![Layer_Synth1](assets/l_synth1.webp)
+
+|                           |                           |            |                    |               |
+| ------------------------- | ------------------------- | ---------- | ------------------ | ------------- |
+| Note/Pitch (Oscillator 1) | Note/Pitch (Oscillator 2) | Portamento | Mix 1, shift = VCA | Cutoff        |
+| X Wave (Oscillator 1)     | X Wave (Oscillator 2)     | Phase Mod  | Mix 2              | Resonance     |
+| Y Wave (Oscillator 1)     | Y Wave (Oscillator 2)     | Osc Sync   | Mix Noise          | F. Env. Level |
 
 ### Synth 2
-![layer_syn2](assets/layer_syn2.jpg)
+
+
+![Layer_Synth2](assets/l_synth2.webp)
 
 |                          |                          |          |          |               |
 | ------------------------ | ------------------------ | -------- | -------- | ------------- |
@@ -80,17 +83,21 @@ See "Parameters" sections in [The Synthesizer](./synthesizer.md) and [The Sequen
 
 See [User Parameters](#user-parameters) section for how to access and set User Parameters.
 
-### Envelope
-![layer_env](assets/layer_env.jpg)
+![Layer_User](assets/l_user.webp)
 
-|     |     |     |     |     |
-| --- | --- | --- | --- | --- |
-| Attack (Envelope 1) | Decay<br>(Envelope 1) | Sustain<br>(Envelope 1) | Release<br>(Envelope 1) | \- Level +<br>(Envelope 1) | 
-| Attack (Envelope 2) | Decay<br>(Envelope 2) | Sustain<br>(Envelope 2) | Release<br>(Envelope 2) | \- Level +<br>(Envelope 2) | 
-| Attack (Envelope 3) | Decay<br>(Envelope 3) | Sustain<br>(Envelope 3) | Release<br>(Envelope 3) | \- Level +<br>(Envelope 3) | 
+### Envelope
+
+![Layer_Env](assets/l_env.webp)
+
+|                     |                                     |                         |                         |                            |     |
+| ------------------- | ----------------------------------- | ----------------------- | ----------------------- | -------------------------- | --- |
+| Attack (Envelope 1) | Decay, Shift = Loop<br>(Envelope 1) | Sustain<br>(Envelope 1) | Release<br>(Envelope 1) | \- Level +<br>(Envelope 1) |     |
+| Attack (Envelope 2) | Decay, Shift = Loop<br>(Envelope 2) | Sustain<br>(Envelope 2) | Release<br>(Envelope 2) | \- Level +<br>(Envelope 2) |     |
+| Attack (Envelope 3) | Decay, Shift = Loop<br>(Envelope 3) | Sustain<br>(Envelope 3) | Release<br>(Envelope 3) | \- Level +<br>(Envelope 3) |     |
 
 ### LFO
-![layer_lfo](assets/layer_lfo.jpg)
+
+![Layer_LFO](assets/l_lfo.webp)
 
 |                 |                  |                  |                         |                       |
 | --------------- | ---------------- | ---------------- | ----------------------- | --------------------- |
@@ -100,7 +107,8 @@ See [User Parameters](#user-parameters) section for how to access and set User P
 
 
 ### Sequencer
-![layer_seq](assets/layer_seq.jpg)
+
+![Layer_Seq](assets/l_sequencer.webp)
 
 |             |              |            |            |           |
 | ----------- | ------------ | ---------- | ---------- | --------- |
@@ -162,11 +170,11 @@ When Pressing and Holding the ***Encoder Switch*** while turning the ***Rotary E
 
 #### Envelope 1, 2, 3
 
-For the Envelopes. To see how to select these modes, refer to the [Selecting Envelope and LFO modulation destinations](./operation.md#selecting-envelope-and-lfo-modulation-destinations) section.
+For the Envelopes. To see how to select these modes, refer to the [Selecting Envelope and LFO modulation destinations](./synthesizer.md#selecting-envelope-and-lfo-modulation-destinations) section.
 
 #### LFO 1, 2, 3
 
-For the LFOs. To see how to select these modes, refer to the [Selecting Envelope and LFO modulation destinations](./operation.md#selecting-envelope-and-lfo-modulation-destinations) section.
+For the LFOs. To see how to select these modes, refer to the [Selecting Envelope and LFO modulation destinations](./synthesizer.md#selecting-envelope-and-lfo-modulation-destinations) section.
 
 #### vel (Velocity)
 

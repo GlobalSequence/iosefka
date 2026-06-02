@@ -1,35 +1,6 @@
 # **Overview**
 
-## Hardware
-
-Hardware components listed in the manual will be referred to by their name as listed below. When hardware components are listed in the manual, they will appear in **_Bold and Italic_**
-
-![hardware_overview_front](assets/hardware_overview_front.jpg)
-
-![hardware_overview_side](assets/hardware_overview_side.jpg)
-
-1. **_OLED Display_**
-2. **_Data Rotary Encoder_** \- (with switch when pressing down on shaft)
-3. **_Shift switch_**
-4. **_Play/Stop switch_**
-5. **_Layer LEDs_**
-6. **_View switches_**
-7. **_Page LEDs_**
-8. **_Key switches_**
-9. **_Potentiometers_**
-10. **_Volume knob_**
-11. **_Output Audio jack_**
-12. **_External Input Audio Jack_**
-13. **_Filter tracking tuning trimpot_**
-14. **_Filter offset trimpot_**
-15. **_MIDI Output jack_**
-16. **_MIDI Input jack_**
-17. **_Power supply jack_** - (9v DC - Center positive)
-
-## Synthesizer Block Diagram
-![iosefka_audio_block_diagram](assets/iosefka_audio_block_diagram.jpg)
-
-![iosefka_modulation_block_diagram_and_key](assets/iosefka_modulation_block_diagram_and_key.jpg)
+![Iosefka](assets/iosefka.webp)
 
 ## Specification
 Iosefka is a hybrid digital analog monophonic synthesizer consisting of the following parts:
@@ -95,3 +66,36 @@ Iosefka is a hybrid digital analog monophonic synthesizer consisting of the foll
 **Oscilloscope:**
 
   - Oscillator phase locked oscilloscope with four 'time' divisions (sample divisions) between 512 to 128 samples.
+
+## Hardware
+
+Hardware components listed in the manual will be referred to by their name as listed below. When hardware components are listed in the manual, they will appear in **_Bold and Italic_**
+
+![hardware_overview_front](assets/hardware_overview_front.jpg)
+
+![hardware_overview_side](assets/hardware_overview_side.jpg)
+
+1. **_OLED Display_**
+2. **_Data Rotary Encoder_** \- (with switch when pressing down on shaft)
+3. **_Shift switch_**
+4. **_Play/Stop switch_**
+5. **_Layer LEDs_**
+6. **_View switches_**
+7. **_Page LEDs_**
+8. **_Key switches_**
+9. **_Potentiometers_**
+10. **_Volume knob_**
+11. **_Output Audio jack_**
+12. **_External Input Audio Jack_**
+13. **_Filter tracking tuning trimpot_**
+14. **_Filter offset trimpot_**
+15. **_MIDI Output jack_**
+16. **_MIDI Input jack_**
+17. **_Power supply jack_** - (9v DC - Center positive)
+
+## Synthesizer Block Diagram
+
+
+![Block Diagram - Audio](assets/block_diagram_audio.png)
+
+![Block Diagram Mod Sources and Key](assets/block_diagram_mod_sources_and_key.png)
