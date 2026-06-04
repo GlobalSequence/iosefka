@@ -19,24 +19,25 @@ void testNewSettings();
 
 // public functions
 
+// DEPRECATED
 bool versionWriteVersionToCleanStorage() {
 
-    version_t v = storageLoadVersion();
+    // version_t v = storageLoadVersion();
 
-    if(
-        v.major == 0xFF && 
-        v.minor == 0xFF && 
-        v.patch == 0xFF) {
+    // if(
+    //     v.major == 0xFF && 
+    //     v.minor == 0xFF && 
+    //     v.patch == 0xFF) {
      
-        v.major = VERSION_MAJOR;
-        v.minor = VERSION_MINOR;
-        v.patch = VERSION_PATCH;
+    //     v.major = VERSION_MAJOR;
+    //     v.minor = VERSION_MINOR;
+    //     v.patch = VERSION_PATCH;
 
-        storageSaveVersion(v);
+    //     storageSaveVersion(v);
         
-        return true;
+    //     return true;
 
-    }
+    // }
 
     return false; 
 
@@ -80,7 +81,7 @@ void saveUpdatedPresetByIndex(synth_storable_t p, uint index) {
 
 // version update functions
 
-// function currently not in use, but keeping it for future use if necessary.
+// DEPRECATED
 void versionUpdate() {
 
     // version_t version = storageLoadVersion();

@@ -100,7 +100,7 @@ Envelope 2 is hard-wired to the filter cutoff, and there is a Parameter dedicate
 
 **Parameters:**
 
-<div class="joplin-table-wrapper"><table><thead><tr><th><p><strong>Parameter name</strong></p></th><th><p><strong>Function</strong></p></th></tr><tr><th><p>Cutoff</p></th><th><p>The point at which frequencies begin to become attenuated</p></th></tr><tr><th><p>Resonance</p></th><th><p>The amount of emphasis given to the audio at the cutoff point</p></th></tr><tr><th><p>F. Env. Level (Filter Envelope Level)</p></th><th><p>How much of Envelope 2 is applied to the filter cutoff amount. This is a <a href="./operation.md#bipolar-values">Bipolar value</a></p><p>Note: Holding shift and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0. This is a quick way to turn the modulation 'off'</p></th></tr><tr><th><p>F. Type (Filter Type)</p></th><th><p>Selecting between the four filter types:</p><ul><li>2 Pole Low Pass</li><li>4 Pole Low Pass</li><li>2 Pole High Pass</li><li>2 Pole Band Pass</li></ul></th></tr><tr><th><p>F. FM (Filter Frequency Modulation)</p></th><th><p>The amount of audio rate modulation fed from the filter output back into the filter cutoff</p></th></tr><tr><th><p>F. Track (Filter Tracking)</p></th><th><p>The amount of note tracking applied to the filter. When turned up all the way, the filter can be played just like an oscillator.</p></th></tr></thead></table></div>
+<div class="joplin-table-wrapper"><table><thead><tr><th><p><strong>Parameter name</strong></p></th><th><p><strong>Function</strong></p></th></tr><tr><th><p>Cutoff</p></th><th><p>The point at which frequencies begin to become attenuated</p></th></tr><tr><th><p>Resonance</p></th><th><p>The amount of emphasis given to the audio at the cutoff point</p></th></tr><tr><th><p>F. Env. Level (Filter Envelope Level)</p></th><th><p>How much of Envelope 2 is applied to the filter cutoff amount. This is a <a href="./operation.md#bipolar-values">Bipolar value</a></p><p>Note: Holding shift and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0x80. This is a quick way to turn the modulation 'off'</p></th></tr><tr><th><p>F. Type (Filter Type)</p></th><th><p>Selecting between the four filter types:</p><ul><li>2 Pole Low Pass</li><li>4 Pole Low Pass</li><li>2 Pole High Pass</li><li>2 Pole Band Pass</li></ul></th></tr><tr><th><p>F. FM (Filter Frequency Modulation)</p></th><th><p>The amount of audio rate modulation fed from the filter output back into the filter cutoff</p></th></tr><tr><th><p>F. Track (Filter Tracking)</p></th><th><p>The amount of note tracking applied to the filter. When turned up all the way, the filter can be played just like an oscillator.</p></th></tr></thead></table></div>
 
 ### Amplifier
 
@@ -146,13 +146,13 @@ As an example, if Envelope 2's destination is set to Mix Noise, it shares the At
 
 (These Parameters apply to all 3 Envelopes)
 
-| **Parameter name** | **Function** |
-| --- | --- |
-| Attack | Envelope onset time |
-| Decay ( + Loop) | The amount of time from the end of the attack phase to settle into the sustain phase<br>Holding **_Shift switch_** and turning the **_Potentiometer_** will enable the Looping Envelope, causing the envelope to begin the Attack phase as soon as it finishes the Release phase. |
-| Sustain | The volume of the note as it is held (following the attack and decay phase) |
-| Release | The amount of time until the volume fades to 0 after a Note-Off event happens |
-| \- Level + | Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a [Bipolar value](./operation.md#bipolar-values)<br>Holding **_Shift switch_** and turning the **_Potentiometer_** will snap this Parameter to 0. This is a quick way to turn the modulation 'off' |
+| **Parameter name** | **Function**                                                                                                                                                                                                                                                                                        |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Attack | Envelope onset time                                                                                                                                                                                                                                                                                 |
+| Decay ( + Loop) | The amount of time from the end of the attack phase to settle into the sustain phase<br>Holding **_Shift switch_** and turning the **_Potentiometer_** will enable the Looping Envelope, causing the envelope to begin the Attack phase as soon as it finishes the Release phase.                   |
+| Sustain | The volume of the note as it is held (following the attack and decay phase)                                                                                                                                                                                                                         |
+| Release | The amount of time until the volume fades to 0 after a Note-Off event happens                                                                                                                                                                                                                       |
+| \- Level + | Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a [Bipolar value](./operation.md#bipolar-values)<br>Holding **_Shift switch_** and turning the **_Potentiometer_** will snap this Parameter to 0x80. This is a quick way to turn the modulation 'off' |
 
 ### LFOs (Low Frequency Oscillators)
 
@@ -164,13 +164,13 @@ The LFO modulation itself is bipolar, meaning that the value of the Modulation D
 
 (These Parameters apply to all 3 LFOs)
 
-| **Parameter name** | **Function** |
-| --- | --- |
-| Rate | The speed of the LFO's oscillation. When the LFO is synced to the Sequencer Clock, this Parameter becomes a time-division of the clock |
-| Shape | The shape of the LFO wave: triangle, saw, square, sine, and sample-hold |
-| Phase | The offset of the wave, control where the wave begins and ends |
-| Reset/Sync | This Parameter controls whether LFO Reset and/or Sync are turned on. When Reset is on, the LFO restarts whenever a Note-On event happens |
-| \- Level + | Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a [Bipolar value](./operation.md#bipolar-values)<br>Note: Holding shift and turning the **_Potentiometer_** will snap this Parameter to 0. This is a quick way to turn the modulation 'off' |
+| **Parameter name** | **Function**                                                                                                                                                                                                                                                                                 |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Rate               | The speed of the LFO's oscillation. When the LFO is synced to the Sequencer Clock, this Parameter becomes a time-division of the clock                                                                                                                                                       |
+| Shape              | The shape of the LFO wave: triangle, saw, square, sine, and sample-hold                                                                                                                                                                                                                      |
+| Phase              | The offset of the wave, control where the wave begins and ends                                                                                                                                                                                                                               |
+| Reset/Sync         | This Parameter controls whether LFO Reset and/or Sync are turned on. When Reset is on, the LFO restarts whenever a Note-On event happens                                                                                                                                                     |
+| \- Level +         | Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a [Bipolar value](./operation.md#bipolar-values)<br>Note: Holding shift and turning the **_Potentiometer_** will snap this Parameter to 0x80. This is a quick way to turn the modulation 'off' |
 
 ### Selecting Envelope and LFO modulation destinations
 

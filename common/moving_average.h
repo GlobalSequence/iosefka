@@ -1,7 +1,6 @@
 #ifndef MOVING_AVERAGE_H
 #define MOVING_AVERAGE_H
 
-//#include "Arduino.h"
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include <cstdlib>

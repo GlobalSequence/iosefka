@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "credits.md",
+                "file": "synthesizer.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "credits"
+              "title": "synthesizer"
             }
           }
         ],
@@ -200,13 +200,13 @@
   },
   "active": "4a2e3ee83b5c2360",
   "lastOpenFiles": [
+    "midi.md",
+    "credits.md",
     "settings.md",
     "supplemental.md",
     "sequencer.md",
     "operation.md",
     "synthesizer.md",
-    "credits.md",
-    "midi.md",
     "index.md",
     "assets/old/layer_syn_env.jpg",
     "assets/old",

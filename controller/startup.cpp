@@ -53,13 +53,11 @@ void startupRun() {
 
     storageSetup(storage_view);
 
-    if(versionWriteVersionToCleanStorage() || checkForRestoreMemoryRequest()) {
+    if(checkForRestoreMemoryRequest()) {
 
         storageWriteAllMemory(displayShowWritingNewPresets);
 
     }
-
-    versionUpdate();
 
     storageLoadPresetNames();
 

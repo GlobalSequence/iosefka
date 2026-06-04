@@ -1,6 +1,8 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+// ALL CODE REFERENCING FIRMWARE VERSIONS IS DEPRECATED
+
 // #define PROTOTYPE_BOARD
 // #define VERSION_TEST
 
@@ -8,9 +10,9 @@
 // version 0.1.1 2025.10.05
 // version 0.1.2 2025.10.06
 // version 1.0.0 2025.11.15
-#define VERSION_MAJOR 1
-#define VERSION_MINOR 0
-#define VERSION_PATCH 2
+// #define VERSION_MAJOR 1
+// #define VERSION_MINOR 0
+// #define VERSION_PATCH 2
 
 // ################################################################
 // 

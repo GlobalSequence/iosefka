@@ -98,9 +98,9 @@ void ModMatrix::triggerNoteOff(uint8_t note) {
 
 void ModMatrix::loadSources() {
 
-    mod_source_[MOD_SRC_ENV_1] = env_[0].Render() >> 5;
-    mod_source_[MOD_SRC_ENV_2] = env_[1].Render() >> 5;
-    mod_source_[MOD_SRC_ENV_3] = env_[2].Render() >> 5;
+    mod_source_[MOD_SRC_ENV_1] = env_[0].Render() >> 4;
+    mod_source_[MOD_SRC_ENV_2] = env_[1].Render() >> 4;
+    mod_source_[MOD_SRC_ENV_3] = env_[2].Render() >> 4;
     mod_source_[MOD_SRC_LFO_1] = LFORender(&lfo_[0]);
     mod_source_[MOD_SRC_LFO_2] = LFORender(&lfo_[1]);
     mod_source_[MOD_SRC_LFO_3] = LFORender(&lfo_[2]);
@@ -123,24 +123,24 @@ void ModMatrix::loadSources() {
     dst_[MOD_DST_FILTER_FM] =  patch_->filter.fm << 4;
     dst_[MOD_DST_FILTER_TRACKING] = patch_->filter.tracking << 4;
 
-    dst_[MOD_DST_OSC_1_PITCH] = 2048;
-    dst_[MOD_DST_OSC_2_PITCH] = 2048;
-    dst_[MOD_DST_OSC_BOTH_PITCH] = 2048;
+    dst_[MOD_DST_OSC_1_PITCH] = 0;
+    dst_[MOD_DST_OSC_2_PITCH] = 0;
+    dst_[MOD_DST_OSC_BOTH_PITCH] = 0;
     dst_[MOD_DST_OSC_1_PITCH_FINE] = 2048;
     dst_[MOD_DST_OSC_2_PITCH_FINE] = 2048;
     dst_[MOD_DST_OSC_BOTH_PITCH_FINE] = 2048;
 
     dst_[MOD_DST_OSC_1_OCTAVE] = patch_->osc[0].octave << 4;
     dst_[MOD_DST_OSC_2_OCTAVE] = patch_->osc[1].octave << 4;
-    dst_[MOD_DST_OSC_BOTH_OCTAVE] = 2048;
+    dst_[MOD_DST_OSC_BOTH_OCTAVE] = 0;
 
     dst_[MOD_DST_OSC_1_X_MORPH] = patch_->osc[0].x_morph << 4;
     dst_[MOD_DST_OSC_1_Y_MORPH] = patch_->osc[0].y_morph << 4;
-    dst_[MOD_DST_OSC_BOTH_X_MORPH] = 2048;
+    dst_[MOD_DST_OSC_BOTH_X_MORPH] = 0;
 
     dst_[MOD_DST_OSC_2_X_MORPH] = patch_->osc[1].x_morph << 4;
     dst_[MOD_DST_OSC_2_Y_MORPH] = patch_->osc[1].y_morph << 4;
-    dst_[MOD_DST_OSC_BOTH_Y_MORPH] = 2048;    
+    dst_[MOD_DST_OSC_BOTH_Y_MORPH] = 0;    
 
     dst_[MOD_DST_PORTAMENTO] = patch_->shared.portamento << 4;
     dst_[MOD_DST_PHASE_MOD] = PhaseModSmooth.getAverage(patch_->shared.phase_mod) << 4;
@@ -233,7 +233,22 @@ void ModMatrix::processModulation() {
             modulation += U8S16MULSHIFT8(source, amount);
         }
 
-        dst_[destination] = U12CLIPMAXMIN(modulation);
+        switch(destination) {
+
+            case MOD_DST_OSC_1_PITCH:
+            case MOD_DST_OSC_2_PITCH:
+            case MOD_DST_OSC_BOTH_PITCH:
+            case MOD_DST_OSC_BOTH_OCTAVE:
+            case MOD_DST_OSC_BOTH_X_MORPH:
+            case MOD_DST_OSC_BOTH_Y_MORPH:
+                dst_[destination] = modulation;
+                break;
+            
+            default: dst_[destination] = U12CLIPMAXMIN(modulation); break; 
+
+        }
+
+        // dst_[destination] = U12CLIPMAXMIN(modulation);
     }
 }
 
@@ -288,12 +303,12 @@ void ModMatrix::updateDestinations()
     uint16_t pb_range = (ext_mod_->pitch_bend_depth_send + 1) << 8;
     int16_t pitch_bend_scaled = linearScale(pb, 8192, pb_range);
 
-    int16_t osc_both_coarse = dst_[MOD_DST_OSC_BOTH_PITCH] - 2048;
+    int16_t osc_both_coarse = dst_[MOD_DST_OSC_BOTH_PITCH];
     int16_t osc_both_fine = bipolarParameter((dst_[MOD_DST_OSC_BOTH_PITCH_FINE]) >> 4) * 4;
-    int16_t osc_both_octave = dst_[MOD_DST_OSC_BOTH_OCTAVE] - 2048;
+    int16_t osc_both_octave = dst_[MOD_DST_OSC_BOTH_OCTAVE];
 
     v_i->osc_pitch_mod[0] = 
-        ((dst_[MOD_DST_OSC_1_PITCH] - 2048) + osc_both_coarse) << 3;
+        ((dst_[MOD_DST_OSC_1_PITCH]) + osc_both_coarse) << 3;
     v_i->osc_scale[0] = 
         ((bipolarParameter(patch_->osc[0].scale) * 2) * 12) + 
         bipolarParameter((dst_[MOD_DST_OSC_1_PITCH_FINE]) >> 4) * 2 + 
@@ -303,7 +318,7 @@ void ModMatrix::updateDestinations()
         U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_OCTAVE] + osc_both_octave) >> 10; 
 
     v_i->osc_pitch_mod[1] = 
-        ((dst_[MOD_DST_OSC_2_PITCH] - 2048) + osc_both_coarse) << 3;
+        ((dst_[MOD_DST_OSC_2_PITCH]) + osc_both_coarse) << 3;
     v_i->osc_scale[1] = 
         ((bipolarParameter(patch_->osc[1].scale) * 2) * 12) + 
         bipolarParameter((dst_[MOD_DST_OSC_2_PITCH_FINE]) >> 4) * 2 +
@@ -312,8 +327,8 @@ void ModMatrix::updateDestinations()
     v_i->osc_octave[1] = 
         U12CLIPMAXMIN(dst_[MOD_DST_OSC_2_OCTAVE] + osc_both_octave) >> 10; 
 
-    int16_t osc_both_x_morph = dst_[MOD_DST_OSC_BOTH_X_MORPH] - 2048;
-    int16_t osc_both_y_morph = dst_[MOD_DST_OSC_BOTH_Y_MORPH] - 2048;
+    int16_t osc_both_x_morph = dst_[MOD_DST_OSC_BOTH_X_MORPH];
+    int16_t osc_both_y_morph = dst_[MOD_DST_OSC_BOTH_Y_MORPH];
 
     v_i->x_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_X_MORPH] + osc_both_x_morph) >> 4;
     v_i->y_morph[0] = U12CLIPMAXMIN(dst_[MOD_DST_OSC_1_Y_MORPH] + osc_both_y_morph) >> 4;

@@ -88,3 +88,11 @@
 | 88            | Loop (Envelope 1)                       |
 | 89            | Loop (Envelope 2)                       |
 | 90            | Loop (Envelope 3)                       |
+## MIDI Output
+Iosefka is capable of transmitting the following messages via the MIDI Output jack:
+### Note On/Off
+Notes played on the ***Key Switches***, as well as notes played via the Sequencer, and notes that are sent to the MIDI Input jack that are on the current MIDI Channel will all be transmitted.
+### Clock
+Clock messages are sent from Iosefka's internal Sequencer clock unless there is an incoming MIDI clock and the MIDI Clock RX setting is ON, in which case Iosefka passes the external clock message from the transmitting device to the MIDI Output.
+### Transport
+MIDI Start and Stop messages are sent when the ***Play Switch*** is pressed, and will start and stop respectively with the sequencer state. If MIDI Transport RX setting is ON, MIDI Start and Stop messages sent to the MIDI Input will be passed to the output from the transmitting device.
