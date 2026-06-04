@@ -436,7 +436,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>The filter output is then fed back into the filter cutoff CV path for audio-rate frequency modulation with a Parameter to control the intensity of the modulation applied. In moderate amounts, this adds an almost overdrive or distortion to the sound. In high amounts, and at high resonance, this becomes absolute audio chaos, if you're into that sort of thing. When the Parameter is turned all the way down, the frequency modulation is not applied and therefore not audible.</p>
 <p>Envelope 2 is hard-wired to the filter cutoff, and there is a Parameter dedicated to bipolar envelope amount.</p>
 <p><strong>Parameters:</strong></p>
-<div class="joplin-table-wrapper"><table><thead><tr><th><p><strong>Parameter name</strong></p></th><th><p><strong>Function</strong></p></th></tr><tr><th><p>Cutoff</p></th><th><p>The point at which frequencies begin to become attenuated</p></th></tr><tr><th><p>Resonance</p></th><th><p>The amount of emphasis given to the audio at the cutoff point</p></th></tr><tr><th><p>F. Env. Level (Filter Envelope Level)</p></th><th><p>How much of Envelope 2 is applied to the filter cutoff amount. This is a <a href="#synthesizer-operation.md-bipolar-values">Bipolar value</a></p><p>Note: Holding shift and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0. This is a quick way to turn the modulation 'off'</p></th></tr><tr><th><p>F. Type (Filter Type)</p></th><th><p>Selecting between the four filter types:</p><ul><li>2 Pole Low Pass</li><li>4 Pole Low Pass</li><li>2 Pole High Pass</li><li>2 Pole Band Pass</li></ul></th></tr><tr><th><p>F. FM (Filter Frequency Modulation)</p></th><th><p>The amount of audio rate modulation fed from the filter output back into the filter cutoff</p></th></tr><tr><th><p>F. Track (Filter Tracking)</p></th><th><p>The amount of note tracking applied to the filter. When turned up all the way, the filter can be played just like an oscillator.</p></th></tr></thead></table></div>
+<div class="joplin-table-wrapper"><table><thead><tr><th><p><strong>Parameter name</strong></p></th><th><p><strong>Function</strong></p></th></tr><tr><th><p>Cutoff</p></th><th><p>The point at which frequencies begin to become attenuated</p></th></tr><tr><th><p>Resonance</p></th><th><p>The amount of emphasis given to the audio at the cutoff point</p></th></tr><tr><th><p>F. Env. Level (Filter Envelope Level)</p></th><th><p>How much of Envelope 2 is applied to the filter cutoff amount. This is a <a href="#synthesizer-operation.md-bipolar-values">Bipolar value</a></p><p>Note: Holding shift and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0x80. This is a quick way to turn the modulation 'off'</p></th></tr><tr><th><p>F. Type (Filter Type)</p></th><th><p>Selecting between the four filter types:</p><ul><li>2 Pole Low Pass</li><li>4 Pole Low Pass</li><li>2 Pole High Pass</li><li>2 Pole Band Pass</li></ul></th></tr><tr><th><p>F. FM (Filter Frequency Modulation)</p></th><th><p>The amount of audio rate modulation fed from the filter output back into the filter cutoff</p></th></tr><tr><th><p>F. Track (Filter Tracking)</p></th><th><p>The amount of note tracking applied to the filter. When turned up all the way, the filter can be played just like an oscillator.</p></th></tr></thead></table></div>
 
 <h3 id="synthesizer-amplifier">Amplifier</h3>
 <p>The voltage controlled amplifier is based around the venerable LM13700 dual OTA chip. The amplifier provides a linear response with a 'vintage' sound.</p>
@@ -501,7 +501,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td>- Level +</td>
-<td>Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a <a href="#operation-bipolar-values">Bipolar value</a><br>Holding <strong><em>Shift switch</em></strong> and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0. This is a quick way to turn the modulation 'off'</td>
+<td>Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a <a href="#operation-bipolar-values">Bipolar value</a><br>Holding <strong><em>Shift switch</em></strong> and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0x80. This is a quick way to turn the modulation 'off'</td>
 </tr>
 </tbody>
 </table>
@@ -536,7 +536,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td>- Level +</td>
-<td>Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a <a href="#operation-bipolar-values">Bipolar value</a><br>Note: Holding shift and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0. This is a quick way to turn the modulation 'off'</td>
+<td>Bipolar Parameter level control allowing for non-inverted or inverted LFO modulation. This is a <a href="#operation-bipolar-values">Bipolar value</a><br>Note: Holding shift and turning the <strong><em>Potentiometer</em></strong> will snap this Parameter to 0x80. This is a quick way to turn the modulation 'off'</td>
 </tr>
 </tbody>
 </table>
@@ -2024,6 +2024,38 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <tr>
 <td>90</td>
 <td>Loop (Envelope 3)</td>
+</tr>
+<tr>
+<td>## MIDI Output</td>
+<td></td>
+</tr>
+<tr>
+<td>Iosefka is capable of transmitting the following messages via the MIDI Output jack:</td>
+<td></td>
+</tr>
+<tr>
+<td>### Note On/Off</td>
+<td></td>
+</tr>
+<tr>
+<td>Notes played on the <strong><em>Key Switches</em></strong>, as well as notes played via the Sequencer, and notes that are sent to the MIDI Input jack that are on the current MIDI Channel will all be transmitted.</td>
+<td></td>
+</tr>
+<tr>
+<td>### Clock</td>
+<td></td>
+</tr>
+<tr>
+<td>Clock messages are sent from Iosefka's internal Sequencer clock unless there is an incoming MIDI clock and the MIDI Clock RX setting is ON, in which case Iosefka passes the external clock message from the transmitting device to the MIDI Output.</td>
+<td></td>
+</tr>
+<tr>
+<td>### Transport</td>
+<td></td>
+</tr>
+<tr>
+<td>MIDI Start and Stop messages are sent when the <strong><em>Play Switch</em></strong> is pressed, and will start and stop respectively with the sequencer state. If MIDI Transport RX setting is ON, MIDI Start and Stop messages sent to the MIDI Input will be passed to the output from the transmitting device.</td>
+<td></td>
 </tr>
 </tbody>
 </table></section><section class="print-page" id="credits" heading-number="8"><h1 id="credits-credits-acknowledgements-and-more"><strong>Credits, Acknowledgements, and More</strong></h1>
