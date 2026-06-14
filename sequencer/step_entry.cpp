@@ -1,3 +1,18 @@
+// Copyright (C) 2026 Cory Oleson <globeseq@gmail.com>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "step_entry.h"
 #include <stdio.h>
 #include "pico/stdlib.h"
@@ -10,6 +25,7 @@ static Sequencer* seq;
 
 // live step record variables
 bool step_record = false;
+bool* rec_click;
 
 uint8_t step_tick_boundary[NUMBER_OF_CLOCK_DIVS];
 const uint8_t k_tick_boundary_divider = 4;
@@ -34,9 +50,10 @@ void copyStepByIndex(uint to, step_data_t data, bool active, bool written);
 
 // public functions
 
-void stepEntrySetup(Sequencer* sequencer) {
+void stepEntrySetup(Sequencer* sequencer, bool* record_click) {
 
     seq = sequencer;
+    rec_click = record_click;
 
     for(int i = 0; i < NUMBER_OF_CLOCK_DIVS; i++) {
 
@@ -273,4 +290,12 @@ void copyStepByIndex(uint to, step_data_t data, bool active, bool written) {
         seq->resetWrittenStep(to);
         seq->resetActiveStep(to);
     }
+}
+
+bool stepEntryRunClick() {
+
+    if(*rec_click && step_record) return true;
+
+    return false;
+
 }

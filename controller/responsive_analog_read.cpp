@@ -1,10 +1,11 @@
-// TODO: Provide proper attribution!!!
-
 /*
+ * MIT License
+ *
  * ResponsiveAnalogRead.cpp
  * Arduino library for eliminating noise in analogRead inputs without decreasing responsiveness
  *
  * Copyright (c) 2016 Damien Clarke
+ * Copyright (c) 2026 Cory Oleson
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +24,9 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ * 
+ * Modifications by Cory Oleson
+ * - Ported to RPI Pico IDE compatibility from Arduino code
  */
 
 //#include <Arduino.h>

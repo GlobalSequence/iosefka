@@ -7,6 +7,8 @@ This section describes the different settings in the Settings menu and how to co
 ### List of Parametric Settings
 This table contains the settings within the settings menu, a short description, the default value, and whether the parameter is Global (affects all presets) or Preset Specific. 
 
+**Note:** Global settings are saved when [Saving a Preset](#saving-a-preset).  
+
 Links are included to sections with more in-depth descriptions.
 
 | **Setting**     | **Description**                                                                                                                                                                                                                                          | Default value        | Global or Preset Specific |
@@ -24,6 +26,7 @@ Links are included to sections with more in-depth descriptions.
 | Pgm Chg RX      | Toggles MIDI Program Change Receive on/off. With this setting off, Iosefka will ignore external Program Change messages\*                                                                                                                                | On                   | Global                    |
 | Latch           | Toggles Parameter Latch on/off. With Latch enabled, Parameters will not change until the corresponding ***Potentiometer*** is near the parameter value. This prevents a parameter from 'jumping' to a value drastically different than the current value | Off                  | Global                    |
 | P.B. Dpth       | Selects the Pitch Bend Depth in musical semitones. The value set will be +/- this number. For example, a setting of '1' means that the pitch bend will be +1 and -1 semitones at the extremes                                                            | 1                    | Global                    |
+| Rec Click       | Toggles the click on/off when [Live Step Recording](./sequencer.md#live-step-recording) into the sequencer                                                                                                                                               | Off                  | Global                    |
 | Scope           | Switches ***OLED Display*** to [Oscilloscope](./supplemental.md#oscilloscope)                                                                                                                                                                            | N/A                  | N/A                       |
 | Init (Shift)    | When shift is held, this setting initializes the preset to the 'factory' default. This is the default preset for all presets.                                                                                                                            | N/A                  | Preset                    |
 

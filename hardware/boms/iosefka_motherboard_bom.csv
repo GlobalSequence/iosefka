@@ -1,0 +1,56 @@
+Reference,Value,Datasheet,Footprint,Qty,Comments
+"C1,C16,C20",100u,,values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE,3,
+"C2,C17",220u,,values_not_refs:CP_Radial_D8.0mm_P2.50mm_VALUE,2,
+"C3,C5,C6,C7,C10,C11,C12,C18,C28,C29,C31,C33,C34,C37,C38,C39,C40",100n,,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,17,
+C4,10p,,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,1,
+"C8,C15,C25,C30,C36",4.7u NP,,values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE,5,Non-polar audio capacitors. Will not work with standard electrolytics.
+C9,4.7u,,values_not_refs:CP_Radial_D6.3mm_P2.50mm_VALUE,1,
+"C13,C14,C44",100p,,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,3,
+C19,10u,,Capacitor_THT:CP_Radial_D5.0mm_P2.50mm,1,
+"C21,C22,C23,C24",680p,,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,4,
+C26,47n,,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,1,
+"C27,C43",4.7n,,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,2,
+C42,470p,,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,1,
+"D1,D4,D5",BAT85,https://assets.nexperia.com/documents/data-sheet/BAT85.pdf,Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal,3,
+D3,1N4001,http://www.vishay.com/docs/88503/1n4001.pdf,Diode_THT:D_DO-41_SOD81_P10.16mm_Horizontal,1,
+J1,Audio Out,,Connector_Audio:Jack_6.35mm_Neutrik_NMJ4HCD2_Horizontal,1,
+J2,DC In,,Connector_BarrelJack:BarrelJack_Horizontal,1,
+J3,Audio In,,Connector_Audio:Jack_6.35mm_Neutrik_NMJ4HCD2_Horizontal,1,
+"J4,J5,J6,J9",Conn_01x10,,Connector_PinSocket_2.54mm:PinSocket_1x10_P2.54mm_Vertical,4,These are female pin sockets. 2 of 4 are optional if you plan to solder the SSI2140 directly to the PCB.
+"J7,J8",Conn_01x08,,,2,These are female pin sockets. These are optional if you plan to solder the LM13700 directly to the PCB. 
+,Conn_01x10,,,2,Male pin headers. These are optional if you plan to solder the SSI2140 directly to the PCB.
+,Conn_01x08,,,2,Male pin headers. These are optional if you plan to solder the LM13700 directly to the PCB. 
+"Q1,Q2",2N3906,https://www.onsemi.com/pub/Collateral/2N3906-D.PDF,values_not_refs:TO-92_Inline_Wide,2,
+"R1,R2,R4,R5,R7,R8,R10,R11,R17,R35,R37,R43",15k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,12,"All resistors ¼W, 1% metal film recommended"
+"R3,R6,R9,R12,R32",470R,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,5,
+"R13,R41,R44,R45,R48,R49,R57",10k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,7,
+"R14,R36",7.5k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,2,
+R15,220k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,1,
+"R16,R46,R55",20k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,3,
+"R18,R24,R28",2.2k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,3,
+"R19,R22",100k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,2,
+"R21,R23,R33,R34,R38,R39,R47",30k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,7,
+"R25,R29",12k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,2,
+R27,DNP,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,1,DNP = Do not place. No resistor goes here. It's a vestige from an older version of the schematic. 
+"R30,R31",1k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,2,
+R42,47k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,1,
+"R50,R51",4.7k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,2,
+R56,5.1k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,1,
+"RV1, RV3","10k Offset, 10k Tracking",,Potentiometer_THT:Potentiometer_Bourns_3266Z_Horizontal,2,Recommended Model: Bourns 3296X-1-103LF 
+RV2,A100k,,Potentiometer_THT:Potentiometer_Bourns_PTV09A-2_Single_Horizontal,1,"Recommended model: Bourns PTV09A-2015U-B103. Note that this is NOT a logarithmic pot as the schematic recommends. If you can find a horizontal pot that is, use that one, and tell me where you found it!"
+U1,LM7805_TO220,https://www.onsemi.cn/PowerSolutions/document/MC7800-D.PDF,Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown,1,
+U2,LM7905_TO220,https://www.onsemi.com/pub/Collateral/MC7900-D.PDF,Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown,1,
+U3,LT1054,https://www.analog.com/media/en/technical-documentation/data-sheets/1054lfh.pdf,Package_DIP:DIP-8_W7.62mm_Socket,1,
+U4,SSI2140,https://www.soundsemiconductor.com/downloads/ssi2140datasheet.pdf,Package_SO:SSOP-20_5.3x7.2mm_P0.65mm,1,
+U5,24LC256,http://ww1.microchip.com/downloads/en/devicedoc/21203m.pdf,Package_DIP:DIP-8_W7.62mm_Socket,1,
+U6,Raspberry Pi Pico,,Module:RaspberryPi_Pico_Common_THT_NO_WIFI,1,"This is the Raspberry Pi Pico 1, with the RP2040 chip. This has not been tested with the RP2350 or other models. "
+U7,MCP3201,http://ww1.microchip.com/downloads/en/DeviceDoc/21290D.pdf,Package_DIP:DIP-8_W7.62mm_Socket,1,
+U8,MCP4822,http://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf,Package_DIP:DIP-8_W7.62mm_Socket,1,
+U9,CD4051B,http://www.ti.com/lit/ds/symlink/cd4052b.pdf,Package_DIP:DIP-16_W7.62mm_Socket,1,
+"U11,U12",TL074,http://www.ti.com/lit/ds/symlink/tl071.pdf,Package_DIP:DIP-14_W7.62mm_Socket,2,
+U14,LM13700,http://www.ti.com/lit/ds/symlink/lm13700.pdf,Package_SO:SOIC-16_3.9x9.9mm_P1.27mm,1,
+,"16 pin dip socket, 7.26mm row pitch",,,1,
+,"14 pin dip socket, 7.26mm row pitch",,,2,
+,"8 pin dip socket, 7.26mm row pitch",,,4,
+,SSI2140 Breakout,,,1,Gerber files found here. This is optional if you plan to solder the SSI2140 directly to the PCB. 
+,LM13700 Breakout,,,1,Gerber files found here. This is optional if you plan to solder the LM13700 directly to the PCB. 

@@ -1,0 +1,19 @@
+Reference,Value,Datasheet,Footprint,Qty,Comments
+"C1,C2,C3,C4,C5,C6",100n,,Capacitor_THT:C_Rect_L7.0mm_W2.0mm_P5.00mm,6,Box capacitors recommended for aesthetic purposes.
+"D1,D2,D3,D4,D5,D6,D7,D8","LED, Red",,LED_THT:LED_D3.0mm,8,
+D9,1N4148W,https://www.vishay.com/docs/85748/1n4148w.pdf,Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal,1,
+"J1,J2",Conn_01x10,,Connector_PinSocket_2.54mm:PinSocket_1x10_P2.54mm_Vertical,2,"These are 10 pin male headers, not female pin sockets. "
+"J3,J6",DIN-5_180degree,http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf,Eurocad:MIDI_DIN5,2,
+"R1,RV1,RV2,RV3,RV4,RV5,RV6,RV7,RV8,RV9,RV10,RV11,RV12,RV13,RV14,RV15",10k,,"Potentiometer_THT:Potentiometer_Bourns_PTV09A-1_Single_Vertical,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal",15,10k linear potentiometers
+"R2,R3,R4,R5,R6,R7,R8,R9",470R,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,8,"All resistors ¼W, 1% metal film recommended"
+"R10,R53,R54",220R,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,3,
+R52,270R,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,1,
+SW1,RotaryEncoder_Switch,,Rotary_Encoder:RotaryEncoder_Alps_EC11E-Switch_Vertical_H20mm,1,"Recommended model: Bourns PEC12R-4225F-S0024. Many encoder models fit this footprint, but note: A lot of encoders I've used had the A and B pins reversed, and turned backwards as a result. "
+"SW2,SW3,SW4,SW5,SW6,SW7,SW8,SW9,SW10,SW11,SW12,SW13,SW14,SW15,SW16,SW17,SW18,SW19,SW20,SW21",SW_Push,,Button_Switch_THT:SW_PUSH_6mm,20,Recommended model: E-Switch TL1105BF250Q. These are the red ones.
+U1,SSD1306_SPI,,SSD1306:128x64_0.96_Disp_Module,1,"Use a 128x64 SPI display, NOT an I2C. You can tell it's SPI if it has 7 pins. If it has 4 pins, it's an I2C model."
+"U2,U3",MCP23017_SP,http://ww1.microchip.com/downloads/en/DeviceDoc/20001952C.pdf,Package_DIP:DIP-28_W7.62mm_Socket,2,
+"U4,U5",4051,http://www.intersil.com/content/dam/Intersil/documents/cd40/cd4051bms-52bms-53bms.pdf,Package_DIP:DIP-16_W7.62mm_Socket,2,
+U14,H11L1,https://www.onsemi.com/pub/Collateral/H11L3M-D.PDF,Package_DIP:DIP-6_W7.62mm_Socket,1,
+,"28 pin dip socket, 7.26mm row pitch",,,2,
+,"16 pin dip socket, 7.26mm row pitch",,,2,
+,"6 pin dip socket, 7.26mm row pitch",,,1,

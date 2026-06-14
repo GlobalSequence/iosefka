@@ -1,3 +1,20 @@
+// Copyright (C) 2026 Cory Oleson <globeseq@gmail.com>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// ---
+// This program borrows code from Emilie Gillet's Mutable Instruments Shruthi-1 project.
+
 #include "mod_matrix.h"
 
 bool ModMatrix::lfo_reset_sync[4][2] {
@@ -478,9 +495,13 @@ void ModMatrix::updateDestinations()
     // the type is determined here;
     d_i->type = dst_[MOD_DST_DELAY_TYPE] >> 10;
 
+    // non clock sync'd delay calculations
     uint16_t delay_rate_default = dst_[MOD_DST_DELAY_RATE] << 4;
-    uint16_t delay_rate_sync = (48000ULL * ((uint64_t)clock_period * (uint64_t)clock_sync_div_val[15 - (dst_[MOD_DST_DELAY_RATE] >> 8)])) / 1000000ULL;
     uint16_t delay_rate_short = osc_increments[dst_[MOD_DST_DELAY_RATE] >> 5] >> 16;
+
+    // clock sync'd delay calculations
+    // TEST_PRINT_ONE_NL(clock_period)
+    uint16_t delay_rate_sync = (48000ULL * ((uint64_t)clock_period * (uint64_t)clock_sync_div_val[15 - (dst_[MOD_DST_DELAY_RATE] >> 8)])) / 1000000ULL;
 
     switch(d_i->type) {
         

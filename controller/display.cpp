@@ -1,4 +1,19 @@
-// in the event I've apologize for the code anywhere else, I apologize especially in this file
+// Copyright (C) 2026 Cory Oleson <globeseq@gmail.com>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+// ... in the event I've apologized for the code anywhere else, I apologize especially in this file
 
 #include "display.h"
 #include "../common/globals.h"
@@ -1114,6 +1129,11 @@ void displayPageSettings() {
                     val[i] = graphicsGetDecString(synth->settings.pitch_bend_depth + 1);
                     break;
 
+                case SET_ROW_RECORD_CLICK:
+                    str[i] = s(STRING_RECORD_CLICK);
+                    checkbox[i] = synth->settings.record_click;
+                    break;
+
                 case SET_ROW_MOD_SRC:
                     str[i] = s(STRING_MOD_SOURCE);
                     val[i] = graphicsGetModSource(src);
@@ -1160,6 +1180,7 @@ void displayPageSettings() {
                 case SET_ROW_OSC_DUO:
                 case SET_ROW_VCA_VELOCITY:
                 case SET_ROW_POT_LATCH:
+                case SET_ROW_RECORD_CLICK:
                     if(row_ref == row_type[i]) outline = false;
                     checkBox(k_settings_checkbox_x, y, checkbox[i]);
                     break;

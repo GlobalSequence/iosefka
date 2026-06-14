@@ -1,0 +1,11 @@
+Reference,Value,Datasheet,Footprint,Qty,Comments
+,Conn_01x20,,Pin Header 2.54mm 1x20 vertical,2,Male pin headers soldered into the Raspberry Pi Pico
+,Conn_01x20,,Connector_PinSocket_2.54mm:PinSocket_1x20_P2.54mm_Vertical,2,Female pin headers used to mount the Raspberry Pi Pico into the motherboard.  
+,Conn_01x20,,Stackable Pin Socket 2.54mm 1x10 vertical,2,This stackable pin socket goes between the pin header of the controboard and the pin socket of the motherboard. Must be stackable e.g. have long pins. Exact pin length is unimportant as they will be cut down. See build instructions.
+,,,"M3 screw, 10mm length",6,
+,,,"M3 standoff spacer, 20mm length, female",6,
+,,,"M3 hexagon screw, 8mm length",6,
+,,,"M3 hex nut, nylon",6,"This goes between the bottomboard and motherboard. If you can find a non-threaded M3 spacer that’s 3mm tall, it may be preferred. This nylon hex nut is fine, see build guide for more details. "
+,,,"M2 screw, 8mm length",4,For OLED Display mounting
+,,,M2 hex nut,4,For OLED Display mounting
+,,,"Self adhesive rubber feet, small",4,You choose the size. I used 10mm wide.

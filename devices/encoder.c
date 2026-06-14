@@ -1,11 +1,31 @@
+// Copyright (c) 2019 Mostly Megan
+// Copyright (c) 2026 Cory Oleson
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+//
+// This file is derived from MostlyMegan's code found here:
+// https://www.reddit.com/r/raspberrypipico/comments/pacarb/sharing_some_c_code_to_read_a_rotary_encoder/
+//
+// Modifications by Cory Oleson:
+// - Changed some text
+
 #include "encoder.h"
 
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
 #include "hardware/irq.h"
-
-
 
 static uint8_t enc_pin_a, enc_pin_b;
 static bool event_occurred;
@@ -23,9 +43,7 @@ void encoderCallback(uint gpio, uint32_t events) {
 
 	uint32_t gpio_state = 0;
 
-	gpio_state = (gpio_get_all() >> enc_pin_a) & 0b011;  	// get all GPIO them mask out all but bits 10, 11, 12
-													// This will need to change to match which GPIO pins are being used.
-
+	gpio_state = (gpio_get_all() >> enc_pin_a) & 0b011;  	
 	
 	static bool ccw_fall = 0;  //bool used when falling edge is triggered
 	static bool cw_fall = 0;

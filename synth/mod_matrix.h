@@ -1,3 +1,20 @@
+// Copyright (C) 2026 Cory Oleson <globeseq@gmail.com>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// ---
+// This program borrows code from Emilie Gillet's Mutable Instruments Shruthi-1 project.
+
 #ifndef MOD_MATRIX_H
 #define MOD_MATRIX_H
 
@@ -58,6 +75,9 @@ class ModMatrix {
 
         static bool lfo_reset_sync[4][2];
         uint16_t lfo_tick_count[NUMBER_OF_LFOS];
+
+        uint16_t delay_tick_count_;
+        uint16_t delay_rate_sync_out_;
 
         bool vca_drone_mode_;
         uint16_t seed_;

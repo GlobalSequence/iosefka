@@ -1,3 +1,18 @@
+// Copyright (C) 2026 Cory Oleson <globeseq@gmail.com>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "version.h"
 #include <stdio.h>
 #include <string.h>
@@ -226,48 +241,54 @@ void versionMigratePresetv0_1_2_to_1_0_0() {
 
 void versionParameterHotfix() {
 
-    for(int i = 0; i < NUMBER_OF_PRESETS; i++) {
+    machine_settings_t s = storageLoadSettings();
 
-        synth_storable_t s = storageLoadPreset(i);
+    s.record_click = 0;
 
-        // s.patch.shared.bitrate_reduce = 0xFF;
-        // s.patch.shared.samplerate_reduce = 0xFF;
-        // s.pattern_gen.on = false;
-        user_param_t new_user_param;
-        // for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
-        //     if(i == 13) {
-        //         new_user_param.destination[i] = MOD_DST_BITRATE_REDUCE;
-        //     } else if (i == 14) {
-        //         new_user_param.destination[i] = MOD_DST_SAMPLERATE_REDUCE;
-        //     } else {
-        //         new_user_param.destination[i] = MOD_DST_NONE;
-        //     }
+    storageSaveSettings(s);
 
-        // }
+    // for(int i = 0; i < NUMBER_OF_PRESETS; i++) {
 
-        for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
-            if(i == 11) {
-                new_user_param.destination[i] = MOD_DST_ENV_1_LOOP;
-            } else if (i == 12) {
-                new_user_param.destination[i] = MOD_DST_ENV_2_LOOP;
-            } else if(i == 13) {
-                new_user_param.destination[i] = MOD_DST_ENV_3_LOOP;
-            } else if (i == 14) {
-                new_user_param.destination[i] = MOD_DST_VCA;
-            } else {
-                new_user_param.destination[i] = MOD_DST_NONE;
-            }
+    //     synth_storable_t s = storageLoadPreset(i);
 
-        }
-        s.user_param = new_user_param;
+    //     // s.patch.shared.bitrate_reduce = 0xFF;
+    //     // s.patch.shared.samplerate_reduce = 0xFF;
+    //     // s.pattern_gen.on = false;
+    //     user_param_t new_user_param;
+    //     // for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
+    //     //     if(i == 13) {
+    //     //         new_user_param.destination[i] = MOD_DST_BITRATE_REDUCE;
+    //     //     } else if (i == 14) {
+    //     //         new_user_param.destination[i] = MOD_DST_SAMPLERATE_REDUCE;
+    //     //     } else {
+    //     //         new_user_param.destination[i] = MOD_DST_NONE;
+    //     //     }
 
-        storageSavePreset(s, i);
+    //     // }
 
-        displayShowUpdatingPresets(i);
+    //     for(int i = 0; i < NUMBER_OF_POTENTIOMETERS; i++) {
+    //         if(i == 11) {
+    //             new_user_param.destination[i] = MOD_DST_ENV_1_LOOP;
+    //         } else if (i == 12) {
+    //             new_user_param.destination[i] = MOD_DST_ENV_2_LOOP;
+    //         } else if(i == 13) {
+    //             new_user_param.destination[i] = MOD_DST_ENV_3_LOOP;
+    //         } else if (i == 14) {
+    //             new_user_param.destination[i] = MOD_DST_VCA;
+    //         } else {
+    //             new_user_param.destination[i] = MOD_DST_NONE;
+    //         }
 
-        sleep_ms(10);
+    //     }
+    //     s.user_param = new_user_param;
 
-    }
+    //     storageSavePreset(s, i);
+
+    //     displayShowUpdatingPresets(i);
+
+    //     sleep_ms(10);
+
+    // }
 
 }
 

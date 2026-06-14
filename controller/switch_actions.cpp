@@ -1,3 +1,18 @@
+// Copyright (C) 2026 Cory Oleson <globeseq@gmail.com>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "switch_actions.h"
 #include <stdio.h>
 #include "pico/stdlib.h"
@@ -850,12 +865,13 @@ void switchActionsTakeInput(
                             case SET_ROW_MIDI_CLOCK: toggleSetting(&synth->settings.clock_rx); break;
                             case SET_ROW_MIDI_TRANS: toggleSetting(&synth->settings.transport_rx); break;
                             case SET_ROW_MIDI_PGM: toggleSetting(&synth->settings.program_change_rx); break;
-                            // needs to be toggled manually because it's not a boolean
+                            // needs to be toggled manually because it's not a boolean. Why? I don't remember.
                             case SET_ROW_LEGATO: synth->patch.shared.legato = synth->patch.shared.legato? 0 : 1;  break; 
                             case SET_ROW_OSC_DUO: synth->patch.shared.osc_duo = synth->patch.shared.osc_duo? 0: 1; break; // TODO: IMPLEMENT OSC DUO
                             case SET_ROW_VCA_VELOCITY: toggleSetting(&synth->patch.vca.velocity_on); break;
                             case SET_ROW_POT_LATCH: toggleSetting(&synth->settings.latch); break;
-                            case SET_ROW_SCOPE: 
+                            case SET_ROW_RECORD_CLICK: toggleSetting(&synth->settings.record_click); break;
+                             case SET_ROW_SCOPE: 
                                 viewSetScopeOn(true);
                                 viewSetMachineStateMode(MODE_SCOPE_DIV);
                                 viewSetPage(PAGE_KEYS);

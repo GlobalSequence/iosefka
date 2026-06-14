@@ -1,3 +1,18 @@
+// Copyright (C) 2026 Cory Oleson <globeseq@gmail.com>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "pico/multicore.h"
@@ -18,11 +33,7 @@ void core1_main() {
 
     while(1) {
 
-        // TEST_PRINT_MICROS_ELAPSED_START
-
         if(synthUpdate()) {
-
-        // TEST_PRINT_MICROS_ELAPSED_END
 
             control_flag = true;
         }
@@ -36,19 +47,9 @@ int main()
 
     bool clock_work = set_sys_clock_khz(192000, true);
 
-    // sleep_ms(4000);
-
     startupRun();
 
     multicore_launch_core1(core1_main);
-
-/*     sleep_ms(2000);
-    extern char __flash_binary_start;  // defined in linker script
-    extern char __flash_binary_end;    // defined in linker script
-    uintptr_t start = (uintptr_t) &__flash_binary_start;
-    uintptr_t end = (uintptr_t) &__flash_binary_end;
-    printf("Binary starts at %08x and ends at %08x, size is %08x\n", start, end, end-start); 
-*/
 
     while(1) {
 

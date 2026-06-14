@@ -1,3 +1,18 @@
+// Copyright (C) 2026 Cory Oleson <globeseq@gmail.com>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 #include "graphics.h"
 
 #include <stdio.h>
@@ -495,6 +510,7 @@ const char* graphicsGetSettingsString(settings_string_t string) {
         case STRING_OSC_DUO: return "osc duo"; break;
         case STRING_VCA_VELOCITY: return "vca velo"; break;
         case STRING_MOD_SOURCE: return "src:"; break;
+        case STRING_RECORD_CLICK: return "rec click"; break;
         case STRING_INIT_PATCH: return "init (shift)"; break;
         case STRING_SCOPE: return "scope"; break;
         

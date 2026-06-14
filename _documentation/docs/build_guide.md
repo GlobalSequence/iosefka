@@ -3,8 +3,8 @@
 This will walk you through the step-by-step process of populating the Iosefka PCB using components from the [Bill of Materials](TODO:ADDBOM), as well as uploading the firmware to the microcontroller. 
 
 *Note: This guide was made using an older version of the PCB. The only differences are a few of the component values (follow values on your PCB and you'll be fine), the omission of the 1M resistor which is now DNP (do not place) on the new PCB, some silk screen labels on the control board, and the addition of the 6th spacer between the Switch Keys.*
-## Disclaimer!
-We are not responsible for any accidents that arise during the build process. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.
+## DISCLAIMER
+We are not responsible for any accidents that arise during the build process, or in the course of operation. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.
 
 ## Tools
 **Required**
@@ -32,7 +32,7 @@ We are not responsible for any accidents that arise during the build process. An
 
 Flashing the firmware to the Raspberry Pi Pico is easy.
 
- - Download the iosefka.uf2 file TODO: LINK TO FILE HERE
+ - Download the iosefka.uf2 firmware file from here: TODO: LINK TO FILE HERE
  - Plug a micro USB cable into the Raspberry Pi Pico
  - Press the BOOTSEL pin on the Pico
  - With the BOOTSEL pin held down, plug the USB cable into the computer

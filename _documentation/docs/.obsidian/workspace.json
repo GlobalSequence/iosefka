@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "synthesizer.md",
+                "file": "build_guide.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "synthesizer"
+              "title": "build_guide"
             }
           }
         ],
@@ -200,26 +200,26 @@
   },
   "active": "4a2e3ee83b5c2360",
   "lastOpenFiles": [
+    "index.md",
+    "assets/cb_1_sockets.webp",
+    "build_guide.md",
+    "sequencer.md",
+    "settings.md",
+    "synthesizer.md",
     "midi.md",
     "credits.md",
-    "settings.md",
     "supplemental.md",
-    "sequencer.md",
     "operation.md",
-    "synthesizer.md",
-    "index.md",
     "assets/old/layer_syn_env.jpg",
     "assets/old",
     "assets/New folder",
     "assets/iosefka.webp",
     "assets/IMG_2584.webp",
-    "build_guide.md",
     "assets/l_synth1.webp",
     "assets/screen_save_complete.webp",
     "assets/screen_save.webp",
     "assets/l_lfo.webp",
     "assets/l_user.webp",
-    "assets/l_env.webp",
-    "assets/l_synth2.webp"
+    "assets/l_env.webp"
   ]
 }
