@@ -71,7 +71,7 @@ Iosefka is a hybrid digital analog monophonic synthesizer consisting of the foll
 [Iosefka Manual](https://globalsequence.github.io/iosefka/#)
 
 # Link to the Build Guide
-[Iosefka Build Guide]([Build Guide - Iosefka Manual](https://globalsequence.github.io/iosefka/#build_guide/)) (It's part of the manual)
+[Build Guide - Iosefka Manual](https://globalsequence.github.io/iosefka/#build_guide/) (It's part of the manual)
 
 # A Note to Developers, Engineers, and Generally Experienced People
 
