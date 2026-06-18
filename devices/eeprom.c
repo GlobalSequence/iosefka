@@ -39,7 +39,7 @@
 i2c_inst_t *i2c;
 uint8_t device_addr;
 
-static unsigned long wait_period_us = 6000;
+static unsigned long long wait_period_us = 6000;
 
 uint8_t read_buffer[EEPROM_24LC256_PAGE_SIZE_BYTES];
 
@@ -79,7 +79,7 @@ void eepromReadBytes(uint8_t *ptr, uint address, size_t size) {
 
 bool waitPeriodFinished() {
 
-    unsigned long start = time_us_64();
+    unsigned long long start = time_us_64();
 
     while(time_us_64() - start <= wait_period_us) {
         

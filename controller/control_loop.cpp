@@ -28,46 +28,12 @@
 #include "../common/globals.h"
 #include "../common/test.h"
 
-unsigned long last_update_pots;
-static const unsigned long k_interval_us_pots = 2000;
-
-unsigned long last_update_gpio_exp_port;
-static const unsigned long k_interval_us_gpio_exp_port = 2000;
-uint8_t gpio_exp_port_num_stepper;
-
-unsigned long last_update_encoder;
-static const unsigned long k_interval_us_encoder = 500;
-
-unsigned long last_update_midi;
-static const unsigned long k_interval_us_midi = 100;
-
-unsigned long last_update_display;
-static const unsigned long k_interval_us_display = 5000;
-
 // ################################
 // PRIVATE FUNCTIONS
 // ################################
 
-// ui polling loops
-void pollTimerPotentiometers(unsigned long time);
-void pollTimerGpioExpanders(unsigned long time);
-void pollTimerEncoder(unsigned long time);
-
-// MIDI polling loop
-bool pollTimerMidi(unsigned long time);
-
-// sequencer polling loop
-bool pollTimerSequencer(unsigned long time);
-
-// display polling loop
-void pollTimerDisplay(unsigned long time);
-
-// 
-
-////////////////////////////////////////////////
-
-
 uint8_t call_counter;
+uint8_t gpio_exp_port_num_stepper;
 
 bool pollMidi();
 void pollEncoder();
@@ -170,7 +136,7 @@ bool pollSequencer(bool flag) {
 
     if(flag) {
 
-        unsigned long time = time_us_64();
+        unsigned long long time = time_us_64();
 
         bool seq_event = seqPollUpdate(time);
         

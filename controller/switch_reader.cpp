@@ -20,8 +20,8 @@
 #include "common/globals.h"
 
 static switch_reader_t sr_struct;
-static const unsigned long k_switch_held_timeout = 1000000;
-static unsigned long time_switch_was_pressed[NUMBER_OF_SWITCHES_TOTAL];
+static const unsigned long long k_switch_held_timeout = 1000000;
+static unsigned long long time_switch_was_pressed[NUMBER_OF_SWITCHES_TOTAL];
 
 
 void switchReaderSubmit(switch_id_t sw, bool pressed) {
@@ -84,7 +84,7 @@ void switchReaderSubmit(switch_id_t sw, bool pressed) {
     if(sw == SW_SHIFT) sr_struct.shift = pressed;
     if(sw == SW_ENCODER) sr_struct.encoder_switch = pressed;
 
-    unsigned long now = time_us_64();
+    unsigned long long now = time_us_64();
 
     if(pressed) {
         

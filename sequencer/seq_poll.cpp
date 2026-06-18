@@ -28,7 +28,7 @@ static seqPollStartEventFunc startEventFunc;
 
 seqPollMidiCallbacks midi;
 
-unsigned long last_update_sequencer;
+unsigned long long last_update_sequencer;
 static uint8_t seq_active_step;
 static uint32_t tick_period;
 static bool tick_happened_func = false;
@@ -88,7 +88,7 @@ void seqPollTickCounterNow() {
 
 }
 
-bool seqPollUpdate(unsigned long time) {
+bool seqPollUpdate(unsigned long long time) {
 
     bool ext_clk_active = *ext_clk;
 

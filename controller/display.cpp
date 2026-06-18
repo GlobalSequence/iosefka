@@ -222,11 +222,11 @@ typedef struct disp_encoder_mode_t {
 
 static bool display_trigger = false;
 
-static unsigned long display_hang_timer_started;
-static const unsigned long k_display_hang_timer_timeout = 1000000;
+static unsigned long long display_hang_timer_started;
+static const unsigned long long k_display_hang_timer_timeout = 1000000;
 
-static unsigned long display_off_timer_started;
-static const unsigned long k_display_off_timer_timeout = 300000000;
+static unsigned long long display_off_timer_started;
+static const unsigned long long k_display_off_timer_timeout = 300000000;
 
 static bool display_hang_timer_active = false;
 static bool encoder_mode_show = false;
@@ -488,7 +488,7 @@ void displayHangTimerCheck() {
 
 void displayOffTimer(bool reset) {
 
-    unsigned long time = time_us_64();
+    unsigned long long time = time_us_64();
 
     if(reset) {
         display_off_timer_started = time;

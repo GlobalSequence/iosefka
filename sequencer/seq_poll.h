@@ -50,7 +50,7 @@ void seqPollSetup(
 
 void seqPollTickCounterNow();
 
-bool seqPollUpdate(unsigned long time);
+bool seqPollUpdate(unsigned long long time);
 
 void seqPollUpdateTickPeriod();
 

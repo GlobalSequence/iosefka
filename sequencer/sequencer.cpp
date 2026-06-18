@@ -16,7 +16,7 @@
 #include "sequencer.h"
 #include "../common/test.h"
 
-static const unsigned long ksecond_in_us_ = 60000000;
+static const unsigned long long ksecond_in_us_ = 60000000;
 uint8_t Sequencer::swing_ticks_by_division[NUMBER_OF_CLOCK_DIVS][NUMBER_OF_SWING_AMOUNT][2] = {
     {{48, 48}, {56, 40}, {64, 32}, {72, 24}},
     {{24, 24}, {28, 20}, {32, 16}, {36, 12}},

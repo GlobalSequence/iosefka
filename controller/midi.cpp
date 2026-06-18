@@ -140,9 +140,9 @@ uint8_t shift7BitValueTo8Bits(uint8_t val);
 void midiProcessEvent(midi_event_t m);
 void ccParser(uint8_t cc_number_, uint8_t value);
 
-static const unsigned long midi_ext_clk_timeout = 3000000;
+static const unsigned long long midi_ext_clk_timeout = 3000000;
 static uint midi_tick_period;
-static unsigned long midi_last_tick_time;
+static unsigned long long midi_last_tick_time;
 
 static uint8_t midiBytes[4];
 static uint16_t midiLength;
@@ -537,7 +537,7 @@ void midiExtClockCountdown() {
 
     if(synth->special.ext_clock_active) {
 
-        unsigned long now = time_us_64();
+        unsigned long long now = time_us_64();
 
         if(now - midi_last_tick_time >= midi_ext_clk_timeout) {
 

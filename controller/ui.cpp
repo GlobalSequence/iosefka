@@ -35,12 +35,12 @@ RingBuffer<event_t, EVENT_QUEUE_SIZE> event_queue;
 // UI TIMER DEFINES
 // ################################
 
-const unsigned long k_ui_timer_interval_us_pots = 2000;
-const unsigned long k_ui_timer_interval_us_gpio_exp_port = 2000;
-const unsigned long k_ui_timer_interval_us_encoder = 500;
-unsigned long ui_timer_last_update_time_pots = 0;
-unsigned long ui_timer_last_update_time_gpio_exp_port = 0;
-unsigned long ui_timer_last_update_time_encoder = 0;
+const unsigned long long k_ui_timer_interval_us_pots = 2000;
+const unsigned long long k_ui_timer_interval_us_gpio_exp_port = 2000;
+const unsigned long long k_ui_timer_interval_us_encoder = 500;
+unsigned long long ui_timer_last_update_time_pots = 0;
+unsigned long long ui_timer_last_update_time_gpio_exp_port = 0;
+unsigned long long ui_timer_last_update_time_encoder = 0;
 
 // ################################
 // POT MUX DEFINES (pot mux == cd4051)
@@ -52,7 +52,7 @@ uint16_t pot_val_upon_locking[k_num_mux_inputs_total];
 const int k_pot_lock_timeout = 1000;
 const uint8_t k_pot_unlock_threshold = 8;
 bool pot_sleep_timer_active[k_num_mux_inputs_total];
-unsigned long pot_began_sleeping_time[k_num_mux_inputs_total];
+unsigned long long pot_began_sleeping_time[k_num_mux_inputs_total];
 
 // temporary value to check potentiometer read
 uint16_t param_val[k_num_mux_inputs_total];
