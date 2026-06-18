@@ -43,6 +43,7 @@
               {title: "Wavetable Chart", url: "#wavetable-chart" },
               {title: "Modulation Destinations", url: "#modulation-destinations" },
               {title: "Oscilloscope", url: "#oscilloscope" },
+              {title: "Initializing All Presets", url: "#initializing-all-presets" },
           ]},
         ];
 
@@ -934,6 +935,17 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 - Oscillator 1 is low or off, and Oscillator 2 or resonant filter is the primary audio source
 - Oscillator 1's pitch is lower than the magnification can capture in one screen (if the waveform is 'larger' than will fit in one screen)</p>
 <p>Only 128 discrete points are rendered for each 'frame' of the oscilloscope, meaning that harmonically rich waveforms, or viewing higher pitches on lower magnifications will make the oscilloscope appear more 'broken up'. While the solution would be to draw a line between each discrete point, this is not possible due to processor limitations. I tried folks. </p>
+<h2 id="initializing-all-presets">Initializing All Presets</h2>
+<p>When you initialize all presets you are permanently overwriting the EEPROM to reset all presets and settings to their factory default. </p>
+<p>If you have just built a Iosefka, this step is necessary to format the EEPROM. </p>
+<h3 id="how-to">How to</h3>
+<p>With the device powered OFF (with power unplugged), hold down the following <strong><em>Switches</em></strong>
+- <strong><em>Play Switch</em></strong>
+- <strong><em>Synth 1 Switch</em></strong>
+- <strong><em>Envelope Switch</em></strong>
+- <strong><em>Sequencer Switch</em></strong></p>
+<p>With these <strong><em>Switches</em></strong> pressed, power the device on. You will see a screen on the <strong><em>OLED Display</em></strong> that says "writing new presets. please wait" with a counter of the currently written preset. </p>
+<p>Once this process is complete, you will be brought to the Synth 1 Page, and all Parameters will be set to default. </p>
 
   <br>
     

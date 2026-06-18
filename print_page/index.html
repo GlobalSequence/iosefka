@@ -729,6 +729,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p>This section describes the different settings in the Settings menu and how to control them. For this section it is assumed that you are in the settings menu.</p>
 <h3 id="settings-list-of-parametric-settings">List of Parametric Settings</h3>
 <p>This table contains the settings within the settings menu, a short description, the default value, and whether the parameter is Global (affects all presets) or Preset Specific. </p>
+<p><strong>Note:</strong> Global settings are saved when <a href="#settings-saving-a-preset">Saving a Preset</a>.  </p>
 <p>Links are included to sections with more in-depth descriptions.</p>
 <table>
 <thead>
@@ -816,6 +817,12 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <td>P.B. Dpth</td>
 <td>Selects the Pitch Bend Depth in musical semitones. The value set will be +/- this number. For example, a setting of '1' means that the pitch bend will be +1 and -1 semitones at the extremes</td>
 <td>1</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Rec Click</td>
+<td>Toggles the click on/off when <a href="#sequencer-live-step-recording">Live Step Recording</a> into the sequencer</td>
+<td>Off</td>
 <td>Global</td>
 </tr>
 <tr>
@@ -1702,7 +1709,18 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 - Oscillator 1 and 2 pitch are dissonant
 - Oscillator 1 is low or off, and Oscillator 2 or resonant filter is the primary audio source
 - Oscillator 1's pitch is lower than the magnification can capture in one screen (if the waveform is 'larger' than will fit in one screen)</p>
-<p>Only 128 discrete points are rendered for each 'frame' of the oscilloscope, meaning that harmonically rich waveforms, or viewing higher pitches on lower magnifications will make the oscilloscope appear more 'broken up'. While the solution would be to draw a line between each discrete point, this is not possible due to processor limitations. I tried folks. </p></section><section class="print-page" id="midi" heading-number="7"><h1 id="midi-midi-implementation"><strong>MIDI Implementation</strong></h1>
+<p>Only 128 discrete points are rendered for each 'frame' of the oscilloscope, meaning that harmonically rich waveforms, or viewing higher pitches on lower magnifications will make the oscilloscope appear more 'broken up'. While the solution would be to draw a line between each discrete point, this is not possible due to processor limitations. I tried folks. </p>
+<h2 id="supplemental-initializing-all-presets">Initializing All Presets</h2>
+<p>When you initialize all presets you are permanently overwriting the EEPROM to reset all presets and settings to their factory default. </p>
+<p>If you have just built a Iosefka, this step is necessary to format the EEPROM. </p>
+<h3 id="supplemental-how-to">How to</h3>
+<p>With the device powered OFF (with power unplugged), hold down the following <strong><em>Switches</em></strong>
+- <strong><em>Play Switch</em></strong>
+- <strong><em>Synth 1 Switch</em></strong>
+- <strong><em>Envelope Switch</em></strong>
+- <strong><em>Sequencer Switch</em></strong></p>
+<p>With these <strong><em>Switches</em></strong> pressed, power the device on. You will see a screen on the <strong><em>OLED Display</em></strong> that says "writing new presets. please wait" with a counter of the currently written preset. </p>
+<p>Once this process is complete, you will be brought to the Synth 1 Page, and all Parameters will be set to default. </p></section><section class="print-page" id="midi" heading-number="7"><h1 id="midi-midi-implementation"><strong>MIDI Implementation</strong></h1>
 <h2 id="midi-midi-input">MIDI Input</h2>
 <h3 id="midi-midi-rx-messages">MIDI Rx Messages</h3>
 <table>
@@ -2103,8 +2121,8 @@ extern &quot;C&quot;
 </ul></section><section class="print-page" id="build_guide" heading-number="9"><h1 id="build_guide-build-guide"><strong>Build Guide</strong></h1>
 <p>This will walk you through the step-by-step process of populating the Iosefka PCB using components from the <a href="#build_guide-todo:addbom">Bill of Materials</a>, as well as uploading the firmware to the microcontroller. </p>
 <p><em>Note: This guide was made using an older version of the PCB. The only differences are a few of the component values (follow values on your PCB and you'll be fine), the omission of the 1M resistor which is now DNP (do not place) on the new PCB, some silk screen labels on the control board, and the addition of the 6th spacer between the Switch Keys.</em></p>
-<h2 id="build_guide-disclaimer">Disclaimer!</h2>
-<p>We are not responsible for any accidents that arise during the build process. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.</p>
+<h2 id="build_guide-disclaimer">DISCLAIMER</h2>
+<p>We are not responsible for any accidents that arise during the build process, or in the course of operation. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.</p>
 <h2 id="build_guide-tools">Tools</h2>
 <p><strong>Required</strong></p>
 <ul>
@@ -2130,7 +2148,7 @@ extern &quot;C&quot;
 <h2 id="build_guide-step-0-flashing-the-raspberry-pi-pico">Step 0: Flashing the Raspberry Pi Pico</h2>
 <p>Flashing the firmware to the Raspberry Pi Pico is easy.</p>
 <ul>
-<li>Download the iosefka.uf2 file TODO: LINK TO FILE HERE</li>
+<li>Download the iosefka.uf2 firmware file from here: TODO: LINK TO FILE HERE</li>
 <li>Plug a micro USB cable into the Raspberry Pi Pico</li>
 <li>Press the BOOTSEL pin on the Pico</li>
 <li>With the BOOTSEL pin held down, plug the USB cable into the computer</li>
@@ -2247,8 +2265,11 @@ extern &quot;C&quot;
 <p><img alt="Assembly - Placing Rubber Feet" src="../assets/IMG_2185.webp" /></p>
 <p>Behold your work!</p>
 <p><img alt="Assembly - Complete" src="../assets/IMG_2186.webp" /></p>
-<p>At this point, you should be able to plug in your Iosefka model and it will power up. If it is the first time, you will see the presets being loaded and then the Synth 1 View screen. </p>
-<p>If you plug the synth into a speaker and hit one of the keyboard switches and hear sound, that's a great sign! If the sound gets quieter over time (the VCA envelope closing), then you know that part works. Lastly, if you play with the Filter Cutoff parameter and the sound changes, you're 99% of the way there! </p>
+<p>At this point, you should be able to plug power into your Iosefka model and it will power up. </p>
+<p>Before plugging Iosefka into audio, you must now format the EEPROM.</p>
+<h2 id="build_guide-formatting-the-eeprom">Formatting the EEPROM</h2>
+<p>You just need to hold down some buttons with the power off, then plug the device in. See the <a href="#supplemental-initializing-all-presets">Initializing All Presets</a> section for the exact details. </p>
+<p>Now! If you plug the synth into a speaker and hit one of the keyboard switches and hear sound, that's a great sign! </p>
 <p>Lastly, we just need some...</p>
 <h2 id="build_guide-calibration">Calibration</h2>
 <p>The two trimpots on the back of the synth are for:
