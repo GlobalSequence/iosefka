@@ -351,3 +351,19 @@ The phase will not appear locked with the audio in the following scenarios:
 - Oscillator 1's pitch is lower than the magnification can capture in one screen (if the waveform is 'larger' than will fit in one screen)
 
 Only 128 discrete points are rendered for each 'frame' of the oscilloscope, meaning that harmonically rich waveforms, or viewing higher pitches on lower magnifications will make the oscilloscope appear more 'broken up'. While the solution would be to draw a line between each discrete point, this is not possible due to processor limitations. I tried folks. 
+
+## Initializing All Presets
+
+When you initialize all presets you are permanently overwriting the EEPROM to reset all presets and settings to their factory default. 
+
+If you have just built a Iosefka, this step is necessary to format the EEPROM. 
+### How to
+With the device powered OFF (with power unplugged), hold down the following ***Switches***
+- ***Play Switch***
+- ***Synth 1 Switch***
+- ***Envelope Switch***
+- ***Sequencer Switch***
+
+With these ***Switches*** pressed, power the device on. You will see a screen on the ***OLED Display*** that says "writing new presets. please wait" with a counter of the currently written preset. 
+
+Once this process is complete, you will be brought to the Synth 1 Page, and all Parameters will be set to default. 

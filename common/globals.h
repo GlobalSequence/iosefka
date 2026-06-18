@@ -16,19 +16,6 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-// ALL CODE REFERENCING FIRMWARE VERSIONS IS DEPRECATED
-
-// #define PROTOTYPE_BOARD
-// #define VERSION_TEST
-
-// version 0.1.0 2025.10.03
-// version 0.1.1 2025.10.05
-// version 0.1.2 2025.10.06
-// version 1.0.0 2025.11.15
-// #define VERSION_MAJOR 1
-// #define VERSION_MINOR 0
-// #define VERSION_PATCH 2
-
 // ################################################################
 // 
 // HARDWARE GLOBALS
@@ -48,32 +35,6 @@
 
 typedef enum switch_id_t {
 
-#ifdef PROTOTYPE_BOARD
-
-    SW_B0,
-    SW_B1,
-    SW_B2,
-    SW_B3,
-    SW_B4,
-    SW_B5,
-    SW_B6,
-    SW_B7,
-    SW_T0,
-    SW_T1,
-    SW_T2,
-    SW_T3,
-    SW_T4,
-    SW_SYNTH_1_VIEW,
-    SW_MOD_ENV_VIEW,
-    SW_SEQ_VIEW,
-    SW_PLAY,
-    SW_SHIFT,
-    SW_SYNTH_2_VIEW,
-    SW_MOD_LFO_VIEW,
-    SW_ENCODER,
-
-#else
-
     SW_B7,
     SW_B6,
     SW_B5,
@@ -95,8 +56,6 @@ typedef enum switch_id_t {
     SW_SYNTH_2_VIEW,
     SW_SYNTH_1_VIEW,
     SW_ENCODER,
-
-#endif
 
     NUMBER_OF_SWITCHES_TOTAL,
 } switch_id_t;
@@ -118,26 +77,6 @@ typedef enum view_switch_t {
 // ################################
 typedef enum {
 
-#ifdef PROTOTYPE_BOARD
-
-    POT_0,
-    POT_1,
-    POT_2,
-    POT_3,
-    POT_4,
-    POT_5,
-    POT_6,
-    POT_7,
-    POT_8,
-    POT_9,
-    POT_10,
-    POT_11,
-    POT_12,
-    POT_13,
-    POT_14,
-
-#else
-
     POT_2,
     POT_1,
     POT_0,
@@ -153,8 +92,6 @@ typedef enum {
     POT_13,
     POT_9,
     POT_14,
-
-#endif
    
     // POT_15,
 

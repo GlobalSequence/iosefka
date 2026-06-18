@@ -256,12 +256,15 @@ Behold your work!
 
 ![Assembly - Complete](assets/IMG_2186.webp)
 
-At this point, you should be able to plug in your Iosefka model and it will power up. If it is the first time, you will see the presets being loaded and then the Synth 1 View screen. 
+At this point, you should be able to plug power into your Iosefka model and it will power up. 
 
-If you plug the synth into a speaker and hit one of the keyboard switches and hear sound, that's a great sign! If the sound gets quieter over time (the VCA envelope closing), then you know that part works. Lastly, if you play with the Filter Cutoff parameter and the sound changes, you're 99% of the way there! 
+Before plugging Iosefka into audio, you must now format the EEPROM.
+## Formatting the EEPROM
+You just need to hold down some buttons with the power off, then plug the device in. See the [Initializing All Presets](./supplemental.md#initializing-all-presets) section for the exact details. 
+
+Now! If you plug the synth into a speaker and hit one of the keyboard switches and hear sound, that's a great sign! 
 
 Lastly, we just need some...
-
 ## Calibration
 The two trimpots on the back of the synth are for:
  - Filter Cutoff Offset - ensuring that the filter is in the correct frequency range

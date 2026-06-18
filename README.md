@@ -73,7 +73,21 @@ Iosefka is a hybrid digital analog monophonic synthesizer consisting of the foll
 # Link to the Build Guide
 [Build Guide - Iosefka Manual](https://globalsequence.github.io/iosefka/#build_guide/) (It's part of the manual)
 
-# A Note to Developers, Engineers, and Generally Experienced People
+# Gerber Files for Ordering the PCBs
+This project includes hardware design files. To find them, open the hardware folder in the root (top level) of the repository. Inside, you'll see three folders:
+- iosefka_bottomboard
+- iosefka_controlboard
+- iosefka_motherboard
+
+Within each of these folders is a "gerbers" folder. There is a prepared zip file within each of these folders that can be used if your PCB fab requires that. 
+
+# Bill of Materials
+There is a bill of materials for each the controlboard and the motherboard, and a short third bill of materials for additional hardware. These can be found in the hardware folder of the root directory, in the "boms" folder.
+
+# Precompiled firmware
+You can download the most current Iosefka firmware from the Releases section of this github repository. Or you can click this link: https://github.com/GlobalSequence/iosefka/releases. 
+
+# A Note to Developers, Engineers, and People Generally Experienced in Programming and Electronics
 
 Take this as a content warning for what you are about to see should you so much as peek into the code of this repository. It may help to frame this whole thing as a hobbyist's project that got way out of hand. I chalk any and all glaring errors up to the fundamental tension of this machine which was 'I want to create/finish this thing' vs. 'I want to learn this stuff'.
 
