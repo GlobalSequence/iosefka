@@ -34,13 +34,14 @@
         
         var pageToc = [
           {title: "Build Guide", url: "#_top", children: [
-              {title: "Disclaimer!", url: "#disclaimer" },
+              {title: "DISCLAIMER", url: "#disclaimer" },
               {title: "Tools", url: "#tools" },
               {title: "Step 0: Flashing the Raspberry Pi Pico", url: "#step-0-flashing-the-raspberry-pi-pico" },
               {title: "Control Board", url: "#control-board" },
               {title: "Motherboard", url: "#motherboard" },
               {title: "Breakout Boards", url: "#breakout-boards" },
               {title: "Assembling the Boards", url: "#assembling-the-boards" },
+              {title: "Formatting the EEPROM", url: "#formatting-the-eeprom" },
               {title: "Calibration", url: "#calibration" },
           ]},
         ];
@@ -84,8 +85,8 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
     <h1 id="build-guide"><strong>Build Guide</strong></h1>
 <p>This will walk you through the step-by-step process of populating the Iosefka PCB using components from the <a href="TODO:ADDBOM">Bill of Materials</a>, as well as uploading the firmware to the microcontroller. </p>
 <p><em>Note: This guide was made using an older version of the PCB. The only differences are a few of the component values (follow values on your PCB and you'll be fine), the omission of the 1M resistor which is now DNP (do not place) on the new PCB, some silk screen labels on the control board, and the addition of the 6th spacer between the Switch Keys.</em></p>
-<h2 id="disclaimer">Disclaimer!</h2>
-<p>We are not responsible for any accidents that arise during the build process. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.</p>
+<h2 id="disclaimer">DISCLAIMER</h2>
+<p>We are not responsible for any accidents that arise during the build process, or in the course of operation. Any safety precautions involved with working with solder, electrical components, and anything else are the responsibility of the builder.</p>
 <h2 id="tools">Tools</h2>
 <p><strong>Required</strong></p>
 <ul>
@@ -111,7 +112,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <h2 id="step-0-flashing-the-raspberry-pi-pico">Step 0: Flashing the Raspberry Pi Pico</h2>
 <p>Flashing the firmware to the Raspberry Pi Pico is easy.</p>
 <ul>
-<li>Download the iosefka.uf2 file TODO: LINK TO FILE HERE</li>
+<li>Download the iosefka.uf2 firmware file from here: TODO: LINK TO FILE HERE</li>
 <li>Plug a micro USB cable into the Raspberry Pi Pico</li>
 <li>Press the BOOTSEL pin on the Pico</li>
 <li>With the BOOTSEL pin held down, plug the USB cable into the computer</li>
@@ -228,8 +229,11 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 <p><img alt="Assembly - Placing Rubber Feet" src="../assets/IMG_2185.webp" /></p>
 <p>Behold your work!</p>
 <p><img alt="Assembly - Complete" src="../assets/IMG_2186.webp" /></p>
-<p>At this point, you should be able to plug in your Iosefka model and it will power up. If it is the first time, you will see the presets being loaded and then the Synth 1 View screen. </p>
-<p>If you plug the synth into a speaker and hit one of the keyboard switches and hear sound, that's a great sign! If the sound gets quieter over time (the VCA envelope closing), then you know that part works. Lastly, if you play with the Filter Cutoff parameter and the sound changes, you're 99% of the way there! </p>
+<p>At this point, you should be able to plug power into your Iosefka model and it will power up. </p>
+<p>Before plugging Iosefka into audio, you must now format the EEPROM.</p>
+<h2 id="formatting-the-eeprom">Formatting the EEPROM</h2>
+<p>You just need to hold down some buttons with the power off, then plug the device in. See the <a href="../supplemental/#initializing-all-presets">Initializing All Presets</a> section for the exact details. </p>
+<p>Now! If you plug the synth into a speaker and hit one of the keyboard switches and hear sound, that's a great sign! </p>
 <p>Lastly, we just need some...</p>
 <h2 id="calibration">Calibration</h2>
 <p>The two trimpots on the back of the synth are for:

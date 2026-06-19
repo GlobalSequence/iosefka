@@ -36,18 +36,18 @@ R42,47k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,1,
 "R50,R51",4.7k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,2,
 R56,5.1k,,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal,1,
 "RV1, RV3","10k Offset, 10k Tracking",,Potentiometer_THT:Potentiometer_Bourns_3266Z_Horizontal,2,Recommended Model: Bourns 3296X-1-103LF 
-RV2,A100k,,Potentiometer_THT:Potentiometer_Bourns_PTV09A-2_Single_Horizontal,1,"Recommended model: Bourns PTV09A-2015U-B103. Note that this is NOT a logarithmic pot as the schematic recommends. If you can find a horizontal pot that is, use that one, and tell me where you found it!"
+RV2,100k,,Potentiometer_THT:Potentiometer_Bourns_PTV09A-2_Single_Horizontal,1,"Recommended model: Bourns PTV09A-2015U-B103. Note that this is NOT a logarithmic pot as the schematic recommends. If you can find a horizontal pot that is logarithmic, use that one, and tell me where you found it!"
 U1,LM7805_TO220,https://www.onsemi.cn/PowerSolutions/document/MC7800-D.PDF,Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown,1,
 U2,LM7905_TO220,https://www.onsemi.com/pub/Collateral/MC7900-D.PDF,Package_TO_SOT_THT:TO-220-3_Horizontal_TabDown,1,
 U3,LT1054,https://www.analog.com/media/en/technical-documentation/data-sheets/1054lfh.pdf,Package_DIP:DIP-8_W7.62mm_Socket,1,
 U4,SSI2140,https://www.soundsemiconductor.com/downloads/ssi2140datasheet.pdf,Package_SO:SSOP-20_5.3x7.2mm_P0.65mm,1,
 U5,24LC256,http://ww1.microchip.com/downloads/en/devicedoc/21203m.pdf,Package_DIP:DIP-8_W7.62mm_Socket,1,
-U6,Raspberry Pi Pico,,Module:RaspberryPi_Pico_Common_THT_NO_WIFI,1,"This is the Raspberry Pi Pico 1, with the RP2040 chip. This has not been tested with the RP2350 or other models. "
+U6,Raspberry Pi Pico ,,Module:RaspberryPi_Pico_Common_THT_NO_WIFI,1,"This is the Raspberry Pi Pico 1, with the RP2040 chip. This has not been tested with the RP2350 or other models. "
 U7,MCP3201,http://ww1.microchip.com/downloads/en/DeviceDoc/21290D.pdf,Package_DIP:DIP-8_W7.62mm_Socket,1,
 U8,MCP4822,http://ww1.microchip.com/downloads/en/DeviceDoc/20002249B.pdf,Package_DIP:DIP-8_W7.62mm_Socket,1,
 U9,CD4051B,http://www.ti.com/lit/ds/symlink/cd4052b.pdf,Package_DIP:DIP-16_W7.62mm_Socket,1,
 "U11,U12",TL074,http://www.ti.com/lit/ds/symlink/tl071.pdf,Package_DIP:DIP-14_W7.62mm_Socket,2,
-U14,LM13700,http://www.ti.com/lit/ds/symlink/lm13700.pdf,Package_SO:SOIC-16_3.9x9.9mm_P1.27mm,1,
+U14,LM13700,http://www.ti.com/lit/ds/symlink/lm13700.pdf,Package_SO:SOIC-16_3.9x9.9mm_P1.27mm,1,Make sure to get the SMD version!
 ,"16 pin dip socket, 7.26mm row pitch",,,1,
 ,"14 pin dip socket, 7.26mm row pitch",,,2,
 ,"8 pin dip socket, 7.26mm row pitch",,,4,

@@ -358,7 +358,8 @@ When you initialize all presets you are permanently overwriting the EEPROM to re
 
 If you have just built a Iosefka, this step is necessary to format the EEPROM. 
 ### How to
-With the device powered OFF (with power unplugged), hold down the following ***Switches***
+With the device powered OFF (with power unplugged), hold down the following ***Switches***:
+
 - ***Play Switch***
 - ***Synth 1 Switch***
 - ***Envelope Switch***

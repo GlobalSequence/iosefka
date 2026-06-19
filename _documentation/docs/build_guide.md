@@ -32,10 +32,11 @@ We are not responsible for any accidents that arise during the build process, or
 
 Flashing the firmware to the Raspberry Pi Pico is easy.
 
- - Download the iosefka.uf2 firmware file from here: TODO: LINK TO FILE HERE
+ - Download the iosefka.uf2 firmware file from here: 
+	 - https://github.com/GlobalSequence/iosefka/releases
  - Plug a micro USB cable into the Raspberry Pi Pico
- - Press the BOOTSEL pin on the Pico
- - With the BOOTSEL pin held down, plug the USB cable into the computer
+ - Press the BOOTSEL switch on the Pico
+ - With the BOOTSEL switch held down, plug the USB cable into the computer
  - The Raspberry Pi Pico will appear as a drive on your computer
  - Drag and drop the iosefka.uf2 file directly into the drive
 
