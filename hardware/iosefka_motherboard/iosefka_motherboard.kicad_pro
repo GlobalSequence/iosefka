@@ -76,20 +76,7 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [
-        [
-          "lib_footprint_mismatch|231733000|42497900|547ceabc-0877-441c-9dd0-0f35cf05eee8|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
-          "silk_overlap|179391588|107576719|13923698-feb9-4113-ba00-95b67301b387|666479a0-e110-4e4e-b3f5-aca153da7018",
-          ""
-        ],
-        [
-          "silk_overlap|179503000|115881528|666479a0-e110-4e4e-b3f5-aca153da7018|a728d4a3-1e54-473a-989e-26c38714de68",
-          ""
-        ]
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -538,14 +525,13 @@
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.2,
-        "tuning_profile": "",
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
       }
     ],
     "meta": {
-      "version": 5
+      "version": 4
     },
     "net_colors": null,
     "netclass_assignments": null,

@@ -80,9 +80,11 @@ void eepromReadBytes(uint8_t *ptr, uint address, size_t size) {
 bool waitPeriodFinished() {
 
     unsigned long long start = time_us_64();
+    unsigned long long now = start;
 
-    while(time_us_64() - start <= wait_period_us) {
+    while(now - start <= wait_period_us) {
         
+        now = time_us_64();
         // grab a sandwich
     
     }

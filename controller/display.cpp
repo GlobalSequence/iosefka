@@ -470,7 +470,9 @@ void displayHangTimerCheck() {
 
     if(display_hang_timer_active) {
 
-        if(time_us_64() - display_hang_timer_started >= k_display_hang_timer_timeout) {
+        uint64_t time = time_us_64();
+
+        if(time - display_hang_timer_started >= k_display_hang_timer_timeout) {
 
             display_hang_timer_active = false;
             display_trigger = true;
@@ -479,6 +481,7 @@ void displayHangTimerCheck() {
             alt_screen_event = resume_alt_screen_event;
             current_alt_screen = resume_alt_screen;
 
+            // printf("%llu \t %llu \t %llu\n", time, display_hang_timer_started, k_display_hang_timer_timeout);
 
         }
 
