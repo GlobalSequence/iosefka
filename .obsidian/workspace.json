@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CHANGELOG.md",
+                "file": "_documentation/docs/synthesizer.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "CHANGELOG"
+              "title": "synthesizer"
             }
           }
         ]
@@ -188,7 +188,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "e930a92824e9c38e",
+  "active": "f41af2bbf0b18053",
   "lastOpenFiles": [
     "CHANGELOG.md"
   ]
