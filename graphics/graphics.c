@@ -412,6 +412,16 @@ const char* graphicsGetLogo() {
 
 }
 
+const char* graphicsGetVersion(uint8_t major, uint8_t minor, uint8_t patch) {
+
+    static char version[12];
+
+    snprintf(version, sizeof(version), "%u.%u.%u", major, minor, patch);
+
+    return version;
+
+}
+
 const char* graphicsGetHexString(uint8_t index) {
 
     return hex_table[index];

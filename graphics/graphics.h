@@ -138,6 +138,7 @@ extern "C"
 #endif
 
 const char* graphicsGetLogo();
+const char* graphicsGetVersion(uint8_t major, uint8_t minor, uint8_t patch);
 
 const char* graphicsGetHexString(uint8_t index);
 const char* graphicsGetDecString(int index);

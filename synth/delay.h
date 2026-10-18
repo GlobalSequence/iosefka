@@ -62,20 +62,6 @@ class Delay {
 
         void render() {
 
-/*             // we count the number of block fills since clock tick reset
-            // so that we know where in the buffer to return to on clock tick
-            bool freeze_reset_occurred = p.reset;
-
-            if(freeze_reset_occurred) {
-
-                buffers_since_reset_ = 0;
-
-            } else {
-
-                buffers_since_reset_++;
-
-            } */
-
             if(p.type != DELAY_TYPE_FREEZE) {
 
                 // FOR THIS TO BE MODULAR, YOU HAVE TO HARD CODE IT SO THAT DELAY SIZE IS ALWAYS A POWER OF 2. THAT IS OKAY, BUT EDIT THE DELAY TO DO THAT.
@@ -120,7 +106,7 @@ class Delay {
                 int32_t freeze_size = p.length >> 1;
 
                 // scale feedback parameter to 4 bit count of freeze repeats
-                uint8_t freeze_limit = p.feedback >> 4;
+                uint8_t freeze_limit = (p.feedback >> 4) + 1;
 
                 // enable freeze if input parameter is anywhere above 0
                 bool freeze_enable = p.input;
@@ -139,7 +125,6 @@ class Delay {
                     if(last_freeze_enable_state_ != freeze_enable) {
 
                         freeze_enable_trigger = true;
-                        // reset_freeze_tick_counter_ = true;
 
                     }
 
@@ -149,8 +134,6 @@ class Delay {
 
                 // start a brand new freeze on delay type change
                 bool last_delay_type_was_freeze = last_delay_type_ == DELAY_TYPE_FREEZE;
-
-                // bool trigger_tick_counter_reset = false;
 
                 if(!last_delay_type_was_freeze || freeze_enable_trigger) {
 
@@ -171,15 +154,13 @@ class Delay {
 
                     uint16_t tick_counter_limit = p.div - 1;
 
-                    // TEST_PRINT_TWO_NL(tick_counter_limit, freeze_tick_counter_)
-
                     if(freeze_tick_counter_ >= tick_counter_limit || freeze_recently_enabled_) {
 
                         freeze_tick_counter_ = 0;
                         freeze_read_index_ = 0;
                         freeze_write_index_ = 0;
                         // if the freeze is not infinite, count loops
-                        if(freeze_limit != 0xF) {
+                        if(freeze_limit != kfreeze_infinite_indicator_) {
                             
                             if(freeze_loop_counter_ >= freeze_limit) {
 
@@ -218,15 +199,6 @@ class Delay {
                     }
 
                 } 
-
-                // if(!last_delay_type_was_freeze || loop_limit_exceeded || freeze_enable_trigger) {
-
-
-                // }
-
-                // if(reset_loop_counter) freeze_loop_counter_ = 0;
-
-                // if(reset_sample_counter) freeze_sample_counter_ = 0;
 
                 for(int i = 0; i < AUDIO_BLOCK_SIZE; i++) {
 
@@ -288,26 +260,26 @@ class Delay {
 
         // initialize the last delay type as default so freeze starts from 0 at startup
         delay_type_t last_delay_type_ = DELAY_TYPE_DEFAULT;
-
-        uint32_t write_start_index_; 
         uint16_t freeze_write_index_;
         uint16_t freeze_read_index_;
-
         bool last_freeze_enable_state_ = false;
         bool fill_freeze_buffer_ = true;
-        uint16_t last_freeze_size_;
         uint8_t freeze_loop_counter_ = 0;
-        uint32_t freeze_sample_counter_ = 0;
-
-        uint16_t buffers_since_reset_;
-        uint16_t buffers_to_wait_until_reset_;
-        
-        uint16_t buffer_fill_reset_wait_counter = 0;
-        
-
         uint16_t freeze_tick_counter_ = 0;
-
         bool freeze_recently_enabled_;
+        // If the repeat value is set to maximum, it will be 0xF, 
+        // but we add 1 to the repeat number so this accounts for that
+        const uint16_t kfreeze_infinite_indicator_ = 0x10;
+
+        // uint32_t write_start_index_; 
+        // uint16_t last_freeze_size_;
+        // uint32_t freeze_sample_counter_ = 0;
+        // uint16_t buffers_since_reset_;
+        // uint16_t buffers_to_wait_until_reset_;
+        // uint16_t buffer_fill_reset_wait_counter = 0;
+        
+
+
 };
 
 #endif

@@ -506,32 +506,6 @@ void ModMatrix::updateDestinations()
 
     d_i->reset = (tick_occurred || start_occurred)? true : false;
 
-    // get the number of clock ticks for delay freeze reset
-    // TODO: CREATE A FUNCTION FOR THIS AND THE LFO CLOCK RESETS, DROP A POINTER TO THE COUNTER AS A PARAM
-
-    // bool delay_reset_indicator = false; 
-    // if(tick_occurred) {
-        
-    //     delay_tick_count_++;
-
-    //     if(delay_tick_count_ >= clock_sync_div) {
-
-    //         delay_reset_indicator = true;
-
-    //     }
-    // }
-
-    // if(delay_reset_indicator || start_occurred) {
-
-    //     d_i->reset = 1;
-    //     delay_tick_count_ = 0;
-
-    // } else {
-
-    //     d_i->reset = 0;
-
-    // }
-
     switch(d_i->type) {
         
         case DELAY_TYPE_SYNC:

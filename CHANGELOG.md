@@ -4,6 +4,7 @@
 ---
 ### Added
 - Delay Stutter mode, a clock-synced repeating delay
+- Version number added to splash screen
 ### Changed
 
 ### Fixed

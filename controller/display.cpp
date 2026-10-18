@@ -149,6 +149,7 @@ const uint8_t k_param_fil_t_i = 3;
 const uint8_t k_param_del_t_i = 6;
 const uint8_t k_param_brr_i = 10;
 const uint8_t k_param_del_r_i = 7;
+const uint8_t k_param_del_f_i = 12;
 const uint8_t k_param_env_1_sh_i = 1;
 const uint8_t k_param_env_2_sh_i = 6;
 const uint8_t k_param_env_3_sh_i = 11; 
@@ -1395,7 +1396,8 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
                         else if(k == k_param_del_t_i) val = param8Bits0To3(val);
                         else if(k == k_param_fil_t_i) val = param8Bits0To3(val);
                         else if (k == k_param_brr_i) val = param8Bits0To10(val);
-                        else if (k == k_param_del_r_i) if((synth->patch.delay.type >> 6) == 1) val >>= 4;
+                        else if (k == k_param_del_r_i) { if((synth->patch.delay.type >> 6) == 1 || (synth->patch.delay.type >> 6) == 3) val >>= 4; }
+                        else if (k == k_param_del_f_i) { if((synth->patch.delay.type >> 6) == 3) val >>= 4; }
                         break;
 
                     case LAYER_ENV:
@@ -1441,7 +1443,11 @@ void displayParams(view_layer_t layer, view_page_t page, bool p_lock) {
                                 break;
 
                             case MOD_DST_DELAY_RATE:
-                                if((synth->patch.delay.type >> 5) == 1) val >>= 4;
+                                if((synth->patch.delay.type >> 6) == 1 || synth->patch.delay.type >> 6 == 3) val >>= 4;
+                                break;
+
+                            case MOD_DST_DELAY_FEEDBACK:
+                                if(synth->patch.delay.type >> 6 == 3) val >>= 4;
                                 break;
 
                             case MOD_DST_OSC_1_OCTAVE:
@@ -2052,6 +2058,10 @@ void displaySetup(synth_state_t *synth_state, synth_parameters_t *synth_patch, u
     devicesDisplayClear();
 
     devicesDisplayDrawBitmap(0, 0, 128, 64, (uint8_t*)graphicsGetLogo(), WriteMode::ADD);
+
+    const char* version = graphicsGetVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);
+
+    drawChars(version, 0, k_splash_version_y, WriteMode::ADD);
 
     devicesDisplayDisplay();
 
