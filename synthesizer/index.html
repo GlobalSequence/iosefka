@@ -182,7 +182,7 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tbody>
 </table>
 <h3 id="digital-delay">Digital Delay</h3>
-<p>The post-VCA output of Iosefka feeds back into a 12-bit ADC, sampled at 48khz, which is then used as a digital delay. The digital delay can be given extremely short (~3ms) for interesting sound sculpting, or much longer (~683ms) for a more traditional delay effect.</p>
+<p>The post-VCA output of Iosefka feeds back into a 12-bit ADC, sampled at 48khz, which is then used as a digital delay. The digital delay can be given extremely short (~3ms) for interesting sound sculpting, or much longer (~683ms) for a more traditional delay effect. The Stutter delay effect allows for (very brief) musical accompaniment, or (very brief) mock polyphony effects. </p>
 <p>The digital delay's audio is produced by a separate DAC and is then mixed back into the VCA output.</p>
 <p><strong>Parameters:</strong></p>
 <table>
@@ -203,15 +203,15 @@ if (is_top_frame) { $('body').addClass('wm-top-page'); }
 </tr>
 <tr>
 <td>D. Fdbk (Delay Feedback)</td>
-<td>Amount of delay fed back into itself</td>
+<td>- For Unclocked, Clocked, and Short delay  - Amount of delay fed back into itself<br>- For Stutter delay - Selects the amount of repeats before refilling the buffer and beginning again. At maximum, the effect repeats infinitely</td>
 </tr>
 <tr>
 <td>D. Type (Delay Type)</td>
-<td>Select between the following:<br><br>- 00 - Unclocked delay between ~3ms to ~683ms<br>- 01 - Clocked delay - Multiple divisions of sequencer or MIDI clock. Note that the clocked delay cannot exceed the delay buffer length of ~683ms. Clocked intervals above this will be shorter, and not clock accurate.<br>- 02 - Short delay - ~3ms to ~95ms. See the <a href="#fun-with-short-delays">Fun with Short Delays</a> section below for things you can do with this type  <br>- 03 - Unclocked delay - You read that right, 00 and 03 are the same thing!</td>
+<td>Select between the following:<br><br>- 00 - Unclocked delay between ~3ms to ~683ms<br>- 01 - Clocked delay - Multiple divisions of sequencer or MIDI clock. Note that the clocked delay cannot exceed the delay buffer length of ~683ms. Clocked intervals above this will be shorter, and not clock accurate.<br>- 02 - Short delay - ~3ms to ~95ms. See the <a href="#fun-with-short-delays">Fun with Short Delays</a> section below for things you can do with this type  <br>- 03 - Stutter delay - Repeats a portion of audio</td>
 </tr>
 <tr>
 <td>D. Input (Delay Input)</td>
-<td>Level of the delay input</td>
+<td>- For Unclocked, Clocked, and Short delay  - Level of the delay input<br>- For Stutter delay - Disables the effect at 0, Enables the effect anywhere above 0</td>
 </tr>
 </tbody>
 </table>
