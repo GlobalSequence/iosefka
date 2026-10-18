@@ -10,7 +10,7 @@ Iosefka is a hybrid digital analog monophonic synthesizer consisting of the foll
   - 2x wavetable oscillators, capable of interpolated morphing waveforms in the X and Y dimension along 256 hand-picked waveforms in a 16x16 layout
   - White noise generator
   - Sample-rate reduction and Bit-rate reduction effects
-  - Loopback digital delay fed from VCA output with feedback and adjustable rate from >3 ms to ~683 ms
+  - Loopback digital delay fed from VCA output with feedback and adjustable rate from >3 ms to ~683 ms, plus a stutter style delay effect
 
 **Analog audio:**
 

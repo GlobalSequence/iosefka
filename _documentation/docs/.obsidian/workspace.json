@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "build_guide.md",
+                "file": "synthesizer.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "build_guide"
+              "title": "synthesizer"
             }
           }
         ],
@@ -56,7 +56,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -201,15 +203,15 @@
   "active": "4a2e3ee83b5c2360",
   "lastOpenFiles": [
     "supplemental.md",
-    "build_guide.md",
-    "settings.md",
-    "operation.md",
-    "index.md",
-    "assets/cb_1_sockets.webp",
-    "sequencer.md",
     "synthesizer.md",
+    "index.md",
+    "settings.md",
+    "sequencer.md",
+    "operation.md",
     "midi.md",
     "credits.md",
+    "build_guide.md",
+    "assets/cb_1_sockets.webp",
     "assets/old/layer_syn_env.jpg",
     "assets/old",
     "assets/New folder",

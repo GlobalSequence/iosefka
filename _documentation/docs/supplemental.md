@@ -70,7 +70,6 @@ See "Parameters" sections in [The Synthesizer](./synthesizer.md) and [The Sequen
 
 ### Synth 2
 
-
 ![Layer_Synth2](assets/l_synth2.webp)
 
 |                          |                          |          |          |               |

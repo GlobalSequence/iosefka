@@ -501,15 +501,47 @@ void ModMatrix::updateDestinations()
 
     // clock sync'd delay calculations
     // TEST_PRINT_ONE_NL(clock_period)
-    uint16_t delay_rate_sync = (48000ULL * ((uint64_t)clock_period * (uint64_t)clock_sync_div_val[15 - (dst_[MOD_DST_DELAY_RATE] >> 8)])) / 1000000ULL;
+    uint64_t clock_sync_div = clock_sync_div_val[15 - (dst_[MOD_DST_DELAY_RATE] >> 8)];
+    uint16_t delay_rate_sync = (48000ULL * ((uint64_t)clock_period * clock_sync_div)) / 1000000ULL;
+
+    d_i->reset = (tick_occurred || start_occurred)? true : false;
+
+    // get the number of clock ticks for delay freeze reset
+    // TODO: CREATE A FUNCTION FOR THIS AND THE LFO CLOCK RESETS, DROP A POINTER TO THE COUNTER AS A PARAM
+
+    // bool delay_reset_indicator = false; 
+    // if(tick_occurred) {
+        
+    //     delay_tick_count_++;
+
+    //     if(delay_tick_count_ >= clock_sync_div) {
+
+    //         delay_reset_indicator = true;
+
+    //     }
+    // }
+
+    // if(delay_reset_indicator || start_occurred) {
+
+    //     d_i->reset = 1;
+    //     delay_tick_count_ = 0;
+
+    // } else {
+
+    //     d_i->reset = 0;
+
+    // }
 
     switch(d_i->type) {
         
-        case DELAY_TYPE_SYNC:   d_i->length = delay_rate_sync;      break;
-        case DELAY_TYPE_SHORT:  d_i->length = delay_rate_short;     break;
-        default:                d_i->length = delay_rate_default;   break;
+        case DELAY_TYPE_SYNC:
+        case DELAY_TYPE_FREEZE:     d_i->length = delay_rate_sync;      break;
+        case DELAY_TYPE_SHORT:      d_i->length = delay_rate_short;     break;
+        default:                    d_i->length = delay_rate_default;   break;
 
     }
+
+    d_i->div = (uint16_t)clock_sync_div;
 
 }
 

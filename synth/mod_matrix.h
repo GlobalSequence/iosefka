@@ -76,7 +76,7 @@ class ModMatrix {
         static bool lfo_reset_sync[4][2];
         uint16_t lfo_tick_count[NUMBER_OF_LFOS];
 
-        uint16_t delay_tick_count_;
+        uint16_t delay_tick_count_ = 0;
         uint16_t delay_rate_sync_out_;
 
         bool vca_drone_mode_;
